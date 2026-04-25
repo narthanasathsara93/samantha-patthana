@@ -1,0 +1,42 @@
+<template>
+  <div class="player">
+    <audio
+      ref="audioRef"
+      :src="audioSrc"
+      controls
+      @ended="$emit('audio-ended')"
+    ></audio>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const audioRef = ref(null)
+
+defineProps({
+  audioSrc: {
+    type: String,
+    default: ''
+  }
+})
+
+defineEmits(['audio-ended'])
+
+defineExpose({
+  audioRef
+})
+</script>
+
+<style scoped>
+/* ===== Audio Player ===== */
+.player {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.player audio {
+  width: 100%;
+}
+</style>
