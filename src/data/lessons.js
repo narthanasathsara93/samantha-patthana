@@ -1,0 +1,27 @@
+// src/data/lessons.js
+export const lessons = [
+  {
+    id: 1,
+    title: "Title 1",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    audio: "/audios/audio-01.mp3"
+  },
+  {
+    id: 2,
+    title: "Title 2",
+    content: "Second lesson content goes here...",
+    audio: "/audios/audio-02.mp3"
+  },
+  {
+    id: 3,
+    title: "Title 3",
+    content: "Another lesson text...",
+    audio: "/audios/audio-03.mp3"
+  },
+  {
+    id: 4,
+    title: "Title 4",
+    content: "Final lesson text...",
+    audio: "/audios/audio-04.mp3"
+  }
+]
