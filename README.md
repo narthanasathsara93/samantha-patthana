@@ -1,4 +1,4 @@
-# audio-app
+# samantha-patthana
 
 ## Project setup
 ```
