@@ -168,7 +168,7 @@ body {
   background: #ffffff;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 60px rgba(245, 135, 135, 0.13);
   flex: 1;
   display: flex;
   flex-direction: column;

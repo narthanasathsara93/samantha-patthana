@@ -6,8 +6,7 @@
         v-for="lesson in lessons"
         :key="lesson.id"
         :class="{
-          active: isActiveLesson(lesson),
-          bookmarked: isBookmarked(lesson.id) || hasBookmarkedSection(lesson)
+          active: isActiveLesson(lesson)
         }"
       >
         <button class="lesson-row" type="button" @click="handleLessonClick(lesson)">
@@ -80,9 +79,9 @@ const sectionParentIds = computed(() => {
   return map
 })
 
-const hasBookmarkedSection = (lesson) => {
-  return lesson.sections && lesson.sections.some((section) => props.isBookmarked(section.id))
-}
+// const hasBookmarkedSection = (lesson) => {
+//   return lesson.sections && lesson.sections.some((section) => props.isBookmarked(section.id))
+// }
 
 const isActiveLesson = (lesson) => {
   return lesson.id === props.selectedId
@@ -130,7 +129,7 @@ const selectSection = (sectionId) => {
   background: #ffffff;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 60px rgb(245 135 135 / 13%);
 }
 
 .sidebar-header {
@@ -174,9 +173,10 @@ const selectSection = (sectionId) => {
   border: none;
   background: transparent;
   border-radius: 8px;
+  font-weight: 500;
   font-size: inherit;
   font-family: inherit;
-  color: inherit;
+  color: #666363;
   text-align: left;
   transition: all 0.2s ease;
   display: flex;
@@ -219,7 +219,8 @@ const selectSection = (sectionId) => {
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
-  color: #666;
+  font-weight: 400;
+  color: #666363;
 }
 
 .subsection-list li:hover {
@@ -228,11 +229,12 @@ const selectSection = (sectionId) => {
 }
 
 .subsection-list li.active {
-  background: #e8f0ff;
-  color: #2563eb;
-  font-weight: 500;
+  background: rgba(245, 135, 135, 0.13);
+  color: #4d4c4c;
+  font-weight: 400;
 }
 
+/*
 .subsection-list li.bookmarked {
   background: #fff8e1;
 }
@@ -240,6 +242,7 @@ const selectSection = (sectionId) => {
 .subsection-list li.bookmarked:hover {
   background: #fff3c4;
 }
+*/
 
 .lesson-title {
   flex: 1;
