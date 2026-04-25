@@ -5,7 +5,8 @@
       <!-- Sidebar -->
       <Sidebar
         :is-sidebar-open="isSidebarOpen"
-        :current-index="currentIndex"
+        :selected-id="currentLessonId"
+        :lesson-index-map="lessonIndexMap"
         :is-bookmarked="isBookmarked"
         @lesson-selected="handleLessonSelected"
       />
@@ -51,7 +52,7 @@
         <!-- Pagination -->
         <Pagination
           :current-index="currentIndex"
-          :total-lessons="lessons.length"
+          :total-lessons="flattenedLessons.length"
           @prev="handlePrev"
           @next="handleNext"
         />
@@ -62,7 +63,6 @@
 
 <script setup>
 import { ref, computed } from "vue"
-import { lessons } from "./data/lessons"
 
 // Components
 import Sidebar from './components/Sidebar.vue'
@@ -89,7 +89,7 @@ const audioRef = computed(() => audioPlayerRef.value?.audioRef)
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio()
-const { currentIndex, selectedLesson, selectLesson, next, prev } = useNavigation()
+const { currentIndex, currentLessonId, selectedLesson, selectLesson, next, prev, lessonIndexMap, flattenedLessons } = useNavigation()
 const { isAutoPlaying, toggleAutoplay: toggleAutoplayLogic, onAudioEnded } = useAutoplay(playCurrent)
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar()
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks()
@@ -127,7 +127,7 @@ function handleNext() {
 }
 
 function handleAudioEnded() {
-  onAudioEnded(currentIndex, lessons.length, audioRef)
+  onAudioEnded(next, flattenedLessons.value.length, currentIndex, audioRef)
 }
 
 function handleToggleBookmark() {

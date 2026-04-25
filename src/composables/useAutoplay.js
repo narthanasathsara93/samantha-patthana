@@ -16,11 +16,11 @@ export function useAutoplay(playCurrent) {
     }
   }
 
-  function onAudioEnded(currentIndex, lessonsLength, audioRef) {
+  function onAudioEnded(nextFunc, lessonsLength, currentIndex, audioRef) {
     if (!isAutoPlaying.value) return
 
     if (currentIndex.value < lessonsLength - 1) {
-      currentIndex.value++
+      nextFunc()
 
       // wait for DOM/audio to update
       setTimeout(() => {
