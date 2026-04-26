@@ -24,13 +24,12 @@ const getIcon = (isBookmarked) => {
     ? require("@/assets/icons/bookmarked.png")
     : require("@/assets/icons/bookmark.png");
 };
-
 </script>
 
 <style scoped>
 .bookmark-icon {
-  width: 23px;
-  height: 23px;
+  width: 20px;
+  height: 20px;
 }
 
 .bookmark-btn {
