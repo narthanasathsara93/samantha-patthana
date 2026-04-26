@@ -40,6 +40,7 @@
         <VerseContent
           :title="selectedVerse.title"
           :content="selectedVerse.content"
+          :show-verse-title="selectedVerse.showVerseTitle"
         />
 
         <!-- Audio -->

@@ -134,7 +134,7 @@ const selectSection = (sectionId) => {
 
 .sidebar-header {
   padding: 16px;
-  font-weight: 600;
+  font-weight: 900;
   font-size: 18px;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -173,7 +173,7 @@ const selectSection = (sectionId) => {
   border: none;
   background: transparent;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 900;
   font-size: inherit;
   font-family: inherit;
   color: #666363;
@@ -219,7 +219,7 @@ const selectSection = (sectionId) => {
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 900;
   color: #666363;
 }
 
@@ -231,7 +231,7 @@ const selectSection = (sectionId) => {
 .subsection-list li.active {
   background: rgba(245, 135, 135, 0.13);
   color: #4d4c4c;
-  font-weight: 400;
+  font-weight: 900;
 }
 
 /*
