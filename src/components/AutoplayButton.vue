@@ -5,7 +5,7 @@
     @click="$emit('toggle-autoplay')"
     :title="isAutoPlaying ? 'Stop autoplay' : 'Start autoplay'"
   >
-    ⟳
+    <img class="autoplay-icon" :src="getIcon(isAutoPlaying)" />
   </button>
 </template>
 
@@ -13,23 +13,34 @@
 defineProps({
   isAutoPlaying: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-defineEmits(['toggle-autoplay'])
+defineEmits(["toggle-autoplay"]);
+
+const getIcon = (isAutoPlaying) => {
+  return isAutoPlaying
+    ? require("@/assets/icons/autoplaying.gif")
+    : require("@/assets/icons/autoplay.png")
+};
 </script>
 
 <style scoped>
 /* Autoplay Button */
+
+.autoplay-icon {
+  width: 23px;
+  height: 23px;
+}
+
 .autoplay-btn {
   padding: 0;
-  width: 42px;
-  height: 42px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   border: none;
-  background: #eef2ff;
-  color: #4f46e5;
+  background: #ffffff;
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -39,12 +50,12 @@ defineEmits(['toggle-autoplay'])
 }
 
 .autoplay-btn:hover {
-  background: #e0e7ff;
+  background: rgba(245, 135, 135, 0.13);
   transform: scale(1.05);
 }
 
 .autoplay-btn.active {
-  background: #4f46e5;
+  background: rgba(245, 135, 135, 0.13);
   color: white;
 }
 </style>
