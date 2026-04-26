@@ -6,16 +6,23 @@
         v-for="verse in verses"
         :key="verse.id"
         :class="{
-          active: isActiveVerse(verse)
+          active: isActiveVerse(verse),
         }"
       >
-        <button class="verse-row" type="button" @click="handleVerseClick(verse)">
-          <span class="verse-title">{{ verse.title }}</span>
+        <button
+          class="verse-row"
+          type="button"
+          @click="handleVerseClick(verse)"
+        >
           <span class="verse-actions">
             <span v-if="verse.sections" class="expand-indicator">
-              {{ expandedIds.has(verse.id) ? '▾' : '▸' }}
+              {{ expandedIds.has(verse.id) ? "▾" : "▸" }}
             </span>
           </span>
+          <span class="verse-title">
+            <!-- <img class="scroll-icon" :src="getIcon()" /> -->
+            {{ verse.title }}</span
+          >
         </button>
         <ul
           v-if="verse.sections && expandedIds.has(verse.id)"
@@ -26,12 +33,14 @@
             :key="section.id"
             :class="{
               active: selectedId === section.id,
-              bookmarked: isBookmarked(section.id)
+              bookmarked: isBookmarked(section.id),
             }"
             @click.stop="selectSection(section.id)"
           >
             <span class="verse-title">{{ section.title }}</span>
-            <span v-if="isBookmarked(section.id)" class="bookmark-indicator">★</span>
+            <span v-if="isBookmarked(section.id)" class="bookmark-indicator"
+              >★</span
+            >
           </li>
         </ul>
       </li>
@@ -40,96 +49,111 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, toRefs } from 'vue'
-import { verses } from '../data/verses'
+import { ref, watch, computed, toRefs } from "vue";
+import { verses } from "../data/verses";
 
 const props = defineProps({
   isSidebarOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   selectedId: {
     type: [String, Number],
-    default: null
+    default: null,
   },
   verseIndexMap: {
     type: Object,
-    required: true
+    required: true,
   },
   isBookmarked: {
     type: Function,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['verse-selected'])
-const { selectedId } = toRefs(props)
+const emit = defineEmits(["verse-selected"]);
+const { selectedId } = toRefs(props);
 
-const expandedIds = ref(new Set())
+const expandedIds = ref(new Set());
 
 const sectionParentIds = computed(() => {
-  const map = {}
+  const map = {};
   verses.forEach((verse) => {
     if (verse.sections && Array.isArray(verse.sections)) {
       verse.sections.forEach((section) => {
-        map[section.id] = verse.id
-      })
+        map[section.id] = verse.id;
+      });
     }
-  })
-  return map
-})
+  });
+  return map;
+});
 
 // const hasBookmarkedSection = (verse) => {
 //   return verse.sections && verse.sections.some((section) => props.isBookmarked(section.id))
 // }
 
+// const isActiveVerse = (verse) => {
+//   return verse.id === props.selectedId;
+// };
+
 const isActiveVerse = (verse) => {
-  return verse.id === props.selectedId
-}
+  return (
+    verse.id === props.selectedId ||
+    sectionParentIds.value[props.selectedId] === verse.id
+  );
+};
 
 watch(
   () => props.selectedId,
   (selectedId) => {
-    const parentId = sectionParentIds.value[selectedId]
+    const parentId = sectionParentIds.value[selectedId];
     if (parentId) {
-      expandedIds.value.clear()
-      expandedIds.value.add(parentId)
+      expandedIds.value.clear();
+      expandedIds.value.add(parentId);
     }
   },
   { immediate: true }
-)
+);
 
 const handleVerseClick = (verse) => {
   if (verse.sections && verse.sections.length) {
     if (expandedIds.value.has(verse.id)) {
-      expandedIds.value.delete(verse.id)
+      expandedIds.value.delete(verse.id);
     } else {
-      expandedIds.value.clear()
-      expandedIds.value.add(verse.id)
+      expandedIds.value.clear();
+      expandedIds.value.add(verse.id);
     }
   } else if (props.verseIndexMap[verse.id] !== undefined) {
-    emit('verse-selected', props.verseIndexMap[verse.id])
+    emit("verse-selected", props.verseIndexMap[verse.id]);
   }
-}
+};
 
 const selectSection = (sectionId) => {
-  const index = props.verseIndexMap[sectionId]
+  const index = props.verseIndexMap[sectionId];
   if (index !== undefined) {
-    emit('verse-selected', index)
+    emit("verse-selected", index);
   }
-}
+};
+
+// const getIcon = () => {
+//   return require("@/assets/icons/scroll.png");
+// };
 </script>
 
 <style scoped>
+.scroll-icon {
+  width: 16px;
+  height: 16px;
+}
 /* ===== Sidebar ===== */
 .sidebar {
   width: 240px;
   padding: 10px 0;
   transition: transform 0.3s ease;
-  background: #ffffff;
+  background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgb(245 135 135 / 13%);
+  box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
 }
 
 .sidebar-header {
@@ -153,9 +177,8 @@ const selectSection = (sectionId) => {
   transition: all 0.2s ease;
 }
 
-.sidebar > ul > li.active > .verse-row {
-  border: #666 solid 1px;
-  font-weight: 600;
+.sidebar > ul > li.active > .verse-row > .verse-title {
+  color: #330505;
 }
 
 .sidebar > ul > li.bookmarked > .verse-row {
@@ -168,7 +191,7 @@ const selectSection = (sectionId) => {
 
 .verse-row {
   width: 100%;
-  padding: 12px 18px;
+  padding: 8px 0px;
   cursor: pointer;
   border: none;
   background: transparent;
@@ -185,7 +208,9 @@ const selectSection = (sectionId) => {
 }
 
 .verse-row:hover {
-  background: #f3f4f6;
+  background: #8d8a8a31;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
 }
 
 .verse-actions {
@@ -220,17 +245,20 @@ const selectSection = (sectionId) => {
   justify-content: space-between;
   font-size: 14px;
   font-weight: 900;
-  color: #666363;
+  color: #390701;
 }
 
 .subsection-list li:hover {
-  background: #f3f4f6;
-  color: #222;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  background: #afacac31;
 }
 
 .subsection-list li.active {
-  background: rgba(245, 135, 135, 0.13);
-  color: #4d4c4c;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  background: #8d8a8a31;
+  color: #c63100;
   font-weight: 900;
 }
 

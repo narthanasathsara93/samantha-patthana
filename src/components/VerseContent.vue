@@ -32,10 +32,10 @@ const getContent = () => {
 /* ===== Reader ===== */
 
 .reader-content {
-  line-height: 1.8;
-  font-size: large;
-  font-weight: 600;
-    margin-top: 5%;
+  line-height: 160%;
+  font-size: 20px;
+  font-weight: 550;
+  margin-top: 5%;
   color: #3b0906;
 }
 .reader {
@@ -45,9 +45,10 @@ const getContent = () => {
 }
 
 .reader h1 {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 23px;
+  font-weight: 900;
   margin-bottom: 16px;
+  color: #3b0906;
 }
 
 .reader p {
@@ -60,11 +61,8 @@ const getContent = () => {
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .reader h1 {
-    font-size: 22px;
+   font-size: 23px;
   }
 
-  .reader p {
-    font-size: 16px;
-  }
 }
 </style>

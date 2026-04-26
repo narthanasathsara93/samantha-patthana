@@ -1,8 +1,12 @@
 <template>
   <div class="pagination">
-    <button @click="$emit('prev')" :disabled="currentIndex === 0">Prev</button>
+    <button @click="$emit('prev')" :disabled="currentIndex === 0">
+      &lt;&lt; පෙර
+    </button>
     <span>{{ currentIndex + 1 }} / {{ totalVerses }}</span>
-    <button @click="$emit('next')" :disabled="currentIndex === totalVerses - 1">Next</button>
+    <button @click="$emit('next')" :disabled="currentIndex === totalVerses - 1">
+      ඊළඟ &gt;&gt;
+    </button>
   </div>
 </template>
 
@@ -10,15 +14,15 @@
 defineProps({
   currentIndex: {
     type: Number,
-    default: 0
+    default: 0,
   },
   totalVerses: {
     type: Number,
-    default: 0
-  }
-})
+    default: 0,
+  },
+});
 
-defineEmits(['prev', 'next'])
+defineEmits(["prev", "next"]);
 </script>
 
 <style scoped>
@@ -40,13 +44,13 @@ defineEmits(['prev', 'next'])
   padding: 8px 16px;
   border-radius: 999px;
   border: none;
-  background: #f1f3f5;
+  background: #8d8a8a31;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pagination button:hover {
-  background: #e2e8f0;
+  background: #46000024;
 }
 
 .pagination button:disabled {

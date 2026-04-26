@@ -20,7 +20,10 @@
           @toggle-bookmark="handleToggleBookmark"
         />
 
-        <div class="content-controls" :class="{ 'hidden-on-mobile-menu': isSidebarOpen }">
+        <div
+          class="content-controls"
+          :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
+        >
           <AutoplayButton
             :is-auto-playing="isAutoPlaying"
             @toggle-autoplay="toggleAutoplay"
@@ -32,10 +35,7 @@
         </div>
 
         <!-- Overlay -->
-        <Overlay
-          :show="isSidebarOpen"
-          @click="toggleSidebar"
-        />
+        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
         <VerseContent
           :title="selectedVerse.title"
@@ -63,89 +63,104 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed } from "vue";
 
 // Components
-import Sidebar from './components/Sidebar.vue'
-import MobileHeader from './components/MobileHeader.vue'
-import AutoplayButton from './components/AutoplayButton.vue'
-import BookmarkButton from './components/BookmarkButton.vue'
-import Overlay from './components/Overlay.vue'
-import VerseContent from './components/VerseContent.vue'
-import AudioPlayer from './components/AudioPlayer.vue'
-import Pagination from './components/Pagination.vue'
+import Sidebar from "./components/Sidebar.vue";
+import MobileHeader from "./components/MobileHeader.vue";
+import AutoplayButton from "./components/AutoplayButton.vue";
+import BookmarkButton from "./components/BookmarkButton.vue";
+import Overlay from "./components/Overlay.vue";
+import VerseContent from "./components/VerseContent.vue";
+import AudioPlayer from "./components/AudioPlayer.vue";
+import Pagination from "./components/Pagination.vue";
 
 // Composables
-import { useAudio } from './composables/useAudio'
-import { useNavigation } from './composables/useNavigation'
-import { useAutoplay } from './composables/useAutoplay'
-import { useSidebar } from './composables/useSidebar'
-import { useBookmarks } from './composables/useBookmarks'
+import { useAudio } from "./composables/useAudio";
+import { useNavigation } from "./composables/useNavigation";
+import { useAutoplay } from "./composables/useAutoplay";
+import { useSidebar } from "./composables/useSidebar";
+import { useBookmarks } from "./composables/useBookmarks";
 
 // Component refs
-const audioPlayerRef = ref(null)
+const audioPlayerRef = ref(null);
 
 // Computed audio ref
-const audioRef = computed(() => audioPlayerRef.value?.audioRef)
+const audioRef = computed(() => audioPlayerRef.value?.audioRef);
 
 // Initialize composables
-const { resetAudio, playCurrent } = useAudio()
-const { currentIndex, currentVerseId, selectedVerse, selectVerse, next, prev, verseIndexMap: verseIndexMap, flattenedVerses } = useNavigation()
-const { isAutoPlaying, toggleAutoplay: toggleAutoplayLogic, onAudioEnded } = useAutoplay(playCurrent)
-const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar()
-const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks()
+const { resetAudio, playCurrent } = useAudio();
+const {
+  currentIndex,
+  currentVerseId,
+  selectedVerse,
+  selectVerse,
+  next,
+  prev,
+  verseIndexMap: verseIndexMap,
+  flattenedVerses,
+} = useNavigation();
+const {
+  isAutoPlaying,
+  toggleAutoplay: toggleAutoplayLogic,
+  onAudioEnded,
+} = useAutoplay(playCurrent);
+const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
+const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 
 // Load bookmarks on app start
-loadBookmarks()
+loadBookmarks();
 
 // Event handlers
 function handleVerseSelected(index) {
-  selectVerse(index)
-  resetAudio(audioRef)
-  closeSidebar()
+  selectVerse(index);
+  resetAudio(audioRef);
+  closeSidebar();
 
   if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200)
+    setTimeout(() => playCurrent(audioRef), 200);
   }
 }
 
 function handlePrev() {
-  prev()
-  resetAudio(audioRef)
+  prev();
+  resetAudio(audioRef);
 
   if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200)
+    setTimeout(() => playCurrent(audioRef), 200);
   }
 }
 
 function handleNext() {
-  next()
-  resetAudio(audioRef)
+  next();
+  resetAudio(audioRef);
 
   if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200)
+    setTimeout(() => playCurrent(audioRef), 200);
   }
 }
 
 function handleAudioEnded() {
-  onAudioEnded(next, flattenedVerses.value.length, currentIndex, audioRef)
+  onAudioEnded(next, flattenedVerses.value.length, currentIndex, audioRef);
 }
 
 function handleToggleBookmark() {
-  toggleBookmark(selectedVerse.value.id)
+  toggleBookmark(selectedVerse.value.id);
 }
 
 function toggleAutoplay() {
-  toggleAutoplayLogic(audioRef)
+  toggleAutoplayLogic(audioRef);
 }
 </script>
 
 <style>
 /* ===== Global ===== */
+
 body {
   margin: 0;
-  background: #f6f7fb;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #490202;
+  font-family: "Noto Sans Sinhala", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
   color: #222;
 }
 
@@ -166,10 +181,10 @@ body {
 
 /* ===== Cards (Sidebar + Content) ===== */
 .content {
-  background: #ffffff;
+  background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgba(245, 135, 135, 0.13);
+  box-shadow: 0 8px 60px rgba(211, 194, 112, 0.39);
   flex: 1;
   display: flex;
   flex-direction: column;

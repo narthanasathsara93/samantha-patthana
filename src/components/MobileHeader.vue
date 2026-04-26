@@ -15,7 +15,7 @@ defineEmits(['toggle-sidebar'])
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: #ffffff;
+  background: #fff9f1;
   margin-bottom: 12px;
 }
 
