@@ -293,10 +293,12 @@ const selectSection = (sectionId) => {
     max-width: 280px;
     z-index: 10;
     transform: translateX(-100%);
+    box-shadow: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
+
 }
 </style>

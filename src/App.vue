@@ -215,6 +215,10 @@ body {
   }
 
   .content {
+    box-shadow: 0 -10px 15px rgba(211, 194, 112, 0.2),
+      /* top */ 0 10px 15px rgba(211, 194, 112,  0.5),
+      /* bottom */ -10px 0 25px rgba(211, 194, 112, 0.2),
+      /* left */ 10px 0 25px rgba(211, 194, 112,  0.2); /* right */
     padding: 20px;
   }
 
