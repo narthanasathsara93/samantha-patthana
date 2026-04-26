@@ -144,7 +144,7 @@ const getImage = () => {
 
 <style scoped>
 .logo-img {
-  width: 37px;
+  width: 50px;
   height: auto;
 }
 
