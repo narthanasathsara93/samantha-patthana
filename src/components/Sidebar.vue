@@ -1,28 +1,28 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header">Lessons</div>
+    <div class="sidebar-header">සමන්ත පට්ඨානය</div>
     <ul>
       <li
-        v-for="lesson in lessons"
-        :key="lesson.id"
+        v-for="verse in verses"
+        :key="verse.id"
         :class="{
-          active: isActiveLesson(lesson)
+          active: isActiveVerse(verse)
         }"
       >
-        <button class="lesson-row" type="button" @click="handleLessonClick(lesson)">
-          <span class="lesson-title">{{ lesson.title }}</span>
-          <span class="lesson-actions">
-            <span v-if="lesson.sections" class="expand-indicator">
-              {{ expandedIds.has(lesson.id) ? '▾' : '▸' }}
+        <button class="verse-row" type="button" @click="handleVerseClick(verse)">
+          <span class="verse-title">{{ verse.title }}</span>
+          <span class="verse-actions">
+            <span v-if="verse.sections" class="expand-indicator">
+              {{ expandedIds.has(verse.id) ? '▾' : '▸' }}
             </span>
           </span>
         </button>
         <ul
-          v-if="lesson.sections && expandedIds.has(lesson.id)"
+          v-if="verse.sections && expandedIds.has(verse.id)"
           class="subsection-list"
         >
           <li
-            v-for="section in lesson.sections"
+            v-for="section in verse.sections"
             :key="section.id"
             :class="{
               active: selectedId === section.id,
@@ -30,7 +30,7 @@
             }"
             @click.stop="selectSection(section.id)"
           >
-            <span class="lesson-title">{{ section.title }}</span>
+            <span class="verse-title">{{ section.title }}</span>
             <span v-if="isBookmarked(section.id)" class="bookmark-indicator">★</span>
           </li>
         </ul>
@@ -41,7 +41,7 @@
 
 <script setup>
 import { ref, watch, computed, toRefs } from 'vue'
-import { lessons } from '../data/lessons'
+import { verses } from '../data/verses'
 
 const props = defineProps({
   isSidebarOpen: {
@@ -52,7 +52,7 @@ const props = defineProps({
     type: [String, Number],
     default: null
   },
-  lessonIndexMap: {
+  verseIndexMap: {
     type: Object,
     required: true
   },
@@ -62,29 +62,29 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['lesson-selected'])
+const emit = defineEmits(['verse-selected'])
 const { selectedId } = toRefs(props)
 
 const expandedIds = ref(new Set())
 
 const sectionParentIds = computed(() => {
   const map = {}
-  lessons.forEach((lesson) => {
-    if (lesson.sections && Array.isArray(lesson.sections)) {
-      lesson.sections.forEach((section) => {
-        map[section.id] = lesson.id
+  verses.forEach((verse) => {
+    if (verse.sections && Array.isArray(verse.sections)) {
+      verse.sections.forEach((section) => {
+        map[section.id] = verse.id
       })
     }
   })
   return map
 })
 
-// const hasBookmarkedSection = (lesson) => {
-//   return lesson.sections && lesson.sections.some((section) => props.isBookmarked(section.id))
+// const hasBookmarkedSection = (verse) => {
+//   return verse.sections && verse.sections.some((section) => props.isBookmarked(section.id))
 // }
 
-const isActiveLesson = (lesson) => {
-  return lesson.id === props.selectedId
+const isActiveVerse = (verse) => {
+  return verse.id === props.selectedId
 }
 
 watch(
@@ -99,23 +99,23 @@ watch(
   { immediate: true }
 )
 
-const handleLessonClick = (lesson) => {
-  if (lesson.sections && lesson.sections.length) {
-    if (expandedIds.value.has(lesson.id)) {
-      expandedIds.value.delete(lesson.id)
+const handleVerseClick = (verse) => {
+  if (verse.sections && verse.sections.length) {
+    if (expandedIds.value.has(verse.id)) {
+      expandedIds.value.delete(verse.id)
     } else {
       expandedIds.value.clear()
-      expandedIds.value.add(lesson.id)
+      expandedIds.value.add(verse.id)
     }
-  } else if (props.lessonIndexMap[lesson.id] !== undefined) {
-    emit('lesson-selected', props.lessonIndexMap[lesson.id])
+  } else if (props.verseIndexMap[verse.id] !== undefined) {
+    emit('verse-selected', props.verseIndexMap[verse.id])
   }
 }
 
 const selectSection = (sectionId) => {
-  const index = props.lessonIndexMap[sectionId]
+  const index = props.verseIndexMap[sectionId]
   if (index !== undefined) {
-    emit('lesson-selected', index)
+    emit('verse-selected', index)
   }
 }
 </script>
@@ -153,20 +153,20 @@ const selectSection = (sectionId) => {
   transition: all 0.2s ease;
 }
 
-.sidebar > ul > li.active > .lesson-row {
+.sidebar > ul > li.active > .verse-row {
   border: #666 solid 1px;
   font-weight: 600;
 }
 
-.sidebar > ul > li.bookmarked > .lesson-row {
+.sidebar > ul > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ul > li.bookmarked > .lesson-row:hover {
+.sidebar > ul > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
-.lesson-row {
+.verse-row {
   width: 100%;
   padding: 12px 18px;
   cursor: pointer;
@@ -184,11 +184,11 @@ const selectSection = (sectionId) => {
   justify-content: space-between;
 }
 
-.lesson-row:hover {
+.verse-row:hover {
   background: #f3f4f6;
 }
 
-.lesson-actions {
+.verse-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -244,7 +244,7 @@ const selectSection = (sectionId) => {
 }
 */
 
-.lesson-title {
+.verse-title {
   flex: 1;
 }
 

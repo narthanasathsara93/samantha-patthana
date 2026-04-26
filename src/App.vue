@@ -5,17 +5,17 @@
       <!-- Sidebar -->
       <Sidebar
         :is-sidebar-open="isSidebarOpen"
-        :selected-id="currentLessonId"
-        :lesson-index-map="lessonIndexMap"
+        :selected-id="currentVerseId"
+        :verse-index-map="verseIndexMap"
         :is-bookmarked="isBookmarked"
-        @lesson-selected="handleLessonSelected"
+        @verse-selected="handleVerseSelected"
       />
 
       <!-- Content -->
       <main class="content">
         <!-- Mobile Header -->
         <MobileHeader
-          :is-bookmarked="isBookmarked(selectedLesson.id)"
+          :is-bookmarked="isBookmarked(selectedVerse.id)"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
@@ -26,7 +26,7 @@
             @toggle-autoplay="toggleAutoplay"
           />
           <BookmarkButton
-            :is-bookmarked="isBookmarked(selectedLesson.id)"
+            :is-bookmarked="isBookmarked(selectedVerse.id)"
             @toggle-bookmark="handleToggleBookmark"
           />
         </div>
@@ -37,22 +37,22 @@
           @click="toggleSidebar"
         />
 
-        <LessonContent
-          :title="selectedLesson.title"
-          :content="selectedLesson.content"
+        <VerseContent
+          :title="selectedVerse.title"
+          :content="selectedVerse.content"
         />
 
         <!-- Audio -->
         <AudioPlayer
           ref="audioPlayerRef"
-          :audio-src="selectedLesson.audio"
+          :audio-src="selectedVerse.audio"
           @audio-ended="handleAudioEnded"
         />
 
         <!-- Pagination -->
         <Pagination
           :current-index="currentIndex"
-          :total-lessons="flattenedLessons.length"
+          :total-verses="flattenedVerses.length"
           @prev="handlePrev"
           @next="handleNext"
         />
@@ -70,7 +70,7 @@ import MobileHeader from './components/MobileHeader.vue'
 import AutoplayButton from './components/AutoplayButton.vue'
 import BookmarkButton from './components/BookmarkButton.vue'
 import Overlay from './components/Overlay.vue'
-import LessonContent from './components/LessonContent.vue'
+import VerseContent from './components/VerseContent.vue'
 import AudioPlayer from './components/AudioPlayer.vue'
 import Pagination from './components/Pagination.vue'
 
@@ -89,7 +89,7 @@ const audioRef = computed(() => audioPlayerRef.value?.audioRef)
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio()
-const { currentIndex, currentLessonId, selectedLesson, selectLesson, next, prev, lessonIndexMap, flattenedLessons } = useNavigation()
+const { currentIndex, currentVerseId, selectedVerse, selectVerse, next, prev, verseIndexMap: verseIndexMap, flattenedVerses } = useNavigation()
 const { isAutoPlaying, toggleAutoplay: toggleAutoplayLogic, onAudioEnded } = useAutoplay(playCurrent)
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar()
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks()
@@ -98,8 +98,8 @@ const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks()
 loadBookmarks()
 
 // Event handlers
-function handleLessonSelected(index) {
-  selectLesson(index)
+function handleVerseSelected(index) {
+  selectVerse(index)
   resetAudio(audioRef)
   closeSidebar()
 
@@ -127,11 +127,11 @@ function handleNext() {
 }
 
 function handleAudioEnded() {
-  onAudioEnded(next, flattenedLessons.value.length, currentIndex, audioRef)
+  onAudioEnded(next, flattenedVerses.value.length, currentIndex, audioRef)
 }
 
 function handleToggleBookmark() {
-  toggleBookmark(selectedLesson.value.id)
+  toggleBookmark(selectedVerse.value.id)
 }
 
 function toggleAutoplay() {

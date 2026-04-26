@@ -1,13 +1,13 @@
 <template>
   <div class="reader">
     <h1>{{ title }}</h1>
-    <p>{{ content }}</p>
+    <div class="reader-content" v-html="content"></div>
   </div>
 </template>
 
 <script setup>
 defineProps({
-  title: {
+  tet: {
     type: String,
     default: "",
   },

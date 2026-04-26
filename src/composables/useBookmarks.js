@@ -5,7 +5,7 @@ export function useBookmarks() {
 
   // Load bookmarks from localStorage on mount
   const loadBookmarks = () => {
-    const stored = localStorage.getItem('lesson-bookmarks')
+    const stored = localStorage.getItem('verse-bookmarks')
     if (stored) {
       bookmarks.value = new Set(JSON.parse(stored))
     }
@@ -13,32 +13,32 @@ export function useBookmarks() {
 
   // Save bookmarks to localStorage
   const saveBookmarks = () => {
-    localStorage.setItem('lesson-bookmarks', JSON.stringify([...bookmarks.value]))
+    localStorage.setItem('verse-bookmarks', JSON.stringify([...bookmarks.value]))
   }
 
-  // Toggle bookmark for a lesson
-  const toggleBookmark = (lessonId) => {
-    if (bookmarks.value.has(lessonId)) {
-      bookmarks.value.delete(lessonId)
+  // Toggle bookmark for a verse
+  const toggleBookmark = (verseId) => {
+    if (bookmarks.value.has(verseId)) {
+      bookmarks.value.delete(verseId)
     } else {
-      bookmarks.value.add(lessonId)
+      bookmarks.value.add(verseId)
     }
     saveBookmarks()
   }
 
-  // Check if a lesson is bookmarked
-  const isBookmarked = (lessonId) => {
-    return bookmarks.value.has(lessonId)
+  // Check if a verse is bookmarked
+  const isBookmarked = (verseId) => {
+    return bookmarks.value.has(verseId)
   }
 
-  // Get all bookmarked lessons
-  const bookmarkedLessons = computed(() => [...bookmarks.value])
+  // Get all bookmarked verses
+  const bookmarkedVerses = computed(() => [...bookmarks.value])
 
   return {
     bookmarks,
     loadBookmarks,
     toggleBookmark,
     isBookmarked,
-    bookmarkedLessons
+    bookmarkedVerses: bookmarkedVerses
   }
 }

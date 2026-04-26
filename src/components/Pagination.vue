@@ -1,8 +1,8 @@
 <template>
   <div class="pagination">
     <button @click="$emit('prev')" :disabled="currentIndex === 0">Prev</button>
-    <span>{{ currentIndex + 1 }} / {{ totalLessons }}</span>
-    <button @click="$emit('next')" :disabled="currentIndex === totalLessons - 1">Next</button>
+    <span>{{ currentIndex + 1 }} / {{ totalVerses }}</span>
+    <button @click="$emit('next')" :disabled="currentIndex === totalVerses - 1">Next</button>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ defineProps({
     type: Number,
     default: 0
   },
-  totalLessons: {
+  totalVerses: {
     type: Number,
     default: 0
   }
