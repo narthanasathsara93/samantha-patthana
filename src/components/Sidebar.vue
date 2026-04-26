@@ -1,37 +1,46 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header">Lessons</div>
+    <div class="sidebar-header">සමන්ත පට්ඨානය</div>
     <ul>
       <li
-        v-for="lesson in lessons"
-        :key="lesson.id"
+        v-for="verse in verses"
+        :key="verse.id"
         :class="{
-          active: isActiveLesson(lesson)
+          active: isActiveVerse(verse),
         }"
       >
-        <button class="lesson-row" type="button" @click="handleLessonClick(lesson)">
-          <span class="lesson-title">{{ lesson.title }}</span>
-          <span class="lesson-actions">
-            <span v-if="lesson.sections" class="expand-indicator">
-              {{ expandedIds.has(lesson.id) ? '▾' : '▸' }}
+        <button
+          class="verse-row"
+          type="button"
+          @click="handleVerseClick(verse)"
+        >
+          <span class="verse-actions">
+            <span v-if="verse.sections" class="expand-indicator">
+              {{ expandedIds.has(verse.id) ? "▾" : "▸" }}
             </span>
           </span>
+          <span class="verse-title">
+            <!-- <img class="scroll-icon" :src="getIcon()" /> -->
+            {{ verse.title }}</span
+          >
         </button>
         <ul
-          v-if="lesson.sections && expandedIds.has(lesson.id)"
+          v-if="verse.sections && expandedIds.has(verse.id)"
           class="subsection-list"
         >
           <li
-            v-for="section in lesson.sections"
+            v-for="section in verse.sections"
             :key="section.id"
             :class="{
               active: selectedId === section.id,
-              bookmarked: isBookmarked(section.id)
+              bookmarked: isBookmarked(section.id),
             }"
             @click.stop="selectSection(section.id)"
           >
-            <span class="lesson-title">{{ section.title }}</span>
-            <span v-if="isBookmarked(section.id)" class="bookmark-indicator">★</span>
+            <span class="verse-title">{{ section.title }}</span>
+            <span v-if="isBookmarked(section.id)" class="bookmark-indicator"
+              >★</span
+            >
           </li>
         </ul>
       </li>
@@ -40,101 +49,116 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, toRefs } from 'vue'
-import { lessons } from '../data/lessons'
+import { ref, watch, computed, toRefs } from "vue";
+import { verses } from "../data/verses";
 
 const props = defineProps({
   isSidebarOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   selectedId: {
     type: [String, Number],
-    default: null
+    default: null,
   },
-  lessonIndexMap: {
+  verseIndexMap: {
     type: Object,
-    required: true
+    required: true,
   },
   isBookmarked: {
     type: Function,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['lesson-selected'])
-const { selectedId } = toRefs(props)
+const emit = defineEmits(["verse-selected"]);
+const { selectedId } = toRefs(props);
 
-const expandedIds = ref(new Set())
+const expandedIds = ref(new Set());
 
 const sectionParentIds = computed(() => {
-  const map = {}
-  lessons.forEach((lesson) => {
-    if (lesson.sections && Array.isArray(lesson.sections)) {
-      lesson.sections.forEach((section) => {
-        map[section.id] = lesson.id
-      })
+  const map = {};
+  verses.forEach((verse) => {
+    if (verse.sections && Array.isArray(verse.sections)) {
+      verse.sections.forEach((section) => {
+        map[section.id] = verse.id;
+      });
     }
-  })
-  return map
-})
+  });
+  return map;
+});
 
-// const hasBookmarkedSection = (lesson) => {
-//   return lesson.sections && lesson.sections.some((section) => props.isBookmarked(section.id))
+// const hasBookmarkedSection = (verse) => {
+//   return verse.sections && verse.sections.some((section) => props.isBookmarked(section.id))
 // }
 
-const isActiveLesson = (lesson) => {
-  return lesson.id === props.selectedId
-}
+// const isActiveVerse = (verse) => {
+//   return verse.id === props.selectedId;
+// };
+
+const isActiveVerse = (verse) => {
+  return (
+    verse.id === props.selectedId ||
+    sectionParentIds.value[props.selectedId] === verse.id
+  );
+};
 
 watch(
   () => props.selectedId,
   (selectedId) => {
-    const parentId = sectionParentIds.value[selectedId]
+    const parentId = sectionParentIds.value[selectedId];
     if (parentId) {
-      expandedIds.value.clear()
-      expandedIds.value.add(parentId)
+      expandedIds.value.clear();
+      expandedIds.value.add(parentId);
     }
   },
   { immediate: true }
-)
+);
 
-const handleLessonClick = (lesson) => {
-  if (lesson.sections && lesson.sections.length) {
-    if (expandedIds.value.has(lesson.id)) {
-      expandedIds.value.delete(lesson.id)
+const handleVerseClick = (verse) => {
+  if (verse.sections && verse.sections.length) {
+    if (expandedIds.value.has(verse.id)) {
+      expandedIds.value.delete(verse.id);
     } else {
-      expandedIds.value.clear()
-      expandedIds.value.add(lesson.id)
+      expandedIds.value.clear();
+      expandedIds.value.add(verse.id);
     }
-  } else if (props.lessonIndexMap[lesson.id] !== undefined) {
-    emit('lesson-selected', props.lessonIndexMap[lesson.id])
+  } else if (props.verseIndexMap[verse.id] !== undefined) {
+    emit("verse-selected", props.verseIndexMap[verse.id]);
   }
-}
+};
 
 const selectSection = (sectionId) => {
-  const index = props.lessonIndexMap[sectionId]
+  const index = props.verseIndexMap[sectionId];
   if (index !== undefined) {
-    emit('lesson-selected', index)
+    emit("verse-selected", index);
   }
-}
+};
+
+// const getIcon = () => {
+//   return require("@/assets/icons/scroll.png");
+// };
 </script>
 
 <style scoped>
+.scroll-icon {
+  width: 16px;
+  height: 16px;
+}
 /* ===== Sidebar ===== */
 .sidebar {
   width: 240px;
   padding: 10px 0;
   transition: transform 0.3s ease;
-  background: #ffffff;
+  background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgb(245 135 135 / 13%);
+  box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
 }
 
 .sidebar-header {
   padding: 16px;
-  font-weight: 600;
+  font-weight: 900;
   font-size: 18px;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -153,27 +177,26 @@ const selectSection = (sectionId) => {
   transition: all 0.2s ease;
 }
 
-.sidebar > ul > li.active > .lesson-row {
-  border: #666 solid 1px;
-  font-weight: 600;
+.sidebar > ul > li.active > .verse-row > .verse-title {
+  color: #330505;
 }
 
-.sidebar > ul > li.bookmarked > .lesson-row {
+.sidebar > ul > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ul > li.bookmarked > .lesson-row:hover {
+.sidebar > ul > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
-.lesson-row {
+.verse-row {
   width: 100%;
-  padding: 12px 18px;
+  padding: 8px 0px;
   cursor: pointer;
   border: none;
   background: transparent;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 900;
   font-size: inherit;
   font-family: inherit;
   color: #666363;
@@ -184,11 +207,13 @@ const selectSection = (sectionId) => {
   justify-content: space-between;
 }
 
-.lesson-row:hover {
-  background: #f3f4f6;
+.verse-row:hover {
+  background: #8d8a8a31;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
 }
 
-.lesson-actions {
+.verse-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -219,19 +244,22 @@ const selectSection = (sectionId) => {
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
-  font-weight: 400;
-  color: #666363;
+  font-weight: 900;
+  color: #390701;
 }
 
 .subsection-list li:hover {
-  background: #f3f4f6;
-  color: #222;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  background: #afacac31;
 }
 
 .subsection-list li.active {
-  background: rgba(245, 135, 135, 0.13);
-  color: #4d4c4c;
-  font-weight: 400;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  background: #8d8a8a31;
+  color: #c63100;
+  font-weight: 900;
 }
 
 /*
@@ -244,7 +272,7 @@ const selectSection = (sectionId) => {
 }
 */
 
-.lesson-title {
+.verse-title {
   flex: 1;
 }
 
@@ -265,10 +293,12 @@ const selectSection = (sectionId) => {
     max-width: 280px;
     z-index: 10;
     transform: translateX(-100%);
+    box-shadow: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
+
 }
 </style>

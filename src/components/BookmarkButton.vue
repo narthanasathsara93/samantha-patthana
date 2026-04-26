@@ -5,7 +5,7 @@
     @click="$emit('toggle-bookmark')"
     :title="isBookmarked ? 'Remove bookmark' : 'Add bookmark'"
   >
-    {{ isBookmarked ? '★' : '☆' }}
+    <img class="bookmark-icon" :src="getIcon(isBookmarked)" />
   </button>
 </template>
 
@@ -13,21 +13,32 @@
 defineProps({
   isBookmarked: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-defineEmits(['toggle-bookmark'])
+defineEmits(["toggle-bookmark"]);
+
+const getIcon = (isBookmarked) => {
+  return isBookmarked
+    ? require("@/assets/icons/bookmarked.png")
+    : require("@/assets/icons/bookmark.png");
+};
 </script>
 
 <style scoped>
+.bookmark-icon {
+  width: 20px;
+  height: 20px;
+}
+
 .bookmark-btn {
   padding: 0;
-  width: 42px;
-  height: 42px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   border: none;
-  background: #f8f9fa;
+  background: #ffffff;
   color: #6c757d;
   font-size: 20px;
   cursor: pointer;
@@ -38,16 +49,15 @@ defineEmits(['toggle-bookmark'])
 }
 
 .bookmark-btn:hover {
-  background: #e9ecef;
+  background: rgba(245, 135, 135, 0.13);
   transform: scale(1.05);
 }
 
 .bookmark-btn.active {
-  background: #fff3cd;
-  color: #ffc107;
+  background: #ffffff;
 }
 
 .bookmark-btn.active:hover {
-  background: #ffeaa7;
+  background: rgba(245, 135, 135, 0.13);
 }
 </style>

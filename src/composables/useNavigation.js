@@ -1,85 +1,85 @@
 import { ref, computed, watch } from 'vue'
-import { lessons } from '../data/lessons'
+import { verses } from '../data/verses'
 
 export function useNavigation() {
-  // Build a flat array of all lessons and sections
-  const flattenedLessons = computed(() => {
+  // Build a flat array of all verses and sections
+  const flattenedVerses = computed(() => {
     const flattened = []
-    lessons.forEach((lesson) => {
-      if (lesson.sections && Array.isArray(lesson.sections)) {
-        lesson.sections.forEach((section) => {
+    verses.forEach((verse) => {
+      if (verse.sections && Array.isArray(verse.sections)) {
+        verse.sections.forEach((section) => {
           flattened.push(section)
         })
       } else {
-        flattened.push(lesson)
+        flattened.push(verse)
       }
     })
     return flattened
   })
 
-  // Create a map of lesson/section IDs to their index in the flattened array
-  const lessonIndexMap = computed(() => {
+  // Create a map of verse/section IDs to their index in the flattened array
+  const verseIndexMap = computed(() => {
     const map = {}
-    flattenedLessons.value.forEach((lesson, index) => {
-      map[lesson.id] = index
+    flattenedVerses.value.forEach((verse, index) => {
+      map[verse.id] = index
     })
     return map
   })
 
-  // Load saved ID from localStorage or default to first lesson ID
+  // Load saved ID from localStorage or default to first verse ID
   const getSavedId = () => {
-    const saved = localStorage.getItem('current-lesson-id')
+    const saved = localStorage.getItem('current-verse-id')
     if (saved) {
       return saved
     }
-    // Return first section ID or first lesson ID
-    return flattenedLessons.value[0]?.id || 'lesson-1'
+    // Return first section ID or first verse ID
+    return flattenedVerses.value[0]?.id || 'verse-1'
   }
 
-  const currentLessonId = ref(getSavedId())
+  const currentVerseId = ref(getSavedId())
 
-  const currentIndex = computed(() => lessonIndexMap.value[currentLessonId.value] ?? 0)
+  const currentIndex = computed(() => verseIndexMap.value[currentVerseId.value] ?? 0)
 
-  const selectedLesson = computed(() => flattenedLessons.value[currentIndex.value])
+  const selectedVerse = computed(() => flattenedVerses.value[currentIndex.value])
 
   // Save ID to localStorage whenever it changes
-  watch(currentLessonId, (newId) => {
-    localStorage.setItem('current-lesson-id', newId)
+  watch(currentVerseId, (newId) => {
+    localStorage.setItem('current-verse-id', newId)
   })
 
-  function selectLesson(index) {
-    const lesson = flattenedLessons.value[index]
-    if (lesson) {
-      currentLessonId.value = lesson.id
+  function selectVerse(index) {
+    const verse = flattenedVerses.value[index]
+    if (verse) {
+      currentVerseId.value = verse.id
     }
   }
 
   function next() {
-    if (currentIndex.value < flattenedLessons.value.length - 1) {
-      const nextLesson = flattenedLessons.value[currentIndex.value + 1]
-      if (nextLesson) {
-        currentLessonId.value = nextLesson.id
+    if (currentIndex.value < flattenedVerses.value.length - 1) {
+      const nextVerse = flattenedVerses.value[currentIndex.value + 1]
+      if (nextVerse) {
+        currentVerseId.value = nextVerse.id
       }
     }
   }
 
   function prev() {
     if (currentIndex.value > 0) {
-      const prevLesson = flattenedLessons.value[currentIndex.value - 1]
-      if (prevLesson) {
-        currentLessonId.value = prevLesson.id
+      const prevVerse = flattenedVerses.value[currentIndex.value - 1]
+      if (prevVerse) {
+        currentVerseId.value = prevVerse.id
       }
     }
   }
 
   return {
     currentIndex,
-    currentLessonId,
-    selectedLesson,
-    selectLesson,
+    currentVerseId,
+    selectedVerse,
+    selectVerse,
     next,
     prev,
-    lessonIndexMap,
-    flattenedLessons
+    verseIndexMap: verseIndexMap,
+    flattenedVerses
   }
 }

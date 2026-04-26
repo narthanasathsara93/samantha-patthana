@@ -16,10 +16,10 @@ export function useAutoplay(playCurrent) {
     }
   }
 
-  function onAudioEnded(nextFunc, lessonsLength, currentIndex, audioRef) {
+  function onAudioEnded(nextFunc, versesLength, currentIndex, audioRef) {
     if (!isAutoPlaying.value) return
 
-    if (currentIndex.value < lessonsLength - 1) {
+    if (currentIndex.value < versesLength - 1) {
       nextFunc()
 
       // wait for DOM/audio to update
