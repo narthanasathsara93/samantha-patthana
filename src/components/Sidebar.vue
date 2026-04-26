@@ -1,6 +1,8 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header">සමන්ත පට්ඨානය</div>
+    <div class="sidebar-header">
+      <img class="logo-img" :src="getImage()" /> <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
+    </div>
     <ul>
       <li
         v-for="verse in verses"
@@ -19,10 +21,7 @@
               {{ expandedIds.has(verse.id) ? "▾" : "▸" }}
             </span>
           </span>
-          <span class="verse-title">
-            <!-- <img class="scroll-icon" :src="getIcon()" /> -->
-            {{ verse.title }}</span
-          >
+          <span class="verse-title"> {{ verse.title }}</span>
         </button>
         <ul
           v-if="verse.sections && expandedIds.has(verse.id)"
@@ -134,6 +133,9 @@ const selectSection = (sectionId) => {
     emit("verse-selected", index);
   }
 };
+const getImage = () => {
+  return require("@/assets/images/logo.png");
+};
 
 // const getIcon = () => {
 //   return require("@/assets/icons/scroll.png");
@@ -141,6 +143,11 @@ const selectSection = (sectionId) => {
 </script>
 
 <style scoped>
+.logo-img {
+  width: 37px;
+  height: auto;
+}
+
 .scroll-icon {
   width: 16px;
   height: 16px;
@@ -157,6 +164,17 @@ const selectSection = (sectionId) => {
 }
 
 .sidebar-header {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center; /* horizontal center */
+  justify-content: center; /* vertical center (if height exists) */
+  text-align: center;
+  gap: 6px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
@@ -299,6 +317,5 @@ const selectSection = (sectionId) => {
   .sidebar.open {
     transform: translateX(0);
   }
-
 }
 </style>
