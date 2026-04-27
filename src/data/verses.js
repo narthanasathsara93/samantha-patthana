@@ -9,9 +9,7 @@ export const verses = [
         title: "නමස්කාරය",
         englishName: "namaskaraya",
         showVerseTitle: false,
-        content: `නමෝ තස්ස භගවතෝ 
-        අරහතෝ සම්මාසම්බුද්ධස්ස
-පට්ඨානදේසකස්ස !!!
+        content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස !!!
 
 විචිත්තමතිගම්භීර
 මනන්තනයමණ්ඩිතං
@@ -1061,7 +1059,7 @@ export const verses = [
 ගෝපාලෝ සුප්පගේධෝ ච - හිරිනෙන්තී ච මන්දියෝ,
 පඤ්චාලචණ්ඩෝ ආළවකෝ පජ්ජුන්නෝ - සුමනෝ සුමුඛෝ දධීමුඛෝ,
 මණි මාණි චරෝ දීඝෝ - අථෝ සේරිස්සකෝ සහ
-එතේ සේනාපතී දේවා - ඉමං පුඤ්ඤානුමෝදන්තු !
+එතේ සේනාපතී දේවා - ඉමං පුඤ්ඤානුමෝදන්තු!
 පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං.
 
 ආකාසට්ඨා ච භුම්මට්ඨා - දේවා නාගා මහිද්ධිකා
@@ -1125,52 +1123,23 @@ export const verses = [
 අච්චයං ඛම මේ සංඝ පුඤ්ඤක්ඛෙත්ත අනුත්තර
 
 සාධූ! සාධූ!! සාධූ!!!
-
 `,
         audio: "/audios/audio-01.mp3",
       },
     ],
   },
-  {
-    id: "verse-28",
-    title: "Mytext",
-    sections: [
-      {
-        id: "verse-28-sec-1",
-        title: "mytext",
-        englishName: "",
-        showVerseTitle: false,
-        content: ``,
-        audio: "/audios/audio-01.mp3",
-      },
-    ],
-  },
-  {
-    id: "verse-29",
-    title: "Mytext",
-    sections: [
-      {
-        id: "verse-29-sec-1",
-        title: "mytext",
-        englishName: "",
-        showVerseTitle: false,
-        content: ``,
-        audio: "/audios/audio-01.mp3",
-      },
-    ],
-  },
-  {
-    id: "verse-30",
-    title: "Mytext",
-    sections: [
-      {
-        id: "verse-30-sec-1",
-        title: "mytext",
-        englishName: "",
-        showVerseTitle: false,
-        content: ``,
-        audio: "/audios/audio-01.mp3",
-      },
-    ],
-  },
+  // {
+  //   id: "verse-28",
+  //   title: "Mytext",
+  //   sections: [
+  //     {
+  //       id: "verse-28-sec-1",
+  //       title: "mytext",
+  //       englishName: "",
+  //       showVerseTitle: false,
+  //       content: ``,
+  //       audio: "/audios/audio-01.mp3",
+  //     },
+  //   ],
+  // },
 ];
