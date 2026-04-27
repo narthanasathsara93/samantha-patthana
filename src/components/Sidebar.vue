@@ -1,7 +1,8 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
     <div class="sidebar-header">
-      <img class="logo-img" :src="getImage()" /> <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
+      <img class="logo-img" :src="getImage()" />
+      <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
     <ul>
       <li
@@ -193,6 +194,7 @@ const getImage = () => {
   margin: 4px 10px;
   border-radius: 8px;
   transition: all 0.2s ease;
+  font-size: 15px;
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
@@ -215,7 +217,6 @@ const getImage = () => {
   background: transparent;
   border-radius: 8px;
   font-weight: 900;
-  font-size: inherit;
   font-family: inherit;
   color: #666363;
   text-align: left;
@@ -229,14 +230,19 @@ const getImage = () => {
   background: #8d8a8a31;
   border-bottom-right-radius: 24px !important;
   border-top-right-radius: 24px !important;
+  transform: scale(1.013);
+  font-weight: 900;
+  color: #c63100;
 }
 
+/*
 .verse-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-left: 8px;
 }
+*/
 
 .expand-indicator {
   color: #666;

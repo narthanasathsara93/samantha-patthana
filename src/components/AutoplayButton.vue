@@ -3,7 +3,7 @@
     class="autoplay-btn"
     :class="{ active: isAutoPlaying }"
     @click="$emit('toggle-autoplay')"
-    :title="isAutoPlaying ? 'Stop autoplay' : 'Start autoplay'"
+    :title="isAutoPlaying ? 'ස්වයං වාදනය නවතන්න' : 'ස්වයං වාදනය ආරම්භ කරන්න'"
   >
     <img class="autoplay-icon" :src="getIcon(isAutoPlaying)" />
   </button>
@@ -22,7 +22,7 @@ defineEmits(["toggle-autoplay"]);
 const getIcon = (isAutoPlaying) => {
   return isAutoPlaying
     ? require("@/assets/icons/autoplaying.gif")
-    : require("@/assets/icons/autoplay.png")
+    : require("@/assets/icons/autoplay.png");
 };
 </script>
 
@@ -51,11 +51,6 @@ const getIcon = (isAutoPlaying) => {
 
 .autoplay-btn:hover {
   background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.05);
-}
-
-.autoplay-btn.active {
-  background: rgba(245, 135, 135, 0.13);
-  color: white;
+  transform: scale(1.2);
 }
 </style>
