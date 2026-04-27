@@ -3,7 +3,11 @@
     class="bookmark-btn"
     :class="{ active: isBookmarked }"
     @click="$emit('toggle-bookmark')"
-    :title="isBookmarked ? 'Remove bookmark' : 'Add bookmark'"
+    :title="
+      isBookmarked
+        ? 'සුරැකුම් ගොනුවෙන් ඉවත් කරන්න'
+        : 'සුරැකුම් ගොනුවට එකතු කරන්න'
+    "
   >
     <img class="bookmark-icon" :src="getIcon(isBookmarked)" />
   </button>
@@ -34,8 +38,8 @@ const getIcon = (isBookmarked) => {
 
 .bookmark-btn {
   padding: 0;
-  width: 23px;
-  height: 23px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: none;
   background: #ffffff;
@@ -50,14 +54,10 @@ const getIcon = (isBookmarked) => {
 
 .bookmark-btn:hover {
   background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.05);
+  transform: scale(1.2);
 }
 
 .bookmark-btn.active {
   background: #ffffff;
-}
-
-.bookmark-btn.active:hover {
-  background: rgba(245, 135, 135, 0.13);
 }
 </style>

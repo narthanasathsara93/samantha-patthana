@@ -1,6 +1,9 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header">සමන්ත පට්ඨානය</div>
+    <div class="sidebar-header">
+      <img class="logo-img" :src="getImage()" />
+      <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
+    </div>
     <ul>
       <li
         v-for="verse in verses"
@@ -19,10 +22,7 @@
               {{ expandedIds.has(verse.id) ? "▾" : "▸" }}
             </span>
           </span>
-          <span class="verse-title">
-            <!-- <img class="scroll-icon" :src="getIcon()" /> -->
-            {{ verse.title }}</span
-          >
+          <span class="verse-title"> {{ verse.title }}</span>
         </button>
         <ul
           v-if="verse.sections && expandedIds.has(verse.id)"
@@ -134,6 +134,9 @@ const selectSection = (sectionId) => {
     emit("verse-selected", index);
   }
 };
+const getImage = () => {
+  return require("@/assets/images/logo.png");
+};
 
 // const getIcon = () => {
 //   return require("@/assets/icons/scroll.png");
@@ -141,13 +144,18 @@ const selectSection = (sectionId) => {
 </script>
 
 <style scoped>
+.logo-img {
+  width: 50px;
+  height: auto;
+}
+
 .scroll-icon {
   width: 16px;
   height: 16px;
 }
 /* ===== Sidebar ===== */
 .sidebar {
-  width: 240px;
+  width: 280px;
   padding: 10px 0;
   transition: transform 0.3s ease;
   background: #fff9f1;
@@ -157,6 +165,17 @@ const selectSection = (sectionId) => {
 }
 
 .sidebar-header {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center; /* horizontal center */
+  justify-content: center; /* vertical center (if height exists) */
+  text-align: center;
+  gap: 6px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
@@ -175,6 +194,7 @@ const selectSection = (sectionId) => {
   margin: 4px 10px;
   border-radius: 8px;
   transition: all 0.2s ease;
+  font-size: 15px;
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
@@ -197,7 +217,6 @@ const selectSection = (sectionId) => {
   background: transparent;
   border-radius: 8px;
   font-weight: 900;
-  font-size: inherit;
   font-family: inherit;
   color: #666363;
   text-align: left;
@@ -211,14 +230,19 @@ const selectSection = (sectionId) => {
   background: #8d8a8a31;
   border-bottom-right-radius: 24px !important;
   border-top-right-radius: 24px !important;
+  transform: scale(1.013);
+  font-weight: 900;
+  color: #c63100;
 }
 
+/*
 .verse-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-left: 8px;
 }
+*/
 
 .expand-indicator {
   color: #666;
@@ -274,6 +298,7 @@ const selectSection = (sectionId) => {
 
 .verse-title {
   flex: 1;
+  font-size: 14px;
 }
 
 .bookmark-indicator {
@@ -299,6 +324,5 @@ const selectSection = (sectionId) => {
   .sidebar.open {
     transform: translateX(0);
   }
-
 }
 </style>
