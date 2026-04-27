@@ -155,7 +155,7 @@ const getImage = () => {
 }
 /* ===== Sidebar ===== */
 .sidebar {
-  width: 240px;
+  width: 280px;
   padding: 10px 0;
   transition: transform 0.3s ease;
   background: #fff9f1;
@@ -298,6 +298,7 @@ const getImage = () => {
 
 .verse-title {
   flex: 1;
+  font-size: 14px;
 }
 
 .bookmark-indicator {
