@@ -2,7 +2,6 @@ export const verses = [
   {
     id: "verse-1",
     title: "ආරම්භය",
-
     sections: [
       {
         id: "verse-1-sec-1",

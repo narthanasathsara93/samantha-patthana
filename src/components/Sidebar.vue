@@ -4,7 +4,7 @@
       <img class="logo-img" :src="getImage()" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
-    <ul>
+    <ol>
       <li
         v-for="verse in verses"
         :key="verse.id"
@@ -17,39 +17,19 @@
           type="button"
           @click="handleVerseClick(verse)"
         >
-          <span class="verse-actions">
-            <span v-if="verse.sections" class="expand-indicator">
-              {{ expandedIds.has(verse.id) ? "▾" : "▸" }}
+          <span class="verse-title">
+            {{ verse.title }}
+            <span v-if="isBookmarked(verse.id)" class="bookmark-indicator">
+              ★
             </span>
           </span>
-          <span class="verse-title"> {{ verse.title }}</span>
         </button>
-        <ul
-          v-if="verse.sections && expandedIds.has(verse.id)"
-          class="subsection-list"
-        >
-          <li
-            v-for="section in verse.sections"
-            :key="section.id"
-            :class="{
-              active: selectedId === section.id,
-              bookmarked: isBookmarked(section.id),
-            }"
-            @click.stop="selectSection(section.id)"
-          >
-            <span class="verse-title">{{ section.title }}</span>
-            <span v-if="isBookmarked(section.id)" class="bookmark-indicator"
-              >★</span
-            >
-          </li>
-        </ul>
       </li>
-    </ul>
+    </ol>
   </aside>
 </template>
 
 <script setup>
-import { ref, watch, computed, toRefs } from "vue";
 import { verses } from "../data/verses";
 
 const props = defineProps({
@@ -72,64 +52,13 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["verse-selected"]);
-const { selectedId } = toRefs(props);
-
-const expandedIds = ref(new Set());
-
-const sectionParentIds = computed(() => {
-  const map = {};
-  verses.forEach((verse) => {
-    if (verse.sections && Array.isArray(verse.sections)) {
-      verse.sections.forEach((section) => {
-        map[section.id] = verse.id;
-      });
-    }
-  });
-  return map;
-});
-
-// const hasBookmarkedSection = (verse) => {
-//   return verse.sections && verse.sections.some((section) => props.isBookmarked(section.id))
-// }
-
-// const isActiveVerse = (verse) => {
-//   return verse.id === props.selectedId;
-// };
 
 const isActiveVerse = (verse) => {
-  return (
-    verse.id === props.selectedId ||
-    sectionParentIds.value[props.selectedId] === verse.id
-  );
+  return verse.id === props.selectedId;
 };
-
-watch(
-  () => props.selectedId,
-  (selectedId) => {
-    const parentId = sectionParentIds.value[selectedId];
-    if (parentId) {
-      expandedIds.value.clear();
-      expandedIds.value.add(parentId);
-    }
-  },
-  { immediate: true }
-);
 
 const handleVerseClick = (verse) => {
-  if (verse.sections && verse.sections.length) {
-    if (expandedIds.value.has(verse.id)) {
-      expandedIds.value.delete(verse.id);
-    } else {
-      expandedIds.value.clear();
-      expandedIds.value.add(verse.id);
-    }
-  } else if (props.verseIndexMap[verse.id] !== undefined) {
-    emit("verse-selected", props.verseIndexMap[verse.id]);
-  }
-};
-
-const selectSection = (sectionId) => {
-  const index = props.verseIndexMap[sectionId];
+  const index = props.verseIndexMap[verse.id];
   if (index !== undefined) {
     emit("verse-selected", index);
   }
@@ -162,6 +91,9 @@ const getImage = () => {
   border-radius: 12px;
   border: none;
   box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 64px);
 }
 
 .sidebar-header {
@@ -183,13 +115,15 @@ const getImage = () => {
 }
 
 /* List */
-.sidebar ul {
-  list-style: none;
-  padding: 0;
+.sidebar ol {
+  list-style: decimal;
+  padding: 0 28px;
   margin: 0;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.sidebar > ul > li {
+.sidebar > ol > li {
   padding: 0;
   margin: 4px 10px;
   border-radius: 8px;
@@ -197,15 +131,15 @@ const getImage = () => {
   font-size: 15px;
 }
 
-.sidebar > ul > li.active > .verse-row > .verse-title {
+.sidebar > ol > li.active > .verse-row > .verse-title {
   color: #330505;
 }
 
-.sidebar > ul > li.bookmarked > .verse-row {
+.sidebar > ol > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ul > li.bookmarked > .verse-row:hover {
+.sidebar > ol > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
@@ -235,67 +169,6 @@ const getImage = () => {
   color: #c63100;
 }
 
-/*
-.verse-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 8px;
-}
-*/
-
-.expand-indicator {
-  color: #666;
-  font-size: 20px;
-  min-width: 20px;
-  display: inline-flex;
-  justify-content: center;
-}
-
-.subsection-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.subsection-list li {
-  padding: 10px 18px 10px 40px;
-  cursor: pointer;
-  border-radius: 6px;
-  margin: 2px 10px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 900;
-  color: #390701;
-}
-
-.subsection-list li:hover {
-  border-bottom-right-radius: 24px !important;
-  border-top-right-radius: 24px !important;
-  background: #afacac31;
-}
-
-.subsection-list li.active {
-  border-bottom-right-radius: 24px !important;
-  border-top-right-radius: 24px !important;
-  background: #8d8a8a31;
-  color: #c63100;
-  font-weight: 900;
-}
-
-/*
-.subsection-list li.bookmarked {
-  background: #fff8e1;
-}
-
-.subsection-list li.bookmarked:hover {
-  background: #fff3c4;
-}
-*/
-
 .verse-title {
   flex: 1;
   font-size: 14px;
@@ -323,6 +196,18 @@ const getImage = () => {
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  .sidebar {
+    height: 100%;
+    max-height: none;
+  }
+
+  .sidebar ol {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    padding: 0 28px;
+    max-height: calc(100vh - 120px);
   }
 }
 </style>

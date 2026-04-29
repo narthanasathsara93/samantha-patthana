@@ -1,12 +1,12 @@
 <template>
   <div class="reader">
-    <h1 v-if="showVerseTitle">{{ title }}</h1>
-    <div class="reader-content" v-html="getContent()"></div>
+    <h1 v-if="showVerseTitle" class="reader-title">{{ title }}</h1>
+    <div class="reader-content" v-html="content"></div>
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
+ defineProps({
   title: {
     type: String,
     default: "",
@@ -21,14 +21,21 @@ const props = defineProps({
   },
 });
 
-const getContent = () => {
-  const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-  const result = normalized.replace(/\n/g, "<br>");
-  return result;
-};
+// const getContent = () => {
+//   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+//   const result = normalized.replace(/\n/g, "<br>");
+//   return result;
+// };
 </script>
 
 <style scoped>
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .reader-title {
+    display: none;
+  }
+}
 /* ===== Reader ===== */
 
 .reader-content {
@@ -40,6 +47,7 @@ const getContent = () => {
 }
 .reader {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-bottom: 20px;
 }
@@ -49,6 +57,7 @@ const getContent = () => {
   font-weight: 900;
   margin-bottom: 16px;
   color: #3b0906;
+  text-align: center;
 }
 
 .reader p {

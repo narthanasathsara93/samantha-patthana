@@ -2,19 +2,9 @@ import { ref, computed, watch } from 'vue'
 import { verses } from '../data/verses'
 
 export function useNavigation() {
-  // Build a flat array of all verses and sections
+  // Build a flat array of all verses
   const flattenedVerses = computed(() => {
-    const flattened = []
-    verses.forEach((verse) => {
-      if (verse.sections && Array.isArray(verse.sections)) {
-        verse.sections.forEach((section) => {
-          flattened.push(section)
-        })
-      } else {
-        flattened.push(verse)
-      }
-    })
-    return flattened
+    return verses
   })
 
   // Create a map of verse/section IDs to their index in the flattened array

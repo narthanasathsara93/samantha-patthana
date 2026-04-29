@@ -1,19 +1,38 @@
 <template>
-  <div class="mobile-header">
+  <span class="mobile-header">
     <button @click="$emit('toggle-sidebar')">☰</button>
-  </div>
+    <span class="mobile-header-title">{{ title }}</span>
+  </span>
 </template>
 
 <script setup>
-defineEmits(['toggle-sidebar'])
+
+defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+  isBookmarked: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+defineEmits(["toggle-sidebar"]);
+
 </script>
 
 <style scoped>
+
+.mobile-header-title {
+    font-size: 18px;
+    color: #3b0906;
+}
 /* ===== Mobile Header ===== */
 .mobile-header {
   display: none;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   gap: 12px;
   background: #fff9f1;
   margin-bottom: 12px;
@@ -24,11 +43,6 @@ defineEmits(['toggle-sidebar'])
   cursor: pointer;
   background: none;
   border: none;
-}
-
-.mobile-header-right {
-  display: flex;
-  align-items: center;
 }
 
 /* ===== Responsive ===== */

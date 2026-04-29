@@ -34,9 +34,19 @@ defineExpose({
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid #f0f0f0;
+  position: sticky;
+  bottom: 0;
+  background: #fff9f1;
+  z-index: 5;
 }
 
 .player audio {
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .player {
+    margin-top: 8px;
+  }
 }
 </style>
