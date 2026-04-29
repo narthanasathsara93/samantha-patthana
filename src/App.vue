@@ -193,7 +193,7 @@ body {
   padding: 28px;
   position: relative;
   height: calc(100vh - 80px);
-  max-height: calc(100vh - 80px);
+  max-height: calc(100vh - 100px);
   overflow: hidden;
 }
 

@@ -93,7 +93,7 @@ const getImage = () => {
   box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 40px);
+  max-height: calc(100vh - 64px);
 }
 
 .sidebar-header {
@@ -116,14 +116,14 @@ const getImage = () => {
 
 /* List */
 .sidebar ol {
-  list-style: none;
-  padding: 0 14px;
+  list-style: decimal;
+  padding: 0 28px;
   margin: 0;
   overflow-y: auto;
   flex: 1;
 }
 
-.sidebar > ul > li {
+.sidebar > ol > li {
   padding: 0;
   margin: 4px 10px;
   border-radius: 8px;
@@ -131,15 +131,15 @@ const getImage = () => {
   font-size: 15px;
 }
 
-.sidebar > ul > li.active > .verse-row > .verse-title {
+.sidebar > ol > li.active > .verse-row > .verse-title {
   color: #330505;
 }
 
-.sidebar > ul > li.bookmarked > .verse-row {
+.sidebar > ol > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ul > li.bookmarked > .verse-row:hover {
+.sidebar > ol > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
@@ -201,6 +201,13 @@ const getImage = () => {
   .sidebar {
     height: 100%;
     max-height: none;
+  }
+
+  .sidebar ol {
+    margin-top: 5%;
+    margin-bottom: 10%;
+    padding: 0 28px;
+    max-height: calc(100vh - 120px);
   }
 }
 </style>
