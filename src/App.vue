@@ -16,6 +16,7 @@
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
+          :title="selectedVerse.title"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
@@ -176,7 +177,8 @@ body {
   margin-top: 20px;
   display: flex;
   gap: 28px;
-  min-height: 85vh;
+  min-height: calc(100vh - 40px);
+  align-items: stretch;
 }
 
 /* ===== Cards (Sidebar + Content) ===== */
@@ -189,17 +191,17 @@ body {
   display: flex;
   flex-direction: column;
   padding: 28px;
+  position: relative;
+  height: calc(100vh - 80px);
+  max-height: calc(100vh - 80px);
+  overflow: hidden;
 }
 
 /* ===== Content Controls ===== */
-.content {
-  position: relative;
-}
-
 .content-controls {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 30px;
+  right: 54px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -216,10 +218,12 @@ body {
 
   .content {
     box-shadow: 0 -10px 15px rgba(211, 194, 112, 0.2),
-      /* top */ 0 10px 15px rgba(211, 194, 112,  0.5),
-      /* bottom */ -10px 0 25px rgba(211, 194, 112, 0.2),
-      /* left */ 10px 0 25px rgba(211, 194, 112,  0.2); /* right */
+      0 10px 15px rgba(211, 194, 112, 0.5),
+      -10px 0 25px rgba(211, 194, 112, 0.2),
+      10px 0 25px rgba(211, 194, 112, 0.2);
     padding: 20px;
+    height: auto;
+    max-height: calc(100vh - 40px);
   }
 
   .content-controls {
