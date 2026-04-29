@@ -16,10 +16,11 @@ defineEmits(['click'])
 <style scoped>
 /* ===== Overlay ===== */
 .overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(2px);
-  z-index: 5;
+  backdrop-filter: blur(3px);
+  z-index: 999;
+  pointer-events: auto;
 }
 </style>

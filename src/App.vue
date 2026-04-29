@@ -35,21 +35,25 @@
           />
         </div>
 
-        <!-- Overlay -->
-        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+        <div
+          :class="{ 'content-wrapper': true, 'blurred': isSidebarOpen }"
+        >
+          <!-- Overlay -->
+          <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
-        <VerseContent
-          :title="selectedVerse.title"
-          :content="selectedVerse.content"
-          :show-verse-title="selectedVerse.showVerseTitle"
-        />
+          <VerseContent
+            :title="selectedVerse.title"
+            :content="selectedVerse.content"
+            :show-verse-title="selectedVerse.showVerseTitle"
+          />
 
-        <!-- Audio -->
-        <AudioPlayer
-          ref="audioPlayerRef"
-          :audio-src="selectedVerse.audio"
-          @audio-ended="handleAudioEnded"
-        />
+          <!-- Audio -->
+          <AudioPlayer
+            ref="audioPlayerRef"
+            :audio-src="selectedVerse.audio"
+            @audio-ended="handleAudioEnded"
+          />
+        </div>
 
         <!-- Pagination -->
         <Pagination
@@ -234,5 +238,22 @@ body {
   .content-controls.hidden-on-mobile-menu {
     display: none;
   }
+}
+
+.content-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.annotation {
+  color: #f01010;
 }
 </style>
