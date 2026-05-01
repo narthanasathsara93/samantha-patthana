@@ -19,6 +19,7 @@
         >
           <span class="verse-title">
             {{ verse.title }}
+
             <span v-if="isBookmarked(verse.id)" class="bookmark-indicator">
               ★
             </span>
@@ -66,10 +67,6 @@ const handleVerseClick = (verse) => {
 const getImage = () => {
   return require("@/assets/images/logo.png");
 };
-
-// const getIcon = () => {
-//   return require("@/assets/icons/scroll.png");
-// };
 </script>
 
 <style scoped>
@@ -84,7 +81,7 @@ const getImage = () => {
 }
 /* ===== Sidebar ===== */
 .sidebar {
-  width: 280px;
+  width: 300px;
   padding: 10px 0;
   transition: transform 0.3s ease;
   background: #fff9f1;
@@ -116,16 +113,16 @@ const getImage = () => {
 
 /* List */
 .sidebar ol {
+  margin-left: 17px;
   list-style: decimal;
   padding: 0 28px;
-  margin: 0;
   overflow-y: auto;
   flex: 1;
 }
 
 .sidebar > ol > li {
   padding: 0;
-  margin: 4px 10px;
+  margin: 0px 2px;
   border-radius: 8px;
   transition: all 0.2s ease;
   font-size: 15px;
@@ -186,7 +183,6 @@ const getImage = () => {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
     width: 80%;
     max-width: 280px;
     z-index: 10;
@@ -199,15 +195,13 @@ const getImage = () => {
   }
 
   .sidebar {
-    height: 100%;
-    max-height: none;
+    max-height: calc(100vh - 25px);
   }
 
   .sidebar ol {
     margin-top: 5%;
     margin-bottom: 10%;
     padding: 0 28px;
-    max-height: calc(100vh - 120px);
   }
 }
 </style>
