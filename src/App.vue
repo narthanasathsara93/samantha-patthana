@@ -122,7 +122,7 @@ const verseContentRef = ref(null);
 const fontSettingsRef = ref(null);
 const isFontSettingsOpen = ref(false);
 const defaultReaderFontSize = 20;
-const minReaderFontSize = 10;
+const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
 
