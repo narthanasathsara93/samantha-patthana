@@ -33,18 +33,40 @@
             :is-bookmarked="isBookmarked(selectedVerse.id)"
             @toggle-bookmark="handleToggleBookmark"
           />
+          <div ref="fontSettingsRef" class="font-settings">
+            <button
+              class="settings-btn"
+              type="button"
+              title="Adjust verse font size"
+              @click="toggleFontSettings"
+            >
+              <img class="font-resize-icon" :src="getFontSizeIcon()" />
+            </button>
+            <div v-if="isFontSettingsOpen" class="font-settings-panel">
+              <input
+                v-model.number="readerFontSize"
+                class="font-size-slider"
+                type="range"
+                min="10"
+                max="30"
+                step="1"
+                aria-label="Verse content font size"
+              />
+              <span class="font-size-value">{{ readerFontSize }}px</span>
+            </div>
+          </div>
         </div>
 
-        <div
-          :class="{ 'content-wrapper': true, 'blurred': isSidebarOpen }"
-        >
+        <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
           <!-- Overlay -->
           <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
           <VerseContent
+            ref="verseContentRef"
             :title="selectedVerse.title"
             :content="selectedVerse.content"
             :show-verse-title="selectedVerse.showVerseTitle"
+            :font-size="readerFontSize"
           />
 
           <!-- Audio -->
@@ -68,7 +90,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import {
+  ref,
+  computed,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+} from "vue";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -89,6 +118,13 @@ import { useBookmarks } from "./composables/useBookmarks";
 
 // Component refs
 const audioPlayerRef = ref(null);
+const verseContentRef = ref(null);
+const fontSettingsRef = ref(null);
+const isFontSettingsOpen = ref(false);
+const defaultReaderFontSize = 20;
+const minReaderFontSize = 15;
+const maxReaderFontSize = 30;
+const readerFontSize = ref(loadReaderFontSize());
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -117,10 +153,40 @@ const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 loadBookmarks();
 
 // Event handlers
+function loadReaderFontSize() {
+  const savedFontSize = Number(localStorage.getItem("reader-font-size"));
+
+  if (
+    Number.isFinite(savedFontSize) &&
+    savedFontSize >= minReaderFontSize &&
+    savedFontSize <= maxReaderFontSize
+  ) {
+    return savedFontSize;
+  }
+
+  return defaultReaderFontSize;
+}
+
+function isMobileView() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function scrollVerseContentToTop() {
+  nextTick(() => {
+    verseContentRef.value?.scrollToTop();
+  });
+}
+
 function handleVerseSelected(index) {
+  const shouldScrollContentToTop = isSidebarOpen.value && isMobileView();
+
   selectVerse(index);
   resetAudio(audioRef);
   closeSidebar();
+
+  if (shouldScrollContentToTop) {
+    scrollVerseContentToTop();
+  }
 
   if (isAutoPlaying.value) {
     setTimeout(() => playCurrent(audioRef), 200);
@@ -153,9 +219,39 @@ function handleToggleBookmark() {
   toggleBookmark(selectedVerse.value.id);
 }
 
+function toggleFontSettings() {
+  isFontSettingsOpen.value = !isFontSettingsOpen.value;
+}
+
+function handleDocumentClick(event) {
+  if (!isFontSettingsOpen.value) {
+    return;
+  }
+
+  if (!fontSettingsRef.value?.contains(event.target)) {
+    isFontSettingsOpen.value = false;
+  }
+}
+
 function toggleAutoplay() {
   toggleAutoplayLogic(audioRef);
 }
+
+const getFontSizeIcon = () => {
+  return require("@/assets/icons/font-resize.png");
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleDocumentClick);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleDocumentClick);
+});
+
+watch(readerFontSize, (fontSize) => {
+  localStorage.setItem("reader-font-size", String(fontSize));
+});
 </script>
 
 <style>
@@ -213,6 +309,68 @@ body {
   align-items: flex-end;
 }
 
+.font-settings {
+  position: relative;
+}
+
+.settings-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.settings-btn:hover {
+  background: rgba(245, 135, 135, 0.13);
+  color: #3b0906;
+  transform: scale(1.2);
+}
+
+.font-settings-panel {
+  position: absolute;
+  top: 50%;
+  right: 34px;
+  width: 190px;
+  min-height: 34px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(59, 9, 6, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.font-size-slider {
+  flex: 1;
+  min-width: 0;
+  accent-color: #8b1e13;
+}
+
+.font-size-value {
+  min-width: 36px;
+  color: #3b0906;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.font-resize-icon {
+  width: 25px;
+  height: auto;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .app {
@@ -227,12 +385,17 @@ body {
       10px 0 25px rgba(211, 194, 112, 0.2);
     padding: 20px;
     height: auto;
-    max-height: calc(100vh - 40px);
   }
 
   .content-controls {
     top: 15px;
     right: 15px;
+  }
+
+  .font-settings-panel {
+    right: 0;
+    top: 34px;
+    transform: none;
   }
 
   .content-controls.hidden-on-mobile-menu {

@@ -1,12 +1,18 @@
 <template>
-  <div class="reader">
+  <div ref="readerRef" class="reader">
     <h1 v-if="showVerseTitle" class="reader-title">{{ title }}</h1>
-    <div class="reader-content" v-html="content"></div>
+    <div
+      class="reader-content"
+      :style="{ fontSize: `${fontSize}px` }"
+      v-html="content"
+    ></div>
   </div>
 </template>
 
 <script setup>
- defineProps({
+import { ref } from "vue";
+
+defineProps({
   title: {
     type: String,
     default: "",
@@ -19,7 +25,25 @@
     type: Boolean,
     default: false,
   },
+  fontSize: {
+    type: Number,
+    default: 20,
+  },
 });
+
+const readerRef = ref(null);
+
+function scrollToTop() {
+  readerRef.value?.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+defineExpose({
+  scrollToTop,
+});
+
 
 // const getContent = () => {
 //   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
@@ -29,7 +53,6 @@
 </script>
 
 <style scoped>
-
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .reader-title {
@@ -70,8 +93,7 @@
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .reader h1 {
-   font-size: 23px;
+    font-size: 23px;
   }
-
 }
 </style>
