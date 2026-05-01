@@ -32,6 +32,7 @@
 
 <script setup>
 import { verses } from "../data/verses";
+import { getAssetUrl } from "../utils/assets";
 
 const props = defineProps({
   isSidebarOpen: {
@@ -65,7 +66,7 @@ const handleVerseClick = (verse) => {
   }
 };
 const getImage = () => {
-  return require("@/assets/images/logo.png");
+  return getAssetUrl("images/logo.png");
 };
 </script>
 

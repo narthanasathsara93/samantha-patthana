@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import { getAssetUrl } from "../utils/assets";
+
 defineProps({
   isBookmarked: {
     type: Boolean,
@@ -25,8 +27,8 @@ defineEmits(["toggle-bookmark"]);
 
 const getIcon = (isBookmarked) => {
   return isBookmarked
-    ? require("@/assets/icons/bookmarked.png")
-    : require("@/assets/icons/bookmark.png");
+    ? getAssetUrl("icons/bookmarked.png")
+    : getAssetUrl("icons/bookmark.png");
 };
 </script>
 

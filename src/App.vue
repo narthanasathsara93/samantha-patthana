@@ -115,6 +115,7 @@ import { useNavigation } from "./composables/useNavigation";
 import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
+import { getAssetUrl } from "./utils/assets";
 
 // Component refs
 const audioPlayerRef = ref(null);
@@ -238,7 +239,7 @@ function toggleAutoplay() {
 }
 
 const getFontSizeIcon = () => {
-  return require("@/assets/icons/font-resize.png");
+  return getAssetUrl("icons/font-resize.png");
 };
 
 onMounted(() => {
