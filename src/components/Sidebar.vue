@@ -67,7 +67,6 @@ const handleVerseClick = (verse) => {
 const getImage = () => {
   return require("@/assets/images/logo.png");
 };
-
 </script>
 
 <style scoped>
@@ -82,7 +81,7 @@ const getImage = () => {
 }
 /* ===== Sidebar ===== */
 .sidebar {
-  width: 280px;
+  width: 300px;
   padding: 10px 0;
   transition: transform 0.3s ease;
   background: #fff9f1;
@@ -114,16 +113,16 @@ const getImage = () => {
 
 /* List */
 .sidebar ol {
+  margin-left: 17px;
   list-style: decimal;
   padding: 0 28px;
-  margin: 0;
   overflow-y: auto;
   flex: 1;
 }
 
 .sidebar > ol > li {
   padding: 0;
-  margin: 4px 10px;
+  margin: 0px 2px;
   border-radius: 8px;
   transition: all 0.2s ease;
   font-size: 15px;
