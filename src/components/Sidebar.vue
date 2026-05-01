@@ -173,8 +173,7 @@ const getImage = () => {
 
 .bookmark-indicator {
   color: #ffc107;
-  font-size: 14px;
-  margin-left: 8px;
+  font-size: 13px;
 }
 
 /* ===== Responsive ===== */
