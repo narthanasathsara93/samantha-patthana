@@ -44,7 +44,7 @@ const getIcon = (isBookmarked) => {
   height: 20px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
+  background: #fff9f1;
   color: #6c757d;
   font-size: 20px;
   cursor: pointer;
@@ -55,11 +55,11 @@ const getIcon = (isBookmarked) => {
 }
 
 .bookmark-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.2);
+  background: #fff9f1;
+  transform: scale(1.25);
 }
 
 .bookmark-btn.active {
-  background: #ffffff;
+  background: #fff9f1;
 }
 </style>

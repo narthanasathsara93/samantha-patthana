@@ -37,7 +37,7 @@
             />
             <div ref="fontSettingsRef" class="font-settings">
               <button
-                class="settings-btn"
+                class="font-settings-btn"
                 type="button"
                 title="අක්ෂර විශාලනය"
                 @click="toggleFontSettings"
@@ -405,13 +405,13 @@ body,
   position: relative;
 }
 
-.settings-btn {
+.font-settings-btn {
   width: 24px;
   height: 24px;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #ffffff;
+  background: #fff9f1;
   color: #6c757d;
   cursor: pointer;
   font-size: 18px;
@@ -422,10 +422,10 @@ body,
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.settings-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
+.font-settings-btn:hover {
+  background: #fff9f1;
   color: #3b0906;
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 
 .font-settings-panel {
@@ -461,6 +461,7 @@ body,
 .font-resize-icon {
   width: 25px;
   height: auto;
+
 }
 
 /* ===== Responsive ===== */
