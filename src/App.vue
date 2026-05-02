@@ -60,9 +60,6 @@
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <!-- Overlay -->
-          <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
-
           <VerseContent
             ref="verseContentRef"
             :title="selectedVerse.title"
@@ -78,6 +75,9 @@
             @audio-ended="handleAudioEnded"
           />
         </div>
+
+        <!-- Overlay -->
+        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
         <!-- Pagination -->
         <Pagination
