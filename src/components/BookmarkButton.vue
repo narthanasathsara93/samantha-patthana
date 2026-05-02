@@ -34,8 +34,8 @@ const getIcon = (isBookmarked) => {
 
 <style scoped>
 .bookmark-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .bookmark-btn {

@@ -3,7 +3,8 @@ export const verses = [
     id: "verse-1",
     title: "නමස්කාරය",
     englishName: "namaskaraya",
-    showVerseTitle: false,
+    showVerseTitle: true,
+    sinhalaTitle:"නමස්කාරය",
     content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස !!!<br><br>
 
 විචිත්තමතිගම්භීර<br>
@@ -27,6 +28,8 @@ export const verses = [
     title: "උද්දෙස පාලි",
     englishName: "uddesapali",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `හේතුපච්චයෝ ආරම්මණපච්චයෝ<br>
 අධිපතිපච්චයෝ අනන්තරපච්චයෝ<br>
 සමනන්තරපච්චයෝ සහජාතපච්චයෝ<br>
@@ -46,6 +49,8 @@ export const verses = [
     title: "හේතුපච්චයෝ’ති",
     englishName: "hethupacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"හේතු ප්‍රත්‍ය",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `හේතූ හේතුසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
 හේතුපච්චයේන පච්චයෝ.<br><br>
@@ -61,6 +66,8 @@ export const verses = [
     title: "ආරම්මණපච්චයෝ’ති",
     englishName: "arammanapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"ආරම්මණ ප්‍රත්‍ය",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `<div class="verse-box">රූපායතනං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මාන<br>
 ආරම්මණපච්චයේන පච්චයෝ.
@@ -108,6 +115,8 @@ export const verses = [
     title: "අධිපතිපච්චයෝ’ති",
     englishName: "adhipatipacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඡන්දාධිපති ඡන්දසම්පයුත්තකානං ධම්මානං තං
 සමුට්ඨානානඤ්ච රූපානං අධිපතිපච්චයේන පච්චයෝ.<br><br>
 
@@ -135,6 +144,8 @@ export const verses = [
     title: "අනන්තරපච්චයෝ’ති",
     englishName: "anantharapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු තං සම්පයුත්තකාච ධම්මා
 මනෝධාතුයා තං සම්පයුත්තකානඤ්ච ධම්මානං අනන්තරපච්චයේන
 පච්චයෝ.
@@ -213,6 +224,8 @@ export const verses = [
     title: "සමනන්තරපච්චයෝ’ති",
     englishName: "samanantharapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු තං සම්පයුත්තකාච ධම්මා මනෝධාතුයා
 තං සම්පයුත්තකානඤ්ච ධම්මානං සමනන්තරපච්චයේන
 පච්චයෝ.<br><br>
@@ -290,6 +303,8 @@ export const verses = [
     title: "සහජාතපච්චයෝ’ති",
     englishName: "sahajathapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ
 අඤ්ඤමඤ්ඤං සහජාතපච්චයේන පච්චයෝ.<br><br>
 
@@ -317,6 +332,8 @@ export const verses = [
     title: "අඤ්ඤමඤ්ඤපච්චයෝ’ති",
     englishName: "annyamanyapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤපච්චයේන
 පච්චයෝ.<br><br>
 
@@ -337,6 +354,8 @@ export const verses = [
     title: "නිස්සයපච්චයෝ’ති",
     englishName: "nissayapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං
 නිස්සයපච්චයේන පච්චයෝ.<br><br>
 
@@ -388,6 +407,8 @@ export const verses = [
     title: "උපනිස්සයපච්චයෝ’ති",
     englishName: "upanissayapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පුරිමා පුරිමා කුසලා ධම්මා පච්ඡිමානං පච්ඡිමානං
 කුසලානං ධම්මානං
 උපනිස්සයපච්චයේන පච්චයෝ.<br><br>
@@ -439,6 +460,8 @@ export const verses = [
     title: "පුරේජාතපච්චයෝ’ති",
     englishName: "purejathapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛායතනං චක්ඛුවිඤ්ඤාණධාතුයා
 තං සම්පයුත්තකානඤ්ච ධම්මානං පුරේජාතපච්චයේන පච්චයෝ.<br><br>
 
@@ -494,6 +517,8 @@ export const verses = [
     title: "පච්ඡාජාතපච්චයෝ’ති",
     englishName: "pachchajathapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පච්ඡාජාතා චිත්තචේතසිකා ධම්මා පුරේජාතස්ස ඉමස්ස
 කායස්ස පච්ඡාජාතපච්චයේන පච්චයෝ.<br><br>
 
@@ -508,6 +533,8 @@ export const verses = [
     title: "ආසේවනපච්චයෝ’ති",
     englishName: "asevanapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පුරිමා පුරිමා කුසලා ධම්මා
 පච්ඡිමානං පච්ඡිමානං කුසලානං ධම්මානං
 ආසේවනපච්චයේන පච්චයෝ.<br><br>
@@ -531,6 +558,8 @@ export const verses = [
     title: "කම්මපච්චයෝ’ති",
     englishName: "kammapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `කුසලාකුසලං කම්මං විපාකානං ඛන්ධානං කටත්තා ච රූපානං
 කම්මපච්චයේන පච්චයෝ.<br><br>
 
@@ -549,6 +578,8 @@ export const verses = [
     title: "විපාකපච්චයෝ’ති",
     englishName: "wipakapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `විපාකා චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං
 විපාකපච්චයේන පච්චයෝ.<br><br>
 
@@ -563,6 +594,8 @@ export const verses = [
     title: "ආහාරපච්චයෝ’ති",
     englishName: "aharapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `කබලිංකාරෝ ආහාරෝ ඉමස්ස කායස්ස
 ආහාරපච්චයේන පච්චයෝ.<br><br>
 
@@ -581,6 +614,8 @@ export const verses = [
     title: "ඉන්ද්‍රියපච්චයෝ’ති",
     englishName: "indryapacchayo",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුන්ද්‍රියං චක්ඛුවිඤ්ඤාණධාතුයා
 තං සම්පයුත්තකානඤ්ච ධම්මානං
 ඉන්ද්‍රියපච්චයේන පච්චයෝ.<br><br>
@@ -619,6 +654,8 @@ export const verses = [
     title: "ඣානපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඣානංගානි ඣානසම්පයුත්තකානං ධම්මානං
 තං සමුුට්ඨානානඤ්ච රූපානං
 ඣානපච්චයේන පච්චයෝ.<br><br>
@@ -634,6 +671,8 @@ export const verses = [
     title: "මග්ගපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `මග්ගංගානි මග්ගසම්පයුත්තකානං ධම්මානං
 තං සමුට්ඨානානඤ්ච රූපානං
 මග්ගපච්චයේන පච්චයෝ.<br><br>
@@ -649,6 +688,8 @@ export const verses = [
     title: "සම්පයුත්තපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං
 සම්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -663,6 +704,8 @@ export const verses = [
     title: "විප්පයුත්තපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `රූපිනෝ ධම්මා අරූපීනං ධම්මානං
 විප්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -680,6 +723,8 @@ export const verses = [
     title: "අත්ථිපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං
 අත්ථිපච්චයේන පච්චයෝ.<br><br>
 
@@ -757,6 +802,8 @@ export const verses = [
     title: "නත්ථිපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `සමනන්තරනිරුද්ධා චිත්තචේතසිකා ධම්මා
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං
 නත්ථිපච්චයේන පච්චයෝ.<br><br>
@@ -772,6 +819,8 @@ export const verses = [
     title: "විගතපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `සමනන්තරවිගතා චිත්තචේතසිකා ධම්මා
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං
 විගතපච්චයේන පච්චයෝ.<br><br>
@@ -787,6 +836,8 @@ export const verses = [
     title: "අවිගතපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං
 අවිගතපච්චයේන පච්චයෝ.<br><br>
 
@@ -873,6 +924,96 @@ export const verses = [
     title: "පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
+    sinhalaTitle:"Sinhala Title",
+    sinhalaText:`ඝටීකාරෝ බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
+සනංකුමාරෝ බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
+සහම්පතී බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං..
+
+සක්කෝ දේවානමින්දෝ - ඉමං පුඤ්ඤානුමෝදතු!
+විස්සකම්මෝ දේවපුත්තෝ - ඉමං පුඤ්ඤානුමෝදතු!
+තාවතිංසකායිකා දේවා - ඉමං පුඤ්ඤානුමෝදන්තු!
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං
+
+පුරිමං දිසං ධතරට්ඨෝ - දක්ඛිණේන විරූළ්හකෝ
+පච්ඡිමේන විරූපක්ඛෝ - කුවේරෝ උත්තරං දිසං
+චත්තාරෝ තේ මහාරාජා - ඉමං පුඤ්ඤානුමෝදන්තු!
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං!
+
+ඉන්දෝ සෝමෝ වරුණෝ ච - භාරද්වාජෝ පජාපතී,
+චන්දනෝ කාමසෙට්ඨෝ ච - කින්නිඝණ්ඩු නිඝණ්ඩු ච,
+පනාදෝ ඕපමඤ්ඤෝ ච - දේවසුතෝ ච මාතලී,
+චිත්තසේනෝ ච ගන්ධබ්බෝ - නලෝ රාජා ජනේසභෝ,
+සාතාගිරෝ හේමවතෝ - පුණ්ණකෝ කරතියෝ ගුළෝ,
+සීවකෝ මුචලින්දෝ ච - වෙස්සාමිත්තෝ යුගන්ධරෝ,
+ගෝපාලෝ සුප්පගේධෝ ච - හිරිනෙන්තී ච මන්දියෝ,
+පඤ්චාලචණ්ඩෝ ආළවකෝ පජ්ජුන්නෝ - සුමනෝ සුමුඛෝ දධීමුඛෝ,
+මණි මාණි චරෝ දීඝෝ - අථෝ සේරිස්සකෝ සහ
+එතේ සේනාපතී දේවා - ඉමං පුඤ්ඤානුමෝදන්තු!
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං.
+
+ආකාසට්ඨා ච භුම්මට්ඨා - දේවා නාගා මහිද්ධිකා
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ සාසනං
+ආකාසට්ඨා ච භුම්මට්ඨා - දේවා නාගා මහිද්ධිකා
+පුඤ්ඤං තං අනුමෝදිත්වා - චිරං රක්ඛන්තු බුද්ධ දේසනං
+ආකාසට්ඨා ච භුම්මට්ඨා - දේවා නාගා මහිද්ධිකා
+පුඤ්ඤං තං අනුමෝදිත්වා චිරං රක්ඛන්තු බුද්ධ සාවකං
+චිරං රක්ඛන්තු මං පරන්ති
+
+එත්තාවතාච අම්හෙහි
+සම්භතං පුඤ්ඤ සම්පදං
+සබ්බේ දේවා අනුමෝදන්තු
+සබ්බේ භූතා අනුමෝදන්තු
+සබ්බේ සත්තා අනුමෝදන්තු
+සබ්බ සම්පත්ති සිද්ධියා
+
+සාධූ! සාධූ!! සාධූ!!!
+
+කප්ප සත සහස්සානි - සෝලසාපි අසංඛියේ
+සම්භරං බෝධි සම්භාරේ - ආගතෝ ජාති ජාති සු
+නියතෝ බුද්ධ භාවාය - භද්දකප්පෙ ඉධන්තිමේ
+බෝධි සත්ථොච මෙත්තෙය්‍යෙ - පුඤ්ඤං මේ අනුමෝදතු
+
+අස්මිං විහාරේච ආරාමේ - අධිවත්තාච දේවතා
+අනුමෝදිත්වා ඉමං පුඤ්ඤං - රක්ඛන්තු ජින සාසනං
+සබ්බේ සත්තාච මජ්ඣත්තා - හිතාච අහිතා ච මේ
+අනුමෝදිත්වා ඉමං පුඤ්ඤං - බුජ්ධන්තු අමතං පදං
+
+ඉදං වෝ ඤාතිනං හෝතු - සුඛිතා හොන්තු ඤාතයෝ
+ඉදං වෝ ඤාතිනං හෝතු - සුඛිතා හොන්තු ඤාතයෝ
+ඉදං වෝ ඤාතිනං හෝතු - සුඛිතා හොන්තු ඤාතයෝ
+
+සබ්බේ සංඛාරා අනිච්චාති යදා පඤ්ඤාය පස්සති
+අථ නිබ්බින්දති දුක්ඛේ ඒස මග්ගෝ විසුද්ධියා
+සබ්බේ සංඛාරා දුක්ඛාති යදා පඤ්ඤාය පස්සති
+අථ නිබ්බින්දති දුක්ඛේ ඒස මග්ගෝ විසුද්ධියා
+සබ්බේ ධම්මා අනත්තාති යදා පඤ්ඤාය පස්සති
+අථ නිබ්බින්දති දුක්ඛේ ඒස මග්ගෝ විසුද්ධියා
+
+අප්පමාදේන භික්ඛවේ සම්පාදේථ
+දුල්ලභෝ බුද්ධුප්පාදෝ ලෝකස්මිං
+දුල්ලභෝ මනුස්සත්ත පටිලාභෝ
+දුල්ලභා ඛණ සම්පත්ති
+දුල්ලභා පබ්බජ්ජා
+දුල්ලභං සද්ධම්ම සවනං
+දුල්ලභෝ සප්පුරිස සංසේවෝ
+
+ඉමාය ධම්මානුධම්ම පටිපත්තියා බුද්ධං පූජේමි
+ඉමාය ධම්මානුධම්ම පටිපත්තියා ධම්මං පූජේමි
+ඉමාය ධම්මානුධම්ම පටිපත්තියා සංඝං පූජේමි
+අද්ධා ඉමාය පටිපත්තියා ජාති ජරා මරණම්හා පරිමුච්චිස්සාමි.
+
+කායෙන වාචා චිත්තේන පමාදෙන මයා කතං
+අච්චයං ඛම මේ භන්තෙ භූරිපඤ්ඤ තථගත
+
+කායෙන වාචා චිත්තේන පමාදෙන මයා කතං
+අච්චයං ඛම මේ ධම්ම සන්ධිට්ඨික අකාලික
+
+කායෙන වාචා චිත්තේන පමාදෙන මයා කතං
+අච්චයං ඛම මේ සංඝ පුඤ්ඤක්ඛෙත්ත අනුත්තර
+
+සාධූ! සාධූ!! සාධූ!!!
+`,
     content: `ඝටීකාරෝ බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
 සනංකුමාරෝ බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
 සහම්පතී බ්‍රහ්මරාජා - ඉමං පුඤ්ඤානුමෝදතු!
@@ -964,18 +1105,4 @@ export const verses = [
 `,
     audio: "/audios/audio-01.mp3",
   },
-  // {
-  //   id: "verse-28",
-  //   title: "Mytext",
-  //   sections: [
-  //     {
-  //       id: "verse-28-sec-1",
-  //       title: "xt",
-  //       englishName: "",
-  //       showVerseTitle: true,
-  //       content: ``,
-  //       audio: "/audios/audio-01.mp3",
-  //     },
-  //   ],
-  // },
 ];
