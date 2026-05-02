@@ -25,34 +25,36 @@
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
-          <AutoplayButton
-            :is-auto-playing="isAutoPlaying"
-            @toggle-autoplay="toggleAutoplay"
-          />
-          <BookmarkButton
-            :is-bookmarked="isBookmarked(selectedVerse.id)"
-            @toggle-bookmark="handleToggleBookmark"
-          />
-          <div ref="fontSettingsRef" class="font-settings">
-            <button
-              class="settings-btn"
-              type="button"
-              title="Adjust verse font size"
-              @click="toggleFontSettings"
-            >
-              <img class="font-resize-icon" :src="getFontSizeIcon()" />
-            </button>
-            <div v-if="isFontSettingsOpen" class="font-settings-panel">
-              <input
-                v-model.number="readerFontSize"
-                class="font-size-slider"
-                type="range"
-                min="10"
-                max="30"
-                step="1"
-                aria-label="Verse content font size"
-              />
-              <span class="font-size-value">{{ readerFontSize }}px</span>
+          <div class="controls-row">
+            <AutoplayButton
+              :is-auto-playing="isAutoPlaying"
+              @toggle-autoplay="toggleAutoplay"
+            />
+            <BookmarkButton
+              :is-bookmarked="isBookmarked(selectedVerse.id)"
+              @toggle-bookmark="handleToggleBookmark"
+            />
+            <div ref="fontSettingsRef" class="font-settings">
+              <button
+                class="settings-btn"
+                type="button"
+                title="Adjust verse font size"
+                @click="toggleFontSettings"
+              >
+                <img class="font-resize-icon" :src="getFontSizeIcon()" />
+              </button>
+              <div v-if="isFontSettingsOpen" class="font-settings-panel">
+                <input
+                  v-model.number="readerFontSize"
+                  class="font-size-slider"
+                  type="range"
+                  min="10"
+                  max="30"
+                  step="1"
+                  aria-label="Verse content font size"
+                />
+                <span class="font-size-value">{{ readerFontSize }}px</span>
+              </div>
             </div>
           </div>
         </div>
@@ -260,17 +262,46 @@ watch(readerFontSize, (fontSize) => {
 
 body {
   margin: 0;
-  background: #490202;
+  background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family: "Noto Sans Sinhala", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   color: #222;
+  overflow: hidden;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-container,
+.content,
+.content-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.app-container::-webkit-scrollbar,
+.content::-webkit-scrollbar,
+.content-wrapper::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ===== Container ===== */
 .app-container {
   max-width: 1200px;
+  height: 100dvh;
   margin: 0 auto;
   padding: 7px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Layout ===== */
@@ -278,7 +309,8 @@ body {
   margin-top: 20px;
   display: flex;
   gap: 28px;
-  min-height: calc(100vh - 40px);
+  height: calc(100dvh - 34px);
+  min-height: 0;
   align-items: stretch;
 }
 
@@ -287,27 +319,32 @@ body {
   background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgba(211, 194, 112, 0.39);
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 28px;
   position: relative;
-  height: calc(100vh - 80px);
-  max-height: calc(100vh - 100px);
+  height: 100%;
+  max-height: none;
   overflow: hidden;
 }
 
 /* ===== Content Controls ===== */
 .content-controls {
-  position: absolute;
-  top: 30px;
-  right: 54px;
-  z-index: 1000;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
-  align-items: flex-end;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #000;
+  width: 100%;
 }
 
 .font-settings {
@@ -380,12 +417,9 @@ body {
   }
 
   .content {
-    box-shadow: 0 -10px 15px rgba(211, 194, 112, 0.2),
-      0 10px 15px rgba(211, 194, 112, 0.5),
-      -10px 0 25px rgba(211, 194, 112, 0.2),
-      10px 0 25px rgba(211, 194, 112, 0.2);
     padding: 20px;
-    height: auto;
+    height: 100%;
+    min-height: 0;
   }
 
   .content-controls {
@@ -410,6 +444,7 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .content-wrapper.blurred {

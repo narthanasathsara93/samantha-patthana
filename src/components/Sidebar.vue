@@ -88,10 +88,11 @@ const getImage = () => {
   background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 64px);
+  height: 100%;
+  max-height: none;
+  overflow: hidden;
 }
 
 .sidebar-header {
@@ -118,7 +119,17 @@ const getImage = () => {
   list-style: decimal;
   padding: 0 28px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   flex: 1;
+}
+
+.sidebar ol::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .sidebar > ol > li {
@@ -185,17 +196,13 @@ const getImage = () => {
     left: 0;
     width: 80%;
     max-width: 280px;
+    height: 100dvh;
     z-index: 10;
     transform: translateX(-100%);
-    box-shadow: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
-  }
-
-  .sidebar {
-    max-height: calc(100vh - 25px);
   }
 
   .sidebar ol {

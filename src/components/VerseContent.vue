@@ -53,12 +53,6 @@ defineExpose({
 </script>
 
 <style scoped>
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .reader-title {
-    display: none;
-  }
-}
 /* ===== Reader ===== */
 
 .reader-content {
@@ -72,7 +66,17 @@ defineExpose({
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 20px;
+}
+
+.reader::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .reader h1 {
@@ -95,5 +99,9 @@ defineExpose({
   .reader h1 {
     font-size: 23px;
   }
+  .reader-title {
+    display: none;
+  }
 }
+
 </style>
