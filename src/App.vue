@@ -25,49 +25,77 @@
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
-          <AutoplayButton
-            :is-auto-playing="isAutoPlaying"
-            @toggle-autoplay="toggleAutoplay"
-          />
-          <BookmarkButton
-            :is-bookmarked="isBookmarked(selectedVerse.id)"
-            @toggle-bookmark="handleToggleBookmark"
-          />
-          <div ref="fontSettingsRef" class="font-settings">
-            <button
-              class="settings-btn"
-              type="button"
-              title="Adjust verse font size"
-              @click="toggleFontSettings"
-            >
-              <img class="font-resize-icon" :src="getFontSizeIcon()" />
-            </button>
-            <div v-if="isFontSettingsOpen" class="font-settings-panel">
-              <input
-                v-model.number="readerFontSize"
-                class="font-size-slider"
-                type="range"
-                min="10"
-                max="30"
-                step="1"
-                aria-label="Verse content font size"
-              />
-              <span class="font-size-value">{{ readerFontSize }}px</span>
+          <div class="content-title">{{ selectedVerse.title }}</div>
+          <div class="controls-row">
+            <AutoplayButton
+              :is-auto-playing="isAutoPlaying"
+              @toggle-autoplay="toggleAutoplay"
+            />
+            <BookmarkButton
+              :is-bookmarked="isBookmarked(selectedVerse.id)"
+              @toggle-bookmark="handleToggleBookmark"
+            />
+            <div ref="fontSettingsRef" class="font-settings">
+              <button
+                class="settings-btn"
+                type="button"
+                title="අක්ෂර විශාලනය"
+                @click="toggleFontSettings"
+              >
+                <img class="font-resize-icon" :src="getFontSizeIcon()" />
+              </button>
+              <div v-if="isFontSettingsOpen" class="font-settings-panel">
+                <input
+                  v-model.number="readerFontSize"
+                  class="font-size-slider"
+                  type="range"
+                  min="10"
+                  max="30"
+                  step="1"
+                  aria-label="Verse content font size"
+                />
+                <span class="font-size-value">{{ readerFontSize }}px</span>
+              </div>
             </div>
           </div>
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <!-- Overlay -->
-          <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+          <div class="verse-content">
+            <VerseContent
+              ref="verseContentRef"
+              :title="selectedVerse.title"
+              :content="selectedVerse.content"
+              :show-verse-title="selectedVerse.showVerseTitle"
+              :font-size="readerFontSize"
+              @scroll-state-change="handleReaderScrollState"
+            />
+          </div>
 
-          <VerseContent
-            ref="verseContentRef"
-            :title="selectedVerse.title"
-            :content="selectedVerse.content"
-            :show-verse-title="selectedVerse.showVerseTitle"
-            :font-size="readerFontSize"
-          />
+          <div
+            v-if="readerScrollState.isScrollable"
+            class="reader-scroll-controls"
+            aria-label="Reader scroll controls"
+          >
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll up"
+              :disabled="!readerScrollState.canScrollUp"
+              @click="scrollVerseContent(-1)"
+            >
+              &uarr;
+            </button>
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll down"
+              :disabled="!readerScrollState.canScrollDown"
+              @click="scrollVerseContent(1)"
+            >
+              &darr;
+            </button>
+          </div>
 
           <!-- Audio -->
           <AudioPlayer
@@ -76,6 +104,9 @@
             @audio-ended="handleAudioEnded"
           />
         </div>
+
+        <!-- Overlay -->
+        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
         <!-- Pagination -->
         <Pagination
@@ -115,12 +146,18 @@ import { useNavigation } from "./composables/useNavigation";
 import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
+import { getAssetUrl } from "./utils/assets";
 
 // Component refs
 const audioPlayerRef = ref(null);
 const verseContentRef = ref(null);
 const fontSettingsRef = ref(null);
 const isFontSettingsOpen = ref(false);
+const readerScrollState = ref({
+  isScrollable: false,
+  canScrollUp: false,
+  canScrollDown: false,
+});
 const defaultReaderFontSize = 20;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
@@ -175,6 +212,14 @@ function scrollVerseContentToTop() {
   nextTick(() => {
     verseContentRef.value?.scrollToTop();
   });
+}
+
+function handleReaderScrollState(scrollState) {
+  readerScrollState.value = scrollState;
+}
+
+function scrollVerseContent(direction) {
+  verseContentRef.value?.scrollReader(direction);
 }
 
 function handleVerseSelected(index) {
@@ -238,7 +283,7 @@ function toggleAutoplay() {
 }
 
 const getFontSizeIcon = () => {
-  return require("@/assets/icons/font-resize.png");
+  return getAssetUrl("icons/font-resize.png");
 };
 
 onMounted(() => {
@@ -259,17 +304,46 @@ watch(readerFontSize, (fontSize) => {
 
 body {
   margin: 0;
-  background: #490202;
+  background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family: "Noto Sans Sinhala", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   color: #222;
+  overflow: hidden;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-container,
+.content,
+.content-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.app-container::-webkit-scrollbar,
+.content::-webkit-scrollbar,
+.content-wrapper::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ===== Container ===== */
 .app-container {
   max-width: 1200px;
+  height: 100dvh;
   margin: 0 auto;
   padding: 7px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Layout ===== */
@@ -277,7 +351,8 @@ body {
   margin-top: 20px;
   display: flex;
   gap: 28px;
-  min-height: calc(100vh - 40px);
+  height: calc(100dvh - 34px);
+  min-height: 0;
   align-items: stretch;
 }
 
@@ -286,27 +361,44 @@ body {
   background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgba(211, 194, 112, 0.39);
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 28px;
   position: relative;
-  height: calc(100vh - 80px);
-  max-height: calc(100vh - 100px);
+  height: 100%;
+  max-height: none;
   overflow: hidden;
 }
 
 /* ===== Content Controls ===== */
 .content-controls {
-  position: absolute;
-  top: 30px;
-  right: 54px;
-  z-index: 1000;
+  position: static;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0;
+  z-index: 10;
+  border-bottom: 1px solid #e1dcd3;
+}
+
+.content-title {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #3b0906;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
-  align-items: flex-end;
+  width: auto;
+  padding-bottom: 10px;
 }
 
 .font-settings {
@@ -379,17 +471,35 @@ body {
   }
 
   .content {
-    box-shadow: 0 -10px 15px rgba(211, 194, 112, 0.2),
-      0 10px 15px rgba(211, 194, 112, 0.5),
-      -10px 0 25px rgba(211, 194, 112, 0.2),
-      10px 0 25px rgba(211, 194, 112, 0.2);
     padding: 20px;
-    height: auto;
+    height: 100%;
+    min-height: 0;
   }
 
   .content-controls {
-    top: 15px;
-    right: 15px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    flex-direction: column;
+    align-items: flex-end;
+    width: auto;
+    margin: 0;
+    justify-content: flex-start;
+    border-bottom: none;
+  }
+
+  .content-title {
+    display: none;
+  }
+
+  .controls-row {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    width: fit-content;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   .font-settings-panel {
@@ -401,6 +511,17 @@ body {
   .content-controls.hidden-on-mobile-menu {
     display: none;
   }
+
+  .content-wrapper {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .content-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
 }
 
 .content-wrapper {
@@ -409,6 +530,28 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 .content-wrapper.blurred {
@@ -416,7 +559,59 @@ body {
   pointer-events: none;
 }
 
-.annotation {
-  color: #f01010;
+.verse-content {
+  flex: 1;
+  min-height: 0;
+  max-width: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-scroll-controls {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.reader-scroll-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(59, 9, 6, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3b0906;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.reader-scroll-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.reader-scroll-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+@media (max-width: 768px) {
+  .reader-scroll-controls {
+    right: 0;
+  }
+
+  .reader-scroll-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
 }
 </style>

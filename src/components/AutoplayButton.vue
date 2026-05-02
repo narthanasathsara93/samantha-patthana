@@ -10,6 +10,8 @@
 </template>
 
 <script setup>
+import { getAssetUrl } from "../utils/assets";
+
 defineProps({
   isAutoPlaying: {
     type: Boolean,
@@ -21,8 +23,8 @@ defineEmits(["toggle-autoplay"]);
 
 const getIcon = (isAutoPlaying) => {
   return isAutoPlaying
-    ? require("@/assets/icons/autoplaying.gif")
-    : require("@/assets/icons/autoplay.png");
+    ? getAssetUrl("icons/autoplaying.gif")
+    : getAssetUrl("icons/autoplay.png");
 };
 </script>
 

@@ -4,7 +4,7 @@
       <img class="logo-img" :src="getImage()" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
-    <ol>
+    <ul>
       <li
         v-for="verse in verses"
         :key="verse.id"
@@ -26,12 +26,13 @@
           </span>
         </button>
       </li>
-    </ol>
+    </ul>
   </aside>
 </template>
 
 <script setup>
 import { verses } from "../data/verses";
+import { getAssetUrl } from "../utils/assets";
 
 const props = defineProps({
   isSidebarOpen: {
@@ -65,7 +66,7 @@ const handleVerseClick = (verse) => {
   }
 };
 const getImage = () => {
-  return require("@/assets/images/logo.png");
+  return getAssetUrl("images/logo.png");
 };
 </script>
 
@@ -80,6 +81,9 @@ const getImage = () => {
   height: 16px;
 }
 /* ===== Sidebar ===== */
+.sidebar-list {
+  padding-left: 14%;
+}
 .sidebar {
   width: 300px;
   padding: 10px 0;
@@ -87,10 +91,11 @@ const getImage = () => {
   background: #fff9f1;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgb(181 167 99 / 39%);
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 64px);
+  height: 100%;
+  max-height: none;
+  overflow: hidden;
 }
 
 .sidebar-header {
@@ -112,31 +117,42 @@ const getImage = () => {
 }
 
 /* List */
-.sidebar ol {
+.sidebar ul {
   margin-left: 17px;
   list-style: decimal;
   padding: 0 28px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   flex: 1;
 }
 
-.sidebar > ol > li {
+.sidebar ul::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.sidebar > ul > li {
   padding: 0;
   margin: 0px 2px;
   border-radius: 8px;
   transition: all 0.2s ease;
   font-size: 15px;
+  cursor: pointer;
 }
 
-.sidebar > ol > li.active > .verse-row > .verse-title {
+.sidebar > ul > li.active > .verse-row > .verse-title {
   color: #330505;
 }
 
-.sidebar > ol > li.bookmarked > .verse-row {
+.sidebar > ul > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ol > li.bookmarked > .verse-row:hover {
+.sidebar > ul > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
@@ -157,7 +173,7 @@ const getImage = () => {
   justify-content: space-between;
 }
 
-.verse-row:hover {
+.sidebar > ul > li:hover .verse-row {
   background: #8d8a8a31;
   border-bottom-right-radius: 24px !important;
   border-top-right-radius: 24px !important;
@@ -173,8 +189,7 @@ const getImage = () => {
 
 .bookmark-indicator {
   color: #ffc107;
-  font-size: 14px;
-  margin-left: 8px;
+  font-size: 13px;
 }
 
 /* ===== Responsive ===== */
@@ -185,20 +200,16 @@ const getImage = () => {
     left: 0;
     width: 80%;
     max-width: 280px;
+    height: 100dvh;
     z-index: 10;
     transform: translateX(-100%);
-    box-shadow: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
 
-  .sidebar {
-    max-height: calc(100vh - 25px);
-  }
-
-  .sidebar ol {
+  .sidebar ul {
     margin-top: 5%;
     margin-bottom: 10%;
     padding: 0 28px;
