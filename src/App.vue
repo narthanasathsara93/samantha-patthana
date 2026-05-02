@@ -356,9 +356,15 @@ body,
   align-items: stretch;
 }
 
-/* ===== Cards (Sidebar + Content) ===== */
+/* ===== Cards (Sidebar + Content) =====
+background: #fff9f1;
+
+
+  background: linear-gradient(#fff9f1, #fff9f1);*/
 .content {
-  background: #fff9f1;
+  background-image: url("./assets/images/verse-content-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 12px;
   border: none;
   flex: 1;
@@ -381,13 +387,12 @@ body,
   margin-bottom: 20px;
   padding: 0;
   z-index: 10;
-  border-bottom: 1px solid #e1dcd3;
 }
 
 .content-title {
   flex: 1;
-  text-align: center;
-  font-size: 20px;
+  margin-left: 33%;
+  font-size: 22px;
   font-weight: 900;
   color: #3b0906;
 }
@@ -411,7 +416,7 @@ body,
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #fff9f1;
+  background-color: transparent;
   color: #6c757d;
   cursor: pointer;
   font-size: 18px;
@@ -423,7 +428,6 @@ body,
 }
 
 .font-settings-btn:hover {
-  background: #fff9f1;
   color: #3b0906;
   transform: scale(1.25);
 }
@@ -461,11 +465,100 @@ body,
 .font-resize-icon {
   width: 25px;
   height: auto;
+}
 
+.content-wrapper {
+  border-top: 2px solid #c1956061;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.content-wrapper.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.verse-content {
+  flex: 1;
+  min-height: 0;
+  max-width: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-scroll-controls {
+  position: absolute;
+  top: 42%;
+  right: 4px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.reader-scroll-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(59, 9, 6, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3b0906;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.reader-scroll-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.reader-scroll-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .reader-scroll-controls {
+    right: 0;
+  }
+
+  .reader-scroll-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
   .app {
     flex-direction: column;
     gap: 16px;
@@ -522,97 +615,6 @@ body,
     width: 0;
     height: 0;
     display: none;
-  }
-}
-
-.content-wrapper {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc #f5f5f5;
-}
-
-.content-wrapper::-webkit-scrollbar {
-  width: 8px;
-}
-
-.content-wrapper::-webkit-scrollbar-track {
-  background: #f5f5f5;
-}
-
-.content-wrapper::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.content-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #999;
-}
-
-.content-wrapper.blurred {
-  filter: blur(3px);
-  pointer-events: none;
-}
-
-.verse-content {
-  flex: 1;
-  min-height: 0;
-  max-width: 92%;
-  display: flex;
-  flex-direction: column;
-}
-
-.reader-scroll-controls {
-  position: absolute;
-  top: 50%;
-  right: 4px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transform: translateY(-50%);
-}
-
-.reader-scroll-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid rgba(59, 9, 6, 0.14);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  color: #3b0906;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
-  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
-  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-}
-
-.reader-scroll-btn:hover:not(:disabled) {
-  background: #fff;
-  transform: scale(1.08);
-}
-
-.reader-scroll-btn:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
-
-@media (max-width: 768px) {
-  .reader-scroll-controls {
-    right: 0;
-  }
-
-  .reader-scroll-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
   }
 }
 </style>
