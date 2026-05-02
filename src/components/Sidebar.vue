@@ -119,7 +119,7 @@ const getImage = (img) => {
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #dfc59c73;
 }
 
 /* List */
