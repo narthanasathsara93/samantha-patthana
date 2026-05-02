@@ -1,18 +1,19 @@
 <template>
-  <div ref="readerRef" class="reader">
-    <h1 v-if="showVerseTitle" class="reader-title">{{ title }}</h1>
-    <div
-      class="reader-content"
-      :style="{ fontSize: `${fontSize}px` }"
-      v-html="content"
-    ></div>
+  <div class="reader-shell">
+    <div ref="readerRef" class="reader" @scroll="updateScrollState">
+      <div
+        class="reader-content"
+        :style="{ fontSize: `${fontSize}px` }"
+        v-html="content"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: "",
@@ -31,7 +32,46 @@ defineProps({
   },
 });
 
+const emit = defineEmits(["scroll-state-change"]);
+
 const readerRef = ref(null);
+const isScrollable = ref(false);
+const canScrollUp = ref(false);
+const canScrollDown = ref(false);
+let resizeObserver = null;
+
+function updateScrollState() {
+  const reader = readerRef.value;
+
+  if (!reader) {
+    return;
+  }
+
+  const maxScrollTop = reader.scrollHeight - reader.clientHeight;
+
+  isScrollable.value = maxScrollTop > 1;
+  canScrollUp.value = reader.scrollTop > 1;
+  canScrollDown.value = reader.scrollTop < maxScrollTop - 1;
+
+  emit("scroll-state-change", {
+    isScrollable: isScrollable.value,
+    canScrollUp: canScrollUp.value,
+    canScrollDown: canScrollDown.value,
+  });
+}
+
+function scrollReader(direction) {
+  const reader = readerRef.value;
+
+  if (!reader) {
+    return;
+  }
+
+  reader.scrollBy({
+    top: direction * Math.max(reader.clientHeight * 0.55, 160),
+    behavior: "smooth",
+  });
+}
 
 function scrollToTop() {
   readerRef.value?.scrollTo({
@@ -40,10 +80,35 @@ function scrollToTop() {
   });
 }
 
-defineExpose({
-  scrollToTop,
+function syncScrollState() {
+  nextTick(updateScrollState);
+}
+
+onMounted(() => {
+  syncScrollState();
+
+  if (window.ResizeObserver && readerRef.value) {
+    resizeObserver = new ResizeObserver(updateScrollState);
+    resizeObserver.observe(readerRef.value);
+  }
+
+  window.addEventListener("resize", updateScrollState);
 });
 
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+  window.removeEventListener("resize", updateScrollState);
+});
+
+watch(
+  () => [props.content, props.fontSize],
+  syncScrollState
+);
+
+defineExpose({
+  scrollReader,
+  scrollToTop,
+});
 
 // const getContent = () => {
 //   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
@@ -54,6 +119,13 @@ defineExpose({
 
 <style scoped>
 /* ===== Reader ===== */
+
+.reader-shell {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
 
 .reader-content {
   line-height: 160%;
@@ -99,9 +171,5 @@ defineExpose({
   .reader h1 {
     font-size: 23px;
   }
-  .reader-title {
-    display: none;
-  }
 }
-
 </style>

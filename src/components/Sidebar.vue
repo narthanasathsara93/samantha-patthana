@@ -4,7 +4,7 @@
       <img class="logo-img" :src="getImage()" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
-    <ol>
+    <ul>
       <li
         v-for="verse in verses"
         :key="verse.id"
@@ -26,7 +26,7 @@
           </span>
         </button>
       </li>
-    </ol>
+    </ul>
   </aside>
 </template>
 
@@ -81,6 +81,9 @@ const getImage = () => {
   height: 16px;
 }
 /* ===== Sidebar ===== */
+.sidebar-list {
+  padding-left: 14%;
+}
 .sidebar {
   width: 300px;
   padding: 10px 0;
@@ -114,7 +117,7 @@ const getImage = () => {
 }
 
 /* List */
-.sidebar ol {
+.sidebar ul {
   margin-left: 17px;
   list-style: decimal;
   padding: 0 28px;
@@ -126,29 +129,30 @@ const getImage = () => {
   flex: 1;
 }
 
-.sidebar ol::-webkit-scrollbar {
+.sidebar ul::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
 }
 
-.sidebar > ol > li {
+.sidebar > ul > li {
   padding: 0;
   margin: 0px 2px;
   border-radius: 8px;
   transition: all 0.2s ease;
   font-size: 15px;
+  cursor: pointer;
 }
 
-.sidebar > ol > li.active > .verse-row > .verse-title {
+.sidebar > ul > li.active > .verse-row > .verse-title {
   color: #330505;
 }
 
-.sidebar > ol > li.bookmarked > .verse-row {
+.sidebar > ul > li.bookmarked > .verse-row {
   background: #fff8e1;
 }
 
-.sidebar > ol > li.bookmarked > .verse-row:hover {
+.sidebar > ul > li.bookmarked > .verse-row:hover {
   background: #fff3c4;
 }
 
@@ -169,7 +173,7 @@ const getImage = () => {
   justify-content: space-between;
 }
 
-.verse-row:hover {
+.sidebar > ul > li:hover .verse-row {
   background: #8d8a8a31;
   border-bottom-right-radius: 24px !important;
   border-top-right-radius: 24px !important;
@@ -205,7 +209,7 @@ const getImage = () => {
     transform: translateX(0);
   }
 
-  .sidebar ol {
+  .sidebar ul {
     margin-top: 5%;
     margin-bottom: 10%;
     padding: 0 28px;

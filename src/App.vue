@@ -25,6 +25,7 @@
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
+          <div class="content-title">{{ selectedVerse.title }}</div>
           <div class="controls-row">
             <AutoplayButton
               :is-auto-playing="isAutoPlaying"
@@ -38,7 +39,7 @@
               <button
                 class="settings-btn"
                 type="button"
-                title="Adjust verse font size"
+                title="අක්ෂර විශාලනය"
                 @click="toggleFontSettings"
               >
                 <img class="font-resize-icon" :src="getFontSizeIcon()" />
@@ -67,7 +68,33 @@
               :content="selectedVerse.content"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
+              @scroll-state-change="handleReaderScrollState"
             />
+          </div>
+
+          <div
+            v-if="readerScrollState.isScrollable"
+            class="reader-scroll-controls"
+            aria-label="Reader scroll controls"
+          >
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll up"
+              :disabled="!readerScrollState.canScrollUp"
+              @click="scrollVerseContent(-1)"
+            >
+              &uarr;
+            </button>
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll down"
+              :disabled="!readerScrollState.canScrollDown"
+              @click="scrollVerseContent(1)"
+            >
+              &darr;
+            </button>
           </div>
 
           <!-- Audio -->
@@ -126,6 +153,11 @@ const audioPlayerRef = ref(null);
 const verseContentRef = ref(null);
 const fontSettingsRef = ref(null);
 const isFontSettingsOpen = ref(false);
+const readerScrollState = ref({
+  isScrollable: false,
+  canScrollUp: false,
+  canScrollDown: false,
+});
 const defaultReaderFontSize = 20;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
@@ -180,6 +212,14 @@ function scrollVerseContentToTop() {
   nextTick(() => {
     verseContentRef.value?.scrollToTop();
   });
+}
+
+function handleReaderScrollState(scrollState) {
+  readerScrollState.value = scrollState;
+}
+
+function scrollVerseContent(direction) {
+  verseContentRef.value?.scrollReader(direction);
 }
 
 function handleVerseSelected(index) {
@@ -333,14 +373,23 @@ body,
 
 /* ===== Content Controls ===== */
 .content-controls {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  z-index: 10;
+  position: static;
   display: flex;
-  justify-content: flex-end;
-  width: auto;
-  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0;
+  z-index: 10;
+  border-bottom: 1px solid #e1dcd3;
+}
+
+.content-title {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #3b0906;
 }
 
 .controls-row {
@@ -350,7 +399,6 @@ body,
   gap: 10px;
   width: auto;
   padding-bottom: 10px;
-  border-bottom: 2px solid #000;
 }
 
 .font-settings {
@@ -436,6 +484,12 @@ body,
     align-items: flex-end;
     width: auto;
     margin: 0;
+    justify-content: flex-start;
+    border-bottom: none;
+  }
+
+  .content-title {
+    display: none;
   }
 
   .controls-row {
@@ -457,6 +511,17 @@ body,
   .content-controls.hidden-on-mobile-menu {
     display: none;
   }
+
+  .content-wrapper {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .content-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
 }
 
 .content-wrapper {
@@ -465,7 +530,28 @@ body,
   min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 .content-wrapper.blurred {
@@ -474,6 +560,58 @@ body,
 }
 
 .verse-content {
+  flex: 1;
+  min-height: 0;
   max-width: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-scroll-controls {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.reader-scroll-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(59, 9, 6, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3b0906;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.reader-scroll-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.reader-scroll-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+@media (max-width: 768px) {
+  .reader-scroll-controls {
+    right: 0;
+  }
+
+  .reader-scroll-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
 }
 </style>
