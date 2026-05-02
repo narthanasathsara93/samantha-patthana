@@ -1,12 +1,12 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
     <div class="sidebar-header">
-      <img class="logo-img" :src="getImage()" />
+      <img class="logo-img" :src="getImage(`images/logo.png`)" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
     <ul>
       <li
-        v-for="verse in verses"
+        v-for="(verse, index) in verses"
         :key="verse.id"
         :class="{
           active: isActiveVerse(verse),
@@ -17,11 +17,15 @@
           type="button"
           @click="handleVerseClick(verse)"
         >
+          <span class="number">{{ index + 1 }}. </span>
           <span class="verse-title">
             {{ verse.title }}
 
             <span v-if="isBookmarked(verse.id)" class="bookmark-indicator">
-              ★
+              <img
+                class="bookmark-indicator-img"
+                :src="getImage(`icons/bookmarked.png`)"
+              />
             </span>
           </span>
         </button>
@@ -65,8 +69,8 @@ const handleVerseClick = (verse) => {
     emit("verse-selected", index);
   }
 };
-const getImage = () => {
-  return getAssetUrl("images/logo.png");
+const getImage = (img) => {
+  return getAssetUrl(img);
 };
 </script>
 
@@ -88,7 +92,9 @@ const getImage = () => {
   width: 300px;
   padding: 10px 0;
   transition: transform 0.3s ease;
-  background: #fff9f1;
+  background-image: url("../assets/images/side-menu-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 12px;
   border: none;
   display: flex;
@@ -113,13 +119,12 @@ const getImage = () => {
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #dfc59c73;
 }
 
 /* List */
 .sidebar ul {
-  margin-left: 17px;
-  list-style: decimal;
+  list-style: none;
   padding: 0 28px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -173,6 +178,7 @@ const getImage = () => {
   justify-content: space-between;
 }
 
+/*
 .sidebar > ul > li:hover .verse-row {
   background: #8d8a8a31;
   border-bottom-right-radius: 24px !important;
@@ -181,15 +187,36 @@ const getImage = () => {
   font-weight: 900;
   color: #c63100;
 }
+  */
+
+.sidebar > ul > li:hover .verse-row {
+  background: rgba(141, 138, 138, 0.2);
+  border-radius: 20px;
+  transform: scale(1.013);
+  color: #c63100;
+}
 
 .verse-title {
   flex: 1;
   font-size: 14px;
+  margin-left: 5px;
+}
+
+.number {
+  width: 24px;
+  text-align: right;
+  color: #444;
+  flex-shrink: 0;
 }
 
 .bookmark-indicator {
   color: #ffc107;
   font-size: 13px;
+}
+
+.bookmark-indicator-img {
+  width: 14px;
+  height: 14px;
 }
 
 /* ===== Responsive ===== */

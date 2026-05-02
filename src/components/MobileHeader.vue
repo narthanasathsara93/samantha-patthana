@@ -34,7 +34,6 @@ defineEmits(["toggle-sidebar"]);
   align-items: center;
   justify-content: start;
   gap: 12px;
-  background: #fff9f1;
   margin-bottom: 12px;
 }
 

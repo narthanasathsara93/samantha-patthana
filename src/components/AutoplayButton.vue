@@ -37,12 +37,12 @@ const getIcon = (isAutoPlaying) => {
 }
 
 .autoplay-btn {
+  background-color: transparent;
   padding: 0;
   width: 23px;
   height: 23px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -52,7 +52,6 @@ const getIcon = (isAutoPlaying) => {
 }
 
 .autoplay-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 </style>

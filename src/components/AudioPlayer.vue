@@ -10,22 +10,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const audioRef = ref(null)
+const audioRef = ref(null);
 
 defineProps({
   audioSrc: {
     type: String,
-    default: ''
-  }
-})
+    default: "",
+  },
+});
 
-defineEmits(['audio-ended'])
+defineEmits(["audio-ended"]);
 
 defineExpose({
-  audioRef
-})
+  audioRef,
+});
 </script>
 
 <style scoped>
@@ -33,10 +33,9 @@ defineExpose({
 .player {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 2px solid #c1956061;
   position: sticky;
   bottom: 0;
-  background: #fff9f1;
   z-index: 5;
 }
 

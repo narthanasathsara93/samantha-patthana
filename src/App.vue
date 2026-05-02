@@ -16,7 +16,7 @@
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
-          :title="selectedVerse.title"
+          :title="selectedVerseTitle"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
@@ -25,19 +25,36 @@
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
-          <div class="content-title">{{ selectedVerse.title }}</div>
+          <div class="content-title">
+            <div>{{ selectedVerseTitle }}</div>
+          </div>
+
           <div class="controls-row">
             <AutoplayButton
+              v-if="!isSinhalaTextView"
               :is-auto-playing="isAutoPlaying"
               @toggle-autoplay="toggleAutoplay"
             />
+            <button
+              class="sinhala-toggle-btn"
+              type="button"
+              :class="{ active: isSinhalaTextView }"
+              :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
+              @click="toggleSinhalaTextView"
+            >
+              <img
+                class="sinhala-toggle-icon"
+                :src="getSinhalaToggleIcon()"
+                alt=""
+              />
+            </button>
             <BookmarkButton
               :is-bookmarked="isBookmarked(selectedVerse.id)"
               @toggle-bookmark="handleToggleBookmark"
             />
-            <div ref="fontSettingsRef" class="font-settings">
+            <span ref="fontSettingsRef" class="font-settings">
               <button
-                class="settings-btn"
+                class="font-settings-btn"
                 type="button"
                 title="අක්ෂර විශාලනය"
                 @click="toggleFontSettings"
@@ -56,7 +73,7 @@
                 />
                 <span class="font-size-value">{{ readerFontSize }}px</span>
               </div>
-            </div>
+            </span>
           </div>
         </div>
 
@@ -64,8 +81,8 @@
           <div class="verse-content">
             <VerseContent
               ref="verseContentRef"
-              :title="selectedVerse.title"
-              :content="selectedVerse.content"
+              :title="selectedVerseTitle"
+              :content="selectedVerseContent"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
               @scroll-state-change="handleReaderScrollState"
@@ -99,6 +116,7 @@
 
           <!-- Audio -->
           <AudioPlayer
+            v-if="!isSinhalaTextView"
             ref="audioPlayerRef"
             :audio-src="selectedVerse.audio"
             @audio-ended="handleAudioEnded"
@@ -153,6 +171,7 @@ const audioPlayerRef = ref(null);
 const verseContentRef = ref(null);
 const fontSettingsRef = ref(null);
 const isFontSettingsOpen = ref(false);
+const isSinhalaTextView = ref(loadSinhalaTextView());
 const readerScrollState = ref({
   isScrollable: false,
   canScrollUp: false,
@@ -165,6 +184,23 @@ const readerFontSize = ref(loadReaderFontSize());
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
+const hasSinhalaText = computed(() =>
+  Boolean(selectedVerse.value?.sinhalaText),
+);
+const selectedVerseTitle = computed(() => {
+  if (isSinhalaTextView.value && selectedVerse.value?.sinhalaTitle) {
+    return selectedVerse.value.sinhalaTitle;
+  }
+
+  return selectedVerse.value.title;
+});
+const selectedVerseContent = computed(() => {
+  if (isSinhalaTextView.value && hasSinhalaText.value) {
+    return selectedVerse.value.sinhalaText;
+  }
+
+  return selectedVerse.value.content;
+});
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio();
@@ -204,6 +240,10 @@ function loadReaderFontSize() {
   return defaultReaderFontSize;
 }
 
+function loadSinhalaTextView() {
+  return localStorage.getItem("reader-sinhala-text-view") === "true";
+}
+
 function isMobileView() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
@@ -222,9 +262,28 @@ function scrollVerseContent(direction) {
   verseContentRef.value?.scrollReader(direction);
 }
 
+function toggleSinhalaTextView() {
+  if (!hasSinhalaText.value) {
+    return;
+  }
+
+  isSinhalaTextView.value = !isSinhalaTextView.value;
+
+  if (isSinhalaTextView.value) {
+    resetAudio(audioRef);
+
+    if (isAutoPlaying.value) {
+      toggleAutoplayLogic(audioRef);
+    }
+  }
+
+  scrollVerseContentToTop();
+}
+
 function handleVerseSelected(index) {
   const shouldScrollContentToTop = isSidebarOpen.value && isMobileView();
 
+  isSinhalaTextView.value = false;
   selectVerse(index);
   resetAudio(audioRef);
   closeSidebar();
@@ -239,6 +298,7 @@ function handleVerseSelected(index) {
 }
 
 function handlePrev() {
+  isSinhalaTextView.value = false;
   prev();
   resetAudio(audioRef);
 
@@ -248,6 +308,7 @@ function handlePrev() {
 }
 
 function handleNext() {
+  isSinhalaTextView.value = false;
   next();
   resetAudio(audioRef);
 
@@ -286,6 +347,12 @@ const getFontSizeIcon = () => {
   return getAssetUrl("icons/font-resize.png");
 };
 
+const getSinhalaToggleIcon = () => {
+  return isSinhalaTextView.value
+    ? getAssetUrl("icons/paali.png")
+    : getAssetUrl("icons/sinhala.png");
+};
+
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
 });
@@ -296,6 +363,18 @@ onBeforeUnmount(() => {
 
 watch(readerFontSize, (fontSize) => {
   localStorage.setItem("reader-font-size", String(fontSize));
+});
+
+watch(isSinhalaTextView, (isSinhalaView) => {
+  localStorage.setItem("reader-sinhala-text-view", String(isSinhalaView));
+});
+
+watch(selectedVerse, () => {
+  if (isSinhalaTextView.value && !hasSinhalaText.value) {
+    isSinhalaTextView.value = false;
+  }
+
+  scrollVerseContentToTop();
 });
 </script>
 
@@ -356,9 +435,15 @@ body,
   align-items: stretch;
 }
 
-/* ===== Cards (Sidebar + Content) ===== */
+/* ===== Cards (Sidebar + Content) =====
+background: #fff9f1;
+
+
+  background: linear-gradient(#fff9f1, #fff9f1);*/
 .content {
-  background: #fff9f1;
+  background-image: url("./assets/images/verse-content-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 12px;
   border: none;
   flex: 1;
@@ -381,15 +466,21 @@ body,
   margin-bottom: 20px;
   padding: 0;
   z-index: 10;
-  border-bottom: 1px solid #e1dcd3;
 }
 
 .content-title {
   flex: 1;
-  text-align: center;
-  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  font-size: 22px;
   font-weight: 900;
   color: #3b0906;
+}
+
+.content-title > div {
+  max-width: 100%;
+  text-align: center;
 }
 
 .controls-row {
@@ -405,13 +496,14 @@ body,
   position: relative;
 }
 
-.settings-btn {
+.font-settings-btn,
+.sinhala-toggle-btn {
   width: 24px;
   height: 24px;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #ffffff;
+  background-color: transparent;
   color: #6c757d;
   cursor: pointer;
   font-size: 18px;
@@ -422,10 +514,19 @@ body,
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.settings-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
+.font-settings-btn:hover,
+.sinhala-toggle-btn:hover:not(:disabled) {
   color: #3b0906;
-  transform: scale(1.2);
+  transform: scale(1.25);
+}
+
+.sinhala-toggle-btn.active {
+  transform: scale(1.08);
+}
+
+.sinhala-toggle-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 .font-settings-panel {
@@ -459,12 +560,107 @@ body,
 }
 
 .font-resize-icon {
-  width: 25px;
+  width: 20px;
   height: auto;
+}
+
+.sinhala-toggle-icon {
+  width: 24px;
+  height: auto;
+}
+
+.content-wrapper {
+  border-top: 2px solid #c1956061;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.content-wrapper.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.verse-content {
+  flex: 1;
+  min-height: 0;
+  max-width: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-scroll-controls {
+  position: absolute;
+  top: 42%;
+  right: 4px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.reader-scroll-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(59, 9, 6, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3b0906;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.reader-scroll-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.reader-scroll-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .reader-scroll-controls {
+    right: 0;
+  }
+
+  .reader-scroll-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
   .app {
     flex-direction: column;
     gap: 16px;
@@ -515,103 +711,13 @@ body,
   .content-wrapper {
     scrollbar-width: none;
     -ms-overflow-style: none;
+    border-top: none;
   }
 
   .content-wrapper::-webkit-scrollbar {
     width: 0;
     height: 0;
     display: none;
-  }
-}
-
-.content-wrapper {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc #f5f5f5;
-}
-
-.content-wrapper::-webkit-scrollbar {
-  width: 8px;
-}
-
-.content-wrapper::-webkit-scrollbar-track {
-  background: #f5f5f5;
-}
-
-.content-wrapper::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.content-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #999;
-}
-
-.content-wrapper.blurred {
-  filter: blur(3px);
-  pointer-events: none;
-}
-
-.verse-content {
-  flex: 1;
-  min-height: 0;
-  max-width: 92%;
-  display: flex;
-  flex-direction: column;
-}
-
-.reader-scroll-controls {
-  position: absolute;
-  top: 50%;
-  right: 4px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transform: translateY(-50%);
-}
-
-.reader-scroll-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid rgba(59, 9, 6, 0.14);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  color: #3b0906;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
-  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
-  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-}
-
-.reader-scroll-btn:hover:not(:disabled) {
-  background: #fff;
-  transform: scale(1.08);
-}
-
-.reader-scroll-btn:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
-
-@media (max-width: 768px) {
-  .reader-scroll-controls {
-    right: 0;
-  }
-
-  .reader-scroll-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
   }
 }
 </style>
