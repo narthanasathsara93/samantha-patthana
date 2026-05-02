@@ -60,13 +60,15 @@
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <VerseContent
-            ref="verseContentRef"
-            :title="selectedVerse.title"
-            :content="selectedVerse.content"
-            :show-verse-title="selectedVerse.showVerseTitle"
-            :font-size="readerFontSize"
-          />
+          <div class="verse-content">
+            <VerseContent
+              ref="verseContentRef"
+              :title="selectedVerse.title"
+              :content="selectedVerse.content"
+              :show-verse-title="selectedVerse.showVerseTitle"
+              :font-size="readerFontSize"
+            />
+          </div>
 
           <!-- Audio -->
           <AudioPlayer
@@ -331,10 +333,14 @@ body,
 
 /* ===== Content Controls ===== */
 .content-controls {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 10;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  margin-bottom: 20px;
+  width: auto;
+  margin: 0;
 }
 
 .controls-row {
@@ -342,9 +348,9 @@ body,
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+  width: auto;
   padding-bottom: 10px;
   border-bottom: 2px solid #000;
-  width: 100%;
 }
 
 .font-settings {
@@ -423,8 +429,23 @@ body,
   }
 
   .content-controls {
-    top: 15px;
-    right: 15px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    flex-direction: column;
+    align-items: flex-end;
+    width: auto;
+    margin: 0;
+  }
+
+  .controls-row {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    width: fit-content;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   .font-settings-panel {
@@ -452,7 +473,7 @@ body,
   pointer-events: none;
 }
 
-.annotation {
-  color: #f01010;
+.verse-content {
+  max-width: 92%;
 }
 </style>

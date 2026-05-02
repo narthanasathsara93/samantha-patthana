@@ -20,7 +20,7 @@ defineEmits(['click'])
   inset: 0;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(3px);
-  z-index: 999;
+  z-index: 5;
   pointer-events: auto;
 }
 </style>
