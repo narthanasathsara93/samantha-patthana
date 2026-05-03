@@ -89,6 +89,25 @@
           />
         </svg>
       </a>
+      <a
+        class="contact-link"
+        :href="youtubeUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube"
+        title="YouTube"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M21.6 7.2a2.8 2.8 0 0 0-1.98-1.98C17.88 4.75 12 4.75 12 4.75s-5.88 0-7.62.47A2.8 2.8 0 0 0 2.4 7.2 29.12 29.12 0 0 0 1.94 12c0 1.62.15 3.24.46 4.8a2.8 2.8 0 0 0 1.98 1.98c1.74.47 7.62.47 7.62.47s5.88 0 7.62-.47a2.8 2.8 0 0 0 1.98-1.98c.31-1.56.46-3.18.46-4.8s-.15-3.24-.46-4.8ZM9.95 15.25v-6.5L15.36 12l-5.41 3.25Z"
+          />
+        </svg>
+      </a>
       <span v-if="isEmailCopied" class="contact-feedback" role="status">
         විද්‍යුත් තැපෑල් ලිපිනය කොපි කරගන්නා ලදී
       </span>
@@ -125,6 +144,7 @@ const facebookUrl = "https://www.facebook.com/profile.php?id=100090170766015";
 const emailAddress = "egodahayanno123@gmail.com";
 const emailHref = `mailto:${emailAddress}`;
 const googleFormUrl = "https://forms.gle/5kxTgx8GNL9s9ZLH8";
+const youtubeUrl = "https://youtu.be/foa2bgzz7G8?si=-_smELECz6Z5YF4X";
 const isEmailCopied = ref(false);
 let emailCopyTimer;
 
