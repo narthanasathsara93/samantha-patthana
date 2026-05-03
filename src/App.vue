@@ -496,6 +496,10 @@ background: #fff9f1;
   position: relative;
 }
 
+.font-settings-btn {
+  margin-top: 13%;
+}
+
 .font-settings-btn,
 .sinhala-toggle-btn {
   width: 24px;
@@ -702,6 +706,10 @@ background: #fff9f1;
     right: 0;
     top: 34px;
     transform: none;
+  }
+
+  .font-settings-btn {
+    margin-top: 0;
   }
 
   .content-controls.hidden-on-mobile-menu {

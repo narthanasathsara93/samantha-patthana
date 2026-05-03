@@ -34,14 +34,14 @@ const getIcon = (isBookmarked) => {
 
 <style scoped>
 .bookmark-icon {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: auto;
 }
 
 .bookmark-btn {
   padding: 0;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
   background-color: transparent;
