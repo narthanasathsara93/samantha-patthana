@@ -169,8 +169,8 @@ export const verses = [
     title: "අනන්තරපච්චයෝ’ති",
     englishName: "anantharapacchayo",
     showVerseTitle: true,
-    audioStartAt: 0,
-    audioEndAt: 30,
+    audioStartAt: `07:46`,
+    audioEndAt: `13:07`,
     sinhalaTitle: "Sinhala Title",
     sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
@@ -284,8 +284,8 @@ export const verses = [
     title: "සමනන්තරපච්චයෝ’ති",
     englishName: "samanantharapacchayo",
     showVerseTitle: true,
-    audioStartAt: 0,
-    audioEndAt: 30,
+    audioStartAt: `13:08`,
+    audioEndAt: `18:28`,
     sinhalaTitle: "Sinhala Title",
     sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
@@ -395,8 +395,8 @@ export const verses = [
     title: "සහජාතපච්චයෝ’ති",
     englishName: "sahajathapacchayo",
     showVerseTitle: true,
-    audioStartAt: 0,
-    audioEndAt: 30,
+    audioStartAt: `18:29`,
+    audioEndAt: `19:50`,
     sinhalaTitle: "Sinhala Title",
     sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං<br>
