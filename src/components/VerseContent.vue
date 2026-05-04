@@ -28,7 +28,7 @@ const props = defineProps({
   },
   fontSize: {
     type: Number,
-    default: 20,
+    default: 15,
   },
 });
 
@@ -129,7 +129,6 @@ defineExpose({
 
 .reader-content {
   line-height: 160%;
-  font-size: 20px;
   font-weight: 550;
   margin-top: 5%;
   color: #3b0906;

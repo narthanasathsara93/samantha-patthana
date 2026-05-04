@@ -118,7 +118,10 @@
           <AudioPlayer
             v-if="!isSinhalaTextView"
             ref="audioPlayerRef"
-            :audio-src="selectedVerse.audio"
+            :audio-src="selectedVerseAudio"
+            :hls-src="selectedVerseHlsAudio"
+            :start-at="selectedVerse.audioStartAt"
+            :end-at="selectedVerse.audioEndAt"
             @audio-ended="handleAudioEnded"
           />
         </div>
@@ -177,7 +180,7 @@ const readerScrollState = ref({
   canScrollUp: false,
   canScrollDown: false,
 });
-const defaultReaderFontSize = 20;
+const defaultReaderFontSize = 15;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
@@ -200,6 +203,22 @@ const selectedVerseContent = computed(() => {
   }
 
   return selectedVerse.value.content;
+});
+const fullAudioSrc = "";
+const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+const selectedVerseAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioSrc : selectedVerse.value?.audio;
+});
+const selectedVerseHlsAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioHlsSrc : "";
 });
 
 // Initialize composables
