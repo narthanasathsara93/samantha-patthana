@@ -6,6 +6,7 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `00:00`,
     audioEndAt: `01:30`,
+    audioSectionsKey: "verse-1",
     sinhalaTitle: "නමස්කාරය",
     sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br>
@@ -15,7 +16,7 @@ export const verses = [
 විචිත්තමතිගම්භීර<br>
 මනන්තනයමණ්ඩිතං<br>
 පට්ඨානං සම්මසන්තස්ස<br>
-විමලාමිතබුද්ධියා<br>
+විමලාමිතබුද්ධියා<br><br>
 
 යස්ස දේහා නික්ඛමිංසු<br>
 සුභා ඡබ්බණ්ණරංසියෝ<br>
@@ -35,6 +36,7 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `01:31`,
     audioEndAt: `02:42`,
+    audioSectionsKey: "verse-2",
     sinhalaTitle: "Sinhala Title",
     sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `හේතුපච්චයෝ ආරම්මණපච්චයෝ<br>

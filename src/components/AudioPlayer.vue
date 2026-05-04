@@ -177,6 +177,7 @@ onBeforeUnmount(destroyHls);
 
 defineExpose({
   audioRef,
+  seekToSectionStart,
 });
 </script>
 

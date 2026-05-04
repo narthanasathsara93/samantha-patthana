@@ -29,8 +29,8 @@ const getIcon = (isAutoPlaying) => {
 </script>
 
 <style scoped>
-/* Autoplay Button */
 
+/* Autoplay Button */
 .autoplay-icon {
   width: 23px;
   height: 23px;

@@ -2,10 +2,25 @@
   <div class="reader-shell">
     <div ref="readerRef" class="reader" @scroll="updateScrollState">
       <div
+        v-if="audioSections.length === 0"
         class="reader-content"
         :style="{ fontSize: `${fontSize}px` }"
         v-html="content"
       ></div>
+      <div
+        v-else
+        class="reader-content reader-content-sections"
+        :style="{ fontSize: `${fontSize}px` }"
+      >
+        <button
+          v-for="(section, index) in audioSections"
+          :key="`${section.startAt}-${section.endAt}-${index}`"
+          class="verse-audio-section"
+          type="button"
+          @click="$emit('play-section', section)"
+          v-html="section.content"
+        ></button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,9 +45,13 @@ const props = defineProps({
     type: Number,
     default: 15,
   },
+  audioSections: {
+    type: Array,
+    default: () => [],
+  },
 });
 
-const emit = defineEmits(["scroll-state-change"]);
+const emit = defineEmits(["scroll-state-change", "play-section"]);
 
 const readerRef = ref(null);
 const isScrollable = ref(false);
@@ -101,8 +120,8 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => [props.content, props.fontSize],
-  syncScrollState
+  () => [props.content, props.fontSize, props.audioSections],
+  syncScrollState,
 );
 
 defineExpose({
@@ -118,8 +137,8 @@ defineExpose({
 </script>
 
 <style scoped>
-/* ===== Reader ===== */
 
+/* ===== Reader ===== */
 .reader-shell {
   position: relative;
   flex: 1;
@@ -132,6 +151,33 @@ defineExpose({
   font-weight: 550;
   margin-top: 5%;
   color: #3b0906;
+}
+
+.reader-content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.verse-audio-section {
+  transition: all 0.25s ease;
+  padding: 4px 12px 9px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+}
+
+.verse-audio-section:hover {
+  color: #7a1f1f;
+  background: linear-gradient(to top, #faecd026, transparent);
+  box-shadow: 6px 8px 16px -10px rgb(216 194 157);
+  transform: translateY(-1px);
+  border-radius: 20px;
 }
 .reader {
   flex: 1;

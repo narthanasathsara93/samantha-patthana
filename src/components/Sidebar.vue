@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
 .sidebar {
   width: 300px;
   padding: 10px 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   background-image: url("../assets/images/side-menu-background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -226,9 +226,9 @@ onBeforeUnmount(() => {
 
 .sidebar-header {
   display: flex;
-  flex-direction: column; /* stack vertically */
-  align-items: center; /* horizontal center */
-  justify-content: center; /* vertical center (if height exists) */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   gap: 6px;
 }
@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
-  color: #c63100
+  color: #c63100;
 }
 
 .sidebar > ul > li.bookmarked > .verse-row {

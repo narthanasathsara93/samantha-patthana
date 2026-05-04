@@ -83,8 +83,10 @@
               ref="verseContentRef"
               :title="selectedVerseTitle"
               :content="selectedVerseContent"
+              :audio-sections="selectedVerseAudioSections"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
+              @play-section="handlePlayAudioSection"
               @scroll-state-change="handleReaderScrollState"
             />
           </div>
@@ -120,8 +122,8 @@
             ref="audioPlayerRef"
             :audio-src="selectedVerseAudio"
             :hls-src="selectedVerseHlsAudio"
-            :start-at="selectedVerse.audioStartAt"
-            :end-at="selectedVerse.audioEndAt"
+            :start-at="activeAudioStartAt"
+            :end-at="activeAudioEndAt"
             @audio-ended="handleAudioEnded"
           />
         </div>
@@ -168,6 +170,7 @@ import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { getAssetUrl } from "./utils/assets";
+import { audioSections } from "./data/audioSections";
 
 // Component refs
 const audioPlayerRef = ref(null);
@@ -219,6 +222,17 @@ const selectedVerseHlsAudio = computed(() => {
     selectedVerse.value?.audioEndAt !== undefined;
 
   return hasAudioSection ? fullAudioHlsSrc : "";
+});
+const activeAudioStartAt = ref(null);
+const activeAudioEndAt = ref(null);
+const selectedVerseAudioSections = computed(() => {
+  if (isSinhalaTextView.value) {
+    return [];
+  }
+
+  const sectionsKey = selectedVerse.value?.audioSectionsKey;
+
+  return sectionsKey ? audioSections[sectionsKey] || [] : [];
 });
 
 // Initialize composables
@@ -279,6 +293,21 @@ function handleReaderScrollState(scrollState) {
 
 function scrollVerseContent(direction) {
   verseContentRef.value?.scrollReader(direction);
+}
+
+function resetActiveAudioRange() {
+  activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
+  activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
+}
+
+function handlePlayAudioSection(section) {
+  activeAudioStartAt.value = section.startAt;
+  activeAudioEndAt.value = section.endAt;
+
+  nextTick(() => {
+    audioPlayerRef.value?.seekToSectionStart();
+    playCurrent(audioRef);
+  });
 }
 
 function toggleSinhalaTextView() {
@@ -389,12 +418,16 @@ watch(isSinhalaTextView, (isSinhalaView) => {
 });
 
 watch(selectedVerse, () => {
+  resetActiveAudioRange();
+
   if (isSinhalaTextView.value && !hasSinhalaText.value) {
     isSinhalaTextView.value = false;
   }
 
   scrollVerseContentToTop();
 });
+
+resetActiveAudioRange();
 </script>
 
 <style>
