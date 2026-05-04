@@ -473,7 +473,7 @@ background: #fff9f1;
   display: flex;
   justify-content: center;
   min-width: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 900;
   color: #3b0906;
 }
@@ -494,6 +494,10 @@ background: #fff9f1;
 
 .font-settings {
   position: relative;
+}
+
+.font-settings-btn {
+  margin-top: 13%;
 }
 
 .font-settings-btn,
@@ -702,6 +706,10 @@ background: #fff9f1;
     right: 0;
     top: 34px;
     transform: none;
+  }
+
+  .font-settings-btn {
+    margin-top: 0;
   }
 
   .content-controls.hidden-on-mobile-menu {

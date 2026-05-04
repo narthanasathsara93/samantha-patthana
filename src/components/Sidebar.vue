@@ -31,10 +31,92 @@
         </button>
       </li>
     </ul>
+
+    <div class="sidebar-contact" aria-label="Contact links">
+      <a
+        class="contact-link"
+        :href="facebookUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Facebook"
+        title="ෆේස්බුක් ගිණුම"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M14 8.5h2V5.2c-.35-.05-1.55-.15-2.95-.15-2.9 0-4.9 1.82-4.9 5.17v2.9H5v3.7h3.15V24h3.86v-7.18h3.02l.48-3.7h-3.5v-2.53c0-1.07.29-2.09 1.99-2.09Z"
+          />
+        </svg>
+      </a>
+      <a
+        class="contact-link"
+        :href="emailHref"
+        aria-label="Email"
+        title="විද්‍යුත් තැපෑල"
+        @click="handleEmailClick"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M3.75 5.5h16.5c.96 0 1.75.79 1.75 1.75v9.5c0 .96-.79 1.75-1.75 1.75H3.75A1.75 1.75 0 0 1 2 16.75v-9.5C2 6.29 2.79 5.5 3.75 5.5Zm.7 2 7.55 5.18L19.55 7.5H4.45Zm15.8 9v-7l-7.55 5.18a1.25 1.25 0 0 1-1.4 0L3.75 9.5v7h16.5Z"
+          />
+        </svg>
+      </a>
+      <a
+        class="contact-link"
+        :href="googleFormUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Google Form"
+        title="ගූගල් ෆෝරමය"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M6.5 2.5h8.15L20.5 8.35V20a1.5 1.5 0 0 1-1.5 1.5H6.5A1.5 1.5 0 0 1 5 20V4a1.5 1.5 0 0 1 1.5-1.5Zm7.45 1.9V9.1h4.7L13.95 4.4ZM8.25 11.75h7.5v-1.5h-7.5v1.5Zm0 3.25h7.5v-1.5h-7.5V15Zm0 3.25h5.5v-1.5h-5.5v1.5Z"
+          />
+        </svg>
+      </a>
+      <a
+        class="contact-link"
+        :href="youtubeUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube"
+        title="YouTube"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M21.6 7.2a2.8 2.8 0 0 0-1.98-1.98C17.88 4.75 12 4.75 12 4.75s-5.88 0-7.62.47A2.8 2.8 0 0 0 2.4 7.2 29.12 29.12 0 0 0 1.94 12c0 1.62.15 3.24.46 4.8a2.8 2.8 0 0 0 1.98 1.98c1.74.47 7.62.47 7.62.47s5.88 0 7.62-.47a2.8 2.8 0 0 0 1.98-1.98c.31-1.56.46-3.18.46-4.8s-.15-3.24-.46-4.8ZM9.95 15.25v-6.5L15.36 12l-5.41 3.25Z"
+          />
+        </svg>
+      </a>
+      <span v-if="isEmailCopied" class="contact-feedback" role="status">
+        විද්‍යුත් තැපෑල් ලිපිනය කොපි කරගන්නා ලදී
+      </span>
+    </div>
   </aside>
 </template>
 
 <script setup>
+import { onBeforeUnmount, ref } from "vue";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
 
@@ -58,6 +140,13 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["verse-selected"]);
+const facebookUrl = "https://www.facebook.com/profile.php?id=100090170766015";
+const emailAddress = "egodahayanno123@gmail.com";
+const emailHref = `mailto:${emailAddress}`;
+const googleFormUrl = "https://forms.gle/5kxTgx8GNL9s9ZLH8";
+const youtubeUrl = "https://youtu.be/foa2bgzz7G8?si=-_smELECz6Z5YF4X";
+const isEmailCopied = ref(false);
+let emailCopyTimer;
 
 const isActiveVerse = (verse) => {
   return verse.id === props.selectedId;
@@ -69,9 +158,40 @@ const handleVerseClick = (verse) => {
     emit("verse-selected", index);
   }
 };
+
+const isMobileContactDevice = () => {
+  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+};
+
+const showEmailCopiedFeedback = () => {
+  isEmailCopied.value = true;
+  clearTimeout(emailCopyTimer);
+  emailCopyTimer = setTimeout(() => {
+    isEmailCopied.value = false;
+  }, 1800);
+};
+
+const handleEmailClick = (event) => {
+  if (isMobileContactDevice()) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (!navigator.clipboard?.writeText) {
+    return;
+  }
+
+  navigator.clipboard.writeText(emailAddress).then(showEmailCopiedFeedback);
+};
+
 const getImage = (img) => {
   return getAssetUrl(img);
 };
+
+onBeforeUnmount(() => {
+  clearTimeout(emailCopyTimer);
+});
 </script>
 
 <style scoped>
@@ -124,6 +244,7 @@ const getImage = (img) => {
 
 /* List */
 .sidebar ul {
+  margin-left: -4%;
   list-style: none;
   padding: 0 28px;
   overflow-y: auto;
@@ -150,7 +271,7 @@ const getImage = (img) => {
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
-  color: #330505;
+  color: #c63100
 }
 
 .sidebar > ul > li.bookmarked > .verse-row {
@@ -193,7 +314,7 @@ const getImage = (img) => {
   background: rgba(141, 138, 138, 0.2);
   border-radius: 20px;
   transform: scale(1.013);
-  color: #c63100;
+  color: #330505;
 }
 
 .verse-title {
@@ -219,6 +340,59 @@ const getImage = (img) => {
   height: 14px;
 }
 
+.sidebar-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 14px 18px 12px;
+  border-top: 2px solid #dfc59c73;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.contact-link {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4c1711;
+  background: rgba(255, 248, 229, 0.58);
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.1);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  color: #c63100;
+  background: rgba(255, 255, 255, 0.78);
+  transform: scale(1.08);
+  outline: none;
+}
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.contact-feedback {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #4c1711;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.12);
+  transform: translateX(-50%);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .sidebar {
@@ -238,8 +412,12 @@ const getImage = (img) => {
 
   .sidebar ul {
     margin-top: 5%;
-    margin-bottom: 10%;
+    margin-bottom: 4%;
     padding: 0 28px;
+  }
+
+  .sidebar-contact {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
 }
 </style>

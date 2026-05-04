@@ -4,6 +4,7 @@
       ref="audioRef"
       :src="audioSrc"
       controls
+      controlsList="nodownload"
       @ended="$emit('audio-ended')"
     ></audio>
   </div>

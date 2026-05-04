@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-
 defineProps({
   title: {
     type: String,
@@ -19,14 +18,13 @@ defineProps({
 });
 
 defineEmits(["toggle-sidebar"]);
-
 </script>
 
 <style scoped>
-
 .mobile-header-title {
-    font-size: 18px;
-    color: #3b0906;
+  font-size: 17px;
+  font-weight: 900;
+  color: #3b0906;
 }
 /* ===== Mobile Header ===== */
 .mobile-header {
