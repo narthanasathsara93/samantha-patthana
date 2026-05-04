@@ -91,31 +91,6 @@
             />
           </div>
 
-          <div
-            v-if="readerScrollState.isScrollable"
-            class="reader-scroll-controls"
-            aria-label="Reader scroll controls"
-          >
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll up"
-              :disabled="!readerScrollState.canScrollUp"
-              @click="scrollVerseContent(-1)"
-            >
-              &uarr;
-            </button>
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll down"
-              :disabled="!readerScrollState.canScrollDown"
-              @click="scrollVerseContent(1)"
-            >
-              &darr;
-            </button>
-          </div>
-
           <!-- Audio -->
           <AudioPlayer
             v-if="!isSinhalaTextView"
@@ -126,6 +101,31 @@
             :end-at="activeAudioEndAt"
             @audio-ended="handleAudioEnded"
           />
+        </div>
+
+        <div
+          v-if="readerScrollState.isScrollable"
+          class="reader-scroll-controls"
+          aria-label="Reader scroll controls"
+        >
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll up"
+            :disabled="!readerScrollState.canScrollUp"
+            @click="scrollVerseContent(-1)"
+          >
+            &uarr;
+          </button>
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll down"
+            :disabled="!readerScrollState.canScrollDown"
+            @click="scrollVerseContent(1)"
+          >
+            &darr;
+          </button>
         </div>
 
         <!-- Overlay -->
@@ -668,7 +668,7 @@ body,
 .reader-scroll-controls {
   position: absolute;
   top: 42%;
-  right: 4px;
+  right: 13px;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -704,7 +704,7 @@ body,
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .reader-scroll-controls {
-    right: 0;
+    right: 13px;
   }
 
   .reader-scroll-btn {

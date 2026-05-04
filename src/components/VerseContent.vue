@@ -137,7 +137,6 @@ defineExpose({
 </script>
 
 <style scoped>
-
 /* ===== Reader ===== */
 .reader-shell {
   position: relative;
@@ -170,6 +169,9 @@ defineExpose({
   font: inherit;
   line-height: inherit;
   text-align: left;
+  border-right: 1px solid rgb(206 176 124 / 65%);
+  box-shadow: 10px 0 20px -12px rgb(216 194 157);
+  border-radius: 15px;
 }
 
 .verse-audio-section:hover {
@@ -215,6 +217,9 @@ defineExpose({
 @media (max-width: 768px) {
   .reader h1 {
     font-size: 23px;
+  }
+  .verse-audio-section {
+    border-right: 1px solid rgb(206 176 124 / 31%);
   }
 }
 </style>
