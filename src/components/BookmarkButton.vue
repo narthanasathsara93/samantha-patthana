@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import { getAssetUrl } from "../utils/assets";
+
 defineProps({
   isBookmarked: {
     type: Boolean,
@@ -25,24 +27,24 @@ defineEmits(["toggle-bookmark"]);
 
 const getIcon = (isBookmarked) => {
   return isBookmarked
-    ? require("@/assets/icons/bookmarked.png")
-    : require("@/assets/icons/bookmark.png");
+    ? getAssetUrl("icons/bookmarked.png")
+    : getAssetUrl("icons/bookmark.png");
 };
 </script>
 
 <style scoped>
 .bookmark-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: auto;
 }
 
 .bookmark-btn {
   padding: 0;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
+  background-color: transparent;
   color: #6c757d;
   font-size: 20px;
   cursor: pointer;
@@ -53,11 +55,7 @@ const getIcon = (isBookmarked) => {
 }
 
 .bookmark-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 
-.bookmark-btn.active {
-  background: #ffffff;
-}
 </style>

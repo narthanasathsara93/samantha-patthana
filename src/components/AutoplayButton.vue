@@ -10,6 +10,8 @@
 </template>
 
 <script setup>
+import { getAssetUrl } from "../utils/assets";
+
 defineProps({
   isAutoPlaying: {
     type: Boolean,
@@ -21,26 +23,26 @@ defineEmits(["toggle-autoplay"]);
 
 const getIcon = (isAutoPlaying) => {
   return isAutoPlaying
-    ? require("@/assets/icons/autoplaying.gif")
-    : require("@/assets/icons/autoplay.png");
+    ? getAssetUrl("icons/autoplaying.gif")
+    : getAssetUrl("icons/autoplay.png");
 };
 </script>
 
 <style scoped>
-/* Autoplay Button */
 
+/* Autoplay Button */
 .autoplay-icon {
   width: 23px;
   height: 23px;
 }
 
 .autoplay-btn {
+  background-color: transparent;
   padding: 0;
   width: 23px;
   height: 23px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
@@ -50,7 +52,6 @@ const getIcon = (isAutoPlaying) => {
 }
 
 .autoplay-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
-  transform: scale(1.2);
+  transform: scale(1.25);
 }
 </style>

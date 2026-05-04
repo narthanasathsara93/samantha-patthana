@@ -1,18 +1,34 @@
 <template>
-  <div ref="readerRef" class="reader">
-    <h1 v-if="showVerseTitle" class="reader-title">{{ title }}</h1>
-    <div
-      class="reader-content"
-      :style="{ fontSize: `${fontSize}px` }"
-      v-html="content"
-    ></div>
+  <div class="reader-shell">
+    <div ref="readerRef" class="reader" @scroll="updateScrollState">
+      <div
+        v-if="audioSections.length === 0"
+        class="reader-content"
+        :style="{ fontSize: `${fontSize}px` }"
+        v-html="content"
+      ></div>
+      <div
+        v-else
+        class="reader-content reader-content-sections"
+        :style="{ fontSize: `${fontSize}px` }"
+      >
+        <button
+          v-for="(section, index) in audioSections"
+          :key="`${section.startAt}-${section.endAt}-${index}`"
+          class="verse-audio-section"
+          type="button"
+          @click="$emit('play-section', section)"
+          v-html="section.content"
+        ></button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: "",
@@ -27,11 +43,54 @@ defineProps({
   },
   fontSize: {
     type: Number,
-    default: 20,
+    default: 15,
+  },
+  audioSections: {
+    type: Array,
+    default: () => [],
   },
 });
 
+const emit = defineEmits(["scroll-state-change", "play-section"]);
+
 const readerRef = ref(null);
+const isScrollable = ref(false);
+const canScrollUp = ref(false);
+const canScrollDown = ref(false);
+let resizeObserver = null;
+
+function updateScrollState() {
+  const reader = readerRef.value;
+
+  if (!reader) {
+    return;
+  }
+
+  const maxScrollTop = reader.scrollHeight - reader.clientHeight;
+
+  isScrollable.value = maxScrollTop > 1;
+  canScrollUp.value = reader.scrollTop > 1;
+  canScrollDown.value = reader.scrollTop < maxScrollTop - 1;
+
+  emit("scroll-state-change", {
+    isScrollable: isScrollable.value,
+    canScrollUp: canScrollUp.value,
+    canScrollDown: canScrollDown.value,
+  });
+}
+
+function scrollReader(direction) {
+  const reader = readerRef.value;
+
+  if (!reader) {
+    return;
+  }
+
+  reader.scrollBy({
+    top: direction * Math.max(reader.clientHeight * 0.55, 160),
+    behavior: "smooth",
+  });
+}
 
 function scrollToTop() {
   readerRef.value?.scrollTo({
@@ -40,10 +99,35 @@ function scrollToTop() {
   });
 }
 
-defineExpose({
-  scrollToTop,
+function syncScrollState() {
+  nextTick(updateScrollState);
+}
+
+onMounted(() => {
+  syncScrollState();
+
+  if (window.ResizeObserver && readerRef.value) {
+    resizeObserver = new ResizeObserver(updateScrollState);
+    resizeObserver.observe(readerRef.value);
+  }
+
+  window.addEventListener("resize", updateScrollState);
 });
 
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect();
+  window.removeEventListener("resize", updateScrollState);
+});
+
+watch(
+  () => [props.content, props.fontSize, props.audioSections],
+  syncScrollState,
+);
+
+defineExpose({
+  scrollReader,
+  scrollToTop,
+});
 
 // const getContent = () => {
 //   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
@@ -53,26 +137,65 @@ defineExpose({
 </script>
 
 <style scoped>
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .reader-title {
-    display: none;
-  }
-}
 /* ===== Reader ===== */
+.reader-shell {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
 
 .reader-content {
   line-height: 160%;
-  font-size: 20px;
   font-weight: 550;
   margin-top: 5%;
   color: #3b0906;
+}
+
+.reader-content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.verse-audio-section {
+  transition: all 0.25s ease;
+  padding: 4px 12px 9px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  border-right: 1px solid rgb(206 176 124 / 65%);
+  box-shadow: 10px 1px 20px -12px rgb(216 194 157);
+  border-radius: 15px;
+}
+
+.verse-audio-section:hover {
+  color: #7a1f1f;
+  background: linear-gradient(to top, #faecd026, transparent);
+  box-shadow: 6px 8px 16px -10px rgb(216 194 157);
+  transform: translateY(-1px);
+  border-radius: 20px;
 }
 .reader {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 20px;
+}
+
+.reader::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .reader h1 {
@@ -94,6 +217,9 @@ defineExpose({
 @media (max-width: 768px) {
   .reader h1 {
     font-size: 23px;
+  }
+  .verse-audio-section {
+    border-right: 1px solid rgb(206 176 124 / 31%);
   }
 }
 </style>

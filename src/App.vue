@@ -5,10 +5,11 @@
       <!-- Sidebar -->
       <Sidebar
         :is-sidebar-open="isSidebarOpen"
-        :selected-id="currentVerseId"
+        :selected-id="isShowingResourcesPanel ? null : currentVerseId"
         :verse-index-map="verseIndexMap"
         :is-bookmarked="isBookmarked"
         @verse-selected="handleVerseSelected"
+        @show-resources="handleShowResources"
       />
 
       <!-- Content -->
@@ -16,69 +17,128 @@
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
-          :title="selectedVerse.title"
+          :title="contentTitle"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
 
         <div
+          v-if="!isShowingResourcesPanel"
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
-          <AutoplayButton
-            :is-auto-playing="isAutoPlaying"
-            @toggle-autoplay="toggleAutoplay"
-          />
-          <BookmarkButton
-            :is-bookmarked="isBookmarked(selectedVerse.id)"
-            @toggle-bookmark="handleToggleBookmark"
-          />
-          <div ref="fontSettingsRef" class="font-settings">
+          <div class="content-title">
+            <div>{{ contentTitle }}</div>
+          </div>
+
+          <div class="controls-row">
+            <AutoplayButton
+              v-if="!isSinhalaTextView"
+              :is-auto-playing="isAutoPlaying"
+              @toggle-autoplay="toggleAutoplay"
+            />
             <button
-              class="settings-btn"
+              class="sinhala-toggle-btn"
               type="button"
-              title="Adjust verse font size"
-              @click="toggleFontSettings"
+              :class="{ active: isSinhalaTextView }"
+              :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
+              @click="toggleSinhalaTextView"
             >
-              <img class="font-resize-icon" :src="getFontSizeIcon()" />
-            </button>
-            <div v-if="isFontSettingsOpen" class="font-settings-panel">
-              <input
-                v-model.number="readerFontSize"
-                class="font-size-slider"
-                type="range"
-                min="10"
-                max="30"
-                step="1"
-                aria-label="Verse content font size"
+              <img
+                class="sinhala-toggle-icon"
+                :src="getSinhalaToggleIcon()"
+                alt=""
               />
-              <span class="font-size-value">{{ readerFontSize }}px</span>
-            </div>
+            </button>
+            <BookmarkButton
+              :is-bookmarked="isBookmarked(selectedVerse.id)"
+              @toggle-bookmark="handleToggleBookmark"
+            />
+            <span ref="fontSettingsRef" class="font-settings">
+              <button
+                class="font-settings-btn"
+                type="button"
+                title="අක්ෂර විශාලනය"
+                @click="toggleFontSettings"
+              >
+                <img class="font-resize-icon" :src="getFontSizeIcon()" />
+              </button>
+              <div v-if="isFontSettingsOpen" class="font-settings-panel">
+                <input
+                  v-model.number="readerFontSize"
+                  class="font-size-slider"
+                  type="range"
+                  min="10"
+                  max="30"
+                  step="1"
+                  aria-label="Verse content font size"
+                />
+                <span class="font-size-value">{{ readerFontSize }}px</span>
+              </div>
+            </span>
           </div>
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <!-- Overlay -->
-          <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+          <div v-if="isShowingResourcesPanel" class="verse-content">
+            <ResourcesPanel @close="handleCloseResourcesPanel" />
+          </div>
 
-          <VerseContent
-            ref="verseContentRef"
-            :title="selectedVerse.title"
-            :content="selectedVerse.content"
-            :show-verse-title="selectedVerse.showVerseTitle"
-            :font-size="readerFontSize"
-          />
+          <div v-else class="verse-content">
+            <VerseContent
+              ref="verseContentRef"
+              :title="selectedVerseTitle"
+              :content="selectedVerseContent"
+              :audio-sections="selectedVerseAudioSections"
+              :show-verse-title="selectedVerse.showVerseTitle"
+              :font-size="readerFontSize"
+              @play-section="handlePlayAudioSection"
+              @scroll-state-change="handleReaderScrollState"
+            />
+          </div>
 
-          <!-- Audio -->
           <AudioPlayer
+            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
             ref="audioPlayerRef"
-            :audio-src="selectedVerse.audio"
+            :audio-src="selectedVerseAudio"
+            :hls-src="selectedVerseHlsAudio"
+            :start-at="activeAudioStartAt"
+            :end-at="activeAudioEndAt"
             @audio-ended="handleAudioEnded"
           />
         </div>
 
+        <div
+          v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
+          class="reader-scroll-controls"
+          aria-label="Reader scroll controls"
+        >
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll up"
+            :disabled="!readerScrollState.canScrollUp"
+            @click="scrollVerseContent(-1)"
+          >
+            &uarr;
+          </button>
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll down"
+            :disabled="!readerScrollState.canScrollDown"
+            @click="scrollVerseContent(1)"
+          >
+            &darr;
+          </button>
+        </div>
+
+        <!-- Overlay -->
+        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+
         <!-- Pagination -->
         <Pagination
+          v-if="!isShowingResourcesPanel"
           :current-index="currentIndex"
           :total-verses="flattenedVerses.length"
           @prev="handlePrev"
@@ -108,6 +168,7 @@ import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
+import ResourcesPanel from "./components/ResourcesPanel.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -115,19 +176,75 @@ import { useNavigation } from "./composables/useNavigation";
 import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
+import { getAssetUrl } from "./utils/assets";
+import { audioSections } from "./data/audioSections";
 
 // Component refs
 const audioPlayerRef = ref(null);
 const verseContentRef = ref(null);
 const fontSettingsRef = ref(null);
 const isFontSettingsOpen = ref(false);
-const defaultReaderFontSize = 20;
+const isSinhalaTextView = ref(loadSinhalaTextView());
+const readerScrollState = ref({
+  isScrollable: false,
+  canScrollUp: false,
+  canScrollDown: false,
+});
+const defaultReaderFontSize = 15;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
+const isShowingResourcesPanel = ref(false);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
+const hasSinhalaText = computed(() =>
+  Boolean(selectedVerse.value?.sinhalaText),
+);
+const selectedVerseTitle = computed(() => {
+  if (isSinhalaTextView.value && selectedVerse.value?.sinhalaTitle) {
+    return selectedVerse.value.sinhalaTitle;
+  }
+
+  return selectedVerse.value.title;
+});
+const selectedVerseContent = computed(() => {
+  if (isSinhalaTextView.value && hasSinhalaText.value) {
+    return selectedVerse.value.sinhalaText;
+  }
+
+  return selectedVerse.value.content;
+});
+const contentTitle = computed(() => {
+  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
+});
+const fullAudioSrc = "";
+const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+const selectedVerseAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioSrc : selectedVerse.value?.audio;
+});
+const selectedVerseHlsAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioHlsSrc : "";
+});
+const activeAudioStartAt = ref(null);
+const activeAudioEndAt = ref(null);
+const selectedVerseAudioSections = computed(() => {
+  if (isSinhalaTextView.value) {
+    return [];
+  }
+
+  const sectionsKey = selectedVerse.value?.audioSectionsKey;
+
+  return sectionsKey ? audioSections[sectionsKey] || [] : [];
+});
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio();
@@ -141,7 +258,13 @@ const {
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
-const {
+const handleShowResources = () => {
+  isShowingResourcesPanel.value = true;
+};
+
+const handleCloseResourcesPanel = () => {
+  isShowingResourcesPanel.value = false;
+};const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,
@@ -167,6 +290,10 @@ function loadReaderFontSize() {
   return defaultReaderFontSize;
 }
 
+function loadSinhalaTextView() {
+  return localStorage.getItem("reader-sinhala-text-view") === "true";
+}
+
 function isMobileView() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
@@ -177,9 +304,52 @@ function scrollVerseContentToTop() {
   });
 }
 
+function handleReaderScrollState(scrollState) {
+  readerScrollState.value = scrollState;
+}
+
+function scrollVerseContent(direction) {
+  verseContentRef.value?.scrollReader(direction);
+}
+
+function resetActiveAudioRange() {
+  activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
+  activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
+}
+
+function handlePlayAudioSection(section) {
+  activeAudioStartAt.value = section.startAt;
+  activeAudioEndAt.value = section.endAt;
+
+  nextTick(() => {
+    audioPlayerRef.value?.seekToSectionStart();
+    playCurrent(audioRef);
+  });
+}
+
+function toggleSinhalaTextView() {
+  if (!hasSinhalaText.value) {
+    return;
+  }
+
+  isSinhalaTextView.value = !isSinhalaTextView.value;
+
+  if (isSinhalaTextView.value) {
+    resetAudio(audioRef);
+
+    if (isAutoPlaying.value) {
+      toggleAutoplayLogic(audioRef);
+    }
+  }
+
+  scrollVerseContentToTop();
+}
+
 function handleVerseSelected(index) {
   const shouldScrollContentToTop = isSidebarOpen.value && isMobileView();
 
+  isShowingResourcesPanel.value = false;
+  isSinhalaTextView.value = false;
   selectVerse(index);
   resetAudio(audioRef);
   closeSidebar();
@@ -194,6 +364,8 @@ function handleVerseSelected(index) {
 }
 
 function handlePrev() {
+  isShowingResourcesPanel.value = false;
+  isSinhalaTextView.value = false;
   prev();
   resetAudio(audioRef);
 
@@ -203,6 +375,8 @@ function handlePrev() {
 }
 
 function handleNext() {
+  isShowingResourcesPanel.value = false;
+  isSinhalaTextView.value = false;
   next();
   resetAudio(audioRef);
 
@@ -238,7 +412,13 @@ function toggleAutoplay() {
 }
 
 const getFontSizeIcon = () => {
-  return require("@/assets/icons/font-resize.png");
+  return getAssetUrl("icons/font-resize.png");
+};
+
+const getSinhalaToggleIcon = () => {
+  return isSinhalaTextView.value
+    ? getAssetUrl("icons/paali.png")
+    : getAssetUrl("icons/sinhala.png");
 };
 
 onMounted(() => {
@@ -252,6 +432,22 @@ onBeforeUnmount(() => {
 watch(readerFontSize, (fontSize) => {
   localStorage.setItem("reader-font-size", String(fontSize));
 });
+
+watch(isSinhalaTextView, (isSinhalaView) => {
+  localStorage.setItem("reader-sinhala-text-view", String(isSinhalaView));
+});
+
+watch(selectedVerse, () => {
+  resetActiveAudioRange();
+
+  if (isSinhalaTextView.value && !hasSinhalaText.value) {
+    isSinhalaTextView.value = false;
+  }
+
+  scrollVerseContentToTop();
+});
+
+resetActiveAudioRange();
 </script>
 
 <style>
@@ -259,17 +455,46 @@ watch(readerFontSize, (fontSize) => {
 
 body {
   margin: 0;
-  background: #490202;
+  background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family: "Noto Sans Sinhala", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
   color: #222;
+  overflow: hidden;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-container,
+.content,
+.content-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.app-container::-webkit-scrollbar,
+.content::-webkit-scrollbar,
+.content-wrapper::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* ===== Container ===== */
 .app-container {
   max-width: 1200px;
+  height: 100dvh;
   margin: 0 auto;
   padding: 7px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Layout ===== */
@@ -277,49 +502,80 @@ body {
   margin-top: 20px;
   display: flex;
   gap: 28px;
-  min-height: calc(100vh - 40px);
+  height: calc(100dvh - 34px);
+  min-height: 0;
   align-items: stretch;
 }
 
-/* ===== Cards (Sidebar + Content) ===== */
+/* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background: #fff9f1;
+  background-image: url("./assets/images/verse-content-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 8px 60px rgba(211, 194, 112, 0.39);
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 28px;
   position: relative;
-  height: calc(100vh - 80px);
-  max-height: calc(100vh - 100px);
+  height: 100%;
+  max-height: none;
   overflow: hidden;
 }
 
 /* ===== Content Controls ===== */
 .content-controls {
-  position: absolute;
-  top: 30px;
-  right: 54px;
-  z-index: 1000;
+  position: static;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0;
+  z-index: 10;
+}
+
+.content-title {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  font-size: 20px;
+  font-weight: 900;
+  color: #3b0906;
+}
+
+.content-title > div {
+  max-width: 100%;
+  text-align: center;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
-  align-items: flex-end;
+  width: auto;
+  padding-bottom: 10px;
 }
 
 .font-settings {
   position: relative;
 }
 
-.settings-btn {
+.font-settings-btn {
+  margin-top: 13%;
+}
+
+.font-settings-btn,
+.sinhala-toggle-btn {
   width: 24px;
   height: 24px;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #ffffff;
+  background-color: transparent;
   color: #6c757d;
   cursor: pointer;
   font-size: 18px;
@@ -330,10 +586,19 @@ body {
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.settings-btn:hover {
-  background: rgba(245, 135, 135, 0.13);
+.font-settings-btn:hover,
+.sinhala-toggle-btn:hover:not(:disabled) {
   color: #3b0906;
-  transform: scale(1.2);
+  transform: scale(1.25);
+}
+
+.sinhala-toggle-btn.active {
+  transform: scale(1.08);
+}
+
+.sinhala-toggle-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 .font-settings-panel {
@@ -367,29 +632,142 @@ body {
 }
 
 .font-resize-icon {
-  width: 25px;
+  width: 20px;
   height: auto;
+}
+
+.sinhala-toggle-icon {
+  width: 24px;
+  height: auto;
+}
+
+.content-wrapper {
+  border-top: 2px solid #c1956061;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.content-wrapper.blurred {
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.verse-content {
+  flex: 1;
+  min-height: 0;
+  max-width: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-scroll-controls {
+  position: absolute;
+  top: 42%;
+  right: 13px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+.reader-scroll-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(59, 9, 6, 0.14);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #3b0906;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.reader-scroll-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.reader-scroll-btn:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .reader-scroll-controls {
+    right: 13px;
+  }
+
+  .reader-scroll-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
   .app {
     flex-direction: column;
     gap: 16px;
   }
 
   .content {
-    box-shadow: 0 -10px 15px rgba(211, 194, 112, 0.2),
-      0 10px 15px rgba(211, 194, 112, 0.5),
-      -10px 0 25px rgba(211, 194, 112, 0.2),
-      10px 0 25px rgba(211, 194, 112, 0.2);
     padding: 20px;
-    height: auto;
+    height: 100%;
+    min-height: 0;
   }
 
   .content-controls {
-    top: 15px;
-    right: 15px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    flex-direction: column;
+    align-items: flex-end;
+    width: auto;
+    margin: 0;
+    justify-content: flex-start;
+    border-bottom: none;
+  }
+
+  .content-title {
+    display: none;
+  }
+
+  .controls-row {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    width: fit-content;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   .font-settings-panel {
@@ -398,25 +776,24 @@ body {
     transform: none;
   }
 
+  .font-settings-btn {
+    margin-top: 0;
+  }
+
   .content-controls.hidden-on-mobile-menu {
     display: none;
   }
-}
 
-.content-wrapper {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
+  .content-wrapper {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-top: none;
+  }
 
-.content-wrapper.blurred {
-  filter: blur(3px);
-  pointer-events: none;
-}
-
-.annotation {
-  color: #f01010;
+  .content-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
 }
 </style>
