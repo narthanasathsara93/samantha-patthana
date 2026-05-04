@@ -487,11 +487,7 @@ body,
   align-items: stretch;
 }
 
-/* ===== Cards (Sidebar + Content) =====
-background: #fff9f1;
-
-
-  background: linear-gradient(#fff9f1, #fff9f1);*/
+/* ===== Cards (Sidebar + Content) =====*/
 .content {
   background-image: url("./assets/images/verse-content-background.jpg");
   background-repeat: no-repeat;
