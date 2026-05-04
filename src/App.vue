@@ -5,10 +5,11 @@
       <!-- Sidebar -->
       <Sidebar
         :is-sidebar-open="isSidebarOpen"
-        :selected-id="currentVerseId"
+        :selected-id="isShowingResourcesPanel ? null : currentVerseId"
         :verse-index-map="verseIndexMap"
         :is-bookmarked="isBookmarked"
         @verse-selected="handleVerseSelected"
+        @show-resources="handleShowResources"
       />
 
       <!-- Content -->
@@ -16,17 +17,18 @@
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
-          :title="selectedVerseTitle"
+          :title="contentTitle"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
 
         <div
+          v-if="!isShowingResourcesPanel"
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
           <div class="content-title">
-            <div>{{ selectedVerseTitle }}</div>
+            <div>{{ contentTitle }}</div>
           </div>
 
           <div class="controls-row">
@@ -78,7 +80,11 @@
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <div class="verse-content">
+          <div v-if="isShowingResourcesPanel" class="verse-content">
+            <ResourcesPanel @close="handleCloseResourcesPanel" />
+          </div>
+
+          <div v-else class="verse-content">
             <VerseContent
               ref="verseContentRef"
               :title="selectedVerseTitle"
@@ -91,9 +97,8 @@
             />
           </div>
 
-          <!-- Audio -->
           <AudioPlayer
-            v-if="!isSinhalaTextView"
+            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
             ref="audioPlayerRef"
             :audio-src="selectedVerseAudio"
             :hls-src="selectedVerseHlsAudio"
@@ -104,7 +109,7 @@
         </div>
 
         <div
-          v-if="readerScrollState.isScrollable"
+          v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
           class="reader-scroll-controls"
           aria-label="Reader scroll controls"
         >
@@ -133,6 +138,7 @@
 
         <!-- Pagination -->
         <Pagination
+          v-if="!isShowingResourcesPanel"
           :current-index="currentIndex"
           :total-verses="flattenedVerses.length"
           @prev="handlePrev"
@@ -162,6 +168,7 @@ import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
+import ResourcesPanel from "./components/ResourcesPanel.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -187,6 +194,7 @@ const defaultReaderFontSize = 15;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
+const isShowingResourcesPanel = ref(false);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -206,6 +214,9 @@ const selectedVerseContent = computed(() => {
   }
 
   return selectedVerse.value.content;
+});
+const contentTitle = computed(() => {
+  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
@@ -247,7 +258,13 @@ const {
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
-const {
+const handleShowResources = () => {
+  isShowingResourcesPanel.value = true;
+};
+
+const handleCloseResourcesPanel = () => {
+  isShowingResourcesPanel.value = false;
+};const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,
@@ -331,6 +348,7 @@ function toggleSinhalaTextView() {
 function handleVerseSelected(index) {
   const shouldScrollContentToTop = isSidebarOpen.value && isMobileView();
 
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   selectVerse(index);
   resetAudio(audioRef);
@@ -346,6 +364,7 @@ function handleVerseSelected(index) {
 }
 
 function handlePrev() {
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   prev();
   resetAudio(audioRef);
@@ -356,6 +375,7 @@ function handlePrev() {
 }
 
 function handleNext() {
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   next();
   resetAudio(audioRef);
