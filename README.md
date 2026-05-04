@@ -28,16 +28,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### TODO
 
-mobile view top and bottom highlight shadow
-floating or fixed audio section mobile view
-resize font size
-fix bookmark icon reset
-scroll bar for pc and mobile
-contact us
+when audio player is currently paused or havent started, if use touch, click any section, no need to play the audio..
 
 
 
 ### DONE
 
-mobile view side menu not scrollable
-separate scrolls for left and right sides
