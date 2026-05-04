@@ -244,6 +244,7 @@ onBeforeUnmount(() => {
 
 /* List */
 .sidebar ul {
+  margin-left: -4%;
   list-style: none;
   padding: 0 28px;
   overflow-y: auto;
@@ -270,7 +271,7 @@ onBeforeUnmount(() => {
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
-  color: #330505;
+  color: #c63100
 }
 
 .sidebar > ul > li.bookmarked > .verse-row {
@@ -313,7 +314,7 @@ onBeforeUnmount(() => {
   background: rgba(141, 138, 138, 0.2);
   border-radius: 20px;
   transform: scale(1.013);
-  color: #c63100;
+  color: #330505;
 }
 
 .verse-title {

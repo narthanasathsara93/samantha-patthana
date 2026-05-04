@@ -473,7 +473,7 @@ background: #fff9f1;
   display: flex;
   justify-content: center;
   min-width: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 900;
   color: #3b0906;
 }
