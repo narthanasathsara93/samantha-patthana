@@ -43,7 +43,7 @@
       >
         <svg
           class="contact-icon"
-          viewBox="0 0 24 24"
+          viewBox="0 2 24 24"
           aria-hidden="true"
           focusable="false"
         >
@@ -89,6 +89,24 @@
           />
         </svg>
       </a>
+      <button
+        class="contact-link"
+        type="button"
+        aria-label="Resources"
+        title="Resources"
+        @click="handleResourcesClick"
+      >
+        <svg
+          class="contact-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm2 2v12h12V6H6Zm2 2h8v2H8V8Zm0 4h8v2H8v-2Z"
+          />
+        </svg>
+      </button>
       <a
         class="contact-link"
         :href="youtubeUrl"
@@ -139,7 +157,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["verse-selected"]);
+const emit = defineEmits(["verse-selected", "show-resources"]);
 const facebookUrl = "https://www.facebook.com/profile.php?id=100090170766015";
 const emailAddress = "egodahayanno123@gmail.com";
 const emailHref = `mailto:${emailAddress}`;
@@ -185,6 +203,10 @@ const handleEmailClick = (event) => {
   navigator.clipboard.writeText(emailAddress).then(showEmailCopiedFeedback);
 };
 
+const handleResourcesClick = () => {
+  emit("show-resources");
+};
+
 const getImage = (img) => {
   return getAssetUrl(img);
 };
@@ -211,7 +233,7 @@ onBeforeUnmount(() => {
 .sidebar {
   width: 300px;
   padding: 10px 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
   background-image: url("../assets/images/side-menu-background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -226,9 +248,9 @@ onBeforeUnmount(() => {
 
 .sidebar-header {
   display: flex;
-  flex-direction: column; /* stack vertically */
-  align-items: center; /* horizontal center */
-  justify-content: center; /* vertical center (if height exists) */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   gap: 6px;
 }
@@ -271,7 +293,7 @@ onBeforeUnmount(() => {
 }
 
 .sidebar > ul > li.active > .verse-row > .verse-title {
-  color: #c63100
+  color: #c63100;
 }
 
 .sidebar > ul > li.bookmarked > .verse-row {
@@ -353,8 +375,7 @@ onBeforeUnmount(() => {
 
 .contact-link {
   width: 34px;
-  height: 34px;
-  border-radius: 50%;
+  height: 34px;  border: none;  border-radius: 36%;
   display: inline-flex;
   align-items: center;
   justify-content: center;

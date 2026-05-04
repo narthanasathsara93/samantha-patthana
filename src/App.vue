@@ -5,10 +5,11 @@
       <!-- Sidebar -->
       <Sidebar
         :is-sidebar-open="isSidebarOpen"
-        :selected-id="currentVerseId"
+        :selected-id="isShowingResourcesPanel ? null : currentVerseId"
         :verse-index-map="verseIndexMap"
         :is-bookmarked="isBookmarked"
         @verse-selected="handleVerseSelected"
+        @show-resources="handleShowResources"
       />
 
       <!-- Content -->
@@ -16,17 +17,18 @@
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
-          :title="selectedVerseTitle"
+          :title="contentTitle"
           @toggle-sidebar="toggleSidebar"
           @toggle-bookmark="handleToggleBookmark"
         />
 
         <div
+          v-if="!isShowingResourcesPanel"
           class="content-controls"
           :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
         >
           <div class="content-title">
-            <div>{{ selectedVerseTitle }}</div>
+            <div>{{ contentTitle }}</div>
           </div>
 
           <div class="controls-row">
@@ -78,49 +80,57 @@
         </div>
 
         <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <div class="verse-content">
+          <div v-if="isShowingResourcesPanel" class="verse-content">
+            <ResourcesPanel @close="handleCloseResourcesPanel" />
+          </div>
+
+          <div v-else class="verse-content">
             <VerseContent
               ref="verseContentRef"
               :title="selectedVerseTitle"
               :content="selectedVerseContent"
+              :audio-sections="selectedVerseAudioSections"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
+              @play-section="handlePlayAudioSection"
               @scroll-state-change="handleReaderScrollState"
             />
           </div>
 
-          <div
-            v-if="readerScrollState.isScrollable"
-            class="reader-scroll-controls"
-            aria-label="Reader scroll controls"
-          >
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll up"
-              :disabled="!readerScrollState.canScrollUp"
-              @click="scrollVerseContent(-1)"
-            >
-              &uarr;
-            </button>
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll down"
-              :disabled="!readerScrollState.canScrollDown"
-              @click="scrollVerseContent(1)"
-            >
-              &darr;
-            </button>
-          </div>
-
-          <!-- Audio -->
           <AudioPlayer
-            v-if="!isSinhalaTextView"
+            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
             ref="audioPlayerRef"
-            :audio-src="selectedVerse.audio"
+            :audio-src="selectedVerseAudio"
+            :hls-src="selectedVerseHlsAudio"
+            :start-at="activeAudioStartAt"
+            :end-at="activeAudioEndAt"
             @audio-ended="handleAudioEnded"
           />
+        </div>
+
+        <div
+          v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
+          class="reader-scroll-controls"
+          aria-label="Reader scroll controls"
+        >
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll up"
+            :disabled="!readerScrollState.canScrollUp"
+            @click="scrollVerseContent(-1)"
+          >
+            &uarr;
+          </button>
+          <button
+            class="reader-scroll-btn"
+            type="button"
+            aria-label="Scroll down"
+            :disabled="!readerScrollState.canScrollDown"
+            @click="scrollVerseContent(1)"
+          >
+            &darr;
+          </button>
         </div>
 
         <!-- Overlay -->
@@ -128,6 +138,7 @@
 
         <!-- Pagination -->
         <Pagination
+          v-if="!isShowingResourcesPanel"
           :current-index="currentIndex"
           :total-verses="flattenedVerses.length"
           @prev="handlePrev"
@@ -157,6 +168,7 @@ import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
+import ResourcesPanel from "./components/ResourcesPanel.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -165,6 +177,7 @@ import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { getAssetUrl } from "./utils/assets";
+import { audioSections } from "./data/audioSections";
 
 // Component refs
 const audioPlayerRef = ref(null);
@@ -177,10 +190,11 @@ const readerScrollState = ref({
   canScrollUp: false,
   canScrollDown: false,
 });
-const defaultReaderFontSize = 20;
+const defaultReaderFontSize = 15;
 const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
+const isShowingResourcesPanel = ref(false);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -201,6 +215,36 @@ const selectedVerseContent = computed(() => {
 
   return selectedVerse.value.content;
 });
+const contentTitle = computed(() => {
+  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
+});
+const fullAudioSrc = "";
+const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+const selectedVerseAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioSrc : selectedVerse.value?.audio;
+});
+const selectedVerseHlsAudio = computed(() => {
+  const hasAudioSection =
+    selectedVerse.value?.audioStartAt !== undefined &&
+    selectedVerse.value?.audioEndAt !== undefined;
+
+  return hasAudioSection ? fullAudioHlsSrc : "";
+});
+const activeAudioStartAt = ref(null);
+const activeAudioEndAt = ref(null);
+const selectedVerseAudioSections = computed(() => {
+  if (isSinhalaTextView.value) {
+    return [];
+  }
+
+  const sectionsKey = selectedVerse.value?.audioSectionsKey;
+
+  return sectionsKey ? audioSections[sectionsKey] || [] : [];
+});
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio();
@@ -214,7 +258,13 @@ const {
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
-const {
+const handleShowResources = () => {
+  isShowingResourcesPanel.value = true;
+};
+
+const handleCloseResourcesPanel = () => {
+  isShowingResourcesPanel.value = false;
+};const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,
@@ -262,6 +312,21 @@ function scrollVerseContent(direction) {
   verseContentRef.value?.scrollReader(direction);
 }
 
+function resetActiveAudioRange() {
+  activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
+  activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
+}
+
+function handlePlayAudioSection(section) {
+  activeAudioStartAt.value = section.startAt;
+  activeAudioEndAt.value = section.endAt;
+
+  nextTick(() => {
+    audioPlayerRef.value?.seekToSectionStart();
+    playCurrent(audioRef);
+  });
+}
+
 function toggleSinhalaTextView() {
   if (!hasSinhalaText.value) {
     return;
@@ -283,6 +348,7 @@ function toggleSinhalaTextView() {
 function handleVerseSelected(index) {
   const shouldScrollContentToTop = isSidebarOpen.value && isMobileView();
 
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   selectVerse(index);
   resetAudio(audioRef);
@@ -298,6 +364,7 @@ function handleVerseSelected(index) {
 }
 
 function handlePrev() {
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   prev();
   resetAudio(audioRef);
@@ -308,6 +375,7 @@ function handlePrev() {
 }
 
 function handleNext() {
+  isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
   next();
   resetAudio(audioRef);
@@ -370,12 +438,16 @@ watch(isSinhalaTextView, (isSinhalaView) => {
 });
 
 watch(selectedVerse, () => {
+  resetActiveAudioRange();
+
   if (isSinhalaTextView.value && !hasSinhalaText.value) {
     isSinhalaTextView.value = false;
   }
 
   scrollVerseContentToTop();
 });
+
+resetActiveAudioRange();
 </script>
 
 <style>
@@ -435,11 +507,7 @@ body,
   align-items: stretch;
 }
 
-/* ===== Cards (Sidebar + Content) =====
-background: #fff9f1;
-
-
-  background: linear-gradient(#fff9f1, #fff9f1);*/
+/* ===== Cards (Sidebar + Content) =====*/
 .content {
   background-image: url("./assets/images/verse-content-background.jpg");
   background-repeat: no-repeat;
@@ -620,7 +688,7 @@ background: #fff9f1;
 .reader-scroll-controls {
   position: absolute;
   top: 42%;
-  right: 4px;
+  right: 13px;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -656,7 +724,7 @@ background: #fff9f1;
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .reader-scroll-controls {
-    right: 0;
+    right: 13px;
   }
 
   .reader-scroll-btn {

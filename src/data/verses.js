@@ -4,14 +4,19 @@ export const verses = [
     title: "නමස්කාරය",
     englishName: "namaskaraya",
     showVerseTitle: true,
-    sinhalaTitle:"නමස්කාරය",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
-    content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස !!!<br><br>
+    audioStartAt: `00:00`,
+    audioEndAt: `01:30`,
+    audioSectionsKey: "verse-1",
+    sinhalaTitle: "නමස්කාරය",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br>
+    නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br>
+    නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br><br>
 
 විචිත්තමතිගම්භීර<br>
 මනන්තනයමණ්ඩිතං<br>
 පට්ඨානං සම්මසන්තස්ස<br>
-විමලාමිතබුද්ධියා<br>
+විමලාමිතබුද්ධියා<br><br>
 
 යස්ස දේහා නික්ඛමිංසු<br>
 සුභා ඡබ්බණ්ණරංසියෝ<br>
@@ -20,8 +25,8 @@ export const verses = [
 
 තං ලෝකනාථං සුගතං<br>
 ධම්මඤ්ච ජිනසේවිතං<br>
-සංඝං නිරංගණං<br>
-සෙට්ඨං නමාමි සිරසාදරං`,
+සංඝං නිරංගණං සෙට්ඨං<br>
+නමාමි සිරසාදරං`,
     audio: "/audios/audio-01.mp3",
   },
   {
@@ -29,8 +34,11 @@ export const verses = [
     title: "උද්දෙස පාලි",
     englishName: "uddesapali",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `01:31`,
+    audioEndAt: `02:42`,
+    audioSectionsKey: "verse-2",
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `හේතුපච්චයෝ ආරම්මණපච්චයෝ<br>
 අධිපතිපච්චයෝ අනන්තරපච්චයෝ<br>
 සමනන්තරපච්චයෝ සහජාතපච්චයෝ<br>
@@ -50,8 +58,10 @@ export const verses = [
     title: "හේතුපච්චයෝ’ති",
     englishName: "hethupacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"හේතු ප්‍රත්‍ය",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `02:43`,
+    audioEndAt: `03:19`,
+    sinhalaTitle: "හේතු ප්‍රත්‍ය",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `හේතූ හේතුසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
 හේතුපච්චයේන පච්චයෝ.<br><br>
@@ -67,8 +77,10 @@ export const verses = [
     title: "ආරම්මණපච්චයෝ’ති",
     englishName: "arammanapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"ආරම්මණ ප්‍රත්‍ය",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `03:20`,
+    audioEndAt: `05:59`,
+    sinhalaTitle: "ආරම්මණ ප්‍රත්‍ය",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `<div class="verse-box">රූපායතනං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මාන<br>
 ආරම්මණපච්චයේන පච්චයෝ.
@@ -118,8 +130,10 @@ export const verses = [
     title: "අධිපතිපච්චයෝ’ති",
     englishName: "adhipatipacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `06:01`,
+    audioEndAt: `07:45`,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඡන්දාධිපති<br>
     ඡන්දසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
@@ -157,8 +171,10 @@ export const verses = [
     title: "අනන්තරපච්චයෝ’ති",
     englishName: "anantharapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `07:46`,
+    audioEndAt: `13:07`,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
 තං සම්පයුත්තකාච ධම්මා මනෝධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
@@ -270,8 +286,10 @@ export const verses = [
     title: "සමනන්තරපච්චයෝ’ති",
     englishName: "samanantharapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `13:08`,
+    audioEndAt: `18:28`,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
 තං සම්පයුත්තකාච ධම්මා මනෝධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
@@ -379,8 +397,10 @@ export const verses = [
     title: "සහජාතපච්චයෝ’ති",
     englishName: "sahajathapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: `18:29`,
+    audioEndAt: `19:50`,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං<br>
 සහජාතපච්චයේන පච්චයෝ.<br><br>
 
@@ -415,8 +435,10 @@ export const verses = [
     title: "අඤ්ඤමඤ්ඤපච්චයෝ’ති",
     englishName: "annyamanyapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ<br>
 අඤ්ඤමඤ්ඤපච්චයේන පච්චයෝ.<br><br>
 
@@ -437,8 +459,10 @@ export const verses = [
     title: "නිස්සයපච්චයෝ’ති",
     englishName: "nissayapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං<br>
 නිස්සයපච්චයේන පච්චයෝ.<br><br>
 
@@ -492,8 +516,10 @@ export const verses = [
     title: "උපනිස්සයපච්චයෝ’ති",
     englishName: "upanissayapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පුරිමා පුරිමා කුසලා ධම්මා<br>
     පච්ඡිමානං පච්ඡිමානං<br>
 කුසලානං ධම්මානං<br>
@@ -548,8 +574,10 @@ export const verses = [
     title: "පුරේජාතපච්චයෝ’ති",
     englishName: "purejathapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛායතනං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං <br>
 පුරේජාතපච්චයේන පච්චයෝ.<br><br>
@@ -616,8 +644,10 @@ export const verses = [
     title: "පච්ඡාජාතපච්චයෝ’ති",
     englishName: "pachchajathapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පච්ඡාජාතා චිත්තචේතසිකා ධම්මා<br>
 පුරේජාතස්ස ඉමස්ස කායස්ස<br>
 පච්ඡාජාතපච්චයේන පච්චයෝ.<br><br>
@@ -633,8 +663,10 @@ export const verses = [
     title: "ආසේවනපච්චයෝ’ති",
     englishName: "asevanapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `පුරිමා පුරිමා කුසලා ධම්මා<br>
 පච්ඡිමානං පච්ඡිමානං කුසලානං ධම්මානං<br>
 ආසේවනපච්චයේන පච්චයෝ.<br><br>
@@ -658,8 +690,10 @@ export const verses = [
     title: "කම්මපච්චයෝ’ති",
     englishName: "kammapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `කුසලාකුසලං කම්මං විපාකානං ඛන්ධානං <br>
     කටත්තා ච රූපානං<br>
 කම්මපච්චයේන පච්චයෝ.<br><br>
@@ -679,8 +713,10 @@ export const verses = [
     title: "විපාකපච්චයෝ’ති",
     englishName: "wipakapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `විපාකා චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං විපාකපච්චයේන පච්චයෝ.<br><br>
 
@@ -695,8 +731,10 @@ export const verses = [
     title: "ආහාරපච්චයෝ’ති",
     englishName: "aharapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `කබලිංකාරෝ ආහාරෝ ඉමස්ස කායස්ස<br>
 ආහාරපච්චයේන පච්චයෝ.<br><br>
 
@@ -715,8 +753,10 @@ export const verses = [
     title: "ඉන්ද්‍රියපච්චයෝ’ති",
     englishName: "indryapacchayo",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චක්ඛුන්ද්‍රියං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
 ඉන්ද්‍රියපච්චයේන පච්චයෝ.<br><br>
@@ -756,8 +796,10 @@ export const verses = [
     title: "ඣානපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඣානංගානි ඣානසම්පයුත්තකානං ධම්මානං<br>
 තං සමුුට්ඨානානඤ්ච රූපානං<br>
 ඣානපච්චයේන පච්චයෝ.<br><br>
@@ -773,8 +815,10 @@ export const verses = [
     title: "මග්ගපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `මග්ගංගානි මග්ගසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
 මග්ගපච්චයේන පච්චයෝ.<br><br>
@@ -790,8 +834,10 @@ export const verses = [
     title: "සම්පයුත්තපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
     අඤ්ඤමඤ්ඤං සම්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -806,8 +852,10 @@ export const verses = [
     title: "විප්පයුත්තපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `රූපිනෝ ධම්මා අරූපීනං ධම්මානං<br>
 විප්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -825,8 +873,10 @@ export const verses = [
     title: "අත්ථිපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං අත්ථිපච්චයේන පච්චයෝ.<br><br>
 
@@ -905,8 +955,10 @@ export const verses = [
     title: "නත්ථිපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `සමනන්තරනිරුද්ධා චිත්තචේතසිකා ධම්මා<br>
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං<br>
 නත්ථිපච්චයේන පච්චයෝ.<br><br>
@@ -922,8 +974,10 @@ export const verses = [
     title: "විගතපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `සමනන්තරවිගතා චිත්තචේතසිකා ධම්මා<br>
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං<br>
 විගතපච්චයේන පච්චයෝ.<br><br>
@@ -939,8 +993,10 @@ export const verses = [
     title: "අවිගතපච්චයෝ’ති",
     englishName: "",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං අවිගතපච්චයේන පච්චයෝ.<br><br>
 
@@ -1030,8 +1086,10 @@ export const verses = [
     title: "පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
-    sinhalaTitle:"Sinhala Title",
-    sinhalaText:"ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    audioStartAt: 0,
+    audioEndAt: 30,
+    sinhalaTitle: "Sinhala Title",
+    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඝටීකාරෝ බ්‍රහ්මරාජා<br>
 ඉමං පුඤ්ඤානුමෝදතු!<br>
 සනංකුමාරෝ බ්‍රහ්මරාජා<br>
