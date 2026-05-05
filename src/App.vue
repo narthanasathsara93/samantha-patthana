@@ -94,6 +94,7 @@
               :audio-sections="selectedVerseAudioSections"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
+              :sinhala-view-on="isSinhalaTextView"
               @play-section="handlePlayAudioSection"
               @scroll-state-change="handleReaderScrollState"
             />

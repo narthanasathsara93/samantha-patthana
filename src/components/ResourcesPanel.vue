@@ -5,7 +5,7 @@
     <div class="resources-panel-body">
       <a :href="youtubeUrlND" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
-        පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ<br>
+        පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ<br />
         (නිර්වාණ ද්වාර යූටියුබ් නාලිකාව)
       </a>
     </div>
@@ -23,19 +23,34 @@
         පට්ටානය අනුහස් අවසන් සංස්කරණය
       </a>
     </div>
-
     <div class="resources-panel-body">
-      <a :href="pindeemaUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
-        පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි<br>
-        (දේව පුණ්‍යානුමෝදනාව)
+      <a
+        :href="pattanaNayaTipitakaLk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        පට්ඨාන නය - අභිධර්ම චන්ද්‍රිකාව - pitaka.lk <br />
+        (සිංහල අර්ථ)
       </a>
     </div>
 
     <div class="resources-panel-body">
-      <a :href="pattanaWandanawaTipitakaLk" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="pattanaWandanawaTipitakaLk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
-       සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
+        සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
+      </a>
+    </div>
+
+    <div class="resources-panel-body">
+      <a :href="pindeemaUrl" target="_blank" rel="noopener noreferrer">
+        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
+        පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි<br />
+        (දේව පුණ්‍යානුමෝදනාව)
       </a>
     </div>
 
@@ -52,6 +67,8 @@ const googleDriveUrl =
   "https://drive.google.com/drive/folders/12SewlKCZrcYMpxcw5MOJ7UmJaUn9JY9e?usp=drive_link";
 const pattanaAnuhasUrl = "https://shorturl.at/yVofN";
 const pattanaWandanawaTipitakaLk = "https://tipitaka.lk/library/1012";
+const pattanaNayaTipitakaLk =
+  "https://pitaka.lk/books/abhidharma-chandrikava/9-11.html";
 
 const getIcon = (icon) => {
   return getAssetUrl(icon);

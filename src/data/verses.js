@@ -8,7 +8,7 @@ export const verses = [
     audioEndAt: `01:30`,
     audioSectionsKey: "verse-1",
     sinhalaTitle: "නමස්කාරය",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTextKey: "verse-1",
     content: `නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br>
     නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br>
     නමෝ තස්ස භගවතෝ අරහතෝ සම්මාසම්බුද්ධස්ස පට්ඨානදේසකස්ස!<br><br>
@@ -37,8 +37,8 @@ export const verses = [
     audioStartAt: `01:31`,
     audioEndAt: `02:42`,
     audioSectionsKey: "verse-2",
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "උද්දෙස පාලිය",
+    sinhalaTextKey: "verse-2",
     content: `හේතුපච්චයෝ ආරම්මණපච්චයෝ<br>
 අධිපතිපච්චයෝ අනන්තරපච්චයෝ<br>
 සමනන්තරපච්චයෝ සහජාතපච්චයෝ<br>
@@ -60,8 +60,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `02:43`,
     audioEndAt: `03:19`,
-    sinhalaTitle: "හේතු ප්‍රත්‍ය",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "හේතු ප‍්‍රත්‍යය යනු",
+    sinhalaTextKey: "verse-3",
     content: `හේතූ හේතුසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
 හේතුපච්චයේන පච්චයෝ.<br><br>
@@ -80,7 +80,7 @@ export const verses = [
     audioStartAt: `03:20`,
     audioEndAt: `05:59`,
     sinhalaTitle: "ආරම්මණ ප්‍රත්‍ය",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTextKey: "verse-4",
     content: `<div class="verse-box">රූපායතනං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මාන<br>
 ආරම්මණපච්චයේන පච්චයෝ.
@@ -132,8 +132,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `06:01`,
     audioEndAt: `07:45`,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "අධිපති ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-5",
     content: `ඡන්දාධිපති<br>
     ඡන්දසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
@@ -173,8 +173,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `07:46`,
     audioEndAt: `13:07`,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "අනන්තර ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-6",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
 තං සම්පයුත්තකාච ධම්මා මනෝධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
@@ -288,8 +288,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `13:08`,
     audioEndAt: `18:28`,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "සමනන්තර ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-7",
     content: `චක්ඛුවිඤ්ඤාණධාතු<br>
 තං සම්පයුත්තකාච ධම්මා මනෝධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
@@ -399,8 +399,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: `18:29`,
     audioEndAt: `19:50`,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "සහජාත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-8",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං<br>
 සහජාතපච්චයේන පච්චයෝ.<br><br>
 
@@ -437,8 +437,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "අඤ්ඤමඤ්ඤ ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-9",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ<br>
 අඤ්ඤමඤ්ඤපච්චයේන පච්චයෝ.<br><br>
 
@@ -461,8 +461,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "නිස්සය ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-10",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ අඤ්ඤමඤ්ඤං<br>
 නිස්සයපච්චයේන පච්චයෝ.<br><br>
 
@@ -518,8 +518,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "උපනිස්සය ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-11",
     content: `පුරිමා පුරිමා කුසලා ධම්මා<br>
     පච්ඡිමානං පච්ඡිමානං<br>
 කුසලානං ධම්මානං<br>
@@ -576,8 +576,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "පුරේජාත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-12",
     content: `චක්ඛායතනං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං <br>
 පුරේජාතපච්චයේන පච්චයෝ.<br><br>
@@ -646,8 +646,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "පච්ඡාජාත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-13",
     content: `පච්ඡාජාතා චිත්තචේතසිකා ධම්මා<br>
 පුරේජාතස්ස ඉමස්ස කායස්ස<br>
 පච්ඡාජාතපච්චයේන පච්චයෝ.<br><br>
@@ -665,8 +665,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "ආසේවන ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-14",
     content: `පුරිමා පුරිමා කුසලා ධම්මා<br>
 පච්ඡිමානං පච්ඡිමානං කුසලානං ධම්මානං<br>
 ආසේවනපච්චයේන පච්චයෝ.<br><br>
@@ -692,8 +692,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "කම්ම ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-15",
     content: `කුසලාකුසලං කම්මං විපාකානං ඛන්ධානං <br>
     කටත්තා ච රූපානං<br>
 කම්මපච්චයේන පච්චයෝ.<br><br>
@@ -715,8 +715,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "විපාක ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-16",
     content: `විපාකා චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං විපාකපච්චයේන පච්චයෝ.<br><br>
 
@@ -733,8 +733,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "ආහාර ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-17",
     content: `කබලිංකාරෝ ආහාරෝ ඉමස්ස කායස්ස<br>
 ආහාරපච්චයේන පච්චයෝ.<br><br>
 
@@ -755,8 +755,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "ඉන්ද්‍රිය ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-18",
     content: `චක්ඛුන්ද්‍රියං චක්ඛුවිඤ්ඤාණධාතුයා<br>
 තං සම්පයුත්තකානඤ්ච ධම්මානං<br>
 ඉන්ද්‍රියපච්චයේන පච්චයෝ.<br><br>
@@ -798,8 +798,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "ඣාන ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-19",
     content: `ඣානංගානි ඣානසම්පයුත්තකානං ධම්මානං<br>
 තං සමුුට්ඨානානඤ්ච රූපානං<br>
 ඣානපච්චයේන පච්චයෝ.<br><br>
@@ -817,8 +817,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "මග්ග ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-20",
     content: `මග්ගංගානි මග්ගසම්පයුත්තකානං ධම්මානං<br>
 තං සමුට්ඨානානඤ්ච රූපානං<br>
 මග්ගපච්චයේන පච්චයෝ.<br><br>
@@ -836,8 +836,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "සම්පයුත්ත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-21",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
     අඤ්ඤමඤ්ඤං සම්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -854,8 +854,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "විප්පයුත්ත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-22",
     content: `රූපිනෝ ධම්මා අරූපීනං ධම්මානං<br>
 විප්පයුත්තපච්චයේන පච්චයෝ.<br><br>
 
@@ -875,8 +875,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "අත්ථි ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-23",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං අත්ථිපච්චයේන පච්චයෝ.<br><br>
 
@@ -957,8 +957,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "නත්ථි ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-24",
     content: `සමනන්තරනිරුද්ධා චිත්තචේතසිකා ධම්මා<br>
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං<br>
 නත්ථිපච්චයේන පච්චයෝ.<br><br>
@@ -976,8 +976,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "විගත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-25",
     content: `සමනන්තරවිගතා චිත්තචේතසිකා ධම්මා<br>
 පටුප්පන්නානං චිත්තචේතසිකානං ධම්මානං<br>
 විගතපච්චයේන පච්චයෝ.<br><br>
@@ -995,8 +995,8 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
+    sinhalaTitle: "අවිගත ප්‍රත්‍ය යනු",
+    sinhalaTextKey: "verse-26",
     content: `චත්තාරෝ ඛන්ධා අරූපිනෝ <br>
 අඤ්ඤමඤ්ඤං අවිගතපච්චයේන පච්චයෝ.<br><br>
 
@@ -1088,7 +1088,7 @@ export const verses = [
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
-    sinhalaTitle: "Sinhala Title",
+    sinhalaTitle: "Sinhal ප්‍රත්‍ය යනු",
     content: `ඝටීකාරෝ බ්‍රහ්මරාජා<br>
 ඉමං පුඤ්ඤානුමෝදතු!<br>
 සනංකුමාරෝ බ්‍රහ්මරාජා<br>
