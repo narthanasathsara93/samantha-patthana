@@ -10,6 +10,7 @@
         :is-bookmarked="isBookmarked"
         @verse-selected="handleVerseSelected"
         @show-resources="handleShowResources"
+        @close-sidebar="closeSidebar"
       />
 
       <!-- Content -->
@@ -78,13 +79,14 @@
             </span>
           </div>
         </div>
-
-        <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <div v-if="isShowingResourcesPanel" class="verse-content">
-            <ResourcesPanel @close="handleCloseResourcesPanel" />
-          </div>
-
-          <div v-else class="verse-content">
+        <div v-if="isShowingResourcesPanel" class="verse-content">
+          <ResourcesPanel @close="handleCloseResourcesPanel" />
+        </div>
+        <div
+          v-if="!isShowingResourcesPanel"
+          :class="{ 'content-wrapper': true, blurred: isSidebarOpen }"
+        >
+          <div class="verse-content">
             <VerseContent
               ref="verseContentRef"
               :title="selectedVerseTitle"
@@ -92,6 +94,7 @@
               :audio-sections="selectedVerseAudioSections"
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
+              :sinhala-view-on="isSinhalaTextView"
               @play-section="handlePlayAudioSection"
               @scroll-state-change="handleReaderScrollState"
             />
@@ -178,6 +181,7 @@ import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
+import { sinhalaTexts } from "./data/sinhalaText";
 
 // Component refs
 const audioPlayerRef = ref(null);
@@ -198,9 +202,10 @@ const isShowingResourcesPanel = ref(false);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
-const hasSinhalaText = computed(() =>
-  Boolean(selectedVerse.value?.sinhalaText),
-);
+const hasSinhalaText = computed(() => {
+  const sinhalaTextKey = selectedVerse.value?.sinhalaTextKey;
+  return sinhalaTextKey && sinhalaTexts[sinhalaTextKey] ? true : false;
+});
 const selectedVerseTitle = computed(() => {
   if (isSinhalaTextView.value && selectedVerse.value?.sinhalaTitle) {
     return selectedVerse.value.sinhalaTitle;
@@ -210,13 +215,16 @@ const selectedVerseTitle = computed(() => {
 });
 const selectedVerseContent = computed(() => {
   if (isSinhalaTextView.value && hasSinhalaText.value) {
-    return selectedVerse.value.sinhalaText;
+    const sinhalaTextKey = selectedVerse.value?.sinhalaTextKey;
+    return sinhalaTexts[sinhalaTextKey] || selectedVerse.value.content;
   }
 
   return selectedVerse.value.content;
 });
 const contentTitle = computed(() => {
-  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
+  return isShowingResourcesPanel.value
+    ? "මූලාශ්‍ර සහ සම්පත්"
+    : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
@@ -264,7 +272,8 @@ const handleShowResources = () => {
 
 const handleCloseResourcesPanel = () => {
   isShowingResourcesPanel.value = false;
-};const {
+};
+const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,
@@ -794,6 +803,11 @@ body,
     width: 0;
     height: 0;
     display: none;
+  }
+
+  .sinhala-toggle-icon {
+    width: 22px;
+    height: auto;
   }
 }
 </style>

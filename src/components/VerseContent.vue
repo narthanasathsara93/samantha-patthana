@@ -3,13 +3,14 @@
     <div ref="readerRef" class="reader" @scroll="updateScrollState">
       <div
         v-if="audioSections.length === 0"
-        class="reader-content"
+        :class="!sinhalaViewOn ? 'reader-content' : 'sinhala-view-on'"
         :style="{ fontSize: `${fontSize}px` }"
         v-html="content"
       ></div>
       <div
         v-else
-        class="reader-content reader-content-sections"
+        :class="!sinhalaViewOn ? 'reader-content' : 'sinhala-view-on'"
+        class="reader-content-sections"
         :style="{ fontSize: `${fontSize}px` }"
       >
         <button
@@ -48,6 +49,10 @@ const props = defineProps({
   audioSections: {
     type: Array,
     default: () => [],
+  },
+  sinhalaViewOn: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -146,8 +151,12 @@ defineExpose({
 }
 
 .reader-content {
-  line-height: 160%;
   font-weight: 550;
+}
+
+.reader-content,
+.sinhala-view-on {
+  line-height: 160%;
   margin-top: 5%;
   color: #3b0906;
 }
@@ -210,7 +219,7 @@ defineExpose({
   font-size: 18px;
   line-height: 1.8;
   color: #444;
-  max-width: 720px; /* better readability */
+  max-width: 720px;
 }
 
 /* ===== Responsive ===== */
@@ -221,5 +230,16 @@ defineExpose({
   .verse-audio-section {
     border-right: 1px solid rgb(206 176 124 / 31%);
   }
+}
+</style>
+
+<style>
+.sinhala-text-url-ext {
+  color: #3b0906 !important;
+}
+
+.sinhala-text {
+  display: inline-block;
+  text-align: justify;
 }
 </style>
