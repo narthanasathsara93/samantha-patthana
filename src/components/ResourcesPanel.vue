@@ -83,6 +83,8 @@ const getIcon = (icon) => {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .resources-panel-header {
