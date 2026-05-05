@@ -425,6 +425,32 @@ const getSinhalaToggleIcon = () => {
 
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "සමන්ත පට්ඨාන වන්දනා Samantha Patthana Wandana",
+    "description": "Complete recitation and explanation of the Samanta Patthana as taught by Lord Buddha. Includes Sinhala translation, audio playback, and meditation guidance. Samantha Patthana Wandana - Buddhist scripture application.",
+    "url": window.location.origin,
+    "applicationCategory": "EducationApplication",
+    "operatingSystem": "Web Browser",
+    "author": {
+      "@type": "Organization",
+      "name": "සමන්ත පට්ඨාන වන්දනා Samantha Patthana Wandana",
+    },
+    "inLanguage": ["si", "en"],
+    "genre": ["Religion", "Buddhism", "Meditation", "Abhidamma", "Spiritual Practice"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(script);
 });
 
 onBeforeUnmount(() => {

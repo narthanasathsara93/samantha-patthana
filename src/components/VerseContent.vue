@@ -1,6 +1,7 @@
 <template>
   <div class="reader-shell">
     <div ref="readerRef" class="reader" @scroll="updateScrollState">
+      <h1 v-if="showVerseTitle && title" class="verse-title">{{ title }}</h1>
       <div
         v-if="audioSections.length === 0"
         class="reader-content"
@@ -143,6 +144,16 @@ defineExpose({
   flex: 1;
   min-height: 0;
   display: flex;
+}
+
+.verse-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #c63100;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #dfc59c73;
+  padding-bottom: 10px;
 }
 
 .reader-content {
