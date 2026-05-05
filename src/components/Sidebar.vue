@@ -116,6 +116,7 @@
 
 <script setup>
 import { onBeforeUnmount, ref } from "vue";
+import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
 
@@ -139,6 +140,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["verse-selected", "show-resources", "close-sidebar"]);
+const router = useRouter();
 const facebookUrl = "https://www.facebook.com/profile.php?id=100090170766015";
 const emailAddress = "egodahayanno123@gmail.com";
 const emailHref = `mailto:${emailAddress}`;
@@ -151,10 +153,10 @@ const isActiveVerse = (verse) => {
 };
 
 const handleVerseClick = (verse) => {
-  const index = props.verseIndexMap[verse.id];
-  if (index !== undefined) {
-    emit("verse-selected", index);
-  }
+  router.push({
+    name: verse.englishName,
+  });
+  emit("close-sidebar");
 };
 
 const isMobileContactDevice = () => {
