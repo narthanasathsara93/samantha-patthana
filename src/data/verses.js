@@ -1083,13 +1083,12 @@ export const verses = [
   },
   {
     id: "verse-27",
-    title: "පුණ්‍යානුමෝදනා",
+    title: "දේව පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
     sinhalaTitle: "Sinhala Title",
-    sinhalaText: "ඔබ මේ දකින්නේ සිංහල තේරුමයි.",
     content: `ඝටීකාරෝ බ්‍රහ්මරාජා<br>
 ඉමං පුඤ්ඤානුමෝදතු!<br>
 සනංකුමාරෝ බ්‍රහ්මරාජා<br>

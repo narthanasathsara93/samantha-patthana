@@ -10,6 +10,7 @@
         :is-bookmarked="isBookmarked"
         @verse-selected="handleVerseSelected"
         @show-resources="handleShowResources"
+        @close-sidebar="closeSidebar"
       />
 
       <!-- Content -->
@@ -216,7 +217,7 @@ const selectedVerseContent = computed(() => {
   return selectedVerse.value.content;
 });
 const contentTitle = computed(() => {
-  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
+  return isShowingResourcesPanel.value ? "මූලාශ්‍ර සහ සම්පත්" : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
