@@ -31,6 +31,14 @@
         (දේව පුණ්‍යානුමෝදනාව)
       </a>
     </div>
+
+    <div class="resources-panel-body">
+      <a :href="pattanaWandanawaTipitakaLk" target="_blank" rel="noopener noreferrer">
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+       සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
+      </a>
+    </div>
+
     <div class="empty">.</div>
   </section>
 </template>
@@ -43,6 +51,7 @@ const pindeemaUrl = "https://youtu.be/bPM8dwdJ174?si=7EjVVPRNOX3X71oS&t=5582";
 const googleDriveUrl =
   "https://drive.google.com/drive/folders/12SewlKCZrcYMpxcw5MOJ7UmJaUn9JY9e?usp=drive_link";
 const pattanaAnuhasUrl = "https://shorturl.at/yVofN";
+const pattanaWandanawaTipitakaLk = "https://tipitaka.lk/library/1012";
 
 const getIcon = (icon) => {
   return getAssetUrl(icon);

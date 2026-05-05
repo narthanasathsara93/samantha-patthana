@@ -76,7 +76,7 @@
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Google Form"
-        title="ගූගල් ෆෝරමය"
+        title="ඔබේ ප්‍රතිචාර"
       >
         <svg
           class="contact-icon"
@@ -92,7 +92,7 @@
       <button
         class="contact-link"
         type="button"
-        aria-label="මූලාශ්‍ර වෙත"
+        aria-label="Resources"
         title="මූලාශ්‍ර වෙත"
         @click="handleResourcesClick"
       >
