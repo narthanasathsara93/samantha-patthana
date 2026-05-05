@@ -79,13 +79,11 @@
             </span>
           </div>
         </div>
-
-        <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
-          <div v-if="isShowingResourcesPanel" class="verse-content">
-            <ResourcesPanel @close="handleCloseResourcesPanel" />
-          </div>
-
-          <div v-else class="verse-content">
+        <div v-if="isShowingResourcesPanel" class="verse-content">
+          <ResourcesPanel @close="handleCloseResourcesPanel" />
+        </div>
+        <div v-if="!isShowingResourcesPanel" :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
+          <div class="verse-content">
             <VerseContent
               ref="verseContentRef"
               :title="selectedVerseTitle"
@@ -217,7 +215,9 @@ const selectedVerseContent = computed(() => {
   return selectedVerse.value.content;
 });
 const contentTitle = computed(() => {
-  return isShowingResourcesPanel.value ? "මූලාශ්‍ර සහ සම්පත්" : selectedVerseTitle.value;
+  return isShowingResourcesPanel.value
+    ? "මූලාශ්‍ර සහ සම්පත්"
+    : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
@@ -265,7 +265,8 @@ const handleShowResources = () => {
 
 const handleCloseResourcesPanel = () => {
   isShowingResourcesPanel.value = false;
-};const {
+};
+const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,

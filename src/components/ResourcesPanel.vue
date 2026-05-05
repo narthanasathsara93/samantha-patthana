@@ -1,9 +1,11 @@
 <template>
   <section class="resources-panel">
+    <div class="resources-panel-header">භාවිතා කල මූලාශ්‍ර සහ සම්පත්</div>
+
     <div class="resources-panel-body">
       <a :href="youtubeUrlND" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
-        පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ
+        පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ<br>
         (නිර්වාණ ද්වාර යූටියුබ් නාලිකාව)
       </a>
     </div>
@@ -25,8 +27,8 @@
     <div class="resources-panel-body">
       <a :href="pindeemaUrl" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
-        පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි (දේව
-        පුණ්‍යානුමෝදනාව)
+        පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි<br>
+        (දේව පුණ්‍යානුමෝදනාව)
       </a>
     </div>
     <div class="empty">.</div>
@@ -49,11 +51,22 @@ const getIcon = (icon) => {
 
 <style scoped>
 .resources-panel {
-  padding: 24px;
+  width: 100%;
+  padding: 20px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.resources-panel-header {
+  color: #3b0906;
+  font-size: 20px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .resources-back-btn {
@@ -87,7 +100,7 @@ const getIcon = (icon) => {
   gap: 12px;
   border-radius: 16px;
   color: #3b0906;
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -116,6 +129,15 @@ const getIcon = (icon) => {
   }
   .resources-panel-body a {
     font-size: 14px;
+  }
+
+  .resources-panel-header {
+    display: none;
+  }
+
+  .resources-panel {
+    width: 110%;
+    padding: 20px;
   }
 }
 </style>
