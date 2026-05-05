@@ -34,7 +34,7 @@
 
           <div class="controls-row">
             <AutoplayButton
-              v-if="!isSinhalaTextView"
+              v-if="!isSinhalaTextView && route.name !== 'punyanumodana'"
               :is-auto-playing="isAutoPlaying"
               @toggle-autoplay="toggleAutoplay"
             />
@@ -101,7 +101,7 @@
           </div>
 
           <AudioPlayer
-            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
+            v-if="!isShowingResourcesPanel && !isSinhalaTextView && route.name !== 'punyanumodana'"
             ref="audioPlayerRef"
             :audio-src="selectedVerseAudio"
             :hls-src="selectedVerseHlsAudio"
@@ -161,6 +161,7 @@ import {
   onBeforeUnmount,
   watch,
 } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -262,7 +263,6 @@ const {
   selectedVerse,
   selectVerse,
   next,
-  prev,
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
@@ -280,6 +280,8 @@ const {
 } = useAutoplay(playCurrent);
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
+const route = useRoute();
+const router = useRouter();
 
 // Load bookmarks on app start
 loadBookmarks();
@@ -375,22 +377,28 @@ function handleVerseSelected(index) {
 function handlePrev() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  prev();
-  resetAudio(audioRef);
-
-  if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200);
+  
+  if (currentIndex.value > 0) {
+    const prevVerse = flattenedVerses.value[currentIndex.value - 1];
+    if (prevVerse) {
+      router.push({
+        name: prevVerse.englishName,
+      });
+    }
   }
 }
 
 function handleNext() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  next();
-  resetAudio(audioRef);
-
-  if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200);
+  
+  if (currentIndex.value < flattenedVerses.value.length - 1) {
+    const nextVerse = flattenedVerses.value[currentIndex.value + 1];
+    if (nextVerse) {
+      router.push({
+        name: nextVerse.englishName,
+      });
+    }
   }
 }
 
@@ -455,6 +463,23 @@ watch(selectedVerse, () => {
 
   scrollVerseContentToTop();
 });
+
+// Watch route changes and select verse accordingly
+watch(
+  () => route.meta.verseId,
+  (verseId) => {
+    if (verseId) {
+      const verseIndex = flattenedVerses.value.findIndex((v) => v.id === verseId);
+      if (verseIndex !== -1) {
+        isShowingResourcesPanel.value = false;
+        isSinhalaTextView.value = false;
+        selectVerse(verseIndex);
+        resetAudio(audioRef);
+      }
+    }
+  },
+  { immediate: true }
+);
 
 resetActiveAudioRange();
 </script>
