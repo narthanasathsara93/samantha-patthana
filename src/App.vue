@@ -242,6 +242,7 @@ const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
+let autoplayControlsHideTimer = null;
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -597,6 +598,13 @@ function toggleMobileLowerControls() {
   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
 }
 
+function clearAutoplayControlsHideTimer() {
+  if (autoplayControlsHideTimer) {
+    clearTimeout(autoplayControlsHideTimer);
+    autoplayControlsHideTimer = null;
+  }
+}
+
 function handleDocumentClick(event) {
   if (!isFontSettingsOpen.value) {
     return;
@@ -609,6 +617,16 @@ function handleDocumentClick(event) {
 
 function toggleAutoplay() {
   toggleAutoplayLogic(audioRef);
+
+  clearAutoplayControlsHideTimer();
+
+  if (isAutoPlaying.value && isMobileView()) {
+    autoplayControlsHideTimer = setTimeout(() => {
+      if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
+        toggleMobileLowerControls();
+      }
+    }, 3500);
+  }
 }
 
 const getFontSizeIcon = () => {
@@ -641,6 +659,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  clearAutoplayControlsHideTimer();
   document.removeEventListener("click", handleDocumentClick);
   document.removeEventListener("touchstart", handlePullReloadStart);
   document.removeEventListener("touchmove", handlePullReloadMove);
