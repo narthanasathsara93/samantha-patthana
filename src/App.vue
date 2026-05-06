@@ -88,6 +88,7 @@
         <div v-if="isShowingResourcesPanel" class="verse-content">
           <ResourcesPanel @close="handleCloseResourcesPanel" />
         </div>
+
         <div
           v-if="!isShowingResourcesPanel"
           :class="{
@@ -153,6 +154,7 @@
         </div>
 
         <button
+          v-if="!isShowingResourcesPanel"
           class="lower-controls-toggle"
           type="button"
           :class="
