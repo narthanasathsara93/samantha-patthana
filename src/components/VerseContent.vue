@@ -16,9 +16,11 @@
         <button
           v-for="(section, index) in audioSections"
           :key="`${section.startAt}-${section.endAt}-${index}`"
+          ref="sectionRefs"
           class="verse-audio-section"
+          :class="{ active: index === activeAudioSectionIndex }"
           type="button"
-          @click="$emit('play-section', section)"
+          @click="$emit('play-section', section, index)"
           v-html="section.content"
         ></button>
       </div>
@@ -50,6 +52,10 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  activeAudioSectionIndex: {
+    type: Number,
+    default: -1,
+  },
   sinhalaViewOn: {
     type: Boolean,
     default: false,
@@ -59,6 +65,7 @@ const props = defineProps({
 const emit = defineEmits(["scroll-state-change", "play-section"]);
 
 const readerRef = ref(null);
+const sectionRefs = ref([]);
 const isScrollable = ref(false);
 const canScrollUp = ref(false);
 const canScrollDown = ref(false);
@@ -104,6 +111,13 @@ function scrollToTop() {
   });
 }
 
+function scrollToAudioSection(index) {
+  sectionRefs.value[index]?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+}
+
 function syncScrollState() {
   nextTick(updateScrollState);
 }
@@ -132,6 +146,7 @@ watch(
 defineExpose({
   scrollReader,
   scrollToTop,
+  scrollToAudioSection,
 });
 
 // const getContent = () => {
@@ -190,6 +205,13 @@ defineExpose({
   transform: translateY(-1px);
   border-radius: 20px;
 }
+
+.verse-audio-section.active {
+  color: #7a1f1f;
+  background: linear-gradient(to top, #faecd040, transparent);
+  box-shadow: 6px 8px 16px -10px rgb(216 194 157);
+}
+
 .reader {
   flex: 1;
   min-height: 0;

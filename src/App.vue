@@ -105,6 +105,7 @@
               :show-verse-title="selectedVerse.showVerseTitle"
               :font-size="readerFontSize"
               :sinhala-view-on="isSinhalaTextView"
+              :active-audio-section-index="activeAudioSectionIndex"
               @play-section="handlePlayAudioSection"
               @scroll-state-change="handleReaderScrollState"
             />
@@ -122,6 +123,7 @@
             :start-at="activeAudioStartAt"
             :end-at="activeAudioEndAt"
             @audio-ended="handleAudioEnded"
+            @audio-timeupdate="handleAudioTimeUpdate"
           />
         </div>
 
@@ -237,6 +239,7 @@ const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
+const activeAudioSectionIndex = ref(-1);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -362,11 +365,13 @@ function scrollVerseContent(direction) {
 function resetActiveAudioRange() {
   activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
+  activeAudioSectionIndex.value = -1;
 }
 
-function handlePlayAudioSection(section) {
+function handlePlayAudioSection(section, index = -1) {
   activeAudioStartAt.value = section.startAt;
   activeAudioEndAt.value = section.endAt;
+  activeAudioSectionIndex.value = index;
 
   nextTick(() => {
     audioPlayerRef.value?.seekToSectionStart();
@@ -436,6 +441,58 @@ function handleNext() {
       });
     }
   }
+}
+
+function parseAudioTimestamp(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  const parts = String(value)
+    .trim()
+    .split(":")
+    .map((part) => Number(part));
+
+  if (parts.some((part) => !Number.isFinite(part))) {
+    return null;
+  }
+
+  return parts.reduce((total, part) => total * 60 + part, 0);
+}
+
+function getAudioSectionIndex(currentTime) {
+  return selectedVerseAudioSections.value.findIndex((section) => {
+    const startAt = parseAudioTimestamp(section.startAt);
+    const endAt = parseAudioTimestamp(section.endAt);
+
+    if (startAt === null || endAt === null) {
+      return false;
+    }
+
+    return currentTime >= startAt && currentTime < endAt;
+  });
+}
+
+function handleAudioTimeUpdate(currentTime) {
+  if (!isAutoPlaying.value || selectedVerseAudioSections.value.length === 0) {
+    return;
+  }
+
+  const sectionIndex = getAudioSectionIndex(currentTime);
+
+  if (sectionIndex === -1 || sectionIndex === activeAudioSectionIndex.value) {
+    return;
+  }
+
+  activeAudioSectionIndex.value = sectionIndex;
+
+  nextTick(() => {
+    verseContentRef.value?.scrollToAudioSection(sectionIndex);
+  });
 }
 
 function handleAutoplayNext() {

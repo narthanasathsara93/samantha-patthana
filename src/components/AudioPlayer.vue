@@ -42,7 +42,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["audio-ended"]);
+const emit = defineEmits(["audio-ended", "audio-timeupdate"]);
 
 const sectionStart = computed(() => parseTimestamp(props.startAt));
 const sectionEnd = computed(() => parseTimestamp(props.endAt));
@@ -141,7 +141,13 @@ function handlePlay() {
 }
 
 function handleTimeUpdate() {
-  if (!audioRef.value || sectionEnd.value === null) {
+  if (!audioRef.value) {
+    return;
+  }
+
+  emit("audio-timeupdate", audioRef.value.currentTime);
+
+  if (sectionEnd.value === null) {
     return;
   }
 
