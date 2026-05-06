@@ -39,11 +39,12 @@
 
           <div class="controls-row">
             <AutoplayButton
-              v-if="!isSinhalaTextView && route.name !== 'punyanumodana'"
+              v-if="!isRoutePunyanumodana"
               :is-auto-playing="isAutoPlaying"
               @toggle-autoplay="toggleAutoplay"
             />
             <button
+              v-if="!isRoutePunyanumodana"
               class="sinhala-toggle-btn"
               type="button"
               :class="{ active: isSinhalaTextView }"
@@ -331,6 +332,7 @@ const pullToReload = {
   isTracking: false,
 };
 
+const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -1061,8 +1063,8 @@ body,
     opacity: 1;
     overflow: hidden;
     transform: translateY(0);
-    transition: max-height 0.35s ease, opacity 0.25s ease,
-      transform 0.35s ease, margin 0.35s ease, padding 0.35s ease;
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.35s ease,
+      margin 0.35s ease, padding 0.35s ease;
   }
 
   .mobile-lower-controls-hidden .player,
