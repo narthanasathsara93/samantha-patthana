@@ -149,7 +149,9 @@
         <button
           class="lower-controls-toggle"
           type="button"
-          :class="{ active: areMobileLowerControlsVisible }"
+          :class="
+            areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
+          "
           :aria-label="
             areMobileLowerControlsVisible
               ? 'Hide audio and pagination controls'
@@ -163,7 +165,7 @@
           "
           @click="toggleMobileLowerControls"
         >
-          <img class="font-resize-icon" :src="getArrowIcon(`up`)" />
+          <img class="font-resize-icon" :src="getArrowIcon()" />
         </button>
 
         <!-- Overlay -->
@@ -473,10 +475,10 @@ const getSinhalaToggleIcon = () => {
     : getAssetUrl("icons/sinhala.png");
 };
 
-const getArrowIcon = (direction) => {
-  return direction === "up"
-    ? getAssetUrl("icons/arrow-up.png")
-    : getAssetUrl("icons/arrow-down.png");
+const getArrowIcon = () => {
+  return areMobileLowerControlsVisible.value
+    ? getAssetUrl("icons/arrow-down.png")
+    : getAssetUrl("icons/arrow-up.png");
 };
 
 onMounted(() => {
@@ -851,30 +853,25 @@ body,
     border-bottom: none;
   }
 
+  .toggle-up {
+    right: 2%;
+  }
+
+  .toggle-down {
+    right: 44%;
+  }
+
   .lower-controls-toggle {
     position: absolute;
-    top: 96%;
-    right: 3%;
+    top: 97%;
     z-index: 2;
     display: flex;
-    /* flex-direction: column; */
-    /* gap: 8px; */
     transform: translateY(-50%);
-    /* width: 42px; */
-    /* min-height: 24px; */
-    /* padding: 3px 6px; */
     border: 1px solid rgba(59, 9, 6, 0.16);
     border-radius: 999px;
-    /* background: rgba(255, 255, 255, 0.62); */
-    /* color: #3b0906; */
     cursor: pointer;
-    /* display: inline-flex; */
     align-items: center;
-    /* justify-content: center; */
-    /* font-size: 10px; */
-    /* font-weight: 800; */
-    /* line-height: 1; */
-    transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    transition: background 0.3s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   }
 
   .lower-controls-toggle.active {
