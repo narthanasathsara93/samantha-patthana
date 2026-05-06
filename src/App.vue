@@ -14,7 +14,12 @@
       />
 
       <!-- Content -->
-      <main class="content">
+      <main
+        class="content"
+        :class="{
+          'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+        }"
+      >
         <!-- Mobile Header -->
         <MobileHeader
           :is-bookmarked="isBookmarked(selectedVerse.id)"
@@ -55,6 +60,7 @@
               :is-bookmarked="isBookmarked(selectedVerse.id)"
               @toggle-bookmark="handleToggleBookmark"
             />
+
             <span ref="fontSettingsRef" class="font-settings">
               <button
                 class="font-settings-btn"
@@ -101,7 +107,11 @@
           </div>
 
           <AudioPlayer
-            v-if="!isShowingResourcesPanel && !isSinhalaTextView && route.name !== 'punyanumodana'"
+            v-if="
+              !isShowingResourcesPanel &&
+              !isSinhalaTextView &&
+              route.name !== 'punyanumodana'
+            "
             ref="audioPlayerRef"
             :audio-src="selectedVerseAudio"
             :hls-src="selectedVerseHlsAudio"
@@ -135,6 +145,26 @@
             &darr;
           </button>
         </div>
+
+        <button
+          class="lower-controls-toggle"
+          type="button"
+          :class="{ active: areMobileLowerControlsVisible }"
+          :aria-label="
+            areMobileLowerControlsVisible
+              ? 'Hide audio and pagination controls'
+              : 'Show audio and pagination controls'
+          "
+          :aria-pressed="areMobileLowerControlsVisible"
+          :title="
+            areMobileLowerControlsVisible
+              ? 'Hide audio and pagination controls'
+              : 'Show audio and pagination controls'
+          "
+          @click="toggleMobileLowerControls"
+        >
+          <img class="font-resize-icon" :src="getArrowIcon(`up`)" />
+        </button>
 
         <!-- Overlay -->
         <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
@@ -200,6 +230,7 @@ const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
+const areMobileLowerControlsVisible = ref(true);
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -377,7 +408,7 @@ function handleVerseSelected(index) {
 function handlePrev() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  
+
   if (currentIndex.value > 0) {
     const prevVerse = flattenedVerses.value[currentIndex.value - 1];
     if (prevVerse) {
@@ -391,7 +422,7 @@ function handlePrev() {
 function handleNext() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  
+
   if (currentIndex.value < flattenedVerses.value.length - 1) {
     const nextVerse = flattenedVerses.value[currentIndex.value + 1];
     if (nextVerse) {
@@ -412,6 +443,10 @@ function handleToggleBookmark() {
 
 function toggleFontSettings() {
   isFontSettingsOpen.value = !isFontSettingsOpen.value;
+}
+
+function toggleMobileLowerControls() {
+  areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
 }
 
 function handleDocumentClick(event) {
@@ -436,6 +471,12 @@ const getSinhalaToggleIcon = () => {
   return isSinhalaTextView.value
     ? getAssetUrl("icons/paali.png")
     : getAssetUrl("icons/sinhala.png");
+};
+
+const getArrowIcon = (direction) => {
+  return direction === "up"
+    ? getAssetUrl("icons/arrow-up.png")
+    : getAssetUrl("icons/arrow-down.png");
 };
 
 onMounted(() => {
@@ -469,7 +510,9 @@ watch(
   () => route.meta.verseId,
   (verseId) => {
     if (verseId) {
-      const verseIndex = flattenedVerses.value.findIndex((v) => v.id === verseId);
+      const verseIndex = flattenedVerses.value.findIndex(
+        (v) => v.id === verseId,
+      );
       if (verseIndex !== -1) {
         isShowingResourcesPanel.value = false;
         isSinhalaTextView.value = false;
@@ -478,7 +521,7 @@ watch(
       }
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 resetActiveAudioRange();
@@ -633,6 +676,10 @@ body,
 .sinhala-toggle-btn:disabled {
   cursor: default;
   opacity: 0.35;
+}
+
+.lower-controls-toggle {
+  display: none;
 }
 
 .font-settings-panel {
@@ -802,6 +849,42 @@ body,
     width: fit-content;
     padding-bottom: 0;
     border-bottom: none;
+  }
+
+  .lower-controls-toggle {
+    position: absolute;
+    top: 96%;
+    right: 3%;
+    z-index: 2;
+    display: flex;
+    /* flex-direction: column; */
+    /* gap: 8px; */
+    transform: translateY(-50%);
+    /* width: 42px; */
+    /* min-height: 24px; */
+    /* padding: 3px 6px; */
+    border: 1px solid rgba(59, 9, 6, 0.16);
+    border-radius: 999px;
+    /* background: rgba(255, 255, 255, 0.62); */
+    /* color: #3b0906; */
+    cursor: pointer;
+    /* display: inline-flex; */
+    align-items: center;
+    /* justify-content: center; */
+    /* font-size: 10px; */
+    /* font-weight: 800; */
+    /* line-height: 1; */
+    transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+
+  .lower-controls-toggle.active {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 12px rgba(59, 9, 6, 0.12);
+  }
+
+  .mobile-lower-controls-hidden .player,
+  .mobile-lower-controls-hidden .pagination {
+    display: none;
   }
 
   .font-settings-panel {
