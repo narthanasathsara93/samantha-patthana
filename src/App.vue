@@ -1055,9 +1055,25 @@ body,
     background-color: transparent;
   }
 
+  .content .player,
+  .content .pagination {
+    max-height: 96px;
+    opacity: 1;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: max-height 0.35s ease, opacity 0.25s ease,
+      transform 0.35s ease, margin 0.35s ease, padding 0.35s ease;
+  }
+
   .mobile-lower-controls-hidden .player,
   .mobile-lower-controls-hidden .pagination {
-    display: none;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px);
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .font-settings-panel {
