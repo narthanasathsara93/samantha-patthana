@@ -321,6 +321,12 @@ const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 const route = useRoute();
 const router = useRouter();
+const pullToReload = {
+  startX: 0,
+  startY: 0,
+  startedAtReaderTop: false,
+  isTracking: false,
+};
 
 // Load bookmarks on app start
 loadBookmarks();
@@ -346,6 +352,68 @@ function loadSinhalaTextView() {
 
 function isMobileView() {
   return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function getGestureReader(target) {
+  return target?.closest?.(".reader") || null;
+}
+
+function isPullReloadStartArea(touch) {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  return (
+    touch.clientX > width * 0.18 &&
+    touch.clientX < width * 0.82 &&
+    touch.clientY > height * 0.22 &&
+    touch.clientY < height * 0.82
+  );
+}
+
+function handlePullReloadStart(event) {
+  if (!isMobileView() || event.touches.length !== 1) {
+    pullToReload.isTracking = false;
+    return;
+  }
+
+  const touch = event.touches[0];
+  const reader = getGestureReader(event.target);
+
+  pullToReload.startX = touch.clientX;
+  pullToReload.startY = touch.clientY;
+  pullToReload.startedAtReaderTop = Boolean(reader && reader.scrollTop <= 2);
+  pullToReload.isTracking =
+    pullToReload.startedAtReaderTop && isPullReloadStartArea(touch);
+}
+
+function handlePullReloadMove(event) {
+  if (!pullToReload.isTracking || event.touches.length !== 1) {
+    return;
+  }
+
+  const touch = event.touches[0];
+  const deltaY = touch.clientY - pullToReload.startY;
+  const deltaX = Math.abs(touch.clientX - pullToReload.startX);
+
+  if (deltaY < -20 || deltaX > 70) {
+    pullToReload.isTracking = false;
+  }
+}
+
+function handlePullReloadEnd(event) {
+  if (!pullToReload.isTracking) {
+    return;
+  }
+
+  const touch = event.changedTouches[0];
+  const deltaY = touch.clientY - pullToReload.startY;
+  const deltaX = Math.abs(touch.clientX - pullToReload.startX);
+
+  pullToReload.isTracking = false;
+
+  if (deltaY > 110 && deltaY > deltaX * 1.4) {
+    window.location.reload();
+  }
 }
 
 function scrollVerseContentToTop() {
@@ -559,10 +627,22 @@ const getArrowIcon = () => {
 
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("touchstart", handlePullReloadStart, {
+    passive: true,
+  });
+  document.addEventListener("touchmove", handlePullReloadMove, {
+    passive: true,
+  });
+  document.addEventListener("touchend", handlePullReloadEnd, {
+    passive: true,
+  });
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleDocumentClick);
+  document.removeEventListener("touchstart", handlePullReloadStart);
+  document.removeEventListener("touchmove", handlePullReloadMove);
+  document.removeEventListener("touchend", handlePullReloadEnd);
 });
 
 watch(readerFontSize, (fontSize) => {
