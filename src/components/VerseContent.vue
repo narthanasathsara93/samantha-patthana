@@ -187,7 +187,7 @@ defineExpose({
   padding: 4px 12px 9px;
   width: 100%;
   border: 0;
-  background: transparent;
+  background: linear-gradient(to top, #faecd026, transparent);
   color: inherit;
   cursor: pointer;
   font: inherit;
@@ -200,7 +200,8 @@ defineExpose({
 
 .verse-audio-section:hover {
   color: #7a1f1f;
-  background: linear-gradient(to top, #faecd026, transparent);
+  background: #e8d8bd85;
+
   box-shadow: 6px 8px 16px -10px rgb(216 194 157);
   transform: translateY(-1px);
   border-radius: 20px;
@@ -250,7 +251,11 @@ defineExpose({
     font-size: 23px;
   }
   .verse-audio-section {
+    background: #e8d8bd85;
     border-right: 1px solid rgb(206 176 124 / 31%);
+  }
+  .verse-audio-section.active {
+    background: #e8d8bd85;
   }
 }
 </style>

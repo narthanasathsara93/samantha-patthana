@@ -991,8 +991,7 @@ body,
   }
 
   .mobile-lower-controls-hidden {
-    border-radius: 20px;
-    border-bottom: 1px solid #c1956061;
+    padding-bottom: 5%;
   }
 }
 </style>
