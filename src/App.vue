@@ -299,7 +299,6 @@ const {
   currentVerseId,
   selectedVerse,
   selectVerse,
-  next,
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
@@ -439,8 +438,24 @@ function handleNext() {
   }
 }
 
+function handleAutoplayNext() {
+  if (currentIndex.value < flattenedVerses.value.length - 1) {
+    const nextVerse = flattenedVerses.value[currentIndex.value + 1];
+    if (nextVerse) {
+      router.push({
+        name: nextVerse.englishName,
+      });
+    }
+  }
+}
+
 function handleAudioEnded() {
-  onAudioEnded(next, flattenedVerses.value.length, currentIndex, audioRef);
+  onAudioEnded(
+    handleAutoplayNext,
+    flattenedVerses.value.length,
+    currentIndex,
+    audioRef,
+  );
 }
 
 function handleToggleBookmark() {
