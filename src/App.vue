@@ -90,7 +90,11 @@
         </div>
         <div
           v-if="!isShowingResourcesPanel"
-          :class="{ 'content-wrapper': true, blurred: isSidebarOpen }"
+          :class="{
+            'content-wrapper': true,
+            blurred: isSidebarOpen,
+            'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+          }"
         >
           <div class="verse-content">
             <VerseContent
@@ -165,7 +169,7 @@
           "
           @click="toggleMobileLowerControls"
         >
-          <img class="font-resize-icon" :src="getArrowIcon()" />
+          <img class="arrow-up-down-icon" :src="getArrowIcon()" />
         </button>
 
         <!-- Overlay -->
@@ -714,7 +718,8 @@ body,
   text-align: right;
 }
 
-.font-resize-icon {
+.font-resize-icon,
+.arrow-up-down-icon {
   width: 20px;
   height: auto;
 }
@@ -825,6 +830,8 @@ body,
     padding: 20px;
     height: 100%;
     min-height: 0;
+    border-radius: 20px;
+    border-bottom: 1px solid #c1956061 !important;
   }
 
   .content-controls {
@@ -853,30 +860,26 @@ body,
     border-bottom: none;
   }
 
+  .toggle-down,
   .toggle-up {
-    right: 2%;
-  }
-
-  .toggle-down {
     right: 44%;
+    top: 98%;
   }
 
   .lower-controls-toggle {
     position: absolute;
-    top: 97%;
     z-index: 2;
     display: flex;
     transform: translateY(-50%);
-    border: 1px solid rgba(59, 9, 6, 0.16);
-    border-radius: 999px;
+    border: none;
+    background-color: transparent;
     cursor: pointer;
     align-items: center;
     transition: background 0.3s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   }
 
   .lower-controls-toggle.active {
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 4px 12px rgba(59, 9, 6, 0.12);
+    background-color: transparent;
   }
 
   .mobile-lower-controls-hidden .player,
@@ -913,6 +916,11 @@ body,
   .sinhala-toggle-icon {
     width: 22px;
     height: auto;
+  }
+
+  .mobile-lower-controls-hidden {
+    border-radius: 20px;
+    border-bottom: 1px solid #c1956061;
   }
 }
 </style>
