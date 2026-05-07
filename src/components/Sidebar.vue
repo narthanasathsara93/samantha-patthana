@@ -119,6 +119,7 @@ import { onBeforeUnmount, ref } from "vue";
 import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
+import { isMobileContactDevice } from "../utils/assets";
 
 const props = defineProps({
   isSidebarOpen: {
@@ -157,10 +158,6 @@ const handleVerseClick = (verse) => {
     name: verse.englishName,
   });
   emit("close-sidebar");
-};
-
-const isMobileContactDevice = () => {
-  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
 };
 
 const showEmailCopiedFeedback = () => {
