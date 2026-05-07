@@ -337,7 +337,7 @@ const pullToReload = {
 };
 
 const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
-const isHomeRoute = computed(() => route.name === "Home");
+const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 // Load bookmarks on app start
 loadBookmarks();
 
