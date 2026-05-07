@@ -88,7 +88,6 @@
         <div v-if="isShowingResourcesPanel" class="verse-content">
           <ResourcesPanel @close="handleCloseResourcesPanel" />
         </div>
-
         <div
           v-if="!isShowingResourcesPanel"
           :class="{
@@ -154,7 +153,6 @@
         </div>
 
         <button
-          v-if="!isShowingResourcesPanel"
           class="lower-controls-toggle"
           type="button"
           :class="
@@ -242,7 +240,6 @@ const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
-let autoplayControlsHideTimer = null;
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -598,13 +595,6 @@ function toggleMobileLowerControls() {
   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
 }
 
-function clearAutoplayControlsHideTimer() {
-  if (autoplayControlsHideTimer) {
-    clearTimeout(autoplayControlsHideTimer);
-    autoplayControlsHideTimer = null;
-  }
-}
-
 function handleDocumentClick(event) {
   if (!isFontSettingsOpen.value) {
     return;
@@ -617,16 +607,6 @@ function handleDocumentClick(event) {
 
 function toggleAutoplay() {
   toggleAutoplayLogic(audioRef);
-
-  clearAutoplayControlsHideTimer();
-
-  if (isAutoPlaying.value && isMobileView()) {
-    autoplayControlsHideTimer = setTimeout(() => {
-      if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
-        toggleMobileLowerControls();
-      }
-    }, 3500);
-  }
 }
 
 const getFontSizeIcon = () => {
@@ -659,7 +639,6 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  clearAutoplayControlsHideTimer();
   document.removeEventListener("click", handleDocumentClick);
   document.removeEventListener("touchstart", handlePullReloadStart);
   document.removeEventListener("touchmove", handlePullReloadMove);
@@ -1055,25 +1034,9 @@ body,
     background-color: transparent;
   }
 
-  .content .player,
-  .content .pagination {
-    max-height: 96px;
-    opacity: 1;
-    overflow: hidden;
-    transform: translateY(0);
-    transition: max-height 0.35s ease, opacity 0.25s ease,
-      transform 0.35s ease, margin 0.35s ease, padding 0.35s ease;
-  }
-
   .mobile-lower-controls-hidden .player,
   .mobile-lower-controls-hidden .pagination {
-    max-height: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(18px);
-    margin-top: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    display: none;
   }
 
   .font-settings-panel {
