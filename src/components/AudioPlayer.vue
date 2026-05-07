@@ -15,14 +15,7 @@
 
 <script setup>
 import Hls from "hls.js";
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const audioRef = ref(null);
 const hasStartedSection = ref(false);
@@ -55,7 +48,9 @@ const sectionStart = computed(() => parseTimestamp(props.startAt));
 const sectionEnd = computed(() => parseTimestamp(props.endAt));
 
 function canPlayNativeHls() {
-  return Boolean(audioRef.value?.canPlayType("application/vnd.apple.mpegurl"));
+  return Boolean(
+    audioRef.value?.canPlayType("application/vnd.apple.mpegurl"),
+  );
 }
 
 function destroyHls() {
@@ -163,10 +158,7 @@ function handleTimeUpdate() {
 
   hasStartedSection.value = true;
 
-  if (
-    hasStartedSection.value &&
-    audioRef.value.currentTime >= sectionEnd.value
-  ) {
+  if (hasStartedSection.value && audioRef.value.currentTime >= sectionEnd.value) {
     audioRef.value.pause();
     seekToSectionStart();
     emit("audio-ended");
@@ -199,7 +191,8 @@ defineExpose({
 /* ===== Audio Player ===== */
 .player {
   margin-top: 16px;
-  padding-top: 2px;
+  padding-top: 12px;
+  border-top: 2px solid #c1956061;
   position: sticky;
   bottom: 0;
   z-index: 5;
