@@ -198,9 +198,8 @@ defineExpose({
 <style scoped>
 /* ===== Audio Player ===== */
 .player {
-  border-top: 2px solid #c1956061;
   margin-top: 16px;
-  padding-top: 11px;
+  padding-top: 2px;
   position: sticky;
   bottom: 0;
   z-index: 5;
@@ -212,8 +211,7 @@ defineExpose({
 
 @media (max-width: 768px) {
   .player {
-    margin-top: -2px;
-    border-top: none;
+    margin-top: 8px;
   }
 }
 </style>

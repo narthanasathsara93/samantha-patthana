@@ -1,9 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
-import App from "../App.vue";
-import { verses } from "../data/verses";
-import Home from "@/components/Home.vue";
-
-const appTitle = "Samantha Patthana";
+import { createRouter, createWebHistory } from 'vue-router';
+import App from '../App.vue';
+import { verses } from '../data/verses';
 
 // Create route array from verses
 const verseRoutes = verses.map((verse) => ({
@@ -18,17 +15,18 @@ const verseRoutes = verses.map((verse) => ({
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: '/',
+    name: 'Home',
+    component: App,
     meta: {
-      title: "Home",
+      verseId: verses[0]?.id,
+      title: 'සමන්ත පට්ඨාන වන්දනා',
     },
   },
   ...verseRoutes,
   {
-    path: "/:pathMatch(.*)*",
-    redirect: "/",
+    path: '/:pathMatch(.*)*',
+    redirect: '/',
   },
 ];
 
@@ -40,7 +38,7 @@ const router = createRouter({
 // Watch route changes and update the verse
 router.beforeEach((to, from, next) => {
   // Set page title for SEO
-  document.title = `${to.meta.title || appTitle} - ${appTitle}`;
+  document.title = `${to.meta.title || 'සමන්ත පට්ඨාන වන්දනා'} - Samantha Patthana`;
   next();
 });
 
