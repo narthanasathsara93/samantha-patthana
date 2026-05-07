@@ -272,7 +272,7 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
-const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+const fullAudioHlsSrc = "/audios/v2/playlist.m3u8";
 const selectedVerseAudio = computed(() => {
   const hasAudioSection =
     selectedVerse.value?.audioStartAt !== undefined &&
