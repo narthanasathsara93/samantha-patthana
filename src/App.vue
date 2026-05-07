@@ -1,8 +1,6 @@
 <!-- src/App.vue -->
 <template>
-  <Transition name="page-open" mode="out-in">
-    <Home v-if="isHomeRoute" key="home" />
-    <div v-else key="reader" class="app-container">
+  <div class="app-container">
     <div class="app">
       <!-- Sidebar -->
       <Sidebar
@@ -41,12 +39,11 @@
 
           <div class="controls-row">
             <AutoplayButton
-              v-if="!isRoutePunyanumodana"
+              v-if="!isSinhalaTextView && route.name !== 'punyanumodana'"
               :is-auto-playing="isAutoPlaying"
               @toggle-autoplay="toggleAutoplay"
             />
             <button
-              v-if="!isRoutePunyanumodana"
               class="sinhala-toggle-btn"
               type="button"
               :class="{ active: isSinhalaTextView }"
@@ -192,8 +189,7 @@
         />
       </main>
     </div>
-    </div>
-  </Transition>
+  </div>
 </template>
 
 <script setup>
@@ -217,7 +213,6 @@ import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
 import ResourcesPanel from "./components/ResourcesPanel.vue";
-import Home from "./components/Home.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -276,7 +271,7 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
-const fullAudioHlsSrc = "/audios/v2/playlist.m3u8";
+const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
 const selectedVerseAudio = computed(() => {
   const hasAudioSection =
     selectedVerse.value?.audioStartAt !== undefined &&
@@ -336,8 +331,6 @@ const pullToReload = {
   isTracking: false,
 };
 
-const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
-const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -735,23 +728,6 @@ body,
   box-sizing: border-box;
 }
 
-.page-open-enter-active,
-.page-open-leave-active {
-  transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
-}
-
-.page-open-enter-from {
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(24px) scale(0.98);
-}
-
-.page-open-leave-to {
-  opacity: 0;
-  filter: blur(4px);
-  transform: translateY(-12px) scale(1.01);
-}
-
 .app-container,
 .content,
 .content-wrapper {
@@ -1085,8 +1061,8 @@ body,
     opacity: 1;
     overflow: hidden;
     transform: translateY(0);
-    transition: max-height 0.55s ease, opacity 0.25s ease, transform 0.55s ease,
-      margin 0.55s ease, padding 0.55s ease;
+    transition: max-height 0.35s ease, opacity 0.25s ease,
+      transform 0.35s ease, margin 0.35s ease, padding 0.35s ease;
   }
 
   .mobile-lower-controls-hidden .player,
