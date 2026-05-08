@@ -794,7 +794,7 @@ export const verses = [
   {
     id: "verse-19",
     title: "ඣානපච්චයෝ’ති",
-    englishName: "",
+    englishName: "jhanapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -813,7 +813,7 @@ export const verses = [
   {
     id: "verse-20",
     title: "මග්ගපච්චයෝ’ති",
-    englishName: "",
+    englishName: "maggapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -832,7 +832,7 @@ export const verses = [
   {
     id: "verse-21",
     title: "සම්පයුත්තපච්චයෝ’ති",
-    englishName: "",
+    englishName: "sampayuttapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -850,7 +850,7 @@ export const verses = [
   {
     id: "verse-22",
     title: "විප්පයුත්තපච්චයෝ’ති",
-    englishName: "",
+    englishName: "vippayuttapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -871,7 +871,7 @@ export const verses = [
   {
     id: "verse-23",
     title: "අත්ථිපච්චයෝ’ති",
-    englishName: "",
+    englishName: "atthipacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -953,7 +953,7 @@ export const verses = [
   {
     id: "verse-24",
     title: "නත්ථිපච්චයෝ’ති",
-    englishName: "",
+    englishName: "natthipacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -972,7 +972,7 @@ export const verses = [
   {
     id: "verse-25",
     title: "විගතපච්චයෝ’ති",
-    englishName: "",
+    englishName: "vigatapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
@@ -991,7 +991,7 @@ export const verses = [
   {
     id: "verse-26",
     title: "අවිගතපච්චයෝ’ති",
-    englishName: "",
+    englishName: "avigatapacchayo",
     showVerseTitle: true,
     audioStartAt: 0,
     audioEndAt: 30,
