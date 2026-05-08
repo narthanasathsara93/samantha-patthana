@@ -772,17 +772,17 @@ body,
   max-width: 1200px;
   height: 100dvh;
   margin: 0 auto;
-  padding: 7px;
+  padding: 4px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Layout ===== */
 .app {
-  margin-top: 20px;
+  margin-top: 2%;
   display: flex;
   gap: 28px;
-  height: calc(100dvh - 34px);
+  height: calc(100dvh - 22px);
   min-height: 0;
   align-items: stretch;
 }
