@@ -1,6 +1,8 @@
 <!-- src/App.vue -->
 <template>
-  <div class="app-container">
+  <Transition name="page-open" mode="out-in">
+    <Home v-if="isHomeRoute" key="home" />
+    <div v-else key="reader" class="app-container">
     <div class="app">
       <!-- Sidebar -->
       <Sidebar
@@ -39,11 +41,12 @@
 
           <div class="controls-row">
             <AutoplayButton
-              v-if="!isSinhalaTextView && route.name !== 'punyanumodana'"
+              v-if="!isRoutePunyanumodana"
               :is-auto-playing="isAutoPlaying"
               @toggle-autoplay="toggleAutoplay"
             />
             <button
+              v-if="!isRoutePunyanumodana"
               class="sinhala-toggle-btn"
               type="button"
               :class="{ active: isSinhalaTextView }"
@@ -88,6 +91,7 @@
         <div v-if="isShowingResourcesPanel" class="verse-content">
           <ResourcesPanel @close="handleCloseResourcesPanel" />
         </div>
+
         <div
           v-if="!isShowingResourcesPanel"
           :class="{
@@ -153,6 +157,7 @@
         </div>
 
         <button
+          v-if="!isShowingResourcesPanel"
           class="lower-controls-toggle"
           type="button"
           :class="
@@ -187,7 +192,8 @@
         />
       </main>
     </div>
-  </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -211,6 +217,7 @@ import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
 import ResourcesPanel from "./components/ResourcesPanel.vue";
+import Home from "./components/Home.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -240,6 +247,7 @@ const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
+let autoplayControlsHideTimer = null;
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -268,7 +276,7 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
-const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+const fullAudioHlsSrc = "/audios/v2/playlist.m3u8";
 const selectedVerseAudio = computed(() => {
   const hasAudioSection =
     selectedVerse.value?.audioStartAt !== undefined &&
@@ -328,6 +336,8 @@ const pullToReload = {
   isTracking: false,
 };
 
+const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
+const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -595,6 +605,13 @@ function toggleMobileLowerControls() {
   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
 }
 
+function clearAutoplayControlsHideTimer() {
+  if (autoplayControlsHideTimer) {
+    clearTimeout(autoplayControlsHideTimer);
+    autoplayControlsHideTimer = null;
+  }
+}
+
 function handleDocumentClick(event) {
   if (!isFontSettingsOpen.value) {
     return;
@@ -607,6 +624,16 @@ function handleDocumentClick(event) {
 
 function toggleAutoplay() {
   toggleAutoplayLogic(audioRef);
+
+  clearAutoplayControlsHideTimer();
+
+  if (isAutoPlaying.value && isMobileView()) {
+    autoplayControlsHideTimer = setTimeout(() => {
+      if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
+        toggleMobileLowerControls();
+      }
+    }, 3500);
+  }
 }
 
 const getFontSizeIcon = () => {
@@ -639,6 +666,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  clearAutoplayControlsHideTimer();
   document.removeEventListener("click", handleDocumentClick);
   document.removeEventListener("touchstart", handlePullReloadStart);
   document.removeEventListener("touchmove", handlePullReloadMove);
@@ -705,6 +733,23 @@ body,
 
 * {
   box-sizing: border-box;
+}
+
+.page-open-enter-active,
+.page-open-leave-active {
+  transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+}
+
+.page-open-enter-from {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(24px) scale(0.98);
+}
+
+.page-open-leave-to {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(-12px) scale(1.01);
 }
 
 .app-container,
@@ -1034,9 +1079,25 @@ body,
     background-color: transparent;
   }
 
+  .content .player,
+  .content .pagination {
+    max-height: 96px;
+    opacity: 1;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: max-height 0.55s ease, opacity 0.25s ease, transform 0.55s ease,
+      margin 0.55s ease, padding 0.55s ease;
+  }
+
   .mobile-lower-controls-hidden .player,
   .mobile-lower-controls-hidden .pagination {
-    display: none;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px);
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .font-settings-panel {
