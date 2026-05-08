@@ -12,7 +12,7 @@
 
     <div class="resources-panel-body">
       <a :href="googleDriveUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/google-drive.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/google_drive.png`)" />
         පට්ඨාන ධර්ම ලිපිගොනු
       </a>
     </div>

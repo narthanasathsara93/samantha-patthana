@@ -637,7 +637,7 @@ function toggleAutoplay() {
 }
 
 const getFontSizeIcon = () => {
-  return getAssetUrl("icons/font-resize.png");
+  return getAssetUrl("icons/font_resize.png");
 };
 
 const getSinhalaToggleIcon = () => {
@@ -648,8 +648,8 @@ const getSinhalaToggleIcon = () => {
 
 const getArrowIcon = () => {
   return areMobileLowerControlsVisible.value
-    ? getAssetUrl("icons/arrow-down.png")
-    : getAssetUrl("icons/arrow-up.png");
+    ? getAssetUrl("icons/arrow_down.png")
+    : getAssetUrl("icons/arrow_up.png");
 };
 
 onMounted(() => {
@@ -789,7 +789,7 @@ body,
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background-image: url("./assets/images/verse-content-background.jpg");
+  background-image: url("./assets/images/verse_content_background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 12px;

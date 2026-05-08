@@ -219,7 +219,7 @@ const goToHome = () => {
   width: 300px;
   padding: 10px 0;
   transition: transform 0.1s ease;
-  background-image: url("../assets/images/side-menu-background.jpg");
+  background-image: url("../assets/images/side_menu_background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 12px;

@@ -7,7 +7,7 @@
         අති ගම්භීර
       </div>
 
-      <img class="hero-title" :src="getImage(`images/home-title-sp.png`)" />
+      <img class="hero-title" :src="getImage(`images/main_title.png`)" />
 
       <p class="hero-description">
         සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
@@ -63,7 +63,7 @@ const getImage = (img) => {
   padding-top: 80px;
   padding-left: 24px;
   padding-right: 24px;
-  background-image: url("../assets/images/home-back.jpg");
+  background-image: url("../assets/images/main_back.jpg");
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
