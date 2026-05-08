@@ -1,13 +1,13 @@
 <template>
   <div class="home-page">
     <div class="hero-content">
-      <img class="logo-img" :src="getImage(`images/logo.png`)" />
+      <img class="logo-img" :src="logoImage" />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති<br />
         අති ගම්භීර
       </div>
 
-      <img class="hero-title" :src="getImage(`images/main_title.png`)" />
+      <img class="hero-title" :src="mainTitleImage" />
 
       <p class="hero-description">
         සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
@@ -23,16 +23,13 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { getAssetUrl } from "../utils/assets";
+import logoImage from "../assets/images/logo.png";
+import mainTitleImage from "../assets/images/main_title.png";
 
 const router = useRouter();
 
 const startChanting = () => {
   router.push({ name: "namaskaraya" });
-};
-
-const getImage = (img) => {
-  return getAssetUrl(img);
 };
 </script>
 
