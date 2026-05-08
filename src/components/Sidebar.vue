@@ -1,6 +1,6 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header">
+    <div class="sidebar-header" v-on:click="goToHome()">
       <img class="logo-img" :src="getImage(`images/logo.png`)" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
@@ -108,7 +108,7 @@
         </svg>
       </button>
       <span v-if="isEmailCopied" class="contact-feedback" role="status">
-        විද්‍යුත් තැපෑල් ලිපිනය කොපි කරගන්නා ලදී
+        විද්‍යුත් තැපෑල් ලිපිනය කොපි කරගන්නා ලදී.
       </span>
     </div>
   </aside>
@@ -119,6 +119,7 @@ import { onBeforeUnmount, ref } from "vue";
 import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
+import { isMobileContactDevice } from "../utils/util";
 
 const props = defineProps({
   isSidebarOpen: {
@@ -159,10 +160,6 @@ const handleVerseClick = (verse) => {
   emit("close-sidebar");
 };
 
-const isMobileContactDevice = () => {
-  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
-};
-
 const showEmailCopiedFeedback = () => {
   isEmailCopied.value = true;
   clearTimeout(emailCopyTimer);
@@ -197,6 +194,11 @@ const getImage = (img) => {
 onBeforeUnmount(() => {
   clearTimeout(emailCopyTimer);
 });
+
+const goToHome = () => {
+  router.push({ name: "Home" });
+  emit("close-sidebar");
+};
 </script>
 
 <style scoped>
@@ -230,21 +232,23 @@ onBeforeUnmount(() => {
 }
 
 .sidebar-header {
-  display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   text-align: center;
   gap: 6px;
-}
-
-.sidebar-header {
   display: flex;
   align-items: center;
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
   border-bottom: 2px solid #dfc59c73;
+  transition: all 0.2s ease;
+}
+
+.sidebar-header:hover {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  transform: scale(1.04);
 }
 
 /* List */
