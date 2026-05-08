@@ -32,7 +32,7 @@ defineEmits(["prev", "next"]);
   justify-content: center;
   align-items: center;
   gap: 24px;
-  padding: 14px 0;
+  padding: 5px 0;
 }
 
 .pagination span {

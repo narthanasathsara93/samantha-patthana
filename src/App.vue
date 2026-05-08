@@ -177,14 +177,14 @@
             "
             :aria-label="
               areMobileLowerControlsVisible
-                ? 'Hide audio and pagination controls'
-                : 'Show audio and pagination controls'
+                ? 'Hide audio controls'
+                : 'Show audio controls'
             "
             :aria-pressed="areMobileLowerControlsVisible"
             :title="
               areMobileLowerControlsVisible
-                ? 'Hide audio and pagination controls'
-                : 'Show audio and pagination controls'
+                ? 'Hide audio controls'
+                : 'Show audio controls'
             "
             @click="toggleMobileLowerControls"
           >
@@ -1079,8 +1079,7 @@ body,
     background-color: transparent;
   }
 
-  .content .player,
-  .content .pagination {
+  .content .player {
     max-height: 96px;
     opacity: 1;
     overflow: hidden;
@@ -1089,8 +1088,7 @@ body,
       margin 0.55s ease, padding 0.55s ease;
   }
 
-  .mobile-lower-controls-hidden .player,
-  .mobile-lower-controls-hidden .pagination {
+  .mobile-lower-controls-hidden .player {
     max-height: 0;
     opacity: 0;
     pointer-events: none;
@@ -1131,7 +1129,7 @@ body,
     height: auto;
   }
 
-  .mobile-lower-controls-hidden {
+  .content-wrapper.mobile-lower-controls-hidden {
     padding-bottom: 5%;
   }
 }
