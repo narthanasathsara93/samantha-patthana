@@ -41,7 +41,7 @@
 
             <div class="controls-row">
               <AutoplayButton
-                v-if="!isRoutePunyanumodana"
+                v-if="!isRoutePunyanumodana && !isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
                 @toggle-autoplay="toggleAutoplay"
               />
@@ -748,6 +748,7 @@ body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
+  
     "Noto Sans Sinhala",
     -apple-system,
     BlinkMacSystemFont,

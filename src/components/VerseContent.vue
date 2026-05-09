@@ -264,6 +264,7 @@ defineExpose({
 }
 
 .sinhala-text {
+  font-weight: 600;
   display: inline-block;
   text-align: justify;
 }
