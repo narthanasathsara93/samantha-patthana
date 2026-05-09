@@ -33,6 +33,7 @@ defineEmits(["prev", "next"]);
   align-items: center;
   gap: 24px;
   padding: 5px 0;
+  margin-top: 3px;
 }
 
 .pagination span {
@@ -57,4 +58,11 @@ defineEmits(["prev", "next"]);
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .pagination {
+    margin-top: 0x;
+  }
+}
+
 </style>

@@ -450,12 +450,12 @@ function resetActiveAudioRange() {
 
 function handlePlayAudioSection(section, index = -1) {
   activeAudioStartAt.value = section.startAt;
-  activeAudioEndAt.value = section.endAt;
+  // Play until the end of the verse (not just the section)
+  activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
   activeAudioSectionIndex.value = index;
 
   nextTick(() => {
-    audioPlayerRef.value?.seekToSectionStart();
-    playCurrent(audioRef);
+    audioPlayerRef.value?.playSection();
   });
 }
 
@@ -561,7 +561,8 @@ function getAudioSectionIndex(currentTime) {
 }
 
 function handleAudioTimeUpdate(currentTime) {
-  if (!isAutoPlaying.value || selectedVerseAudioSections.value.length === 0) {
+  // Update active section whenever audio is playing and we have sections
+  if (selectedVerseAudioSections.value.length === 0) {
     return;
   }
 
@@ -573,9 +574,12 @@ function handleAudioTimeUpdate(currentTime) {
 
   activeAudioSectionIndex.value = sectionIndex;
 
-  nextTick(() => {
-    verseContentRef.value?.scrollToAudioSection(sectionIndex);
-  });
+  // Only auto-scroll if autoplay is enabled
+  if (isAutoPlaying.value) {
+    nextTick(() => {
+      verseContentRef.value?.scrollToAudioSection(sectionIndex);
+    });
+  }
 }
 
 function handleAutoplayNext() {
