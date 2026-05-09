@@ -1129,8 +1129,10 @@ body,
     height: auto;
   }
 
+  /*
   .content-wrapper.mobile-lower-controls-hidden {
     padding-bottom: 5%;
   }
+  */
 }
 </style>

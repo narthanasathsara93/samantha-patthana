@@ -3,7 +3,7 @@
     <div class="hero-content">
       <img class="logo-img" :src="logoImage" />
       <div class="hero-subtitle">
-        අනන්ත නය සමන්නාගත චතුවීසති<br />
+        අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
       </div>
 
@@ -75,13 +75,14 @@ const startChanting = () => {
 }
 
 .hero-subtitle {
-  font-size: clamp(18px, 2vw, 34px);
-  line-height: 1.6;
+  font-size: 43px;
+  line-height: 1.1;
   color: #4d3124;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.4px;
   margin-bottom: 12px;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
+  font-family: "Abhaya Libre", serif !important;
 }
 
 .hero-title {
@@ -94,12 +95,12 @@ const startChanting = () => {
 }
 
 .hero-description {
-  font-size: clamp(16px, 1.4vw, 24px);
-  line-height: 1.9;
+  font-size: 27px;
   color: #5e3a2b;
   max-width: 760px;
   margin: 0 auto 42px;
   font-weight: 400;
+  font-family: "Abhaya Libre", serif !important;
 }
 
 .begin-btn {
@@ -156,12 +157,10 @@ const startChanting = () => {
 /* ================= MOBILE ================= */
 /* Desktop */
 @media (min-width: 1025px) {
-
 }
 
 /* Tablet */
 @media (max-width: 1024px) {
-
 }
 
 @media (max-width: 768px) {
@@ -178,8 +177,9 @@ const startChanting = () => {
   }
 
   .hero-subtitle {
-    font-size: 18px;
-    line-height: 1.7;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.1;
     margin-bottom: 10px;
   }
 
@@ -189,8 +189,8 @@ const startChanting = () => {
   }
 
   .hero-description {
-    font-size: 16px;
-    line-height: 1.85;
+    font-weight: 600;
+    font-size: 18px;
     margin-bottom: 34px;
   }
 
