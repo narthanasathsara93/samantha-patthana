@@ -1,7 +1,12 @@
-const assets = require.context("@/assets", true);
+const assets = import.meta.glob("../assets/**/*", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 
 export function getAssetUrl(path) {
-  const normalizedPath = path.startsWith("./") ? path : `./${path}`;
+  const normalizedPath = path.replace(/^\.?\//, "");
+  const assetPath = `../assets/${normalizedPath}`;
 
-  return assets(normalizedPath);
+  return assets[assetPath];
 }
