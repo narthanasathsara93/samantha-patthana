@@ -826,8 +826,8 @@ body,
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background-image: url("./assets/images/verse_content_background.jpg");
-  background-repeat: no-repeat;
+  background-image: url("./assets/images/verse_content_background.jpg"); 
+   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 12px;
   border: none;
@@ -860,7 +860,7 @@ body,
   min-width: 0;
   font-size: 20px;
   font-weight: 900;
-  color: #3b0906;
+  color: #0e0a0a;
 }
 
 .content-title > div {

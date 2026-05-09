@@ -166,14 +166,14 @@ defineExpose({
 }
 
 .reader-content {
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .reader-content,
 .sinhala-view-on {
   line-height: 160%;
   margin-top: 5%;
-  color: #3b0906;
+  color: #0e0a0a;
 }
 
 .reader-content-sections {
@@ -260,7 +260,7 @@ defineExpose({
 
 <style>
 .sinhala-text-url-ext {
-  color: #3b0906 !important;
+  color: #0e0a0a !important;
 }
 
 .sinhala-text {
