@@ -247,7 +247,9 @@ const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
+const isPlayerManuallyToggled = ref(false);
 let autoplayControlsHideTimer = null;
+let playerAutoHideTimer = null;
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
@@ -483,6 +485,7 @@ function handleVerseSelected(index) {
   selectVerse(index);
   resetAudio(audioRef);
   closeSidebar();
+  startPlayerAutoHideTimer();
 
   if (shouldScrollContentToTop) {
     scrollVerseContentToTop();
@@ -500,6 +503,7 @@ function handlePrev() {
   if (currentIndex.value > 0) {
     const prevVerse = flattenedVerses.value[currentIndex.value - 1];
     if (prevVerse) {
+      startPlayerAutoHideTimer();
       router.push({
         name: prevVerse.englishName,
       });
@@ -514,6 +518,7 @@ function handleNext() {
   if (currentIndex.value < flattenedVerses.value.length - 1) {
     const nextVerse = flattenedVerses.value[currentIndex.value + 1];
     if (nextVerse) {
+      startPlayerAutoHideTimer();
       router.push({
         name: nextVerse.englishName,
       });
@@ -603,6 +608,11 @@ function toggleFontSettings() {
 
 function toggleMobileLowerControls() {
   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
+  isPlayerManuallyToggled.value = true;
+  if (playerAutoHideTimer) {
+    clearTimeout(playerAutoHideTimer);
+    playerAutoHideTimer = null;
+  }
 }
 
 function clearAutoplayControlsHideTimer() {
@@ -610,6 +620,19 @@ function clearAutoplayControlsHideTimer() {
     clearTimeout(autoplayControlsHideTimer);
     autoplayControlsHideTimer = null;
   }
+}
+
+function startPlayerAutoHideTimer() {
+  isPlayerManuallyToggled.value = false;
+  if (playerAutoHideTimer) {
+    clearTimeout(playerAutoHideTimer);
+  }
+  playerAutoHideTimer = setTimeout(() => {
+    if (!isPlayerManuallyToggled.value && isMobileView() && areMobileLowerControlsVisible.value) {
+      areMobileLowerControlsVisible.value = false;
+    }
+    playerAutoHideTimer = null;
+  }, 3000);
 }
 
 function handleDocumentClick(event) {
@@ -704,6 +727,7 @@ watch(
         isSinhalaTextView.value = false;
         selectVerse(verseIndex);
         resetAudio(audioRef);
+        startPlayerAutoHideTimer();
       }
     }
   },
