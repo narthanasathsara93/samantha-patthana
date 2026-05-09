@@ -110,12 +110,13 @@ const startChanting = () => {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 18px 42px;
+  padding: 10px 30px;
   border-radius: 999px;
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #fff6e8;
-  font-size: 20px;
+  font-size: 29px;
   font-weight: 600;
+  font-family: "Abhaya Libre", serif !important;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(111, 31, 14, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -123,7 +124,7 @@ const startChanting = () => {
 }
 
 .begin-btn:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px) scale(1.05);
   box-shadow: 0 14px 34px rgba(111, 31, 14, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }

@@ -561,8 +561,8 @@ function getAudioSectionIndex(currentTime) {
 }
 
 function handleAudioTimeUpdate(currentTime) {
-  // Update active section whenever audio is playing and we have sections
-  if (selectedVerseAudioSections.value.length === 0) {
+  // Only update active section when audio is actually playing
+  if (selectedVerseAudioSections.value.length === 0 || !audioRef.value || audioRef.value.paused) {
     return;
   }
 
