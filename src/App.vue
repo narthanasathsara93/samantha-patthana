@@ -454,8 +454,7 @@ function handlePlayAudioSection(section, index = -1) {
   activeAudioSectionIndex.value = index;
 
   nextTick(() => {
-    audioPlayerRef.value?.seekToSectionStart();
-    playCurrent(audioRef);
+    audioPlayerRef.value?.playSection();
   });
 }
 

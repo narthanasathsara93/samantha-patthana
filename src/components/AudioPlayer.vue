@@ -209,6 +209,26 @@ function togglePlay() {
   }
 }
 
+function playSection() {
+  if (!audioRef.value) {
+    return;
+  }
+
+  // Set isPlaying immediately for UI feedback
+  isPlaying.value = true;
+
+  // Seek to section start if needed
+  if (isBeforeSectionStart()) {
+    seekToSectionStart();
+  }
+
+  // Play the audio
+  audioRef.value.play().catch(() => {
+    // If play fails (e.g., browser restrictions), reset isPlaying
+    isPlaying.value = false;
+  });
+}
+
 watch(
   () => [props.audioSrc, props.hlsSrc, props.startAt, props.endAt],
   () => {
@@ -230,6 +250,7 @@ onBeforeUnmount(destroyHls);
 defineExpose({
   audioRef,
   seekToSectionStart,
+  playSection,
 });
 </script>
 
