@@ -193,7 +193,7 @@ defineExpose({
   font: inherit;
   line-height: inherit;
   text-align: left;
-  border-right: 1px solid rgb(206 176 124 / 65%);
+  border-right: 1px solid rgb(206 176 124 / 47%);
   box-shadow: 10px 1px 20px -12px rgb(216 194 157);
   border-radius: 15px;
 }
