@@ -217,10 +217,8 @@ function playSection() {
   // Set isPlaying immediately for UI feedback
   isPlaying.value = true;
 
-  // Seek to section start if needed
-  if (isBeforeSectionStart()) {
-    seekToSectionStart();
-  }
+  // Always seek to section start when playing a specific section
+  seekToSectionStart();
 
   // Play the audio
   audioRef.value.play().catch(() => {
