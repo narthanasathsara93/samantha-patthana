@@ -1,152 +1,199 @@
 <!-- src/App.vue -->
 <template>
-  <div class="app-container">
-    <div class="app">
-      <!-- Sidebar -->
-      <Sidebar
-        :is-sidebar-open="isSidebarOpen"
-        :selected-id="isShowingResourcesPanel ? null : currentVerseId"
-        :verse-index-map="verseIndexMap"
-        :is-bookmarked="isBookmarked"
-        @verse-selected="handleVerseSelected"
-        @show-resources="handleShowResources"
-      />
-
-      <!-- Content -->
-      <main class="content">
-        <!-- Mobile Header -->
-        <MobileHeader
-          :is-bookmarked="isBookmarked(selectedVerse.id)"
-          :title="contentTitle"
-          @toggle-sidebar="toggleSidebar"
-          @toggle-bookmark="handleToggleBookmark"
+  <Transition name="page-open" mode="out-in">
+    <Home v-if="isHomeRoute" key="home" />
+    <div v-else key="reader" class="app-container">
+      <div class="app">
+        <!-- Sidebar -->
+        <Sidebar
+          :is-sidebar-open="isSidebarOpen"
+          :selected-id="isShowingResourcesPanel ? null : currentVerseId"
+          :verse-index-map="verseIndexMap"
+          :is-bookmarked="isBookmarked"
+          @verse-selected="handleVerseSelected"
+          @show-resources="handleShowResources"
+          @close-sidebar="closeSidebar"
         />
 
-        <div
-          v-if="!isShowingResourcesPanel"
-          class="content-controls"
-          :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
+        <!-- Content -->
+        <main
+          class="content"
+          :class="{
+            'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+          }"
         >
-          <div class="content-title">
-            <div>{{ contentTitle }}</div>
-          </div>
+          <!-- Mobile Header -->
+          <MobileHeader
+            :is-bookmarked="isBookmarked(selectedVerse.id)"
+            :title="contentTitle"
+            @toggle-sidebar="toggleSidebar"
+            @toggle-bookmark="handleToggleBookmark"
+          />
 
-          <div class="controls-row">
-            <AutoplayButton
-              v-if="!isSinhalaTextView"
-              :is-auto-playing="isAutoPlaying"
-              @toggle-autoplay="toggleAutoplay"
-            />
-            <button
-              class="sinhala-toggle-btn"
-              type="button"
-              :class="{ active: isSinhalaTextView }"
-              :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
-              @click="toggleSinhalaTextView"
-            >
-              <img
-                class="sinhala-toggle-icon"
-                :src="getSinhalaToggleIcon()"
-                alt=""
+          <div
+            v-if="!isShowingResourcesPanel"
+            class="content-controls"
+            :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
+          >
+            <div class="content-title">
+              <div>{{ contentTitle }}</div>
+            </div>
+
+            <div class="controls-row">
+              <AutoplayButton
+                v-if="!isRoutePunyanumodana"
+                :is-auto-playing="isAutoPlaying"
+                @toggle-autoplay="toggleAutoplay"
               />
-            </button>
-            <BookmarkButton
-              :is-bookmarked="isBookmarked(selectedVerse.id)"
-              @toggle-bookmark="handleToggleBookmark"
-            />
-            <span ref="fontSettingsRef" class="font-settings">
               <button
-                class="font-settings-btn"
+                v-if="!isRoutePunyanumodana"
+                class="sinhala-toggle-btn"
                 type="button"
-                title="අක්ෂර විශාලනය"
-                @click="toggleFontSettings"
+                :class="{ active: isSinhalaTextView }"
+                :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
+                @click="toggleSinhalaTextView"
               >
-                <img class="font-resize-icon" :src="getFontSizeIcon()" />
-              </button>
-              <div v-if="isFontSettingsOpen" class="font-settings-panel">
-                <input
-                  v-model.number="readerFontSize"
-                  class="font-size-slider"
-                  type="range"
-                  min="10"
-                  max="30"
-                  step="1"
-                  aria-label="Verse content font size"
+                <img
+                  class="sinhala-toggle-icon"
+                  :src="getSinhalaToggleIcon()"
+                  alt=""
                 />
-                <span class="font-size-value">{{ readerFontSize }}px</span>
-              </div>
-            </span>
-          </div>
-        </div>
+              </button>
+              <BookmarkButton
+                :is-bookmarked="isBookmarked(selectedVerse.id)"
+                @toggle-bookmark="handleToggleBookmark"
+              />
 
-        <div :class="{ 'content-wrapper': true, blurred: isSidebarOpen }">
+              <span ref="fontSettingsRef" class="font-settings">
+                <button
+                  class="font-settings-btn"
+                  type="button"
+                  title="අක්ෂර විශාලනය"
+                  @click="toggleFontSettings"
+                >
+                  <img class="font-resize-icon" :src="getFontSizeIcon()" />
+                </button>
+                <div v-if="isFontSettingsOpen" class="font-settings-panel">
+                  <input
+                    v-model.number="readerFontSize"
+                    class="font-size-slider"
+                    type="range"
+                    min="10"
+                    max="30"
+                    step="1"
+                    aria-label="Verse content font size"
+                  />
+                  <span class="font-size-value">{{ readerFontSize }}px</span>
+                </div>
+              </span>
+            </div>
+          </div>
           <div v-if="isShowingResourcesPanel" class="verse-content">
             <ResourcesPanel @close="handleCloseResourcesPanel" />
           </div>
 
-          <div v-else class="verse-content">
-            <VerseContent
-              ref="verseContentRef"
-              :title="selectedVerseTitle"
-              :content="selectedVerseContent"
-              :audio-sections="selectedVerseAudioSections"
-              :show-verse-title="selectedVerse.showVerseTitle"
-              :font-size="readerFontSize"
-              @play-section="handlePlayAudioSection"
-              @scroll-state-change="handleReaderScrollState"
+          <div
+            v-if="!isShowingResourcesPanel"
+            :class="{
+              'content-wrapper': true,
+              blurred: isSidebarOpen,
+              'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+            }"
+          >
+            <div class="verse-content">
+              <VerseContent
+                ref="verseContentRef"
+                :title="selectedVerseTitle"
+                :content="selectedVerseContent"
+                :audio-sections="selectedVerseAudioSections"
+                :show-verse-title="selectedVerse.showVerseTitle"
+                :font-size="readerFontSize"
+                :sinhala-view-on="isSinhalaTextView"
+                :active-audio-section-index="activeAudioSectionIndex"
+                @play-section="handlePlayAudioSection"
+                @scroll-state-change="handleReaderScrollState"
+              />
+            </div>
+
+            <AudioPlayer
+              v-if="
+                !isShowingResourcesPanel &&
+                !isSinhalaTextView &&
+                route.name !== 'punyanumodana'
+              "
+              ref="audioPlayerRef"
+              :audio-src="selectedVerseAudio"
+              :hls-src="selectedVerseHlsAudio"
+              :start-at="activeAudioStartAt"
+              :end-at="activeAudioEndAt"
+              @audio-ended="handleAudioEnded"
+              @audio-timeupdate="handleAudioTimeUpdate"
             />
           </div>
 
-          <AudioPlayer
-            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
-            ref="audioPlayerRef"
-            :audio-src="selectedVerseAudio"
-            :hls-src="selectedVerseHlsAudio"
-            :start-at="activeAudioStartAt"
-            :end-at="activeAudioEndAt"
-            @audio-ended="handleAudioEnded"
+          <div
+            v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
+            class="reader-scroll-controls"
+            aria-label="Reader scroll controls"
+          >
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll up"
+              :disabled="!readerScrollState.canScrollUp"
+              @click="scrollVerseContent(-1)"
+            >
+              &uarr;
+            </button>
+            <button
+              class="reader-scroll-btn"
+              type="button"
+              aria-label="Scroll down"
+              :disabled="!readerScrollState.canScrollDown"
+              @click="scrollVerseContent(1)"
+            >
+              &darr;
+            </button>
+          </div>
+
+          <!-- Overlay -->
+          <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+
+          <!-- Pagination -->
+          <Pagination
+            v-if="!isShowingResourcesPanel"
+            :current-index="currentIndex"
+            :total-verses="flattenedVerses.length"
+            @prev="handlePrev"
+            @next="handleNext"
           />
-        </div>
 
-        <div
-          v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
-          class="reader-scroll-controls"
-          aria-label="Reader scroll controls"
-        >
           <button
-            class="reader-scroll-btn"
+            v-if="!isShowingResourcesPanel"
+            class="lower-controls-toggle"
             type="button"
-            aria-label="Scroll up"
-            :disabled="!readerScrollState.canScrollUp"
-            @click="scrollVerseContent(-1)"
+            :class="
+              areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
+            "
+            :aria-label="
+              areMobileLowerControlsVisible
+                ? 'Hide audio controls'
+                : 'Show audio controls'
+            "
+            :aria-pressed="areMobileLowerControlsVisible"
+            :title="
+              areMobileLowerControlsVisible
+                ? 'Hide audio controls'
+                : 'Show audio controls'
+            "
+            @click="toggleMobileLowerControls"
           >
-            &uarr;
+            <img class="arrow-up-down-icon" :src="getArrowIcon()" />
           </button>
-          <button
-            class="reader-scroll-btn"
-            type="button"
-            aria-label="Scroll down"
-            :disabled="!readerScrollState.canScrollDown"
-            @click="scrollVerseContent(1)"
-          >
-            &darr;
-          </button>
-        </div>
-
-        <!-- Overlay -->
-        <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
-
-        <!-- Pagination -->
-        <Pagination
-          v-if="!isShowingResourcesPanel"
-          :current-index="currentIndex"
-          :total-verses="flattenedVerses.length"
-          @prev="handlePrev"
-          @next="handleNext"
-        />
-      </main>
+        </main>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -158,6 +205,7 @@ import {
   onBeforeUnmount,
   watch,
 } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -169,6 +217,7 @@ import VerseContent from "./components/VerseContent.vue";
 import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
 import ResourcesPanel from "./components/ResourcesPanel.vue";
+import Home from "./components/Home.vue";
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -178,6 +227,7 @@ import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
+import { sinhalaTexts } from "./data/sinhalaText";
 
 // Component refs
 const audioPlayerRef = ref(null);
@@ -195,12 +245,16 @@ const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
+const areMobileLowerControlsVisible = ref(true);
+const activeAudioSectionIndex = ref(-1);
+let autoplayControlsHideTimer = null;
 
 // Computed audio ref
 const audioRef = computed(() => audioPlayerRef.value?.audioRef);
-const hasSinhalaText = computed(() =>
-  Boolean(selectedVerse.value?.sinhalaText),
-);
+const hasSinhalaText = computed(() => {
+  const sinhalaTextKey = selectedVerse.value?.sinhalaTextKey;
+  return sinhalaTextKey && sinhalaTexts[sinhalaTextKey] ? true : false;
+});
 const selectedVerseTitle = computed(() => {
   if (isSinhalaTextView.value && selectedVerse.value?.sinhalaTitle) {
     return selectedVerse.value.sinhalaTitle;
@@ -210,13 +264,16 @@ const selectedVerseTitle = computed(() => {
 });
 const selectedVerseContent = computed(() => {
   if (isSinhalaTextView.value && hasSinhalaText.value) {
-    return selectedVerse.value.sinhalaText;
+    const sinhalaTextKey = selectedVerse.value?.sinhalaTextKey;
+    return sinhalaTexts[sinhalaTextKey] || selectedVerse.value.content;
   }
 
   return selectedVerse.value.content;
 });
 const contentTitle = computed(() => {
-  return isShowingResourcesPanel.value ? "Resources" : selectedVerseTitle.value;
+  return isShowingResourcesPanel.value
+    ? "මූලාශ්‍ර සහ සම්පත්"
+    : selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
@@ -253,8 +310,6 @@ const {
   currentVerseId,
   selectedVerse,
   selectVerse,
-  next,
-  prev,
   verseIndexMap: verseIndexMap,
   flattenedVerses,
 } = useNavigation();
@@ -264,14 +319,25 @@ const handleShowResources = () => {
 
 const handleCloseResourcesPanel = () => {
   isShowingResourcesPanel.value = false;
-};const {
+};
+const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
   onAudioEnded,
 } = useAutoplay(playCurrent);
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
+const route = useRoute();
+const router = useRouter();
+const pullToReload = {
+  startX: 0,
+  startY: 0,
+  startedAtReaderTop: false,
+  isTracking: false,
+};
 
+const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
+const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -298,6 +364,68 @@ function isMobileView() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
 
+function getGestureReader(target) {
+  return target?.closest?.(".reader") || null;
+}
+
+function isPullReloadStartArea(touch) {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  return (
+    touch.clientX > width * 0.18 &&
+    touch.clientX < width * 0.82 &&
+    touch.clientY > height * 0.22 &&
+    touch.clientY < height * 0.82
+  );
+}
+
+function handlePullReloadStart(event) {
+  if (!isMobileView() || event.touches.length !== 1) {
+    pullToReload.isTracking = false;
+    return;
+  }
+
+  const touch = event.touches[0];
+  const reader = getGestureReader(event.target);
+
+  pullToReload.startX = touch.clientX;
+  pullToReload.startY = touch.clientY;
+  pullToReload.startedAtReaderTop = Boolean(reader && reader.scrollTop <= 2);
+  pullToReload.isTracking =
+    pullToReload.startedAtReaderTop && isPullReloadStartArea(touch);
+}
+
+function handlePullReloadMove(event) {
+  if (!pullToReload.isTracking || event.touches.length !== 1) {
+    return;
+  }
+
+  const touch = event.touches[0];
+  const deltaY = touch.clientY - pullToReload.startY;
+  const deltaX = Math.abs(touch.clientX - pullToReload.startX);
+
+  if (deltaY < -20 || deltaX > 70) {
+    pullToReload.isTracking = false;
+  }
+}
+
+function handlePullReloadEnd(event) {
+  if (!pullToReload.isTracking) {
+    return;
+  }
+
+  const touch = event.changedTouches[0];
+  const deltaY = touch.clientY - pullToReload.startY;
+  const deltaX = Math.abs(touch.clientX - pullToReload.startX);
+
+  pullToReload.isTracking = false;
+
+  if (deltaY > 110 && deltaY > deltaX * 1.4) {
+    window.location.reload();
+  }
+}
+
 function scrollVerseContentToTop() {
   nextTick(() => {
     verseContentRef.value?.scrollToTop();
@@ -315,11 +443,13 @@ function scrollVerseContent(direction) {
 function resetActiveAudioRange() {
   activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
+  activeAudioSectionIndex.value = -1;
 }
 
-function handlePlayAudioSection(section) {
+function handlePlayAudioSection(section, index = -1) {
   activeAudioStartAt.value = section.startAt;
   activeAudioEndAt.value = section.endAt;
+  activeAudioSectionIndex.value = index;
 
   nextTick(() => {
     audioPlayerRef.value?.seekToSectionStart();
@@ -366,27 +496,101 @@ function handleVerseSelected(index) {
 function handlePrev() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  prev();
-  resetAudio(audioRef);
 
-  if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200);
+  if (currentIndex.value > 0) {
+    const prevVerse = flattenedVerses.value[currentIndex.value - 1];
+    if (prevVerse) {
+      router.push({
+        name: prevVerse.englishName,
+      });
+    }
   }
 }
 
 function handleNext() {
   isShowingResourcesPanel.value = false;
   isSinhalaTextView.value = false;
-  next();
-  resetAudio(audioRef);
 
-  if (isAutoPlaying.value) {
-    setTimeout(() => playCurrent(audioRef), 200);
+  if (currentIndex.value < flattenedVerses.value.length - 1) {
+    const nextVerse = flattenedVerses.value[currentIndex.value + 1];
+    if (nextVerse) {
+      router.push({
+        name: nextVerse.englishName,
+      });
+    }
+  }
+}
+
+function parseAudioTimestamp(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  const parts = String(value)
+    .trim()
+    .split(":")
+    .map((part) => Number(part));
+
+  if (parts.some((part) => !Number.isFinite(part))) {
+    return null;
+  }
+
+  return parts.reduce((total, part) => total * 60 + part, 0);
+}
+
+function getAudioSectionIndex(currentTime) {
+  return selectedVerseAudioSections.value.findIndex((section) => {
+    const startAt = parseAudioTimestamp(section.startAt);
+    const endAt = parseAudioTimestamp(section.endAt);
+
+    if (startAt === null || endAt === null) {
+      return false;
+    }
+
+    return currentTime >= startAt && currentTime < endAt;
+  });
+}
+
+function handleAudioTimeUpdate(currentTime) {
+  if (!isAutoPlaying.value || selectedVerseAudioSections.value.length === 0) {
+    return;
+  }
+
+  const sectionIndex = getAudioSectionIndex(currentTime);
+
+  if (sectionIndex === -1 || sectionIndex === activeAudioSectionIndex.value) {
+    return;
+  }
+
+  activeAudioSectionIndex.value = sectionIndex;
+
+  nextTick(() => {
+    verseContentRef.value?.scrollToAudioSection(sectionIndex);
+  });
+}
+
+function handleAutoplayNext() {
+  if (currentIndex.value < flattenedVerses.value.length - 1) {
+    const nextVerse = flattenedVerses.value[currentIndex.value + 1];
+    if (nextVerse) {
+      router.push({
+        name: nextVerse.englishName,
+      });
+    }
   }
 }
 
 function handleAudioEnded() {
-  onAudioEnded(next, flattenedVerses.value.length, currentIndex, audioRef);
+  onAudioEnded(
+    handleAutoplayNext,
+    flattenedVerses.value.length,
+    currentIndex,
+    audioRef,
+  );
 }
 
 function handleToggleBookmark() {
@@ -395,6 +599,17 @@ function handleToggleBookmark() {
 
 function toggleFontSettings() {
   isFontSettingsOpen.value = !isFontSettingsOpen.value;
+}
+
+function toggleMobileLowerControls() {
+  areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
+}
+
+function clearAutoplayControlsHideTimer() {
+  if (autoplayControlsHideTimer) {
+    clearTimeout(autoplayControlsHideTimer);
+    autoplayControlsHideTimer = null;
+  }
 }
 
 function handleDocumentClick(event) {
@@ -409,10 +624,20 @@ function handleDocumentClick(event) {
 
 function toggleAutoplay() {
   toggleAutoplayLogic(audioRef);
+
+  clearAutoplayControlsHideTimer();
+
+  if (isAutoPlaying.value && isMobileView()) {
+    autoplayControlsHideTimer = setTimeout(() => {
+      if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
+        toggleMobileLowerControls();
+      }
+    }, 3500);
+  }
 }
 
 const getFontSizeIcon = () => {
-  return getAssetUrl("icons/font-resize.png");
+  return getAssetUrl("icons/font_resize.png");
 };
 
 const getSinhalaToggleIcon = () => {
@@ -421,12 +646,31 @@ const getSinhalaToggleIcon = () => {
     : getAssetUrl("icons/sinhala.png");
 };
 
+const getArrowIcon = () => {
+  return areMobileLowerControlsVisible.value
+    ? getAssetUrl("icons/arrow_down.png")
+    : getAssetUrl("icons/arrow_up.png");
+};
+
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("touchstart", handlePullReloadStart, {
+    passive: true,
+  });
+  document.addEventListener("touchmove", handlePullReloadMove, {
+    passive: true,
+  });
+  document.addEventListener("touchend", handlePullReloadEnd, {
+    passive: true,
+  });
 });
 
 onBeforeUnmount(() => {
+  clearAutoplayControlsHideTimer();
   document.removeEventListener("click", handleDocumentClick);
+  document.removeEventListener("touchstart", handlePullReloadStart);
+  document.removeEventListener("touchmove", handlePullReloadMove);
+  document.removeEventListener("touchend", handlePullReloadEnd);
 });
 
 watch(readerFontSize, (fontSize) => {
@@ -446,6 +690,25 @@ watch(selectedVerse, () => {
 
   scrollVerseContentToTop();
 });
+
+// Watch route changes and select verse accordingly
+watch(
+  () => route.meta.verseId,
+  (verseId) => {
+    if (verseId) {
+      const verseIndex = flattenedVerses.value.findIndex(
+        (v) => v.id === verseId,
+      );
+      if (verseIndex !== -1) {
+        isShowingResourcesPanel.value = false;
+        isSinhalaTextView.value = false;
+        selectVerse(verseIndex);
+        resetAudio(audioRef);
+      }
+    }
+  },
+  { immediate: true },
+);
 
 resetActiveAudioRange();
 </script>
@@ -472,6 +735,23 @@ body,
   box-sizing: border-box;
 }
 
+.page-open-enter-active,
+.page-open-leave-active {
+  transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+}
+
+.page-open-enter-from {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(24px) scale(0.98);
+}
+
+.page-open-leave-to {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(-12px) scale(1.01);
+}
+
 .app-container,
 .content,
 .content-wrapper {
@@ -492,24 +772,24 @@ body,
   max-width: 1200px;
   height: 100dvh;
   margin: 0 auto;
-  padding: 7px;
+  padding: 4px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Layout ===== */
 .app {
-  margin-top: 20px;
+  margin-top: 2%;
   display: flex;
   gap: 28px;
-  height: calc(100dvh - 34px);
+  height: calc(100dvh - 22px);
   min-height: 0;
   align-items: stretch;
 }
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background-image: url("./assets/images/verse-content-background.jpg");
+  background-image: url("./assets/images/verse_content_background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 12px;
@@ -601,6 +881,10 @@ body,
   opacity: 0.35;
 }
 
+.lower-controls-toggle {
+  display: none;
+}
+
 .font-settings-panel {
   position: absolute;
   top: 50%;
@@ -631,7 +915,8 @@ body,
   text-align: right;
 }
 
-.font-resize-icon {
+.font-resize-icon,
+.arrow-up-down-icon {
   width: 20px;
   height: auto;
 }
@@ -742,6 +1027,8 @@ body,
     padding: 20px;
     height: 100%;
     min-height: 0;
+    border-radius: 20px;
+    border-bottom: 1px solid #c1956061 !important;
   }
 
   .content-controls {
@@ -770,6 +1057,47 @@ body,
     border-bottom: none;
   }
 
+  .toggle-down,
+  .toggle-up {
+    right: 44%;
+    top: 98%;
+  }
+
+  .lower-controls-toggle {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    align-items: center;
+    transition: background 0.3s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+
+  .lower-controls-toggle.active {
+    background-color: transparent;
+  }
+
+  .content .player {
+    max-height: 96px;
+    opacity: 1;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: max-height 0.55s ease, opacity 0.25s ease, transform 0.55s ease,
+      margin 0.55s ease, padding 0.55s ease;
+  }
+
+  .mobile-lower-controls-hidden .player {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px);
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .font-settings-panel {
     right: 0;
     top: 34px;
@@ -795,5 +1123,16 @@ body,
     height: 0;
     display: none;
   }
+
+  .sinhala-toggle-icon {
+    width: 22px;
+    height: auto;
+  }
+
+  /*
+  .content-wrapper.mobile-lower-controls-hidden {
+    padding-bottom: 5%;
+  }
+  */
 }
 </style>
