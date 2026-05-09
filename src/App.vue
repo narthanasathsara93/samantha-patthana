@@ -719,8 +719,13 @@ resetActiveAudioRange();
 body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
-  font-family: "Noto Sans Sinhala", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Noto Sans Sinhala",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   color: #222;
   overflow: hidden;
 }
@@ -737,7 +742,10 @@ body,
 
 .page-open-enter-active,
 .page-open-leave-active {
-  transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    filter 0.45s ease;
 }
 
 .page-open-enter-from {
@@ -779,10 +787,10 @@ body,
 
 /* ===== Layout ===== */
 .app {
-  margin-top: 2%;
+  margin-top: 1%;
   display: flex;
   gap: 28px;
-  height: calc(100dvh - 22px);
+  height: calc(100dvh - 29px);
   min-height: 0;
   align-items: stretch;
 }
@@ -863,7 +871,10 @@ body,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .font-settings-btn:hover,
@@ -993,7 +1004,10 @@ body,
   font-size: 13px;
   line-height: 1;
   box-shadow: 0 4px 12px rgba(59, 9, 6, 0.14);
-  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .reader-scroll-btn:hover:not(:disabled) {
@@ -1021,6 +1035,11 @@ body,
   .app {
     flex-direction: column;
     gap: 16px;
+    margin-top: 2%;
+    display: flex;
+    height: calc(100dvh - 22px);
+    min-height: 0;
+    align-items: stretch;
   }
 
   .content {
@@ -1072,7 +1091,10 @@ body,
     background-color: transparent;
     cursor: pointer;
     align-items: center;
-    transition: background 0.3s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    transition:
+      background 0.3s ease,
+      box-shadow 0.2s ease,
+      opacity 0.2s ease;
   }
 
   .lower-controls-toggle.active {
@@ -1084,8 +1106,12 @@ body,
     opacity: 1;
     overflow: hidden;
     transform: translateY(0);
-    transition: max-height 0.55s ease, opacity 0.25s ease, transform 0.55s ease,
-      margin 0.55s ease, padding 0.55s ease;
+    transition:
+      max-height 0.55s ease,
+      opacity 0.25s ease,
+      transform 0.55s ease,
+      margin 0.55s ease,
+      padding 0.55s ease;
   }
 
   .mobile-lower-controls-hidden .player {
