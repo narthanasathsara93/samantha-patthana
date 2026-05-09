@@ -24,7 +24,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
-import mainTitleImage from "../assets/images/main_title.png";
+import mainTitleImage from "../assets/images/titletxt.png";
 
 const router = useRouter();
 
