@@ -1,15 +1,25 @@
 <template>
   <div class="player">
-    <audio
-      ref="audioRef"
-      :src="resolvedAudioSrc"
-      controls
-      controlsList="nodownload"
-      @loadedmetadata="handleLoadedMetadata"
-      @play="handlePlay"
-      @timeupdate="handleTimeUpdate"
-      @ended="$emit('audio-ended')"
-    ></audio>
+    <div class="audio-shell">
+      <!-- PLAY -->
+      <button class="play-btn" @click="togglePlay">
+        <span v-if="!isPlaying">▶</span>
+        <span v-else>❚❚</span>
+      </button>
+
+      <!-- AUDIO -->
+      <audio
+        ref="audioRef"
+        :src="resolvedAudioSrc"
+        controls
+        controlsList="nodownload"
+        @loadedmetadata="handleLoadedMetadata"
+        @play="handlePlay"
+        @pause="isPlaying = false"
+        @timeupdate="handleTimeUpdate"
+        @ended="$emit('audio-ended')"
+      ></audio>
+    </div>
   </div>
 </template>
 
@@ -25,9 +35,13 @@ import {
 } from "vue";
 
 const audioRef = ref(null);
+
 const hasStartedSection = ref(false);
 const resolvedAudioSrc = ref("");
 const attachedHlsSrc = ref("");
+
+const isPlaying = ref(false);
+
 let hls = null;
 
 const props = defineProps({
@@ -86,14 +100,19 @@ function updateResolvedAudioSource() {
     }
 
     destroyHls();
+
     hls = new Hls();
+
     hls.loadSource(props.hlsSrc);
     hls.attachMedia(audioRef.value);
+
     attachedHlsSrc.value = props.hlsSrc;
+
     return;
   }
 
   destroyHls();
+
   resolvedAudioSrc.value = props.audioSrc;
 }
 
@@ -136,10 +155,13 @@ function isBeforeSectionStart() {
 
 function handleLoadedMetadata() {
   hasStartedSection.value = false;
+
   seekToSectionStart();
 }
 
 function handlePlay() {
+  isPlaying.value = true;
+
   if (isBeforeSectionStart()) {
     seekToSectionStart();
   }
@@ -168,8 +190,22 @@ function handleTimeUpdate() {
     audioRef.value.currentTime >= sectionEnd.value
   ) {
     audioRef.value.pause();
+
     seekToSectionStart();
+
     emit("audio-ended");
+  }
+}
+
+function togglePlay() {
+  if (!audioRef.value) {
+    return;
+  }
+
+  if (audioRef.value.paused) {
+    audioRef.value.play();
+  } else {
+    audioRef.value.pause();
   }
 }
 
@@ -177,6 +213,8 @@ watch(
   () => [props.audioSrc, props.hlsSrc, props.startAt, props.endAt],
   () => {
     hasStartedSection.value = false;
+    isPlaying.value = false;
+
     nextTick(() => {
       updateResolvedAudioSource();
       seekToSectionStart();
@@ -196,24 +234,101 @@ defineExpose({
 </script>
 
 <style scoped>
-/* ===== Audio Player ===== */
 .player {
-  border-top: 2px solid #c1956061;
-  margin-top: 16px;
-  padding-top: 11px;
   position: sticky;
   bottom: 0;
   z-index: 5;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #c1956061;
+  backdrop-filter: blur(8px);
 }
 
-.player audio {
+.audio-shell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 62px;
+  background: #eadcc3;
+  border: 1px solid #d7be97;
+  box-shadow:
+    0 2px 10px rgba(84, 42, 18, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* PLAY BUTTON */
+.play-btn {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #7a1808, #5b1005);
+  color: #f7ebda;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: 0.2s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.03);
+}
+
+/* AUDIO */
+.audio-shell audio {
   width: 100%;
+  height: 42px;
+  border-radius: 18px;
+  filter: sepia(20%) saturate(80%) brightness(98%);
 }
 
+/* CHROME / EDGE */
+.audio-shell audio::-webkit-media-controls-panel {
+  background: #eadcc3;
+}
+
+.audio-shell audio::-webkit-media-controls-play-button {
+  display: none;
+}
+
+.audio-shell audio::-webkit-media-controls-mute-button {
+  filter: sepia(100%) saturate(500%) hue-rotate(-10deg);
+}
+
+.audio-shell audio::-webkit-media-controls-timeline {
+  filter: sepia(100%) saturate(180%);
+}
+
+.audio-shell audio::-webkit-media-controls-current-time-display,
+.audio-shell audio::-webkit-media-controls-time-remaining-display {
+  color: #5a1a11;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
   .player {
-    margin-top: -2px;
     border-top: none;
+    padding-top: 8px;
+  }
+
+  .audio-shell {
+    padding: 10px 12px;
+    gap: 12px;
+    border-radius: 22px;
+  }
+
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .audio-shell audio {
+    height: 40px;
   }
 }
 </style>
