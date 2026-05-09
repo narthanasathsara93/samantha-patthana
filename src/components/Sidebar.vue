@@ -339,11 +339,6 @@ const goToHome = () => {
   flex-shrink: 0;
 }
 
-.bookmark-indicator {
-  color: #ffc107;
-  font-size: 13px;
-}
-
 .bookmark-indicator-img {
   width: 14px;
   height: 14px;

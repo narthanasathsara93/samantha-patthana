@@ -41,7 +41,7 @@
 
             <div class="controls-row">
               <AutoplayButton
-                v-if="!isRoutePunyanumodana"
+                v-if="!isRoutePunyanumodana && !isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
                 @toggle-autoplay="toggleAutoplay"
               />
@@ -561,8 +561,8 @@ function getAudioSectionIndex(currentTime) {
 }
 
 function handleAudioTimeUpdate(currentTime) {
-  // Update active section whenever audio is playing and we have sections
-  if (selectedVerseAudioSections.value.length === 0) {
+  // Only update active section when audio is actually playing
+  if (selectedVerseAudioSections.value.length === 0 || !audioRef.value || audioRef.value.paused) {
     return;
   }
 
@@ -748,6 +748,7 @@ body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
+  
     "Noto Sans Sinhala",
     -apple-system,
     BlinkMacSystemFont,
@@ -825,8 +826,8 @@ body,
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background-image: url("./assets/images/verse_content_background.jpg");
-  background-repeat: no-repeat;
+  background-image: url("./assets/images/verse_content_background.jpg"); 
+   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 12px;
   border: none;
@@ -859,7 +860,7 @@ body,
   min-width: 0;
   font-size: 20px;
   font-weight: 900;
-  color: #3b0906;
+  color: #0e0a0a;
 }
 
 .content-title > div {
