@@ -742,12 +742,8 @@ body,
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  /* background-color: #FBEED6; */
   background: #FDF1DA;
   background: linear-gradient(148deg, rgba(253, 241, 218, 1) 0%, rgba(248, 231, 199, 1) 50%, rgba(239, 215, 172, 1) 100%);
-  /* background-image: url("./assets/images/verse_content_background.jpg"); */
-  background-repeat: no-repeat;
-  background-size: cover;
   border-radius: 12px;
   border: none;
   flex: 1;

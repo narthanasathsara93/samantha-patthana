@@ -10,7 +10,7 @@
       <img class="hero-title" :src="mainTitleImage" />
 
       <p class="hero-description">
-        සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
+        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
       </p>
 
       <button class="begin-btn" v-on:click="startChanting()">
