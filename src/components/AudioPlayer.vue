@@ -3,8 +3,11 @@
     <div class="audio-shell">
       <!-- PLAY -->
       <button class="play-btn" @click="togglePlay">
-        <span v-if="!isPlaying">▶</span>
-        <span v-else>❚❚</span>
+        <span v-if="!isPlaying">
+          <img class="volume-ctrl-icon" :src="getIcon('play.png')" />
+        </span>
+        <span v-else>
+          <img class="volume-ctrl-icon" :src="getIcon('pause.png')" /></span>
       </button>
 
       <!-- Custom Audio Controls -->
@@ -52,6 +55,10 @@
               −
             </button>
 
+            <button class="volume-action-btn" @click="increaseVolume">
+              +
+            </button>
+
             <button class="mobile-volume-btn" @click="toggleMute">
               <span v-if="isMuted || volume === 0">
                 <img class="volume-icon" :src="getIcon('mute.png')" />
@@ -67,9 +74,6 @@
               </span>
             </button>
 
-            <button class="volume-action-btn" @click="increaseVolume">
-              +
-            </button>
           </div>
         </div>
       </div>
@@ -446,22 +450,21 @@ const getIcon = (iconName) => {
 /* PLAY BUTTON */
 .play-btn {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+
   border: none;
-  border-radius: 50%;
-  background: linear-gradient(to bottom, #7a1808, #5b1005);
-  color: #f7ebda;
-  font-size: 18px;
+  background: transparent;
   cursor: pointer;
-  box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   transition: 0.2s ease;
 }
 
 .play-btn:hover {
   transform: scale(1.03);
+}
+
+.volume-icon {
+  width: 22px;
+  height: auto;
+  transition: 0.2s ease;
 }
 
 /* CONTROLS */
@@ -585,14 +588,14 @@ const getIcon = (iconName) => {
   cursor: pointer;
 }
 
-.volume-icon {
-  width: 25px;
-  height: auto;
-}
-
 /* MOBILE CONTROLS HIDDEN ON DESKTOP */
 .mobile-volume-buttons {
   display: none;
+}
+
+.volume-ctrl-icon {
+  width: 52px;
+  height: auto;
 }
 
 /* =========================
@@ -612,10 +615,9 @@ const getIcon = (iconName) => {
   }
 
   /* PLAY BUTTON */
-  .play-btn {
+  .volume-ctrl-icon {
     width: 46px;
     height: 46px;
-    font-size: 15px;
   }
 
   /* CONTROLS */
@@ -653,16 +655,20 @@ const getIcon = (iconName) => {
   .mobile-volume-buttons {
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 2px 4px;
+    gap: 5px;
+    padding: 6px 8px;
     border-radius: 999px;
     background: rgb(219 207 183);
   }
 
+  .mobile-volume-btn {
+    padding: 13px;
+  }
+
   .volume-action-btn,
   .mobile-volume-btn {
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -673,6 +679,7 @@ const getIcon = (iconName) => {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    border: 1px solid #bfb4a28f;
   }
 
   .mobile-volume-btn {
