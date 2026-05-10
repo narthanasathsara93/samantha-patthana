@@ -565,11 +565,17 @@ function toggleAutoplay() {
   clearAutoplayControlsHideTimer();
 
   if (isAutoPlaying.value && isMobileView()) {
+    // If player is hidden, show it first
+    if (!areMobileLowerControlsVisible.value) {
+      areMobileLowerControlsVisible.value = true;
+    }
+
+    // Auto-hide after 3.5 seconds
     autoplayControlsHideTimer = setTimeout(() => {
       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
-        toggleMobileLowerControls();
+        areMobileLowerControlsVisible.value = false;
       }
-    }, 3500);
+    }, 4000);
   }
 }
 
@@ -964,10 +970,9 @@ body,
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-
   .content {
     background: #FDF1DA;
-    background: linear-gradient(180deg, rgba(253, 241, 218, 1) 0%, rgba(248, 231, 199, 1) 77%, rgba(239, 215, 172, 1) 100%);
+    background: linear-gradient(180deg, rgb(253 241 219) 0%, rgba(248, 231, 199, 1) 77%, rgb(255 231 189) 100%);
   }
 
   .reader-scroll-controls {
