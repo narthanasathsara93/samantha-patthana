@@ -166,14 +166,14 @@ defineExpose({
 }
 
 .reader-content {
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .reader-content,
 .sinhala-view-on {
   line-height: 160%;
   margin-top: 5%;
-  color: #3b0906;
+  color: #0e0a0a;
 }
 
 .reader-content-sections {
@@ -193,7 +193,7 @@ defineExpose({
   font: inherit;
   line-height: inherit;
   text-align: left;
-  border-right: 1px solid rgb(206 176 124 / 47%);
+  border-right: 1px solid rgb(206 176 124 / 18%);
   box-shadow: 10px 1px 20px -12px rgb(216 194 157);
   border-radius: 15px;
 }
@@ -249,21 +249,19 @@ defineExpose({
     font-size: 23px;
   }
   .verse-audio-section {
-    background: #e9d7b985;
+    background: #ffefd485;
     border-right: 1px solid rgb(206 176 124 / 31%);
-  }
-  .verse-audio-section.active {
-    background: #e9d7b985;
   }
 }
 </style>
 
 <style>
 .sinhala-text-url-ext {
-  color: #3b0906 !important;
+  color: #0e0a0a !important;
 }
 
 .sinhala-text {
+  font-weight: 600;
   display: inline-block;
   text-align: justify;
 }

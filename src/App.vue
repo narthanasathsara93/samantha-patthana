@@ -5,84 +5,41 @@
     <div v-else key="reader" class="app-container">
       <div class="app">
         <!-- Sidebar -->
-        <Sidebar
-          :is-sidebar-open="isSidebarOpen"
-          :selected-id="isShowingResourcesPanel ? null : currentVerseId"
-          :verse-index-map="verseIndexMap"
-          :is-bookmarked="isBookmarked"
-          @verse-selected="handleVerseSelected"
-          @show-resources="handleShowResources"
-          @close-sidebar="closeSidebar"
-        />
+        <Sidebar :is-sidebar-open="isSidebarOpen" :selected-id="isShowingResourcesPanel ? null : currentVerseId"
+          :verse-index-map="verseIndexMap" :is-bookmarked="isBookmarked" @verse-selected="handleVerseSelected"
+          @show-resources="handleShowResources" @close-sidebar="closeSidebar" />
 
         <!-- Content -->
-        <main
-          class="content"
-          :class="{
-            'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
-          }"
-        >
+        <main class="content" :class="{
+          'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+        }">
           <!-- Mobile Header -->
-          <MobileHeader
-            :is-bookmarked="isBookmarked(selectedVerse.id)"
-            :title="contentTitle"
-            @toggle-sidebar="toggleSidebar"
-            @toggle-bookmark="handleToggleBookmark"
-          />
+          <MobileHeader :is-bookmarked="isBookmarked(selectedVerse.id)" :title="contentTitle"
+            @toggle-sidebar="toggleSidebar" @toggle-bookmark="handleToggleBookmark" />
 
-          <div
-            v-if="!isShowingResourcesPanel"
-            class="content-controls"
-            :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
-          >
+          <div v-if="!isShowingResourcesPanel" class="content-controls"
+            :class="{ 'hidden-on-mobile-menu': isSidebarOpen }">
             <div class="content-title">
               <div>{{ contentTitle }}</div>
             </div>
 
             <div class="controls-row">
-              <AutoplayButton
-                v-if="!isRoutePunyanumodana"
-                :is-auto-playing="isAutoPlaying"
-                @toggle-autoplay="toggleAutoplay"
-              />
-              <button
-                v-if="!isRoutePunyanumodana"
-                class="sinhala-toggle-btn"
-                type="button"
-                :class="{ active: isSinhalaTextView }"
-                :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
-                @click="toggleSinhalaTextView"
-              >
-                <img
-                  class="sinhala-toggle-icon"
-                  :src="getSinhalaToggleIcon()"
-                  alt=""
-                />
+              <AutoplayButton v-if="!isRoutePunyanumodana && !isSinhalaTextView" :is-auto-playing="isAutoPlaying"
+                @toggle-autoplay="toggleAutoplay" />
+              <button v-if="!isRoutePunyanumodana" class="sinhala-toggle-btn" type="button"
+                :class="{ active: isSinhalaTextView }" :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
+                @click="toggleSinhalaTextView">
+                <img class="sinhala-toggle-icon" :src="getSinhalaToggleIcon()" alt="" />
               </button>
-              <BookmarkButton
-                :is-bookmarked="isBookmarked(selectedVerse.id)"
-                @toggle-bookmark="handleToggleBookmark"
-              />
+              <BookmarkButton :is-bookmarked="isBookmarked(selectedVerse.id)" @toggle-bookmark="handleToggleBookmark" />
 
               <span ref="fontSettingsRef" class="font-settings">
-                <button
-                  class="font-settings-btn"
-                  type="button"
-                  title="අක්ෂර විශාලනය"
-                  @click="toggleFontSettings"
-                >
+                <button class="font-settings-btn" type="button" title="අක්ෂර විශාලනය" @click="toggleFontSettings">
                   <img class="font-resize-icon" :src="getFontSizeIcon()" />
                 </button>
                 <div v-if="isFontSettingsOpen" class="font-settings-panel">
-                  <input
-                    v-model.number="readerFontSize"
-                    class="font-size-slider"
-                    type="range"
-                    min="10"
-                    max="30"
-                    step="1"
-                    aria-label="Verse content font size"
-                  />
+                  <input v-model.number="readerFontSize" class="font-size-slider" type="range" min="10" max="30"
+                    step="1" aria-label="Verse content font size" />
                   <span class="font-size-value">{{ readerFontSize }}px</span>
                 </div>
               </span>
@@ -92,66 +49,36 @@
             <ResourcesPanel @close="handleCloseResourcesPanel" />
           </div>
 
-          <div
-            v-if="!isShowingResourcesPanel"
-            :class="{
-              'content-wrapper': true,
-              blurred: isSidebarOpen,
-              'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
-            }"
-          >
+          <div v-if="!isShowingResourcesPanel" :class="{
+            'content-wrapper': true,
+            blurred: isSidebarOpen,
+            'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+          }">
             <div class="verse-content">
-              <VerseContent
-                ref="verseContentRef"
-                :title="selectedVerseTitle"
-                :content="selectedVerseContent"
-                :audio-sections="selectedVerseAudioSections"
-                :show-verse-title="selectedVerse.showVerseTitle"
-                :font-size="readerFontSize"
-                :sinhala-view-on="isSinhalaTextView"
-                :active-audio-section-index="activeAudioSectionIndex"
-                @play-section="handlePlayAudioSection"
-                @scroll-state-change="handleReaderScrollState"
-              />
+              <VerseContent ref="verseContentRef" :title="selectedVerseTitle" :content="selectedVerseContent"
+                :audio-sections="selectedVerseAudioSections" :show-verse-title="selectedVerse.showVerseTitle"
+                :font-size="readerFontSize" :sinhala-view-on="isSinhalaTextView"
+                :active-audio-section-index="activeAudioSectionIndex" @play-section="handlePlayAudioSection"
+                @scroll-state-change="handleReaderScrollState" />
             </div>
 
-            <AudioPlayer
-              v-if="
-                !isShowingResourcesPanel &&
-                !isSinhalaTextView &&
-                route.name !== 'punyanumodana'
-              "
-              ref="audioPlayerRef"
-              :audio-src="selectedVerseAudio"
-              :hls-src="selectedVerseHlsAudio"
-              :start-at="activeAudioStartAt"
-              :end-at="activeAudioEndAt"
-              @audio-ended="handleAudioEnded"
-              @audio-timeupdate="handleAudioTimeUpdate"
-            />
+            <AudioPlayer v-if="
+              !isShowingResourcesPanel &&
+              !isSinhalaTextView &&
+              route.name !== 'punyanumodana'
+            " ref="audioPlayerRef" :audio-src="selectedVerseAudio" :hls-src="selectedVerseHlsAudio"
+              :start-at="activeAudioStartAt" :end-at="activeAudioEndAt" @audio-ended="handleAudioEnded"
+              @audio-timeupdate="handleAudioTimeUpdate" />
           </div>
 
-          <div
-            v-if="!isShowingResourcesPanel && readerScrollState.isScrollable"
-            class="reader-scroll-controls"
-            aria-label="Reader scroll controls"
-          >
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll up"
-              :disabled="!readerScrollState.canScrollUp"
-              @click="scrollVerseContent(-1)"
-            >
+          <div v-if="!isShowingResourcesPanel && readerScrollState.isScrollable" class="reader-scroll-controls"
+            aria-label="Reader scroll controls">
+            <button class="reader-scroll-btn" type="button" aria-label="Scroll up"
+              :disabled="!readerScrollState.canScrollUp" @click="scrollVerseContent(-1)">
               &uarr;
             </button>
-            <button
-              class="reader-scroll-btn"
-              type="button"
-              aria-label="Scroll down"
-              :disabled="!readerScrollState.canScrollDown"
-              @click="scrollVerseContent(1)"
-            >
+            <button class="reader-scroll-btn" type="button" aria-label="Scroll down"
+              :disabled="!readerScrollState.canScrollDown" @click="scrollVerseContent(1)">
               &darr;
             </button>
           </div>
@@ -160,34 +87,17 @@
           <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
 
           <!-- Pagination -->
-          <Pagination
-            v-if="!isShowingResourcesPanel"
-            :current-index="currentIndex"
-            :total-verses="flattenedVerses.length"
-            @prev="handlePrev"
-            @next="handleNext"
-          />
+          <Pagination v-if="!isShowingResourcesPanel" :current-index="currentIndex"
+            :total-verses="flattenedVerses.length" @prev="handlePrev" @next="handleNext" />
 
-          <button
-            v-if="!isShowingResourcesPanel"
-            class="lower-controls-toggle"
-            type="button"
-            :class="
-              areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
-            "
-            :aria-label="
-              areMobileLowerControlsVisible
+          <button v-if="!isShowingResourcesPanel" class="lower-controls-toggle" type="button" :class="areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
+            " :aria-label="areMobileLowerControlsVisible
+              ? 'Hide audio controls'
+              : 'Show audio controls'
+              " :aria-pressed="areMobileLowerControlsVisible" :title="areMobileLowerControlsVisible
                 ? 'Hide audio controls'
                 : 'Show audio controls'
-            "
-            :aria-pressed="areMobileLowerControlsVisible"
-            :title="
-              areMobileLowerControlsVisible
-                ? 'Hide audio controls'
-                : 'Show audio controls'
-            "
-            @click="toggleMobileLowerControls"
-          >
+                " @click="toggleMobileLowerControls">
             <img class="arrow-up-down-icon" :src="getArrowIcon()" />
           </button>
         </main>
@@ -450,12 +360,12 @@ function resetActiveAudioRange() {
 
 function handlePlayAudioSection(section, index = -1) {
   activeAudioStartAt.value = section.startAt;
-  activeAudioEndAt.value = section.endAt;
+  // Play until the end of the verse (not just the section)
+  activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
   activeAudioSectionIndex.value = index;
 
   nextTick(() => {
-    audioPlayerRef.value?.seekToSectionStart();
-    playCurrent(audioRef);
+    audioPlayerRef.value?.playSection();
   });
 }
 
@@ -561,7 +471,8 @@ function getAudioSectionIndex(currentTime) {
 }
 
 function handleAudioTimeUpdate(currentTime) {
-  if (!isAutoPlaying.value || selectedVerseAudioSections.value.length === 0) {
+  // Only update active section when audio is actually playing
+  if (selectedVerseAudioSections.value.length === 0 || !audioRef.value || audioRef.value.paused) {
     return;
   }
 
@@ -573,9 +484,12 @@ function handleAudioTimeUpdate(currentTime) {
 
   activeAudioSectionIndex.value = sectionIndex;
 
-  nextTick(() => {
-    verseContentRef.value?.scrollToAudioSection(sectionIndex);
-  });
+  // Only auto-scroll if autoplay is enabled
+  if (isAutoPlaying.value) {
+    nextTick(() => {
+      verseContentRef.value?.scrollToAudioSection(sectionIndex);
+    });
+  }
 }
 
 function handleAutoplayNext() {
@@ -651,11 +565,17 @@ function toggleAutoplay() {
   clearAutoplayControlsHideTimer();
 
   if (isAutoPlaying.value && isMobileView()) {
+    // If player is hidden, show it first
+    if (!areMobileLowerControlsVisible.value) {
+      areMobileLowerControlsVisible.value = true;
+    }
+
+    // Auto-hide after 3.5 seconds
     autoplayControlsHideTimer = setTimeout(() => {
       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
-        toggleMobileLowerControls();
+        areMobileLowerControlsVisible.value = false;
       }
-    }, 3500);
+    }, 4000);
   }
 }
 
@@ -744,6 +664,7 @@ body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
+
     "Noto Sans Sinhala",
     -apple-system,
     BlinkMacSystemFont,
@@ -821,9 +742,8 @@ body,
 
 /* ===== Cards (Sidebar + Content) =====*/
 .content {
-  background-image: url("./assets/images/verse_content_background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: #FDF1DA;
+  background: linear-gradient(148deg, rgba(253, 241, 218, 1) 0%, rgba(248, 231, 199, 1) 50%, rgba(239, 215, 172, 1) 100%);
   border-radius: 12px;
   border: none;
   flex: 1;
@@ -855,10 +775,10 @@ body,
   min-width: 0;
   font-size: 20px;
   font-weight: 900;
-  color: #3b0906;
+  color: #0e0a0a;
 }
 
-.content-title > div {
+.content-title>div {
   max-width: 100%;
   text-align: center;
 }
@@ -1046,6 +966,11 @@ body,
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .content {
+    background: #FDF1DA;
+    background: linear-gradient(180deg, rgb(253 241 219) 0%, rgba(248, 231, 199, 1) 77%, rgb(255 231 189) 100%);
+  }
+
   .reader-scroll-controls {
     right: 13px;
   }

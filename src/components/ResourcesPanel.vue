@@ -24,11 +24,7 @@
       </a>
     </div>
     <div class="resources-panel-body">
-      <a
-        :href="pattanaNayaTipitakaLk"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a :href="pattanaNayaTipitakaLk" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
         පට්ඨාන නය - අභිධර්ම චන්ද්‍රිකාව - pitaka.lk <br />
         (සිංහල අර්ථ)
@@ -36,13 +32,16 @@
     </div>
 
     <div class="resources-panel-body">
-      <a
-        :href="pattanaWandanawaTipitakaLk"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a :href="pattanaWandanawaTipitakaLk" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
         සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
+      </a>
+    </div>
+
+    <div class="resources-panel-body">
+      <a href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html" target="_blank" rel="noopener noreferrer">
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        පට්ඨාන මහා පකරණ සන්නය - pitaka.lk
       </a>
     </div>
 
@@ -117,6 +116,7 @@ const getIcon = (icon) => {
 }
 
 .resources-panel-body {
+  background-color: #f9e9cb87;
   border-radius: 18px;
   padding: 20px;
   box-shadow: 0 9px 30px rgba(59, 9, 6, 0.12);
@@ -155,6 +155,7 @@ const getIcon = (icon) => {
     height: auto;
     flex-shrink: 0;
   }
+
   .resources-panel-body a {
     font-size: 14px;
   }

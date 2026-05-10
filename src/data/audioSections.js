@@ -25,7 +25,7 @@ export const audioSections = {
     },
     {
       startAt: "01:14 ",
-      endAt: "01:",
+      endAt: "01:30",
       content: `තං ලෝකනාථං සුගතං<br>
 ධම්මඤ්ච ජිනසේවිතං<br>
 සංඝං නිරංගණං සෙට්ඨං<br>
