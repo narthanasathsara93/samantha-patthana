@@ -2,12 +2,12 @@
   <div class="player">
     <div class="audio-shell">
       <!-- PLAY -->
-      <button class="play-btn" @click="togglePlay">
+      <button class="play-btn" @click="togglePlay" :aria-label="isPlaying ? 'Pause' : 'Play'">
         <span v-if="!isPlaying">
-          <img class="volume-ctrl-icon" :src="getIcon('play.png')" />
+          <img class="volume-ctrl-icon" :src="getIcon('play.png')" alt="" />
         </span>
         <span v-else>
-          <img class="volume-ctrl-icon" :src="getIcon('pause.png')" /></span>
+          <img class="volume-ctrl-icon" :src="getIcon('pause.png')" alt="" /></span>
       </button>
 
       <!-- Custom Audio Controls -->
@@ -30,47 +30,47 @@
         <div class="volume-container">
           <!-- DESKTOP -->
           <div class="desktop-volume">
-            <button class="volume-btn" @click="toggleMute">
+            <button class="volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'">
               <span v-if="isMuted || volume === 0">
-                <img class="volume-icon" :src="getIcon('mute.png')" />
+                <img class="volume-icon" :src="getIcon('mute.png')" alt="" />
               </span>
               <span v-else-if="volume < 0.4">
-                <img class="volume-icon" :src="getIcon('volume_low.png')" />
+                <img class="volume-icon" :src="getIcon('volume_low.png')" alt="" />
               </span>
               <span v-else-if="volume > 0.4 && volume < 0.7">
-                <img class="volume-icon" :src="getIcon('volume_medium.png')" />
+                <img class="volume-icon" :src="getIcon('volume_medium.png')" alt="" />
               </span>
               <span v-else>
-                <img class="volume-icon" :src="getIcon('volume_max.png')" />
+                <img class="volume-icon" :src="getIcon('volume_max.png')" alt="" />
               </span>
             </button>
 
             <input type="range" class="volume-slider" min="0" max="1" step="0.01" v-model="volume"
-              @input="updateVolume" />
+              @input="updateVolume" aria-label="Volume" />
           </div>
 
           <!-- MOBILE -->
           <div class="mobile-volume-buttons">
-            <button class="volume-action-btn" @click="decreaseVolume">
+            <button class="volume-action-btn" @click="decreaseVolume" aria-label="Decrease volume">
               −
             </button>
 
-            <button class="volume-action-btn" @click="increaseVolume">
+            <button class="volume-action-btn" @click="increaseVolume" aria-label="Increase volume">
               +
             </button>
 
-            <button class="mobile-volume-btn" @click="toggleMute">
+            <button class="mobile-volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'">
               <span v-if="isMuted || volume === 0">
-                <img class="volume-icon" :src="getIcon('mute.png')" />
+                <img class="volume-icon" :src="getIcon('mute.png')" alt="" />
               </span>
               <span v-else-if="volume < 0.4">
-                <img class="volume-icon" :src="getIcon('volume_low.png')" />
+                <img class="volume-icon" :src="getIcon('volume_low.png')" alt="" />
               </span>
               <span v-else-if="volume > 0.4 && volume < 0.7">
-                <img class="volume-icon" :src="getIcon('volume_medium.png')" />
+                <img class="volume-icon" :src="getIcon('volume_medium.png')" alt="" />
               </span>
               <span v-else>
-                <img class="volume-icon" :src="getIcon('volume_max.png')" />
+                <img class="volume-icon" :src="getIcon('volume_max.png')" alt="" />
               </span>
             </button>
           </div>

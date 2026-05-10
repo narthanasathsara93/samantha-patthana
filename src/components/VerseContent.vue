@@ -21,6 +21,7 @@
           :class="{ active: index === activeAudioSectionIndex }"
           type="button"
           @click="$emit('play-section', section, index)"
+          :aria-label="`Play audio section ${index + 1}`"
           v-html="section.content"
         ></button>
       </div>

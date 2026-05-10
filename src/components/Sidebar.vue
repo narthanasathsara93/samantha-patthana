@@ -1,20 +1,21 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
     <div class="sidebar-header" v-on:click="goToHome()">
-      <img class="logo-img" :src="getImage(`images/logo.png`)" />
+      <img class="logo-img" :src="getImage(`images/logo.png`)" alt="Samantha Patthana Logo" />
       <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
     </div>
     <ul>
       <li v-for="(verse, index) in verses" :key="verse.id" :class="{
         active: isActiveVerse(verse),
       }">
-        <button class="verse-row" type="button" @click="handleVerseClick(verse)">
+        <button class="verse-row" type="button" @click="handleVerseClick(verse)"
+          :aria-label="`Go to ${verse.title}`">
           <span class="number">{{ index + 1 }}. </span>
           <span class="verse-title">
             {{ verse.title }}
 
             <span v-if="isBookmarked(verse.id)" class="bookmark-indicator">
-              <img class="bookmark-indicator-img" :src="getImage(`icons/bookmarked.png`)" />
+              <img class="bookmark-indicator-img" :src="getImage(`icons/bookmarked.png`)" alt="" />
             </span>
           </span>
         </button>

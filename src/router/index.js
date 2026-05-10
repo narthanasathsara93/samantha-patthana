@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import App from "../App.vue";
 import { verses } from "../data/verses";
-import Home from "@/components/Home.vue";
 
 const appTitle = "Samantha Patthana";
 
@@ -20,7 +19,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import("@/components/Home.vue"),
     meta: {
       title: "Home",
     },
