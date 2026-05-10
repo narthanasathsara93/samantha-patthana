@@ -193,7 +193,7 @@ defineExpose({
   font: inherit;
   line-height: inherit;
   text-align: left;
-  border-right: 1px solid rgb(206 176 124 / 47%);
+  border-right: 1px solid rgb(206 176 124 / 18%);
   box-shadow: 10px 1px 20px -12px rgb(216 194 157);
   border-radius: 15px;
 }
@@ -249,11 +249,8 @@ defineExpose({
     font-size: 23px;
   }
   .verse-audio-section {
-    background: #e9d7b985;
+    background: #ffefd485;
     border-right: 1px solid rgb(206 176 124 / 31%);
-  }
-  .verse-audio-section.active {
-    background: #e9d7b985;
   }
 }
 </style>

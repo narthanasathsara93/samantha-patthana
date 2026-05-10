@@ -219,9 +219,8 @@ const goToHome = () => {
   width: 300px;
   padding: 10px 0;
   transition: transform 0.1s ease;
-  background-image: url("../assets/images/side_menu_background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+ background: #FDF1DA;
+background: linear-gradient(148deg, rgba(253, 241, 218, 1) 0%, rgba(248, 231, 199, 1) 50%, rgba(239, 215, 172, 1) 100%);
   border-radius: 12px;
   border: none;
   display: flex;
