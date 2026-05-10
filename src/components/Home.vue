@@ -10,7 +10,7 @@
       <img class="hero-title" :src="mainTitleImage" />
 
       <p class="hero-description">
-        සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
+        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
       </p>
 
       <button class="begin-btn" v-on:click="startChanting()">
@@ -60,10 +60,6 @@ const startChanting = () => {
   padding-top: 80px;
   padding-left: 24px;
   padding-right: 24px;
-  background-image: url("../assets/images/main_back.jpg");
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
 }
 
 .hero-content {
@@ -106,21 +102,35 @@ const startChanting = () => {
 .begin-btn {
   border: none;
   outline: none;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 10px 30px;
+  gap: clamp(8px, 1vw, 12px);
+  /* stable proportional sizing */
+  padding:
+    clamp(10px, 1.1vw, 14px) clamp(26px, 4vw, 38px);
   border-radius: 999px;
-  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
+  background: linear-gradient(180deg,
+      #8f2d14 0%,
+      #6f1f0e 100%);
   color: #fff6e8;
-  font-size: 29px;
+  /* fluid typography */
+  font-size: clamp(20px, 2.2vw, 29px);
   font-weight: 600;
+  line-height: 1;
   font-family: "Abhaya Libre", serif !important;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(111, 31, 14, 0.28),
+  box-shadow:
+    0 10px 30px rgba(111, 31, 14, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
+  white-space: nowrap;
+  /* prevents weird shrinking */
+  min-width: fit-content;
 }
 
 .begin-btn:hover {
@@ -155,16 +165,37 @@ const startChanting = () => {
   height: auto;
 }
 
-/* ================= MOBILE ================= */
-/* Desktop */
-@media (min-width: 1025px) {
+.home-page {
+  background-image: url("../assets/images/bg-480.webp");
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
+@media (min-width: 360px) {
+  .home-page {
+    background-image: url("../assets/images/bg-720.webp");
+  }
+}
+
+@media (min-width: 480px) {
+  .home-page {
+    background-image: url("../assets/images/bg-1080.webp");
+  }
+
+  .begin-btn {
+    padding: 10px 24px;
+    font-size: 20px;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 768px) {
+  .home-page {
+    background-image: url("../assets/images/bg-1600.webp");
+  }
+
   .logo-img {
     width: 50px;
     height: auto;
@@ -194,12 +225,26 @@ const startChanting = () => {
     font-size: 18px;
     margin-bottom: 34px;
   }
+}
 
+/* Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
   .begin-btn {
-    width: 100%;
-    max-width: 320px;
-    padding: 16px 28px;
-    font-size: 18px;
+    font-size: 25px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page {
+    background-image: url("../assets/images/bg-1493.webp");
+  }
+}
+
+/* Large desktops */
+@media (min-width: 1440px) {
+  .begin-btn {
+    font-size: 31px;
+    padding: 14px 42px;
   }
 }
 </style>
