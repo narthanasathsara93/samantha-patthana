@@ -24,8 +24,9 @@ defineEmits(["toggle-sidebar"]);
 .mobile-header-title {
   font-size: 17px;
   font-weight: 900;
-  color: #3b0906;
+  color: #0e0a0a;
 }
+
 /* ===== Mobile Header ===== */
 .mobile-header {
   display: none;
