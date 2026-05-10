@@ -584,7 +584,7 @@ function toggleAutoplay() {
       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
         areMobileLowerControlsVisible.value = false;
       }
-    }, 4000);
+    }, 5000);
   }
 }
 
