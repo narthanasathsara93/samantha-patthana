@@ -357,6 +357,8 @@ const goToHome = () => {
     height: 100dvh;
     z-index: 10;
     transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   .sidebar.open {
