@@ -616,6 +616,7 @@ const getIcon = (iconName) => {
   }
 
   .audio-shell {
+    background: #e5d3b48c;
     gap: 10px;
     padding: 10px 12px;
     border-radius: 22px;
