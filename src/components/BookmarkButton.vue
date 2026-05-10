@@ -8,8 +8,9 @@
         ? 'සුරැකුම් ගොනුවෙන් ඉවත් කරන්න'
         : 'සුරැකුම් ගොනුවට එකතු කරන්න'
     "
+    :aria-label="isBookmarked ? 'Remove bookmark' : 'Add bookmark'"
   >
-    <img class="bookmark-icon" :src="getIcon(isBookmarked)" />
+    <img class="bookmark-icon" :src="getIcon(isBookmarked)" alt="" />
   </button>
 </template>
 

@@ -28,14 +28,16 @@
                 @toggle-autoplay="toggleAutoplay" />
               <button v-if="!isRoutePunyanumodana" class="sinhala-toggle-btn" type="button"
                 :class="{ active: isSinhalaTextView }" :title="isSinhalaTextView ? 'පාලිය' : 'සිංහල'"
+                :aria-label="isSinhalaTextView ? 'Switch to Pali' : 'Switch to Sinhala'"
                 @click="toggleSinhalaTextView">
                 <img class="sinhala-toggle-icon" :src="getSinhalaToggleIcon()" alt="" />
               </button>
               <BookmarkButton :is-bookmarked="isBookmarked(selectedVerse.id)" @toggle-bookmark="handleToggleBookmark" />
 
               <span ref="fontSettingsRef" class="font-settings">
-                <button class="font-settings-btn" type="button" title="අක්ෂර විශාලනය" @click="toggleFontSettings">
-                  <img class="font-resize-icon" :src="getFontSizeIcon()" />
+                <button class="font-settings-btn" type="button" title="අක්ෂර විශාලනය"
+                  aria-label="Font size settings" @click="toggleFontSettings">
+                  <img class="font-resize-icon" :src="getFontSizeIcon()" alt="" />
                 </button>
                 <div v-if="isFontSettingsOpen" class="font-settings-panel">
                   <input v-model.number="readerFontSize" class="font-size-slider" type="range" min="10" max="30"
@@ -114,6 +116,7 @@ import {
   onMounted,
   onBeforeUnmount,
   watch,
+  defineAsyncComponent,
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -124,10 +127,16 @@ import AutoplayButton from "./components/AutoplayButton.vue";
 import BookmarkButton from "./components/BookmarkButton.vue";
 import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
-import AudioPlayer from "./components/AudioPlayer.vue";
 import Pagination from "./components/Pagination.vue";
-import ResourcesPanel from "./components/ResourcesPanel.vue";
-import Home from "./components/Home.vue";
+const AudioPlayer = defineAsyncComponent(() =>
+  import("./components/AudioPlayer.vue"),
+);
+const ResourcesPanel = defineAsyncComponent(() =>
+  import("./components/ResourcesPanel.vue"),
+);
+const Home = defineAsyncComponent(() =>
+  import("./components/Home.vue"),
+);
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -575,7 +584,7 @@ function toggleAutoplay() {
       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
         areMobileLowerControlsVisible.value = false;
       }
-    }, 4000);
+    }, 5000);
   }
 }
 
