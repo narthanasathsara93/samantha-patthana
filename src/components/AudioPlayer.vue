@@ -85,7 +85,6 @@
 </template>
 
 <script setup>
-import Hls from "hls.js";
 import {
   computed,
   nextTick,
@@ -240,29 +239,38 @@ function destroyHls() {
   attachedHlsSrc.value = "";
 }
 
-function updateResolvedAudioSource() {
+async function updateResolvedAudioSource() {
   if (!audioRef.value) {
     return;
   }
 
+  // Native HLS support (Safari/iOS)
   if (props.hlsSrc && canPlayNativeHls()) {
     destroyHls();
     resolvedAudioSrc.value = props.hlsSrc;
     return;
   }
 
-  if (props.hlsSrc && Hls.isSupported()) {
-    resolvedAudioSrc.value = "";
-    if (attachedHlsSrc.value === props.hlsSrc) {
+  // Lazy-load hls.js ONLY when needed
+  if (props.hlsSrc) {
+    const { default: Hls } = await import("hls.js");
+
+    if (Hls.isSupported()) {
+      resolvedAudioSrc.value = "";
+
+      if (attachedHlsSrc.value === props.hlsSrc) {
+        return;
+      }
+
+      destroyHls();
+
+      hls = new Hls();
+      hls.loadSource(props.hlsSrc);
+      hls.attachMedia(audioRef.value);
+
+      attachedHlsSrc.value = props.hlsSrc;
       return;
     }
-
-    destroyHls();
-    hls = new Hls();
-    hls.loadSource(props.hlsSrc);
-    hls.attachMedia(audioRef.value);
-    attachedHlsSrc.value = props.hlsSrc;
-    return;
   }
 
   destroyHls();
