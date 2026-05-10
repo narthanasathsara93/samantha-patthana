@@ -73,7 +73,6 @@
                 <img class="volume-icon" :src="getIcon('volume_max.png')" />
               </span>
             </button>
-
           </div>
         </div>
       </div>
@@ -694,6 +693,7 @@ const getIcon = (iconName) => {
   .volume-icon {
     width: 22px;
     height: auto;
+    margin-top: 11%;
   }
 }
 </style>
