@@ -4,49 +4,60 @@
       <!-- PLAY -->
       <button class="play-btn" @click="togglePlay" :aria-label="isPlaying ? 'Pause' : 'Play'">
         <span v-if="!isPlaying">
-          <img class="volume-ctrl-icon" :src="getIcon('play.png')" alt="" />
+          <img class="volume-ctrl-icon" :src="icons.play" alt="" />
         </span>
+
         <span v-else>
-          <img class="volume-ctrl-icon" :src="getIcon('pause.png')" alt="" /></span>
+          <img class="volume-ctrl-icon" :src="icons.pause" alt="" />
+        </span>
       </button>
 
       <!-- Custom Audio Controls -->
       <div class="custom-controls">
-        <!-- Current Time (verse-relative) -->
-        <span class="time-display">{{ formattedVerseCurrentTime }}</span>
+        <!-- Current Time -->
+        <span class="time-display">
+          {{ formattedVerseCurrentTime }}
+        </span>
 
-        <!-- Seek Bar -->
+        <!-- Seek -->
         <div class="seek-bar-container" @click="seekToPosition">
           <div class="seek-bar-bg"></div>
+
           <div class="seek-bar-progress" :style="{ width: verseProgressPercent + '%' }"></div>
+
           <div class="seek-bar-handle" :style="{ left: verseProgressPercent + '%' }"></div>
         </div>
 
-        <!-- Duration (verse-relative) -->
-        <span class="time-display">{{ formattedVerseDuration }}</span>
+        <!-- Duration -->
+        <span class="time-display">
+          {{ formattedVerseDuration }}
+        </span>
 
-        <!-- Volume Control -->
-        <!-- Volume Control -->
+        <!-- Volume -->
         <div class="volume-container">
           <!-- DESKTOP -->
           <div class="desktop-volume">
-            <button class="volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'">
+            <button class="volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'
+              ">
               <span v-if="isMuted || volume === 0">
-                <img class="volume-icon" :src="getIcon('mute.png')" alt="" />
+                <img class="volume-icon" :src="icons.mute" alt="" />
               </span>
+
               <span v-else-if="volume < 0.4">
-                <img class="volume-icon" :src="getIcon('volume_low.png')" alt="" />
+                <img class="volume-icon" :src="icons.low" alt="" />
               </span>
+
               <span v-else-if="volume > 0.4 && volume < 0.7">
-                <img class="volume-icon" :src="getIcon('volume_medium.png')" alt="" />
+                <img class="volume-icon" :src="icons.medium" alt="" />
               </span>
+
               <span v-else>
-                <img class="volume-icon" :src="getIcon('volume_max.png')" alt="" />
+                <img class="volume-icon" :src="icons.max" alt="" />
               </span>
             </button>
 
-            <input type="range" class="volume-slider" min="0" max="1" step="0.01" v-model="volume"
-              @input="updateVolume" aria-label="Volume" />
+            <input v-model="volume" type="range" class="volume-slider" min="0" max="1" step="0.01" aria-label="Volume"
+              @input="updateVolume" />
           </div>
 
           <!-- MOBILE -->
@@ -59,25 +70,29 @@
               +
             </button>
 
-            <button class="mobile-volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'">
+            <button class="mobile-volume-btn" @click="toggleMute" :aria-label="isMuted || volume === 0 ? 'Unmute' : 'Mute'
+              ">
               <span v-if="isMuted || volume === 0">
-                <img class="volume-icon" :src="getIcon('mute.png')" alt="" />
+                <img class="volume-icon" :src="icons.mute" alt="" />
               </span>
+
               <span v-else-if="volume < 0.4">
-                <img class="volume-icon" :src="getIcon('volume_low.png')" alt="" />
+                <img class="volume-icon" :src="icons.low" alt="" />
               </span>
+
               <span v-else-if="volume > 0.4 && volume < 0.7">
-                <img class="volume-icon" :src="getIcon('volume_medium.png')" alt="" />
+                <img class="volume-icon" :src="icons.medium" alt="" />
               </span>
+
               <span v-else>
-                <img class="volume-icon" :src="getIcon('volume_max.png')" alt="" />
+                <img class="volume-icon" :src="icons.max" alt="" />
               </span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Hidden native audio for actual playback -->
+      <!-- Hidden native audio -->
       <audio ref="audioRef" :src="resolvedAudioSrc" @loadedmetadata="handleLoadedMetadata" @play="handlePlay"
         @pause="isPlaying = false" @timeupdate="handleTimeUpdate" @ended="$emit('audio-ended')"></audio>
     </div>
@@ -93,20 +108,43 @@ import {
   ref,
   watch,
 } from "vue";
+
 import { getAssetUrl } from "../utils/assets";
+
+/* -------------------------------------------------------------------------- */
+/* REFS */
+/* -------------------------------------------------------------------------- */
 
 const audioRef = ref(null);
 
 const hasStartedSection = ref(false);
+
 const resolvedAudioSrc = ref("");
 const attachedHlsSrc = ref("");
 
 const isPlaying = ref(false);
 const currentTime = ref(0);
+
 const isMuted = ref(false);
 const previousVolume = ref(0.5);
 
-// Volume with localStorage persistence
+/* -------------------------------------------------------------------------- */
+/* ICONS */
+/* -------------------------------------------------------------------------- */
+
+const icons = {
+  play: getAssetUrl("icons/play.png"),
+  pause: getAssetUrl("icons/pause.png"),
+  mute: getAssetUrl("icons/mute.png"),
+  low: getAssetUrl("icons/volume_low.png"),
+  medium: getAssetUrl("icons/volume_medium.png"),
+  max: getAssetUrl("icons/volume_max.png"),
+};
+
+/* -------------------------------------------------------------------------- */
+/* VOLUME */
+/* -------------------------------------------------------------------------- */
+
 const STORAGE_KEY = "samantha-patthana-volume";
 const DEFAULT_VOLUME = 0.5;
 
@@ -114,8 +152,10 @@ const volume = ref(DEFAULT_VOLUME);
 
 function loadVolume() {
   const stored = localStorage.getItem(STORAGE_KEY);
+
   if (stored !== null) {
     const parsed = parseFloat(stored);
+
     if (!isNaN(parsed) && parsed >= 0 && parsed <= 1) {
       volume.value = parsed;
     }
@@ -126,200 +166,396 @@ function saveVolume() {
   localStorage.setItem(STORAGE_KEY, volume.value.toString());
 }
 
-onMounted(() => {
-  loadVolume();
-  updateVolume();
-});
-
-// Computed verse-relative timing
-const verseDuration = computed(() => {
-  if (sectionStart.value !== null && sectionEnd.value !== null) {
-    return sectionEnd.value - sectionStart.value;
-  }
-  return audioRef.value?.duration || 0;
-});
-
-const verseCurrentTime = computed(() => {
-  if (sectionStart.value !== null && currentTime.value >= sectionStart.value) {
-    return Math.min(currentTime.value - sectionStart.value, verseDuration.value);
-  }
-  return Math.min(currentTime.value, verseDuration.value);
-});
-
-const verseProgressPercent = computed(() => {
-  if (verseDuration.value === 0) return 0;
-  return (verseCurrentTime.value / verseDuration.value) * 100;
-});
-
-const formattedVerseCurrentTime = computed(() => {
-  return formatTime(verseCurrentTime.value);
-});
-
-const formattedVerseDuration = computed(() => {
-  return formatTime(verseDuration.value);
-});
-
-function formatTime(seconds) {
-  if (!isFinite(seconds) || seconds < 0) return "0:00";
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
-
-function seekToPosition(event) {
-  if (!audioRef.value || verseDuration.value === 0) return;
-  const rect = event.currentTarget.getBoundingClientRect();
-  const percent = (event.clientX - rect.left) / rect.width;
-  const targetVerseTime = percent * verseDuration.value;
-  // Convert verse-relative time back to absolute audio time
-  const absoluteTime = sectionStart.value !== null
-    ? sectionStart.value + targetVerseTime
-    : targetVerseTime;
-  audioRef.value.currentTime = absoluteTime;
-}
-
 function updateVolume() {
   if (audioRef.value) {
     audioRef.value.volume = volume.value;
+
     isMuted.value = volume.value === 0;
   }
+
   saveVolume();
 }
 
 function toggleMute() {
-  if (!audioRef.value) return;
+  if (!audioRef.value) {
+    return;
+  }
+
   if (isMuted.value) {
     volume.value = previousVolume.value || DEFAULT_VOLUME;
+
     isMuted.value = false;
   } else {
     previousVolume.value = volume.value;
+
     volume.value = 0;
+
     isMuted.value = true;
   }
+
   audioRef.value.volume = volume.value;
+
   saveVolume();
 }
 
-let hls = null;
+function increaseVolume() {
+  volume.value = Math.min(1, volume.value + 0.1);
+
+  if (audioRef.value) {
+    audioRef.value.volume = volume.value;
+  }
+
+  isMuted.value = false;
+
+  saveVolume();
+}
+
+function decreaseVolume() {
+  volume.value = Math.max(0, volume.value - 0.1);
+
+  if (audioRef.value) {
+    audioRef.value.volume = volume.value;
+  }
+
+  isMuted.value = volume.value === 0;
+
+  saveVolume();
+}
+
+/* -------------------------------------------------------------------------- */
+/* PROPS */
+/* -------------------------------------------------------------------------- */
 
 const props = defineProps({
   audioSrc: {
     type: String,
     default: "",
   },
+
   hlsSrc: {
     type: String,
     default: "",
   },
+
   startAt: {
     type: [Number, String],
     default: null,
   },
+
   endAt: {
     type: [Number, String],
     default: null,
   },
 });
 
-const emit = defineEmits(["audio-ended", "audio-timeupdate"]);
+const emit = defineEmits([
+  "audio-ended",
+  "audio-timeupdate",
+]);
 
-const sectionStart = computed(() => parseTimestamp(props.startAt));
-const sectionEnd = computed(() => parseTimestamp(props.endAt));
+/* -------------------------------------------------------------------------- */
+/* TIMING */
+/* -------------------------------------------------------------------------- */
+
+const sectionStart = computed(() =>
+  parseTimestamp(props.startAt),
+);
+
+const sectionEnd = computed(() =>
+  parseTimestamp(props.endAt),
+);
+
+const verseDuration = computed(() => {
+  if (
+    sectionStart.value !== null &&
+    sectionEnd.value !== null
+  ) {
+    return sectionEnd.value - sectionStart.value;
+  }
+
+  return audioRef.value?.duration || 0;
+});
+
+const verseCurrentTime = computed(() => {
+  if (
+    sectionStart.value !== null &&
+    currentTime.value >= sectionStart.value
+  ) {
+    return Math.min(
+      currentTime.value - sectionStart.value,
+      verseDuration.value,
+    );
+  }
+
+  return Math.min(
+    currentTime.value,
+    verseDuration.value,
+  );
+});
+
+const verseProgressPercent = computed(() => {
+  if (verseDuration.value === 0) {
+    return 0;
+  }
+
+  return (
+    (verseCurrentTime.value / verseDuration.value) *
+    100
+  );
+});
+
+const formattedVerseCurrentTime = computed(() =>
+  formatTime(verseCurrentTime.value),
+);
+
+const formattedVerseDuration = computed(() =>
+  formatTime(verseDuration.value),
+);
+
+/* -------------------------------------------------------------------------- */
+/* HLS */
+/* -------------------------------------------------------------------------- */
+
+let hls = null;
+let isUpdatingSource = false;
 
 function canPlayNativeHls() {
-  return Boolean(audioRef.value?.canPlayType("application/vnd.apple.mpegurl"));
+  return Boolean(
+    audioRef.value?.canPlayType(
+      "application/vnd.apple.mpegurl",
+    ),
+  );
 }
 
 function destroyHls() {
   if (hls) {
-    hls.destroy();
+    try {
+      hls.destroy();
+    } catch (error) {
+      console.error(
+        "Failed to destroy HLS:",
+        error,
+      );
+    }
+
     hls = null;
   }
 
   attachedHlsSrc.value = "";
 }
 
+async function loadHlsLibrary() {
+  const module = await import("hls.js");
+
+  return module.default;
+}
+
 async function updateResolvedAudioSource() {
-  if (!audioRef.value) {
+  if (!audioRef.value || isUpdatingSource) {
     return;
   }
 
-  // Native HLS support (Safari/iOS)
-  if (props.hlsSrc && canPlayNativeHls()) {
-    destroyHls();
-    resolvedAudioSrc.value = props.hlsSrc;
-    return;
-  }
+  isUpdatingSource = true;
 
-  // Lazy-load hls.js ONLY when needed
-  if (props.hlsSrc) {
-    const { default: Hls } = await import("hls.js");
-
-    if (Hls.isSupported()) {
-      resolvedAudioSrc.value = "";
-
-      if (attachedHlsSrc.value === props.hlsSrc) {
-        return;
-      }
-
+  try {
+    // SAFARI / iOS native HLS
+    if (props.hlsSrc && canPlayNativeHls()) {
       destroyHls();
 
-      hls = new Hls();
-      hls.loadSource(props.hlsSrc);
-      hls.attachMedia(audioRef.value);
+      if (
+        resolvedAudioSrc.value !== props.hlsSrc
+      ) {
+        resolvedAudioSrc.value = props.hlsSrc;
+      }
 
-      attachedHlsSrc.value = props.hlsSrc;
       return;
     }
+
+    // hls.js browsers
+    if (props.hlsSrc) {
+      const Hls = await loadHlsLibrary();
+
+      if (Hls?.isSupported()) {
+        if (
+          attachedHlsSrc.value === props.hlsSrc &&
+          hls
+        ) {
+          return;
+        }
+
+        resolvedAudioSrc.value = "";
+
+        destroyHls();
+
+        hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: false,
+          backBufferLength: 90,
+        });
+
+        hls.loadSource(props.hlsSrc);
+
+        hls.attachMedia(audioRef.value);
+
+        hls.on(Hls.Events.ERROR, (_, data) => {
+          console.error("HLS error:", data);
+
+          if (data?.fatal) {
+            switch (data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                hls.startLoad();
+                break;
+
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                hls.recoverMediaError();
+                break;
+
+              default:
+                destroyHls();
+                break;
+            }
+          }
+        });
+
+        attachedHlsSrc.value = props.hlsSrc;
+
+        return;
+      }
+    }
+
+    // fallback MP3
+    destroyHls();
+
+    if (
+      resolvedAudioSrc.value !== props.audioSrc
+    ) {
+      resolvedAudioSrc.value = props.audioSrc;
+    }
+  } catch (error) {
+    console.error(
+      "Failed to update audio source:",
+      error,
+    );
+
+    destroyHls();
+
+    resolvedAudioSrc.value = props.audioSrc;
+  } finally {
+    isUpdatingSource = false;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* HELPERS */
+/* -------------------------------------------------------------------------- */
+
+function formatTime(seconds) {
+  if (!isFinite(seconds) || seconds < 0) {
+    return "0:00";
   }
 
-  destroyHls();
-  resolvedAudioSrc.value = props.audioSrc;
+  const mins = Math.floor(seconds / 60);
+
+  const secs = Math.floor(seconds % 60);
+
+  return `${mins}:${secs
+    .toString()
+    .padStart(2, "0")}`;
 }
 
 function parseTimestamp(value) {
-  if (value === null || value === undefined || value === "") {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
     return null;
   }
 
   if (typeof value === "number") {
-    return Number.isFinite(value) ? value : null;
+    return Number.isFinite(value)
+      ? value
+      : null;
   }
 
   const parts = String(value)
     .trim()
     .split(":")
     .map((part) => Number(part));
-  if (parts.some((part) => !Number.isFinite(part))) {
+
+  if (
+    parts.some(
+      (part) => !Number.isFinite(part),
+    )
+  ) {
     return null;
   }
 
-  return parts.reduce((total, part) => total * 60 + part, 0);
+  return parts.reduce(
+    (total, part) => total * 60 + part,
+    0,
+  );
 }
 
-function seekToSectionStart() {
-  if (!audioRef.value || sectionStart.value === null) {
+function seekToPosition(event) {
+  if (
+    !audioRef.value ||
+    verseDuration.value === 0
+  ) {
     return;
   }
 
-  audioRef.value.currentTime = sectionStart.value;
+  const rect =
+    event.currentTarget.getBoundingClientRect();
+
+  const percent =
+    (event.clientX - rect.left) / rect.width;
+
+  const targetVerseTime =
+    percent * verseDuration.value;
+
+  const absoluteTime =
+    sectionStart.value !== null
+      ? sectionStart.value + targetVerseTime
+      : targetVerseTime;
+
+  audioRef.value.currentTime = absoluteTime;
+}
+
+function seekToSectionStart() {
+  if (
+    !audioRef.value ||
+    sectionStart.value === null
+  ) {
+    return;
+  }
+
+  audioRef.value.currentTime =
+    sectionStart.value;
 }
 
 function isBeforeSectionStart() {
   return (
     sectionStart.value !== null &&
     audioRef.value &&
-    audioRef.value.currentTime < sectionStart.value
+    audioRef.value.currentTime <
+    sectionStart.value
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/* AUDIO */
+/* -------------------------------------------------------------------------- */
+
 function handleLoadedMetadata() {
   hasStartedSection.value = false;
+
   seekToSectionStart();
 }
 
 function handlePlay() {
   isPlaying.value = true;
+
   if (isBeforeSectionStart()) {
     seekToSectionStart();
   }
@@ -330,103 +566,140 @@ function handleTimeUpdate() {
     return;
   }
 
-  // Track current time for custom controls
-  currentTime.value = audioRef.value.currentTime;
-  emit("audio-timeupdate", audioRef.value.currentTime);
+  currentTime.value =
+    audioRef.value.currentTime;
+
+  emit(
+    "audio-timeupdate",
+    audioRef.value.currentTime,
+  );
+
   if (sectionEnd.value === null) {
     return;
   }
 
   if (isBeforeSectionStart()) {
     seekToSectionStart();
+
     return;
   }
 
   hasStartedSection.value = true;
+
   if (
     hasStartedSection.value &&
-    audioRef.value.currentTime >= sectionEnd.value
+    audioRef.value.currentTime >=
+    sectionEnd.value
   ) {
     audioRef.value.pause();
+
     seekToSectionStart();
+
     emit("audio-ended");
   }
 }
 
-function togglePlay() {
+async function safePlay() {
+  if (!audioRef.value) {
+    return false;
+  }
+
+  try {
+    await audioRef.value.play();
+
+    isPlaying.value = true;
+
+    return true;
+  } catch (error) {
+    console.error(
+      "Playback failed:",
+      error,
+    );
+
+    isPlaying.value = false;
+
+    return false;
+  }
+}
+
+async function togglePlay() {
   if (!audioRef.value) {
     return;
   }
 
   if (audioRef.value.paused) {
-    audioRef.value.play();
+    await safePlay();
   } else {
     audioRef.value.pause();
+
+    isPlaying.value = false;
   }
 }
 
-function playSection() {
+async function playSection() {
   if (!audioRef.value) {
     return;
   }
 
-  // Set isPlaying immediately for UI feedback
-  isPlaying.value = true;
-  // Always seek to section start when playing a specific section
   seekToSectionStart();
-  // Play the audio
-  audioRef.value.play().catch(() => {
-    // If play fails (e.g., browser restrictions), reset isPlaying
-    isPlaying.value = false;
-  });
+
+  await safePlay();
 }
 
+/* -------------------------------------------------------------------------- */
+/* WATCHERS */
+/* -------------------------------------------------------------------------- */
+
 watch(
-  () => [props.audioSrc, props.hlsSrc, props.startAt, props.endAt],
-  () => {
+  () => [
+    props.audioSrc,
+    props.hlsSrc,
+    props.startAt,
+    props.endAt,
+  ],
+  async () => {
     hasStartedSection.value = false;
+
     isPlaying.value = false;
-    nextTick(() => {
-      updateResolvedAudioSource();
-      seekToSectionStart();
-    });
+
+    if (audioRef.value) {
+      audioRef.value.pause();
+    }
+
+    await nextTick();
+
+    await updateResolvedAudioSource();
+
+    seekToSectionStart();
   },
   { immediate: true },
 );
 
-onMounted(updateResolvedAudioSource);
+/* -------------------------------------------------------------------------- */
+/* LIFECYCLE */
+/* -------------------------------------------------------------------------- */
 
-onBeforeUnmount(destroyHls);
+onMounted(async () => {
+  loadVolume();
+
+  updateVolume();
+
+  await updateResolvedAudioSource();
+});
+
+onBeforeUnmount(() => {
+  destroyHls();
+});
+
+/* -------------------------------------------------------------------------- */
+/* EXPOSE */
+/* -------------------------------------------------------------------------- */
 
 defineExpose({
   audioRef,
   seekToSectionStart,
   playSection,
 });
-
-
-function increaseVolume() {
-  volume.value = Math.min(1, volume.value + 0.1);
-  if (audioRef.value) {
-    audioRef.value.volume = volume.value;
-  }
-  isMuted.value = false;
-  saveVolume();
-}
-
-function decreaseVolume() {
-  volume.value = Math.max(0, volume.value - 0.1);
-  if (audioRef.value) {
-    audioRef.value.volume = volume.value;
-  }
-  isMuted.value = volume.value === 0;
-  saveVolume();
-}
-
-const getIcon = (iconName) => {
-  return getAssetUrl(`icons/${iconName}`);
-};
-
 </script>
 
 <style scoped>
