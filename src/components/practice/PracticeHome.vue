@@ -157,13 +157,8 @@ function createMaskedContent(content, hideRatio) {
   }
 
   const rawHideCount = Math.round(wordIndexes.length * hideRatio);
-  const hideCount = Math.min(
-    wordIndexes.length - 1,
-    Math.max(1, rawHideCount),
-  );
-  const hiddenIndexes = new Set(
-    shuffleArray(wordIndexes).slice(0, hideCount),
-  );
+  const hideCount = Math.min(wordIndexes.length - 1, Math.max(1, rawHideCount));
+  const hiddenIndexes = new Set(shuffleArray(wordIndexes).slice(0, hideCount));
 
   const maskedTokens = tokens.map((token, index) => {
     if (hiddenIndexes.has(index)) {
