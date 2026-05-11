@@ -177,12 +177,14 @@ const startChanting = () => {
 
 @media (min-width: 360px) {
   .home-page {
+    border-radius: 20px;
     background-image: url("../assets/images/bg-720.webp");
   }
 }
 
 @media (min-width: 480px) {
   .home-page {
+    border-radius: 20px;
     background-image: url("../assets/images/bg-1080.webp");
   }
 
@@ -194,10 +196,6 @@ const startChanting = () => {
 }
 
 @media (max-width: 768px) {
-  .home-page {
-    background-image: url("../assets/images/bg-1600.webp");
-  }
-
   .logo-img {
     width: 50px;
     height: auto;
@@ -208,6 +206,8 @@ const startChanting = () => {
     padding-left: 18px;
     padding-right: 18px;
     align-items: flex-start;
+    border-radius: 20px;
+    background-image: url("../assets/images/bg-1600.webp");
   }
 
   .hero-subtitle {
@@ -238,6 +238,7 @@ const startChanting = () => {
 
 @media (min-width: 1024px) {
   .home-page {
+    border-radius: 0px;
     background-image: url("../assets/images/bg-1493.webp");
   }
 }
