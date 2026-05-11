@@ -462,6 +462,13 @@ function resetActiveAudioRange() {
 }
 
 function handlePlayAudioSection(section, index = -1) {
+  // If clicking the same active section, pause and clear active state
+  if (index === activeAudioSectionIndex.value && index !== -1) {
+    audioPlayerRef.value?.audioRef?.pause();
+    activeAudioSectionIndex.value = -1;
+    return;
+  }
+
   activeAudioStartAt.value = section.startAt;
   // Play until the end of the verse (not just the section)
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
