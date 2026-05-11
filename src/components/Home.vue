@@ -21,6 +21,14 @@
         <span class="btn-icon">✦</span>
         අරඹන්න
       </button>
+      <button
+        class="practice-btn"
+        v-on:click="openPracticeMode()"
+        aria-label="Open practice mode"
+      >
+        <span class="btn-icon">✦</span>
+        Practice Mode
+      </button>
     </div>
   </div>
 </template>
@@ -34,6 +42,10 @@ const router = useRouter();
 
 const startChanting = () => {
   router.push({ name: "namaskaraya" });
+};
+
+const openPracticeMode = () => {
+  router.push({ name: "PracticeMode" });
 };
 </script>
 
@@ -134,6 +146,40 @@ const startChanting = () => {
   min-width: fit-content;
 }
 
+.practice-btn {
+  border: 1px solid rgba(111, 31, 14, 0.6);
+  outline: none;
+  margin-left: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1vw, 12px);
+  padding: clamp(10px, 1.1vw, 14px) clamp(22px, 3.4vw, 32px);
+  border-radius: 999px;
+  background: rgba(255, 246, 232, 0.82);
+  color: #6f1f0e;
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 600;
+  line-height: 1;
+  font-family: "Abhaya Libre", serif !important;
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+  white-space: nowrap;
+}
+
+.practice-btn:hover {
+  transform: translateY(-2px);
+  background: #fff9ef;
+  box-shadow: 0 10px 24px rgba(59, 9, 6, 0.15);
+}
+
+.practice-btn:active {
+  transform: scale(0.985);
+}
+
 .begin-btn:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow:
@@ -193,6 +239,11 @@ const startChanting = () => {
     font-size: 20px;
     gap: 8px;
   }
+
+  .practice-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -226,6 +277,11 @@ const startChanting = () => {
     font-weight: 600;
     font-size: 18px;
     margin-bottom: 34px;
+  }
+
+  .practice-btn {
+    margin-top: 12px;
+    margin-left: 0;
   }
 }
 
