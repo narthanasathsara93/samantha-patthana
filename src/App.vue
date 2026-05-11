@@ -681,7 +681,7 @@ function toggleAutoplay() {
       areMobileLowerControlsVisible.value = true;
     }
 
-    // Auto-hide after 3.5 seconds
+    // Auto-hide after 5 seconds
     autoplayControlsHideTimer = setTimeout(() => {
       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
         areMobileLowerControlsVisible.value = false;
