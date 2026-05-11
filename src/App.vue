@@ -177,7 +177,7 @@
           />
 
           <button
-            v-if="!isShowingResourcesPanel"
+            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
             class="lower-controls-toggle"
             type="button"
             :class="
