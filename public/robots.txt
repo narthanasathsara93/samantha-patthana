@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Allow all bots to crawl everything
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://samantha-patthana.pages.dev/sitemap.xml
+
+# Crawl-delay for better server performance
+Crawl-delay: 1
