@@ -1,6 +1,6 @@
 <template>
   <span class="mobile-header">
-    <button @click="$emit('toggle-sidebar')">☰</button>
+    <button @click="$emit('toggle-sidebar')" aria-label="Toggle sidebar">☰</button>
     <span class="mobile-header-title">{{ title }}</span>
   </span>
 </template>

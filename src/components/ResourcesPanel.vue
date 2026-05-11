@@ -4,7 +4,7 @@
 
     <div class="resources-panel-body">
       <a :href="youtubeUrlND" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
         පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ<br />
         (නිර්වාණ ද්වාර යූටියුබ් නාලිකාව)
       </a>
@@ -12,20 +12,20 @@
 
     <div class="resources-panel-body">
       <a :href="googleDriveUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/google_drive.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/google_drive.png`)" alt="" />
         පට්ඨාන ධර්ම ලිපිගොනු
       </a>
     </div>
 
     <div class="resources-panel-body">
       <a :href="pattanaAnuhasUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ටානය අනුහස් අවසන් සංස්කරණය
       </a>
     </div>
     <div class="resources-panel-body">
       <a :href="pattanaNayaTipitakaLk" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන නය - අභිධර්ම චන්ද්‍රිකාව - pitaka.lk <br />
         (සිංහල අර්ථ)
       </a>
@@ -33,21 +33,21 @@
 
     <div class="resources-panel-body">
       <a :href="pattanaWandanawaTipitakaLk" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
       </a>
     </div>
 
     <div class="resources-panel-body">
       <a href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන මහා පකරණ සන්නය - pitaka.lk
       </a>
     </div>
 
     <div class="resources-panel-body">
       <a :href="pindeemaUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" />
+        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
         පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි<br />
         (දේව පුණ්‍යානුමෝදනාව)
       </a>

@@ -13,7 +13,7 @@
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
       </p>
 
-      <button class="begin-btn" v-on:click="startChanting()">
+      <button class="begin-btn" v-on:click="startChanting()" aria-label="Start chanting">
         <span class="btn-icon">✦</span>
         අරඹන්න
       </button>
