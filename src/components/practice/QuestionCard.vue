@@ -123,22 +123,34 @@ const isLastQuestion = computed(
   min-height: 0;
   margin: 0;
   margin-top: 10px;
-  padding-right: 8px;
+  padding-right: 4px;
   overflow-y: auto;
   white-space: normal;
   color: #0e0a0a;
   line-height: 160%;
   font-size: 18px;
   font-weight: 600;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(193 172 137) rgba(253, 241, 218, 0.9);
   -webkit-overflow-scrolling: touch;
 }
 
 .verse-text::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
+  width: 8px;
+}
+
+.verse-text::-webkit-scrollbar-track {
+  background: rgba(253, 241, 218, 0.85);
+  border-radius: 4px;
+}
+
+.verse-text::-webkit-scrollbar-thumb {
+  background: rgba(139, 30, 19, 0.4);
+  border-radius: 4px;
+}
+
+.verse-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 30, 19, 0.55);
 }
 
 .verse-text :deep(.word-blank) {

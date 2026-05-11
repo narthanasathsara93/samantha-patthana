@@ -300,8 +300,8 @@ restoreSessionState();
   display: grid;
   place-items: center;
   padding: 12px;
-  background-image: url("../../assets/images/bg-1080.webp");
+  background-image: url("../../assets/images/bg-1493.webp");
   background-size: cover;
-  background-position: center;
+  background-position: center bottom;
 }
 </style>
