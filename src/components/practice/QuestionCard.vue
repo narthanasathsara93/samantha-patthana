@@ -5,7 +5,7 @@
       <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
     </div>
 
-    <h2 class="question-title">Fill in your mind</h2>
+    <h2 class="question-title">{{ title }}</h2>
 
     <div class="verse-box">
       <p class="verse-text" v-html="displayContent"></p>
@@ -40,6 +40,10 @@ const props = defineProps({
   displayContent: { type: String, required: true },
   currentIndex: {
     type: Number,
+    required: true,
+  },
+  title: {
+    type: String,
     required: true,
   },
   totalQuestions: {

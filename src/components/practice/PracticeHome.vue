@@ -9,6 +9,7 @@
     <QuestionCard
       v-else-if="!isFinished"
       :display-content="currentDisplayContent"
+      :title="currentQuestion?.title"
       :current-index="currentQuestionIndex"
       :total-questions="sessionQuestions.length"
       :selected-level="selectedLevel"
