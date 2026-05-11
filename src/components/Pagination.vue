@@ -1,10 +1,18 @@
 <template>
   <div class="pagination">
-    <button @click="$emit('prev')" :disabled="currentIndex === 0" aria-label="Previous verse">
+    <button
+      @click="$emit('prev')"
+      :disabled="currentIndex === 0"
+      aria-label="Previous verse"
+    >
       &lt;&lt; පෙර
     </button>
     <span>{{ currentIndex + 1 }} / {{ totalVerses }}</span>
-    <button @click="$emit('next')" :disabled="currentIndex === totalVerses - 1" aria-label="Next verse">
+    <button
+      @click="$emit('next')"
+      :disabled="currentIndex === totalVerses - 1"
+      aria-label="Next verse"
+    >
       ඊළඟ &gt;&gt;
     </button>
   </div>
@@ -64,5 +72,4 @@ defineEmits(["prev", "next"]);
     margin-top: 0x;
   }
 }
-
 </style>

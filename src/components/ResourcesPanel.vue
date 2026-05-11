@@ -12,7 +12,11 @@
 
     <div class="resources-panel-body">
       <a :href="googleDriveUrl" target="_blank" rel="noopener noreferrer">
-        <img class="resource-icon" :src="getIcon(`icons/google_drive.png`)" alt="" />
+        <img
+          class="resource-icon"
+          :src="getIcon(`icons/google_drive.png`)"
+          alt=""
+        />
         පට්ඨාන ධර්ම ලිපිගොනු
       </a>
     </div>
@@ -24,7 +28,11 @@
       </a>
     </div>
     <div class="resources-panel-body">
-      <a :href="pattanaNayaTipitakaLk" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="pattanaNayaTipitakaLk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන නය - අභිධර්ම චන්ද්‍රිකාව - pitaka.lk <br />
         (සිංහල අර්ථ)
@@ -32,14 +40,22 @@
     </div>
 
     <div class="resources-panel-body">
-      <a :href="pattanaWandanawaTipitakaLk" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="pattanaWandanawaTipitakaLk"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
       </a>
     </div>
 
     <div class="resources-panel-body">
-      <a href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන මහා පකරණ සන්නය - pitaka.lk
       </a>
@@ -107,7 +123,9 @@ const getIcon = (icon) => {
   border-radius: 999px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .resources-back-btn:hover {
@@ -130,7 +148,9 @@ const getIcon = (icon) => {
   color: #3b0906;
   font-weight: 400;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .resource-icon {

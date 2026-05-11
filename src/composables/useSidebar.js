@@ -1,19 +1,19 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export function useSidebar() {
-  const isSidebarOpen = ref(false)
+  const isSidebarOpen = ref(false);
 
   function toggleSidebar() {
-    isSidebarOpen.value = !isSidebarOpen.value
+    isSidebarOpen.value = !isSidebarOpen.value;
   }
 
   function closeSidebar() {
-    isSidebarOpen.value = false
+    isSidebarOpen.value = false;
   }
 
   return {
     isSidebarOpen,
     toggleSidebar,
-    closeSidebar
-  }
+    closeSidebar,
+  };
 }

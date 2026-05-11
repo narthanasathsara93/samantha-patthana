@@ -30,7 +30,6 @@ const getIcon = (isAutoPlaying) => {
 </script>
 
 <style scoped>
-
 /* Autoplay Button */
 .autoplay-icon {
   width: 23px;
@@ -46,7 +45,10 @@ const getIcon = (isAutoPlaying) => {
   border: none;
   font-size: 20px;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;

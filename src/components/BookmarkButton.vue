@@ -58,5 +58,4 @@ const getIcon = (isBookmarked) => {
 .bookmark-btn:hover {
   transform: scale(1.25);
 }
-
 </style>
