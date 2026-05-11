@@ -13,7 +13,11 @@
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
       </p>
 
-      <button class="begin-btn" v-on:click="startChanting()" aria-label="Start chanting">
+      <button
+        class="begin-btn"
+        v-on:click="startChanting()"
+        aria-label="Start chanting"
+      >
         <span class="btn-icon">✦</span>
         අරඹන්න
       </button>
@@ -108,12 +112,9 @@ const startChanting = () => {
   justify-content: center;
   gap: clamp(8px, 1vw, 12px);
   /* stable proportional sizing */
-  padding:
-    clamp(10px, 1.1vw, 14px) clamp(26px, 4vw, 38px);
+  padding: clamp(10px, 1.1vw, 14px) clamp(26px, 4vw, 38px);
   border-radius: 999px;
-  background: linear-gradient(180deg,
-      #8f2d14 0%,
-      #6f1f0e 100%);
+  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #fff6e8;
   /* fluid typography */
   font-size: clamp(20px, 2.2vw, 29px);
@@ -135,7 +136,8 @@ const startChanting = () => {
 
 .begin-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 14px 34px rgba(111, 31, 14, 0.35),
+  box-shadow:
+    0 14px 34px rgba(111, 31, 14, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 

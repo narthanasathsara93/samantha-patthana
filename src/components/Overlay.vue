@@ -6,11 +6,11 @@
 defineProps({
   show: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-defineEmits(['click'])
+defineEmits(["click"]);
 </script>
 
 <style scoped>
@@ -19,7 +19,6 @@ defineEmits(['click'])
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(3px);
   z-index: 5;
   pointer-events: auto;
 }
