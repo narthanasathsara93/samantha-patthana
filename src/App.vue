@@ -462,18 +462,22 @@ function resetActiveAudioRange() {
 }
 
 function handlePlayAudioSection(section, index = -1) {
-  // If clicking the same active section, pause and clear active state
-  if (index === activeAudioSectionIndex.value && index !== -1) {
-    audioPlayerRef.value?.audioRef?.pause();
-    activeAudioSectionIndex.value = -1;
+  const audio = audioPlayerRef.value?.audioRef;
+  const isSameSection = index === activeAudioSectionIndex.value && index !== -1;
+  const isPlaying = audio && !audio.paused;
+
+  // If clicking same section while playing, toggle pause
+  if (isSameSection && isPlaying) {
+    audio.pause();
     return;
   }
 
+  // Set the clicked section as active
   activeAudioStartAt.value = section.startAt;
-  // Play until the end of the verse (not just the section)
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
   activeAudioSectionIndex.value = index;
 
+  // Always play the section
   nextTick(() => {
     audioPlayerRef.value?.playSection();
   });

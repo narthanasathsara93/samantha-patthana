@@ -336,6 +336,7 @@ const formattedVerseDuration = computed(() => formatTime(verseDuration.value));
 
 let hls = null;
 let isUpdatingSource = false;
+let sourceUpdatePromise = null;
 
 function canPlayNativeHls() {
   return Boolean(audioRef.value?.canPlayType("application/vnd.apple.mpegurl"));
@@ -363,10 +364,20 @@ async function loadHlsLibrary() {
 
 async function updateResolvedAudioSource() {
   if (!audioRef.value || isUpdatingSource) {
-    return;
+    return sourceUpdatePromise;
   }
 
   isUpdatingSource = true;
+  sourceUpdatePromise = new Promise((resolve) => {
+    const checkComplete = () => {
+      if (!isUpdatingSource) {
+        resolve();
+      } else {
+        setTimeout(checkComplete, 10);
+      }
+    };
+    setTimeout(checkComplete, 10);
+  });
 
   try {
     // SAFARI / iOS native HLS
@@ -377,7 +388,7 @@ async function updateResolvedAudioSource() {
         resolvedAudioSrc.value = props.hlsSrc;
       }
 
-      return;
+      return; // Source is set, will resolve in finally
     }
 
     // hls.js browsers
@@ -386,7 +397,7 @@ async function updateResolvedAudioSource() {
 
       if (Hls?.isSupported()) {
         if (attachedHlsSrc.value === props.hlsSrc && hls) {
-          return;
+          return; // Already attached, will resolve in finally
         }
 
         resolvedAudioSrc.value = "";
@@ -425,6 +436,17 @@ async function updateResolvedAudioSource() {
 
         attachedHlsSrc.value = props.hlsSrc;
 
+        // Wait for HLS to be ready before completing
+        await new Promise((resolve) => {
+          const onManifestParsed = () => {
+            hls.off(Hls.Events.MANIFEST_PARSED, onManifestParsed);
+            resolve();
+          };
+          hls.on(Hls.Events.MANIFEST_PARSED, onManifestParsed);
+          // Fallback timeout in case manifest parsing fails
+          setTimeout(resolve, 500);
+        });
+
         return;
       }
     }
@@ -444,6 +466,8 @@ async function updateResolvedAudioSource() {
   } finally {
     isUpdatingSource = false;
   }
+
+  return sourceUpdatePromise;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -608,6 +632,22 @@ async function playSection() {
     return;
   }
 
+  // Wait for any pending source update to complete
+  if (isUpdatingSource && sourceUpdatePromise) {
+    await sourceUpdatePromise;
+  }
+
+  // Double check we have a valid source before playing
+  // For HLS: hls.js attaches programmatically, so check if HLS is attached
+  // For native: check if src is set
+  const hasNativeSource = resolvedAudioSrc.value && audioRef.value.src;
+  const hasHlsSource = hls && attachedHlsSrc.value === props.hlsSrc;
+
+  if (!hasNativeSource && !hasHlsSource) {
+    console.warn("No valid audio source available");
+    return;
+  }
+
   seekToSectionStart();
 
   await safePlay();
@@ -619,20 +659,32 @@ async function playSection() {
 
 watch(
   () => [props.audioSrc, props.hlsSrc, props.startAt, props.endAt],
-  async () => {
-    hasStartedSection.value = false;
+  async (newVal, oldVal) => {
+    const newAudioSrc = newVal[0];
+    const newHlsSrc = newVal[1];
+    const oldAudioSrc = oldVal?.[0];
+    const oldHlsSrc = oldVal?.[1];
 
-    isPlaying.value = false;
+    // Only pause and reset if the actual audio source changed
+    const sourceChanged = oldVal && (newAudioSrc !== oldAudioSrc || newHlsSrc !== oldHlsSrc);
 
-    if (audioRef.value) {
-      audioRef.value.pause();
+    if (sourceChanged) {
+      hasStartedSection.value = false;
+      isPlaying.value = false;
+
+      if (audioRef.value) {
+        audioRef.value.pause();
+      }
     }
 
     await nextTick();
 
     await updateResolvedAudioSource();
 
-    seekToSectionStart();
+    // Only auto-seek on source change or initial load
+    if (sourceChanged || !oldVal) {
+      seekToSectionStart();
+    }
   },
   { immediate: true },
 );
