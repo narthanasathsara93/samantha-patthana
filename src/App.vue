@@ -657,7 +657,7 @@ function startPlayerAutoHideTimer() {
       areMobileLowerControlsVisible.value = false;
     }
     playerAutoHideTimer = null;
-  }, 3000);
+  }, 5000);
 }
 
 function handleDocumentClick(event) {
