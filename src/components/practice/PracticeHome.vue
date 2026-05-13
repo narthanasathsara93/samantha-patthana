@@ -9,12 +9,12 @@
     <QuestionCard
       v-else-if="!isFinished"
       :display-content="currentDisplayContent"
-      :title="currentQuestion?.title"
+      :title="currentQuestionTitle"
       :current-index="currentQuestionIndex"
       :total-questions="sessionQuestions.length"
       :selected-level="selectedLevel"
       :is-answer-revealed="isCurrentAnswerRevealed"
-      @go-previous="goPrevious"
+      @end-session="endSession"
       @toggle-answer="toggleAnswerReveal"
       @go-next="goNext"
     />
@@ -57,6 +57,10 @@ const currentQuestion = computed(() => {
   return sessionQuestions.value[currentQuestionIndex.value] || null;
 });
 
+const currentQuestionTitle = computed(() => {
+  return currentQuestion.value?.title || "Fill in your mind";
+});
+
 const currentDisplayContent = computed(() => {
   if (!currentQuestion.value) {
     return "";
@@ -75,13 +79,13 @@ function handleSelectLevel(level) {
   sessionQuestions.value = buildSessionQuestions(level);
 }
 
-function goPrevious() {
-  if (currentQuestionIndex.value === 0) {
-    return;
-  }
-
-  currentQuestionIndex.value -= 1;
+function endSession() {
+  clearSessionState();
+  selectedLevel.value = "";
+  currentQuestionIndex.value = 0;
+  isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
+  sessionQuestions.value = [];
 }
 
 function goNext() {
@@ -112,6 +116,7 @@ function restartLevel() {
 }
 
 function changeLevel() {
+  clearSessionState();
   selectedLevel.value = "";
   currentQuestionIndex.value = 0;
   isFinished.value = false;
@@ -120,7 +125,6 @@ function changeLevel() {
 }
 
 function goHome() {
-  clearSessionState();
   router.push({ name: "Home" });
 }
 

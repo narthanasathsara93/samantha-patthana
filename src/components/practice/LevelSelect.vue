@@ -2,18 +2,19 @@
   <section class="practice-card">
     <h1 class="title">Practice Mode</h1>
     <p class="subtitle">
-      Select your level to begin. Level can be changed after you finish all verses.
+      Select a level to start. During practice, End resets progress and brings
+      you back here.
     </p>
 
     <div class="level-buttons">
       <button class="level-btn easy" @click="$emit('select-level', 'easy')">
-        Easy
+        <span>☘</span> ආධුනික
       </button>
       <button class="level-btn medium" @click="$emit('select-level', 'medium')">
-        Medium
+         <span>♣</span>මධ්‍යස්ථ
       </button>
       <button class="level-btn hard" @click="$emit('select-level', 'hard')">
-        Hard
+         <span>♠</span>ගුරු
       </button>
     </div>
 

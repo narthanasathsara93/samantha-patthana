@@ -21,13 +21,14 @@
         <span class="btn-icon">✦</span>
         අරඹන්න
       </button>
+
       <button
         class="practice-btn"
         v-on:click="openPracticeMode()"
-        aria-label="Open practice mode"
+        aria-label="Practice start — open practice mode"
       >
-        <span class="btn-icon">✦</span>
-        Practice Mode
+        <span class="btn-icon">✍︎</span>
+        පුහුණුව
       </button>
     </div>
   </div>
@@ -116,6 +117,15 @@ const openPracticeMode = () => {
 }
 
 .begin-btn {
+  margin-right: 2px;
+}
+
+.practice-btn {
+  margin-left: 2px;
+}
+
+.begin-btn,
+.practice-btn {
   border: none;
   outline: none;
 
@@ -142,52 +152,20 @@ const openPracticeMode = () => {
     box-shadow 0.22s ease,
     opacity 0.22s ease;
   white-space: nowrap;
-  /* prevents weird shrinking */
-  min-width: fit-content;
+  /* equal width for both buttons */
+  width: clamp(160px, 18vw, 220px);
 }
 
-.practice-btn {
-  border: 1px solid rgba(111, 31, 14, 0.6);
-  outline: none;
-  margin-left: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(8px, 1vw, 12px);
-  padding: clamp(10px, 1.1vw, 14px) clamp(22px, 3.4vw, 32px);
-  border-radius: 999px;
-  background: rgba(255, 246, 232, 0.82);
-  color: #6f1f0e;
-  font-size: clamp(18px, 2vw, 26px);
-  font-weight: 600;
-  line-height: 1;
-  font-family: "Abhaya Libre", serif !important;
-  cursor: pointer;
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
-  white-space: nowrap;
-}
-
+.begin-btn:hover,
 .practice-btn:hover {
-  transform: translateY(-2px);
-  background: #fff9ef;
-  box-shadow: 0 10px 24px rgba(59, 9, 6, 0.15);
-}
-
-.practice-btn:active {
-  transform: scale(0.985);
-}
-
-.begin-btn:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow:
     0 14px 34px rgba(111, 31, 14, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.begin-btn:active {
+.begin-btn:active,
+.practice-btn:active {
   transform: scale(0.985);
 }
 
@@ -234,15 +212,11 @@ const openPracticeMode = () => {
     background-image: url("../assets/images/bg-1080.webp");
   }
 
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     padding: 10px 24px;
     font-size: 20px;
     gap: 8px;
-  }
-
-  .practice-btn {
-    padding: 10px 20px;
-    font-size: 18px;
   }
 }
 
@@ -278,16 +252,12 @@ const openPracticeMode = () => {
     font-size: 18px;
     margin-bottom: 34px;
   }
-
-  .practice-btn {
-    margin-top: 12px;
-    margin-left: 0;
-  }
 }
 
 /* Tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     font-size: 25px;
   }
 }
@@ -301,7 +271,8 @@ const openPracticeMode = () => {
 
 /* Large desktops */
 @media (min-width: 1440px) {
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     font-size: 31px;
     padding: 14px 42px;
   }

@@ -8,22 +8,27 @@
     <h2 class="question-title">{{ title }}</h2>
 
     <div class="verse-box">
-      <p class="verse-text" v-html="displayContent"></p>
+      <p :key="isAnswerRevealed" class="verse-text" v-html="displayContent"></p>
     </div>
 
     <div class="actions">
       <button
-        class="action-btn"
-        :disabled="currentIndex === 0"
-        @click="$emit('go-previous')"
+        class="action-btn end"
+        type="button"
+        @click="$emit('end-session')"
       >
-        &lt;&lt; previous
+        End
       </button>
-      <button class="action-btn reveal" @click="$emit('toggle-answer')">
+      <button
+        class="action-btn reveal"
+        type="button"
+        @click="$emit('toggle-answer')"
+      >
         {{ isAnswerRevealed ? "Hide back" : "Reveal the answer" }}
       </button>
       <button
         class="action-btn"
+        type="button"
         :disabled="totalQuestions === 0"
         @click="$emit('go-next')"
       >
@@ -44,7 +49,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    required: true,
+    default: "Fill in your mind",
   },
   totalQuestions: {
     type: Number,
@@ -60,7 +65,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(["go-previous", "toggle-answer", "go-next"]);
+defineEmits(["end-session", "toggle-answer", "go-next"]);
 
 const levelLabel = computed(() => props.selectedLevel.toUpperCase());
 const isLastQuestion = computed(
@@ -69,6 +74,16 @@ const isLastQuestion = computed(
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .practice-card {
   width: min(900px, 94vw);
   height: min(760px, calc(100dvh - 52px));
@@ -137,6 +152,7 @@ const isLastQuestion = computed(
   scrollbar-width: thin;
   scrollbar-color: rgb(193 172 137) rgba(253, 241, 218, 0.9);
   -webkit-overflow-scrolling: touch;
+  transition: opacity 0.3s ease;
 }
 
 .verse-text::-webkit-scrollbar {
@@ -169,6 +185,9 @@ const isLastQuestion = computed(
   background: rgba(193, 149, 96, 0.42);
   border: 1px solid rgba(160, 120, 80, 0.32);
   box-sizing: border-box;
+  transition:
+    opacity 0.3s ease,
+    background 0.3s ease;
 }
 
 .actions {
@@ -206,6 +225,11 @@ const isLastQuestion = computed(
 
 .reveal {
   border-color: #7a2410;
+}
+
+.end {
+  border-color: rgba(122, 36, 16, 0.55);
+  color: #6f1f0e;
 }
 
 @media (max-width: 720px) {

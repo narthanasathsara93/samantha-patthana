@@ -1,18 +1,20 @@
 <template>
   <section class="practice-card">
-    <h2 class="title">You have completed the questions.</h2>
+    <h2 class="title">මෙම පුහුණු වටය අවසන් කරන ලදී.</h2>
     <p class="subtitle">
-      Would you like to start again? ({{ totalQuestions }} verses, {{ selectedLevelLabel }} mode)
+      ({{ selectedLevelLabel }} අසීරුතා මට්ටම)
     </p>
 
     <div class="actions">
       <button class="primary-btn" @click="$emit('restart-level')">
-        Start Again
+        නැවත උත්සාහ කිරීමට
       </button>
       <button class="secondary-btn" @click="$emit('change-level')">
-        Change Level
+        අසීරුතා මට්ටම වෙනස් කිරීමට
       </button>
-      <button class="secondary-btn" @click="$emit('go-home')">Back to Home</button>
+      <button class="secondary-btn" @click="$emit('go-home')">
+        මුල් පිටුවට
+      </button>
     </div>
   </section>
 </template>
