@@ -22,7 +22,9 @@
         v-on:click="startChanting()"
         aria-label="Start chanting"
       >
-        <span class="btn-icon">✦</span>
+        <span class="btn-icon">
+          <img class="volume-ctrl-icon" :src="getIcon('star.png')" alt="✦" />
+        </span>
         අරඹන්න
       </button>
 
@@ -31,7 +33,9 @@
         v-on:click="openPracticeMode()"
         aria-label="Practice start — open practice mode"
       >
-        <span class="btn-icon">✍︎</span>
+        <span class="btn-icon">
+          <img class="volume-ctrl-icon" :src="getIcon('mindset.png')" alt="✍︎"
+        /></span>
         පුහුණුව
       </button>
     </div>
@@ -42,6 +46,7 @@
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
+import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
 
@@ -51,6 +56,10 @@ const startChanting = () => {
 
 const openPracticeMode = () => {
   router.push({ name: "PracticeMode" });
+};
+
+const getIcon = (img) => {
+  return getAssetUrl(`icons/${img}`);
 };
 </script>
 
