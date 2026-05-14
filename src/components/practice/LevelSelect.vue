@@ -7,13 +7,13 @@
     </p>
 
     <div class="level-buttons">
-      <button class="level-btn easy" @click="$emit('select-level', 'easy')">
-        <span>☘</span> ආධුනික
+      <button class="level-btn easy" @click="$emit('select-level', 'ආධුනික')">
+        <span>☘</span>ආධුනික
       </button>
-      <button class="level-btn medium" @click="$emit('select-level', 'medium')">
+      <button class="level-btn medium" @click="$emit('select-level', 'මධ්‍යස්ථ')">
          <span>♣</span>මධ්‍යස්ථ
       </button>
-      <button class="level-btn hard" @click="$emit('select-level', 'hard')">
+      <button class="level-btn hard" @click="$emit('select-level', 'ගුරු')">
          <span>♠</span>ගුරු
       </button>
     </div>

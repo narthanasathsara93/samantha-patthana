@@ -67,7 +67,7 @@ const props = defineProps({
 
 defineEmits(["end-session", "toggle-answer", "go-next"]);
 
-const levelLabel = computed(() => props.selectedLevel.toUpperCase());
+const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
