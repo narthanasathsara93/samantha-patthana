@@ -242,6 +242,7 @@ import { useNavigation } from "./composables/useNavigation";
 import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
+import { useBfcache } from "./composables/useBfcache";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
 import { sinhalaTexts } from "./data/sinhalaText";
@@ -346,6 +347,7 @@ const {
 } = useAutoplay(playCurrent);
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
+useBfcache(); // Initialize bfcache optimization
 const route = useRoute();
 const router = useRouter();
 const pullToReload = {
