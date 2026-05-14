@@ -1,13 +1,13 @@
 <template>
   <div class="home-page">
     <div class="hero-content">
-      <img class="logo-img" :src="logoImage" />
+      <img class="logo-img" :src="logoImage" alt="Logo" />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
       </div>
 
-      <img class="hero-title" :src="mainTitleImage" />
+      <img class="hero-title" :src="mainTitleImage" alt="සමන්ත පට්ඨාන වන්දනාව"/>
 
       <p class="hero-description">
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
