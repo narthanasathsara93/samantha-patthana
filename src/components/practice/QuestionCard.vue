@@ -2,7 +2,18 @@
   <section class="practice-card">
     <div class="header">
       <span class="chip">{{ levelLabel }}</span>
-      <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
+      <div class="session-meta">
+        <button
+          class="end-session-btn"
+          type="button"
+          aria-label="End session"
+          title="End session"
+          @click="$emit('end-session')"
+        >
+          <img class="end-session-icon" :src="getIcon('difficulty.png')" alt="" />
+        </button>
+        <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
+      </div>
     </div>
 
     <h2 class="question-title">{{ title }}</h2>
@@ -17,14 +28,14 @@
         type="button"
         @click="$emit('end-session')"
       >
-        End
+        අවසන් කරන්න
       </button>
       <button
         class="action-btn reveal"
         type="button"
         @click="$emit('toggle-answer')"
       >
-        {{ isAnswerRevealed ? "Hide back" : "Reveal the answer" }}
+        {{ isAnswerRevealed ? "පිළිතුර වසන්න" : "පිළිතුර?" }}
       </button>
       <button
         class="action-btn"
@@ -40,6 +51,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { getAssetUrl } from "../../utils/assets";
 
 const props = defineProps({
   displayContent: { type: String, required: true },
@@ -71,6 +83,7 @@ const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
+const getIcon = (img) => getAssetUrl(`icons/${img}`);
 </script>
 
 <style scoped>
@@ -98,8 +111,15 @@ const isLastQuestion = computed(
 
 .header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  gap: 8px;
+}
+
+.session-meta {
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -192,9 +212,37 @@ const isLastQuestion = computed(
 
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: auto;
+}
+
+.end-session-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(122, 36, 16, 0.28);
+  border-radius: 999px;
+  background: #fff5e3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.end-session-btn:hover {
+  transform: translateY(-1px);
+  background: #fff0d6;
+}
+
+.end-session-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
 }
 
 .action-btn {
@@ -228,8 +276,7 @@ const isLastQuestion = computed(
 }
 
 .end {
-  border-color: rgba(122, 36, 16, 0.55);
-  color: #6f1f0e;
+  display: none;
 }
 
 @media (max-width: 720px) {

@@ -1,33 +1,52 @@
 <template>
   <section class="practice-card">
-    <h1 class="title">Practice Mode</h1>
+    <h1 class="title">පුහුණුව</h1>
     <p class="subtitle">
-      Select a level to start. During practice, End resets progress and brings
-      you back here.
+      ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරන්න. <br />
+      පුහුණුව අතරතුර "අවසන් කරන්න" තේරීමෙන් මුල සිට නව ඇරඹුමක් කල හැක.
     </p>
 
     <div class="level-buttons">
       <button class="level-btn easy" @click="$emit('select-level', 'ආධුනික')">
-        <span>☘</span>ආධුනික
+        <span class="btn-icon">
+          <img class="level-btn-icon" :src="getIcon('level1.png')" alt="✦" />
+        </span>
+        ආධුනික
       </button>
-      <button class="level-btn medium" @click="$emit('select-level', 'මධ්‍යස්ථ')">
-         <span>♣</span>මධ්‍යස්ථ
+      <button
+        class="level-btn medium"
+        @click="$emit('select-level', 'මධ්‍යස්ථ')"
+      >
+        <span class="btn-icon">
+          <img class="level-btn-icon" :src="getIcon('level2.png')" alt="✦" />
+        </span>
+        මධ්‍යස්ථ
       </button>
-      <button class="level-btn hard" @click="$emit('select-level', 'ගුරු')">
-         <span>♠</span>ගුරු
+      <button class="level-btn hard" @click="$emit('select-level', 'ප්‍රවීණ')">
+        <span class="btn-icon">
+          <img class="level-btn-icon" :src="getIcon('level3.png')" alt="✦" />
+        </span>
+        ප්‍රවීණ
       </button>
     </div>
 
-    <button class="back-btn" @click="$emit('go-home')">Back to Home</button>
+    <button class="back-btn" @click="$emit('go-home')">මුල් පිටුව වෙත</button>
   </section>
 </template>
 
 <script setup>
+import { getAssetUrl } from "../../utils/assets";
+
 defineEmits(["select-level", "go-home"]);
+
+const getIcon = (img) => {
+  return getAssetUrl(`icons/${img}`);
+};
 </script>
 
 <style scoped>
 .practice-card {
+  font-family: "Abhaya Libre", serif !important;
   width: min(760px, 92vw);
   border-radius: 18px;
   padding: 32px 28px;
@@ -55,9 +74,16 @@ defineEmits(["select-level", "go-home"]);
 }
 
 .level-btn {
+  font-family: "Abhaya Libre", serif !important;
   border: none;
   border-radius: 12px;
   min-height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   font-size: clamp(20px, 2vw, 26px);
   font-weight: 700;
   cursor: pointer;
@@ -68,16 +94,35 @@ defineEmits(["select-level", "go-home"]);
   transform: translateY(-2px);
 }
 
-.easy {
-  background: #d6f5da;
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
 }
 
-.medium {
-  background: #ffe9a8;
+.level-btn-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
 }
 
+.easy,
+.medium,
 .hard {
-  background: #ffc9be;
+  border-radius: 25px;
+  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
+  color: #fff6e8;
+  font-size: clamp(20px, 2.2vw, 29px);
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px rgba(111, 31, 14, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
 }
 
 .back-btn {
