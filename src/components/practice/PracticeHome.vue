@@ -66,7 +66,7 @@ const practiceSessionStorageKey = "practice-mode-session-v1";
 const difficultyRanges = {
   easy: [0.2, 0.25],
   medium: [0.5, 0.6],
-  hard: [0.85, 0.95],
+  hard: [0.87, 0.99],
 };
 
 const currentQuestion = computed(() => {
