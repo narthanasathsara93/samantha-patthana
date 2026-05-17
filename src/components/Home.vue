@@ -34,8 +34,12 @@
         aria-label="Practice start — open practice mode"
       >
         <span class="btn-icon">
-          <img class="volume-ctrl-icon" :src="getIcon('mindset.png')" alt="✍︎"
-        /></span>
+          <img
+            class="volume-ctrl-icon"
+            :src="getIcon('mindset2.png')"
+            alt="✍︎"
+          />
+        </span>
         පුහුණුව
       </button>
     </div>

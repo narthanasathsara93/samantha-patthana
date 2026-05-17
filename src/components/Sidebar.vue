@@ -45,10 +45,16 @@
         aria-label="practiceHome"
         @click="goToPracticeHome"
         title="පුහුණුව"
+        @mouseenter="isHovering = true"
+        @mouseleave="isHovering = false"
       >
         <img
           class="contact-icon"
-          :src="getImage(`icons/mindset1.png`)"
+          :src="
+            isHovering
+              ? getImage('icons/mindset3.png')
+              : getImage('icons/mindset1.png')
+          "
           alt="පුහුණුව"
         />
       </button>
@@ -168,6 +174,8 @@ const emailHref = `mailto:${emailAddress}`;
 const googleFormUrl = "https://forms.gle/5kxTgx8GNL9s9ZLH8";
 const isEmailCopied = ref(false);
 let emailCopyTimer;
+
+const isHovering = ref(false);
 
 const isActiveVerse = (verse) => {
   return verse.id === props.selectedId;
