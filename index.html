@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="si">
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -12,17 +12,24 @@
     <link rel="apple-touch-icon" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-    <!-- Fonts -->
+    <!-- Load fonts asynchronously to avoid render-blocking -->
     <link
       href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Noto+Serif+Sinhala:wght@100..900&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
 
     <!-- Open Graph / Facebook -->
@@ -84,6 +91,18 @@
       "logo": "https://samantha-patthana.pages.dev/logo.png"
     }
     </script>
+    <!-- Fallback for no-JS browsers -->
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Noto+Serif+Sinhala:wght@100..900&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <title>Samantha Patthana</title>
   </head>
   <body>
     <noscript>
