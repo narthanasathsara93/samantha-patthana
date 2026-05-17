@@ -10,7 +10,6 @@
 
       <QuestionCard
         v-else-if="!isFinished"
-        :key="practiceQuestionKey"
         :display-content="currentDisplayContent"
         :title="currentQuestionTitle"
         :current-index="currentQuestionIndex"
@@ -54,8 +53,8 @@ const practiceSessionStorageKey = "practice-mode-session-v1";
 
 const difficultyRanges = {
   easy: [0.20, 0.25],
-  medium: [0.45, 0.55],
-  hard: [0.75, 0.85],
+  medium: [0.50, 0.60],
+  hard: [0.85, 0.95],
 };
 
 const currentQuestion = computed(() => {
@@ -75,10 +74,6 @@ const currentDisplayContent = computed(() => {
     ? currentQuestion.value.content
     : currentQuestion.value.maskedContent;
 });
-
-const practiceQuestionKey = computed(
-  () => `question-${selectedLevel.value}-${currentQuestionIndex.value}`,
-);
 
 function handleSelectLevel(level) {
   selectedLevel.value = level;
@@ -137,9 +132,21 @@ function goHome() {
   router.push({ name: "Home" });
 }
 
+function getLevelKey(level) {
+  if (level === "ආධුනික") {
+    return "easy";
+  } else if (level === "මධ්‍යස්ථ") {
+    return "medium";
+  } else if (level === "ප්‍රවීණ") {
+    return "hard";
+  }
+}
+
 function buildSessionQuestions(level) {
   const shuffled = shuffleArray(versesData);
-  const [minRatio, maxRatio] = difficultyRanges[level] || difficultyRanges.easy;
+  console.log("Levels:", level);
+  const [minRatio, maxRatio] =
+    difficultyRanges[getLevelKey(level)] || difficultyRanges.easy;
 
   return shuffled.map((verse) => {
     const hideRatio = randomInRange(minRatio, maxRatio);

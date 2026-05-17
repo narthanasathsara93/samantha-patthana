@@ -1,7 +1,7 @@
 <template>
   <section class="practice-card">
     <div class="header">
-      <span class="chip">{{ levelLabel }}</span>
+      <span class="chip">{{ levelLabel }} මට්ටම</span>
       <div class="session-meta">
         <button
           class="end-session-btn"
@@ -28,12 +28,14 @@
       </div>
     </div>
 
-    <h2 class="question-title">{{ title }}</h2>
+    <Transition name="question-fade" mode="out-in">
+      <h2 :key="questionContentKey" class="question-title">{{ title }}</h2>
+    </Transition>
 
     <div class="verse-box">
-      <Transition name="answer-fade" mode="out-in">
+      <Transition name="question-fade" mode="out-in">
         <p
-          :key="isAnswerRevealed ? 'revealed' : 'masked'"
+          :key="`${questionContentKey}-${isAnswerRevealed ? 'revealed' : 'masked'}`"
           class="verse-text"
           v-html="displayContent"
         ></p>
@@ -93,6 +95,9 @@ const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
+const questionContentKey = computed(
+  () => `${props.selectedLevel}-${props.currentIndex}`,
+);
 const getIcon = (img) => getAssetUrl(`icons/${img}`);
 
 const getTitleReveal = () =>
@@ -104,15 +109,15 @@ button {
   font-family: "Abhaya Libre", serif !important;
 }
 
-.answer-fade-enter-active,
-.answer-fade-leave-active {
+.question-fade-enter-active,
+.question-fade-leave-active {
   transition:
     opacity 0.24s ease,
     transform 0.24s ease;
 }
 
-.answer-fade-enter-from,
-.answer-fade-leave-to {
+.question-fade-enter-from,
+.question-fade-leave-to {
   opacity: 0;
   transform: translateY(6px);
 }
@@ -354,8 +359,8 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .answer-fade-enter-active,
-  .answer-fade-leave-active,
+  .question-fade-enter-active,
+  .question-fade-leave-active,
   .verse-text,
   .verse-text :deep(.word-blank),
   .end-session-btn,
@@ -363,8 +368,8 @@ button {
     transition: none;
   }
 
-  .answer-fade-enter-from,
-  .answer-fade-leave-to {
+  .question-fade-enter-from,
+  .question-fade-leave-to {
     transform: none;
   }
 }
