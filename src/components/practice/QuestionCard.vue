@@ -6,11 +6,23 @@
         <button
           class="end-session-btn"
           type="button"
+          :title="getTitleReveal()"
+          @click="$emit('toggle-answer')"
+        >
+          <img
+            class="end-session-icon"
+            :src="getIcon(isAnswerRevealed ? 'show.png' : 'hide.png')"
+            alt=""
+          />
+        </button>
+        <button
+          class="end-session-btn"
+          type="button"
           aria-label="End session"
-          title="End session"
+          title="පුහුණුව නැවත මුල සිට අරඹන්න"
           @click="$emit('end-session')"
         >
-          <img class="end-session-icon" :src="getIcon('difficulty.png')" alt="" />
+          <img class="end-session-icon" :src="getIcon('restart.png')" alt="" />
         </button>
         <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
       </div>
@@ -24,26 +36,12 @@
 
     <div class="actions">
       <button
-        class="action-btn end"
-        type="button"
-        @click="$emit('end-session')"
-      >
-        අවසන් කරන්න
-      </button>
-      <button
-        class="action-btn reveal"
-        type="button"
-        @click="$emit('toggle-answer')"
-      >
-        {{ isAnswerRevealed ? "පිළිතුර වසන්න" : "පිළිතුර?" }}
-      </button>
-      <button
         class="action-btn"
         type="button"
         :disabled="totalQuestions === 0"
         @click="$emit('go-next')"
       >
-        {{ isLastQuestion ? "finish >>" : "next >>" }}
+        {{ isLastQuestion ? "පුහුණු වටය අවසන් කරන්න ⏻" : "ඊළඟ >>" }}
       </button>
     </div>
   </section>
@@ -84,6 +82,9 @@ const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
 const getIcon = (img) => getAssetUrl(`icons/${img}`);
+
+const getTitleReveal = () =>
+  props.isAnswerRevealed ? "පිළිතුර බලන්න" : "පිළිතුර වසන්න";
 </script>
 
 <style scoped>
@@ -125,8 +126,8 @@ const getIcon = (img) => getAssetUrl(`icons/${img}`);
 
 .chip {
   border-radius: 999px;
-  background: #fff5e3;
-  color: #6f1f0e;
+  background: #dfc1a763;
+  color: #390701;
   font-size: 14px;
   font-weight: 700;
   padding: 6px 12px;
@@ -150,6 +151,7 @@ const getIcon = (img) => getAssetUrl(`icons/${img}`);
   display: flex;
   flex-direction: column;
   border-top: 2px solid #c1956061;
+  border-bottom: 2px solid #c1956061;
   border-radius: 0;
   background: transparent;
   padding: 0;
@@ -246,24 +248,30 @@ const getIcon = (img) => getAssetUrl(`icons/${img}`);
 }
 
 .action-btn {
-  width: 100%;
+  width: auto;
   border: 1px solid #d8b48f;
   border-radius: 10px;
-  background: #fff9ef;
-  color: #5e3a2b;
+
   text-align: center;
   padding: 12px 10px;
-  font-size: clamp(14px, 1.5vw, 18px);
   font-weight: 600;
+
+  background-color: #7a3310;
+  color: #ffe2b6;
+  font-size: clamp(16px, 2.2vw, 12px);
   cursor: pointer;
+
   transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
 }
 
 .action-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  background: #fff3de;
+  box-shadow:
+    0 10px 30px rgba(111, 31, 14, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .action-btn:disabled {

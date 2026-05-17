@@ -73,6 +73,23 @@ const getIcon = (img) => {
   gap: 14px;
 }
 
+.easy,
+.medium,
+.hard {
+  border-radius: 25px;
+  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
+  color: #fff6e8;
+  font-size: clamp(20px, 2.2vw, 29px);
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px rgba(111, 31, 14, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
+}
+
 .level-btn {
   font-family: "Abhaya Libre", serif !important;
   border: none;
@@ -84,7 +101,6 @@ const getIcon = (img) => {
   justify-content: center;
   gap: 10px;
 
-  font-size: clamp(20px, 2vw, 26px);
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -106,23 +122,6 @@ const getIcon = (img) => {
   height: 24px;
   object-fit: contain;
   display: block;
-}
-
-.easy,
-.medium,
-.hard {
-  border-radius: 25px;
-  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
-  color: #fff6e8;
-  font-size: clamp(20px, 2.2vw, 29px);
-  cursor: pointer;
-  box-shadow:
-    0 10px 30px rgba(111, 31, 14, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    opacity 0.22s ease;
 }
 
 .back-btn {
