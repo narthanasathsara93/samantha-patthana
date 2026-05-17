@@ -24,6 +24,14 @@ const routes = [
       title: "Home",
     },
   },
+  {
+    path: "/practice",
+    name: "PracticeMode",
+    component: () => import("@/components/practice/PracticeHome.vue"),
+    meta: {
+      title: "Practice Mode",
+    },
+  },
   ...verseRoutes,
   {
     path: "/:pathMatch(.*)*",

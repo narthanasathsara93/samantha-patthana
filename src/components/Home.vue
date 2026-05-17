@@ -1,13 +1,17 @@
 <template>
   <div class="home-page">
     <div class="hero-content">
-      <img class="logo-img" :src="logoImage" />
+      <img class="logo-img" :src="logoImage" alt="Logo" />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
       </div>
 
-      <img class="hero-title" :src="mainTitleImage" />
+      <img
+        class="hero-title"
+        :src="mainTitleImage"
+        alt="සමන්ත පට්ඨාන වන්දනාව"
+      />
 
       <p class="hero-description">
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
@@ -18,8 +22,25 @@
         v-on:click="startChanting()"
         aria-label="Start chanting"
       >
-        <span class="btn-icon">✦</span>
+        <span class="btn-icon">
+          <img class="volume-ctrl-icon" :src="getIcon('star.png')" alt="✦" />
+        </span>
         අරඹන්න
+      </button>
+
+      <button
+        class="practice-btn"
+        v-on:click="openPracticeMode()"
+        aria-label="Practice start — open practice mode"
+      >
+        <span class="btn-icon">
+          <img
+            class="volume-ctrl-icon"
+            :src="getIcon('mindset2.png')"
+            alt="✍︎"
+          />
+        </span>
+        පුහුණුව
       </button>
     </div>
   </div>
@@ -29,11 +50,20 @@
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
+import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
 
 const startChanting = () => {
   router.push({ name: "namaskaraya" });
+};
+
+const openPracticeMode = () => {
+  router.push("/practice");
+};
+
+const getIcon = (img) => {
+  return getAssetUrl(`icons/${img}`);
 };
 </script>
 
@@ -104,6 +134,15 @@ const startChanting = () => {
 }
 
 .begin-btn {
+  margin-right: 1%;
+}
+
+.practice-btn {
+  margin-left: 1%;
+}
+
+.begin-btn,
+.practice-btn {
   border: none;
   outline: none;
 
@@ -130,18 +169,20 @@ const startChanting = () => {
     box-shadow 0.22s ease,
     opacity 0.22s ease;
   white-space: nowrap;
-  /* prevents weird shrinking */
-  min-width: fit-content;
+  /* equal width for both buttons */
+  width: clamp(160px, 18vw, 220px);
 }
 
-.begin-btn:hover {
+.begin-btn:hover,
+.practice-btn:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow:
     0 14px 34px rgba(111, 31, 14, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.begin-btn:active {
+.begin-btn:active,
+.practice-btn:active {
   transform: scale(0.985);
 }
 
@@ -188,7 +229,8 @@ const startChanting = () => {
     background-image: url("../assets/images/bg-1080.webp");
   }
 
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     padding: 10px 24px;
     font-size: 20px;
     gap: 8px;
@@ -231,7 +273,8 @@ const startChanting = () => {
 
 /* Tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     font-size: 25px;
   }
 }
@@ -245,7 +288,8 @@ const startChanting = () => {
 
 /* Large desktops */
 @media (min-width: 1440px) {
-  .begin-btn {
+  .begin-btn,
+  .practice-btn {
     font-size: 31px;
     padding: 14px 42px;
   }

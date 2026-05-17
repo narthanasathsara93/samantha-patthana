@@ -39,6 +39,26 @@
     </ul>
 
     <div class="sidebar-contact" aria-label="Contact links">
+      <button
+        class="contact-link"
+        type="button"
+        aria-label="practiceHome"
+        @click="goToPracticeHome"
+        title="පුහුණුව"
+        @mouseenter="isHovering = true"
+        @mouseleave="isHovering = false"
+      >
+        <img
+          class="contact-icon"
+          :src="
+            isHovering
+              ? getImage('icons/mindset3.png')
+              : getImage('icons/mindset1.png')
+          "
+          alt="පුහුණුව"
+        />
+      </button>
+
       <a
         class="contact-link"
         :href="facebookUrl"
@@ -155,6 +175,8 @@ const googleFormUrl = "https://forms.gle/5kxTgx8GNL9s9ZLH8";
 const isEmailCopied = ref(false);
 let emailCopyTimer;
 
+const isHovering = ref(false);
+
 const isActiveVerse = (verse) => {
   return verse.id === props.selectedId;
 };
@@ -203,6 +225,11 @@ onBeforeUnmount(() => {
 
 const goToHome = () => {
   router.push({ name: "Home" });
+  emit("close-sidebar");
+};
+
+const goToPracticeHome = () => {
+  router.push("/practice");
   emit("close-sidebar");
 };
 </script>
