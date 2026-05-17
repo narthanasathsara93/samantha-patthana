@@ -44,12 +44,12 @@
         type="button"
         aria-label="practiceHome"
         @click="goToPracticeHome"
-        title="පුහුණුව"
+        title="පුහුණුව වෙත පිවිසෙන්න"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
       >
         <img
-          class="contact-icon"
+          class="contact-icon mind-icon"
           :src="
             isHovering
               ? getImage('icons/mindset3.png')
@@ -443,6 +443,7 @@ const goToPracticeHome = () => {
   box-shadow: 0 4px 12px rgba(59, 9, 6, 0.12);
   transform: translateX(-50%);
 }
+
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {

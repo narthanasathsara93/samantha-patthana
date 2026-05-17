@@ -23,9 +23,9 @@
         aria-label="Start chanting"
       >
         <span class="btn-icon">
-          <img class="volume-ctrl-icon" :src="getIcon('star.png')" alt="✦" />
+          <img class="star-icon" :src="getIcon('star.png')" alt="✦" />
         </span>
-        අරඹන්න
+        <span class="btn-txt">අරඹන්න</span>
       </button>
 
       <button
@@ -34,13 +34,9 @@
         aria-label="Practice start — open practice mode"
       >
         <span class="btn-icon">
-          <img
-            class="volume-ctrl-icon"
-            :src="getIcon('mindset2.png')"
-            alt="✍︎"
-          />
+          <img class="mind-icon" :src="getIcon('mindset2.png')" alt="✍︎" />
         </span>
-        පුහුණුව
+        <span class="btn-txt">පුහුණුව</span>
       </button>
     </div>
   </div>
@@ -145,7 +141,7 @@ const getIcon = (img) => {
 .practice-btn {
   border: none;
   outline: none;
-
+  margin-bottom: 2%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +150,7 @@ const getIcon = (img) => {
   padding: clamp(10px, 1.1vw, 14px) clamp(26px, 4vw, 38px);
   border-radius: 999px;
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
-  color: #fff6e8;
+  color: #ffeaca;
   /* fluid typography */
   font-size: clamp(20px, 2.2vw, 29px);
   font-weight: 600;
@@ -191,6 +187,12 @@ const getIcon = (img) => {
   opacity: 0.92;
 }
 
+.mind-icon,
+.star-icon {
+  width: 43px;
+  height: auto;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -221,6 +223,10 @@ const getIcon = (img) => {
     border-radius: 20px;
     background-image: url("../assets/images/bg-720.webp");
   }
+  .begin-btn,
+  .practice-btn {
+    margin-bottom: 2%;
+  }
 }
 
 @media (min-width: 480px) {
@@ -234,6 +240,7 @@ const getIcon = (img) => {
     padding: 10px 24px;
     font-size: 20px;
     gap: 8px;
+    margin-bottom: 2%;
   }
 }
 
@@ -276,6 +283,7 @@ const getIcon = (img) => {
   .begin-btn,
   .practice-btn {
     font-size: 25px;
+    margin-bottom: 2%;
   }
 }
 
