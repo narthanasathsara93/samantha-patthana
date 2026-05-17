@@ -299,7 +299,7 @@ button {
   padding: 12px 18px;
 
   background-color: #7a3310;
-  color: #ffe2b6;
+  color: #ffe8c4;
 
   font-size: 22px;
   font-weight: 600;
@@ -315,17 +315,11 @@ button {
 }
 
 .action-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow:
-    0 10px 30px rgba(111, 31, 14, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transform: translateY(5px);
 }
 
 .action-btn:active:not(:disabled) {
   transform: translateY(0) scale(0.985);
-  box-shadow:
-    0 6px 18px rgba(111, 31, 14, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .action-btn:disabled {

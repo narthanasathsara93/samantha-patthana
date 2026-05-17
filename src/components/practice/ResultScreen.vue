@@ -64,12 +64,16 @@ defineEmits(["restart-level", "change-level", "go-home"]);
   gap: 10px;
 }
 
+.actions button {
+  font-family: "Abhaya Libre", serif !important;
+  font-size: 22px;
+}
+
 .primary-btn,
 .secondary-btn {
   min-height: 46px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 17px;
   transition:
     background 0.22s ease,
     color 0.22s ease,
@@ -80,7 +84,7 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 .primary-btn {
   border: none;
   background: #7a3310;
-  color: #ffe2b6;
+  color: #ffe8c4;
 }
 
 .secondary-btn {

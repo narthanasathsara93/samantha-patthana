@@ -33,6 +33,18 @@
     </Transition>
 
     <ConfirmDialog
+      :show="isPracticeOrderConfirmOpen"
+      title="පුහුණව ඇරඹීමට පෙර"
+      message="ප්‍රත්‍යයන් තිරයේ දිස්විය යුතු පිළිවෙල තහවරු කරන්න."
+      confirm-label="අහඹු ලෙස"
+      cancel-label="පිළිවෙලින්"
+      :dismiss-emits-cancel="false"
+      @confirm="startPendingLevelRandom"
+      @cancel="startPendingLevelInOrder"
+      @dismiss="closePracticeOrderConfirm"
+    />
+
+    <ConfirmDialog
       :show="isEndSessionConfirmOpen"
       title="පුහුණුව නැවත අරඹන්න?"
       message="වත්මන් පුහුණුවීම් ප්‍රගතිය මැකෙනු ඇත.<br>අපහසුතා මට්ටම වෙනස් කිරීම හෝ නැවත මුල සිට ඇරඹිය හැක."
@@ -60,13 +72,16 @@ const currentQuestionIndex = ref(0);
 const isFinished = ref(false);
 const isCurrentAnswerRevealed = ref(false);
 const isEndSessionConfirmOpen = ref(false);
+const isPracticeOrderConfirmOpen = ref(false);
+const pendingLevel = ref("");
+const isSessionRandomOrder = ref(true);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
   medium: [0.5, 0.6],
-  hard: [0.85, 0.95],
+  hard: [0.87, 0.99],
 };
 
 const currentQuestion = computed(() => {
@@ -88,11 +103,37 @@ const currentDisplayContent = computed(() => {
 });
 
 function handleSelectLevel(level) {
+  pendingLevel.value = level;
+  isPracticeOrderConfirmOpen.value = true;
+}
+
+function startPendingLevelRandom() {
+  startPracticeSession(true);
+}
+
+function startPendingLevelInOrder() {
+  startPracticeSession(false);
+}
+
+function startPracticeSession(useRandomOrder) {
+  if (!pendingLevel.value) {
+    return;
+  }
+
+  const level = pendingLevel.value;
+  isPracticeOrderConfirmOpen.value = false;
+  pendingLevel.value = "";
+  isSessionRandomOrder.value = useRandomOrder;
   selectedLevel.value = level;
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
-  sessionQuestions.value = buildSessionQuestions(level);
+  sessionQuestions.value = buildSessionQuestions(level, useRandomOrder);
+}
+
+function closePracticeOrderConfirm() {
+  isPracticeOrderConfirmOpen.value = false;
+  pendingLevel.value = "";
 }
 
 function endSession() {
@@ -106,6 +147,7 @@ function confirmEndSession() {
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
+  isSessionRandomOrder.value = true;
   sessionQuestions.value = [];
 }
 
@@ -134,7 +176,10 @@ function restartLevel() {
     return;
   }
 
-  sessionQuestions.value = buildSessionQuestions(selectedLevel.value);
+  sessionQuestions.value = buildSessionQuestions(
+    selectedLevel.value,
+    isSessionRandomOrder.value,
+  );
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
@@ -146,6 +191,7 @@ function changeLevel() {
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
+  isSessionRandomOrder.value = true;
   sessionQuestions.value = [];
 }
 
@@ -163,13 +209,14 @@ function getLevelKey(level) {
   }
 }
 
-function buildSessionQuestions(level) {
-  const shuffled = shuffleArray(versesData);
-  console.log("Levels:", level);
+function buildSessionQuestions(level, useRandomOrder = true) {
+  const orderedVerses = useRandomOrder
+    ? shuffleArray(versesData)
+    : [...versesData];
   const [minRatio, maxRatio] =
     difficultyRanges[getLevelKey(level)] || difficultyRanges.easy;
 
-  return shuffled.map((verse) => {
+  return orderedVerses.map((verse) => {
     const hideRatio = randomInRange(minRatio, maxRatio);
 
     return {
@@ -269,6 +316,7 @@ function saveSessionState() {
     currentQuestionIndex: currentQuestionIndex.value,
     isFinished: isFinished.value,
     isCurrentAnswerRevealed: isCurrentAnswerRevealed.value,
+    isSessionRandomOrder: isSessionRandomOrder.value,
     sessionQuestions: sessionQuestions.value,
   };
 
@@ -298,6 +346,7 @@ function restoreSessionState() {
     sessionQuestions.value = questions;
     isFinished.value = Boolean(snapshot?.isFinished);
     isCurrentAnswerRevealed.value = Boolean(snapshot?.isCurrentAnswerRevealed);
+    isSessionRandomOrder.value = snapshot?.isSessionRandomOrder !== false;
     currentQuestionIndex.value = clamp(index, 0, questions.length - 1);
 
     if (isFinished.value) {
@@ -322,6 +371,7 @@ watch(
     currentQuestionIndex,
     isFinished,
     isCurrentAnswerRevealed,
+    isSessionRandomOrder,
     sessionQuestions,
   ],
   saveSessionState,
