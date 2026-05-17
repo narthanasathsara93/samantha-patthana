@@ -299,7 +299,7 @@ button {
   padding: 12px 18px;
 
   background-color: #7a3310;
-  color: #ffe2b6;
+  color: #ffe8c4;
 
   font-size: 22px;
   font-weight: 600;

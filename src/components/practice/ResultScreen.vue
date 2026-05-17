@@ -84,7 +84,7 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 .primary-btn {
   border: none;
   background: #7a3310;
-  color: #ffe2b6;
+  color: #ffe8c4;
 }
 
 .secondary-btn {

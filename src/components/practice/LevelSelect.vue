@@ -83,7 +83,7 @@ const getIcon = (img) => {
 .hard {
   border-radius: 25px;
   background: linear-gradient(180deg, #7a3310 0%, rgb(107, 31, 14) 100%);
-  color: #ffe2b6;
+  color: #ffe8c4;
   font-size: clamp(20px, 2.2vw, 29px);
   cursor: pointer;
 
