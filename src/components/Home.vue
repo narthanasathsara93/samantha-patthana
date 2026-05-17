@@ -130,11 +130,11 @@ const getIcon = (img) => {
 }
 
 .begin-btn {
-  margin-right: 2px;
+  margin-right: 1%;
 }
 
 .practice-btn {
-  margin-left: 2px;
+  margin-left: 1%;
 }
 
 .begin-btn,

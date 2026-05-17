@@ -1,6 +1,6 @@
 <template>
   <section class="practice-card">
-    <h1 class="title">පුහුණුව</h1>
+    <h1 class="title">මතක පරීක්ෂා පුහුණුව</h1>
     <p class="subtitle">
       ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />
       පුහුණුව අතරතුර "↺" මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />

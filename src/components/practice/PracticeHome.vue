@@ -31,12 +31,23 @@
         @go-home="goHome"
       />
     </Transition>
+
+    <ConfirmDialog
+      :show="isEndSessionConfirmOpen"
+      title="පුහුණුව නැවත අරඹන්න?"
+      message="වත්මන් පුහුණුවීම් ප්‍රගතිය මැකෙනු ඇත.<br>අපහසුතා මට්ටම වෙනස් කිරීම හෝ නැවත මුල සිට ඇරඹිය හැක."
+      confirm-label="ඔව්"
+      cancel-label="නැත"
+      @confirm="confirmEndSession"
+      @cancel="closeEndSessionConfirm"
+    />
   </div>
 </template>
 
 <script setup>
 import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import ConfirmDialog from "../ConfirmDialog.vue";
 import LevelSelect from "./LevelSelect.vue";
 import QuestionCard from "./QuestionCard.vue";
 import ResultScreen from "./ResultScreen.vue";
@@ -48,12 +59,13 @@ const selectedLevel = ref("");
 const currentQuestionIndex = ref(0);
 const isFinished = ref(false);
 const isCurrentAnswerRevealed = ref(false);
+const isEndSessionConfirmOpen = ref(false);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 
 const difficultyRanges = {
-  easy: [0.20, 0.25],
-  medium: [0.50, 0.60],
+  easy: [0.2, 0.25],
+  medium: [0.5, 0.6],
   hard: [0.85, 0.95],
 };
 
@@ -84,12 +96,21 @@ function handleSelectLevel(level) {
 }
 
 function endSession() {
+  isEndSessionConfirmOpen.value = true;
+}
+
+function confirmEndSession() {
+  isEndSessionConfirmOpen.value = false;
   clearSessionState();
   selectedLevel.value = "";
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   sessionQuestions.value = [];
+}
+
+function closeEndSessionConfirm() {
+  isEndSessionConfirmOpen.value = false;
 }
 
 function goNext() {
