@@ -11,7 +11,7 @@
         >
           <img
             class="end-session-icon"
-            :src="getIcon(isAnswerRevealed ? 'show.png' : 'hide.png')"
+            :src="getIcon(isAnswerRevealed ? 'hide.png' : 'show.png')"
             alt=""
           />
         </button>
@@ -31,7 +31,13 @@
     <h2 class="question-title">{{ title }}</h2>
 
     <div class="verse-box">
-      <p :key="isAnswerRevealed" class="verse-text" v-html="displayContent"></p>
+      <Transition name="answer-fade" mode="out-in">
+        <p
+          :key="isAnswerRevealed ? 'revealed' : 'masked'"
+          class="verse-text"
+          v-html="displayContent"
+        ></p>
+      </Transition>
     </div>
 
     <div class="actions">
@@ -88,14 +94,21 @@ const getTitleReveal = () =>
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+button {
+  font-family: "Abhaya Libre", serif !important;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.answer-fade-enter-active,
+.answer-fade-leave-active {
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease;
+}
+
+.answer-fade-enter-from,
+.answer-fade-leave-to {
   opacity: 0;
+  transform: translateY(6px);
 }
 
 .practice-card {
@@ -240,6 +253,10 @@ const getTitleReveal = () =>
   background: #fff0d6;
 }
 
+.end-session-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
 .end-session-icon {
   width: 20px;
   height: 20px;
@@ -258,7 +275,7 @@ const getTitleReveal = () =>
 
   background-color: #7a3310;
   color: #ffe2b6;
-  font-size: clamp(16px, 2.2vw, 12px);
+  font-size: 22px;
   cursor: pointer;
 
   transition:
@@ -272,6 +289,13 @@ const getTitleReveal = () =>
   box-shadow:
     0 10px 30px rgba(111, 31, 14, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.action-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  box-shadow:
+    0 6px 18px rgba(111, 31, 14, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .action-btn:disabled {
@@ -301,6 +325,22 @@ const getTitleReveal = () =>
 
   .actions {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answer-fade-enter-active,
+  .answer-fade-leave-active,
+  .verse-text,
+  .verse-text :deep(.word-blank),
+  .end-session-btn,
+  .action-btn {
+    transition: none;
+  }
+
+  .answer-fade-enter-from,
+  .answer-fade-leave-to {
+    transform: none;
   }
 }
 </style>

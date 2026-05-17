@@ -2,8 +2,9 @@
   <section class="practice-card">
     <h1 class="title">පුහුණුව</h1>
     <p class="subtitle">
-      ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරන්න. <br />
-      පුහුණුව අතරතුර "අවසන් කරන්න" තේරීමෙන් මුල සිට නව ඇරඹුමක් කල හැක.
+      ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />
+      පුහුණුව අතරතුර "↺" මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
+      "👁" මගින් පිළිතුර දැකිය හැක.
     </p>
 
     <div class="level-buttons">
@@ -64,6 +65,7 @@ const getIcon = (img) => {
 .subtitle {
   margin: 12px 0 26px;
   font-size: clamp(17px, 2vw, 22px);
+  font-weight: 600;
   color: #6a3f2e;
 }
 
@@ -77,13 +79,11 @@ const getIcon = (img) => {
 .medium,
 .hard {
   border-radius: 25px;
-  background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
-  color: #fff6e8;
+  background: linear-gradient(180deg, #7a3310 0%, rgb(107, 31, 14) 100%);
+  color: #ffe2b6;
   font-size: clamp(20px, 2.2vw, 29px);
   cursor: pointer;
-  box-shadow:
-    0 10px 30px rgba(111, 31, 14, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -103,11 +103,24 @@ const getIcon = (img) => {
 
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .level-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 30px rgba(111, 31, 14, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.level-btn:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow:
+    0 6px 18px rgba(111, 31, 14, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .btn-icon {
@@ -133,11 +146,34 @@ const getIcon = (img) => {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-btn:hover {
+  background: rgba(111, 31, 14, 0.08);
+  transform: translateY(-1px);
+}
+
+.back-btn:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 720px) {
   .level-buttons {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .easy,
+  .medium,
+  .hard,
+  .level-btn,
+  .back-btn {
+    transition: none;
   }
 }
 </style>

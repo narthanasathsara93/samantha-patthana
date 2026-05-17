@@ -1,9 +1,7 @@
 <template>
   <section class="practice-card">
     <h2 class="title">මෙම පුහුණු වටය අවසන් කරන ලදී.</h2>
-    <p class="subtitle">
-      ({{ selectedLevelLabel }} අසීරුතා මට්ටම)
-    </p>
+    <p class="subtitle">(අසීරුතා මට්ටම : {{ selectedLevelLabel }})</p>
 
     <div class="actions">
       <button class="primary-btn" @click="$emit('restart-level')">
@@ -40,6 +38,7 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 
 <style scoped>
 .practice-card {
+  font-family: "Abhaya Libre", serif !important;
   width: min(760px, 92vw);
   border-radius: 18px;
   padding: 32px 28px;
@@ -71,17 +70,43 @@ defineEmits(["restart-level", "change-level", "go-home"]);
   border-radius: 10px;
   cursor: pointer;
   font-size: 17px;
+  transition:
+    background 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .primary-btn {
   border: none;
-  background: #7a2410;
-  color: #fff6e8;
+  background: #7a3310;
+  color: #ffe2b6;
 }
 
 .secondary-btn {
-  border: 1px solid #7a2410;
+  border: 1px solid #7a3310;
   background: transparent;
-  color: #7a2410;
+  color: #7a3310;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-1px);
+}
+
+.secondary-btn:hover {
+  background: rgba(122, 36, 16, 0.08);
+}
+
+.primary-btn:active,
+.secondary-btn:active {
+  transform: translateY(0) scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-btn,
+  .secondary-btn {
+    transition: none;
+  }
 }
 </style>

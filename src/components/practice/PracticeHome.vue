@@ -1,32 +1,37 @@
 <template>
   <div class="practice-page">
-    <LevelSelect
-      v-if="!selectedLevel"
-      @select-level="handleSelectLevel"
-      @go-home="goHome"
-    />
+    <Transition name="practice-view" mode="out-in">
+      <LevelSelect
+        v-if="!selectedLevel"
+        key="level-select"
+        @select-level="handleSelectLevel"
+        @go-home="goHome"
+      />
 
-    <QuestionCard
-      v-else-if="!isFinished"
-      :display-content="currentDisplayContent"
-      :title="currentQuestionTitle"
-      :current-index="currentQuestionIndex"
-      :total-questions="sessionQuestions.length"
-      :selected-level="selectedLevel"
-      :is-answer-revealed="isCurrentAnswerRevealed"
-      @end-session="endSession"
-      @toggle-answer="toggleAnswerReveal"
-      @go-next="goNext"
-    />
+      <QuestionCard
+        v-else-if="!isFinished"
+        :key="practiceQuestionKey"
+        :display-content="currentDisplayContent"
+        :title="currentQuestionTitle"
+        :current-index="currentQuestionIndex"
+        :total-questions="sessionQuestions.length"
+        :selected-level="selectedLevel"
+        :is-answer-revealed="isCurrentAnswerRevealed"
+        @end-session="endSession"
+        @toggle-answer="toggleAnswerReveal"
+        @go-next="goNext"
+      />
 
-    <ResultScreen
-      v-else
-      :selected-level="selectedLevel"
-      :total-questions="sessionQuestions.length"
-      @restart-level="restartLevel"
-      @change-level="changeLevel"
-      @go-home="goHome"
-    />
+      <ResultScreen
+        v-else
+        key="result-screen"
+        :selected-level="selectedLevel"
+        :total-questions="sessionQuestions.length"
+        @restart-level="restartLevel"
+        @change-level="changeLevel"
+        @go-home="goHome"
+      />
+    </Transition>
   </div>
 </template>
 
@@ -70,6 +75,10 @@ const currentDisplayContent = computed(() => {
     ? currentQuestion.value.content
     : currentQuestion.value.maskedContent;
 });
+
+const practiceQuestionKey = computed(
+  () => `question-${selectedLevel.value}-${currentQuestionIndex.value}`,
+);
 
 function handleSelectLevel(level) {
   selectedLevel.value = level;
@@ -303,5 +312,38 @@ restoreSessionState();
   background-image: url("../../assets/images/bg-1493.webp");
   background-size: cover;
   background-position: center bottom;
+}
+
+.practice-view-enter-active,
+.practice-view-leave-active {
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease,
+    filter 0.32s ease;
+}
+
+.practice-view-enter-from {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(18px) scale(0.985);
+}
+
+.practice-view-leave-to {
+  opacity: 0;
+  filter: blur(3px);
+  transform: translateY(-10px) scale(1.01);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice-view-enter-active,
+  .practice-view-leave-active {
+    transition: opacity 0.01s linear;
+  }
+
+  .practice-view-enter-from,
+  .practice-view-leave-to {
+    filter: none;
+    transform: none;
+  }
 }
 </style>
