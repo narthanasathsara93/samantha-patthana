@@ -5,7 +5,7 @@
         v-if="show"
         class="confirm-dialog-backdrop"
         role="presentation"
-        @click.self="emitCancel"
+        @click.self="emitDismiss"
       >
         <section
           ref="dialogRef"
@@ -15,7 +15,7 @@
           :aria-labelledby="titleId"
           :aria-describedby="messageId"
           tabindex="-1"
-          @keydown.esc="emitCancel"
+          @keydown.esc="emitDismiss"
         >
           <h2 :id="titleId" class="confirm-dialog-title">{{ title }}</h2>
           <p
@@ -70,9 +70,13 @@ const props = defineProps({
     type: String,
     default: "No",
   },
+  dismissEmitsCancel: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-const emit = defineEmits(["confirm", "cancel"]);
+const emit = defineEmits(["confirm", "cancel", "dismiss"]);
 const dialogRef = ref(null);
 
 const titleId = `confirm-dialog-title-${Math.random().toString(36).slice(2)}`;
@@ -94,6 +98,14 @@ watch(
 
 function emitCancel() {
   emit("cancel");
+}
+
+function emitDismiss() {
+  emit("dismiss");
+
+  if (props.dismissEmitsCancel) {
+    emitCancel();
+  }
 }
 </script>
 
@@ -154,26 +166,18 @@ function emitCancel() {
     box-shadow 0.2s ease;
 }
 
-.confirm-dialog-btn.primary {
+.confirm-dialog-btn.primary, .confirm-dialog-btn.secondary {
   border: none;
   background: #7a2410;
   color: #fff6e8;
 }
 
-.confirm-dialog-btn.secondary {
-  border: 1px solid #7a2410;
-  background: transparent;
-  color: #7a2410;
-}
-
 .confirm-dialog-btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-3px);
   box-shadow: 0 8px 22px rgba(111, 31, 14, 0.16);
 }
 
-.confirm-dialog-btn.secondary:hover {
-  background: rgba(122, 36, 16, 0.08);
-}
+
 
 .confirm-dialog-btn:active {
   transform: translateY(0) scale(0.985);
