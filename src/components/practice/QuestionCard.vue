@@ -47,7 +47,13 @@
         :disabled="totalQuestions === 0"
         @click="$emit('go-next')"
       >
-        {{ isLastQuestion ? "පුහුණු වටය අවසන් කරන්න ⏻" : "ඊළඟ >>" }}
+        <span>
+          {{ isLastQuestion ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
+        </span>
+
+        <span class="btn-symbol">
+          {{ isLastQuestion ? "⏻" : "❯❯" }}
+        </span>
       </button>
     </div>
   </section>
@@ -264,18 +270,37 @@ button {
   display: block;
 }
 
+.btn-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+
+  font-size: 0.9em;
+}
+
 .action-btn {
   width: auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   border: 1px solid #d8b48f;
   border-radius: 10px;
 
-  text-align: center;
-  padding: 12px 10px;
-  font-weight: 600;
+  padding: 12px 18px;
 
   background-color: #7a3310;
   color: #ffe2b6;
+
   font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+
   cursor: pointer;
 
   transition:
