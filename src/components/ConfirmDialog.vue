@@ -169,7 +169,7 @@ function emitDismiss() {
 .confirm-dialog-btn.primary, .confirm-dialog-btn.secondary {
   border: none;
   background: #7a2410;
-  color: #fff6e8;
+  color: #FFEACA;
 }
 
 .confirm-dialog-btn:hover {

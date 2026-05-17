@@ -1,7 +1,10 @@
 <template>
   <section class="practice-card">
     <div class="header">
-      <span class="chip">{{ levelLabel }} මට්ටම</span>
+      <span class="chip">
+        <img class="level-chip-icon" :src="getLabelIcon()" alt="chip icon" />
+        <span class="chip-text">{{ levelLabel }} මට්ටම</span>
+      </span>
       <div class="session-meta">
         <button
           class="end-session-btn"
@@ -100,6 +103,19 @@ const questionContentKey = computed(
 );
 const getIcon = (img) => getAssetUrl(`icons/${img}`);
 
+const getLabelIcon = () => {
+  switch (props.selectedLevel) {
+    case "ආධුනික":
+      return getIcon("level1_1.png");
+    case "මධ්‍යස්ථ":
+      return getIcon("level2_1.png");
+    case "ප්‍රවීණ":
+      return getIcon("level3_1.png");
+    default:
+      return "";
+  }
+};
+
 const getTitleReveal = () =>
   props.isAnswerRevealed ? "පිළිතුර බලන්න" : "පිළිතුර වසන්න";
 </script>
@@ -149,18 +165,36 @@ button {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: #dfc1a763;
   color: #390701;
   font-size: 14px;
   font-weight: 700;
-  padding: 6px 12px;
+  line-height: 1;
+}
+
+.level-chip-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  object-fit: contain;
+}
+
+.chip-text {
+  display: flex;
+  align-items: center;
+  transform: translateY(0.5px);
 }
 
 .question {
   margin: 0 0 20px;
   color: #4d3124;
-  font-size: clamp(23px, 2.8vw, 32px);
+  font-size: 16px;
 }
 
 .question-title {
@@ -193,7 +227,7 @@ button {
   white-space: normal;
   color: #0e0a0a;
   line-height: 160%;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   scrollbar-width: thin;
   scrollbar-color: rgb(193 172 137) rgba(253, 241, 218, 0.9);
@@ -279,35 +313,26 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-
   line-height: 1;
-
   font-size: 0.9em;
 }
 
 .action-btn {
   width: auto;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   border: 1px solid #d8b48f;
   border-radius: 10px;
-
   padding: 12px 18px;
-
   background-color: #7a3310;
   color: #ffe8c4;
-
   font-size: 22px;
   font-weight: 600;
   line-height: 1.1;
   text-align: center;
-
   cursor: pointer;
-
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -343,12 +368,22 @@ button {
   }
 
   .verse-text {
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 8px;
   }
 
   .actions {
     grid-template-columns: 1fr;
+  }
+
+  .end-session-btn {
+    width: 27px;
+    height: 27px;
+  }
+
+  .end-session-icon {
+    width: 18px;
+    height: 16px;
   }
 }
 

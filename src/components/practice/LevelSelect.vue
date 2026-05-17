@@ -6,8 +6,9 @@
       මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් මතකයෙන් මෙනෙහි කිරීමට උත්සහ කිරීම
       මගින් ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br />
       (ප්‍රත්‍යන් සහ සැඟවුණු වචන අහඹු ලෙස දිස් වනු ඇත.)<br /><br />
-      පුහුණුව අතරතුර "↺" මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
-      "👁" මගින් පිළිතුර දැකිය හැක.
+      පුහුණුව අතරතුර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
+      <img class="sample-icon" :src="getIcon('show.png')" alt="👁" /> මගින්
+      පිළිතුර දැකිය හැක.
     </p>
 
     <div class="level-buttons">
@@ -49,6 +50,10 @@ const getIcon = (img) => {
 </script>
 
 <style scoped>
+.sample-icon {
+  width: 16px;
+  height: 16px;
+}
 .practice-card {
   font-family: "Abhaya Libre", serif !important;
   width: min(760px, 92vw);
