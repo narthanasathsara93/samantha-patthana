@@ -55,7 +55,7 @@ const startChanting = () => {
 };
 
 const openPracticeMode = () => {
-  router.push({ name: "PracticeMode" });
+  router.push("/practice");
 };
 
 const getIcon = (img) => {

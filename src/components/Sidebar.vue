@@ -39,6 +39,20 @@
     </ul>
 
     <div class="sidebar-contact" aria-label="Contact links">
+      <button
+        class="contact-link"
+        type="button"
+        aria-label="practiceHome"
+        @click="goToPracticeHome"
+        title="පුහුණුව"
+      >
+        <img
+          class="contact-icon"
+          :src="getImage(`icons/mindset1.png`)"
+          alt="පුහුණුව"
+        />
+      </button>
+
       <a
         class="contact-link"
         :href="facebookUrl"
@@ -203,6 +217,11 @@ onBeforeUnmount(() => {
 
 const goToHome = () => {
   router.push({ name: "Home" });
+  emit("close-sidebar");
+};
+
+const goToPracticeHome = () => {
+  router.push("/practice");
   emit("close-sidebar");
 };
 </script>
