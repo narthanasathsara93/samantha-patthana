@@ -141,7 +141,7 @@ const timerIntervalId = ref(null);
 const timeTouchStartY = ref(null);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
-const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20];
+const practiceMinuteOptions  = [60, 55, 50, 45, 40, 35, 30, 25, 20];
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
