@@ -36,13 +36,40 @@
       :show="isPracticeOrderConfirmOpen"
       title="පුහුණව ඇරඹීමට පෙර"
       message="ප්‍රත්‍යයන් තිරයේ දිස්විය යුතු පිළිවෙල තහවරු කරන්න."
-      confirm-label="අහඹු ලෙස"
-      cancel-label="පිළිවෙලින්"
+      confirm-label="ආරම්භ කරන්න"
+      cancel-label="අවලංගු කරන්න"
       :dismiss-emits-cancel="false"
-      @confirm="startPendingLevelRandom"
-      @cancel="startPendingLevelInOrder"
+      @confirm="startPendingLevel"
+      @cancel="closePracticeOrderConfirm"
       @dismiss="closePracticeOrderConfirm"
-    />
+    >
+      <div class="practice-start-settings">
+        <div class="order-toggle-group" role="radiogroup">
+          <button
+            class="order-toggle-option"
+            :class="{ selected: !isPendingRandomOrder }"
+            type="button"
+            role="radio"
+            :aria-checked="!isPendingRandomOrder"
+            @click="isPendingRandomOrder = false"
+          >
+            <span class="order-toggle-dot" aria-hidden="true"></span>
+            <span>පිළිවෙලින්</span>
+          </button>
+          <button
+            class="order-toggle-option"
+            :class="{ selected: isPendingRandomOrder }"
+            type="button"
+            role="radio"
+            :aria-checked="isPendingRandomOrder"
+            @click="isPendingRandomOrder = true"
+          >
+            <span class="order-toggle-dot" aria-hidden="true"></span>
+            <span>අහඹු ලෙස</span>
+          </button>
+        </div>
+      </div>
+    </ConfirmDialog>
 
     <ConfirmDialog
       :show="isEndSessionConfirmOpen"
@@ -74,7 +101,8 @@ const isCurrentAnswerRevealed = ref(false);
 const isEndSessionConfirmOpen = ref(false);
 const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
-const isSessionRandomOrder = ref(true);
+const isPendingRandomOrder = ref(false);
+const isSessionRandomOrder = ref(false);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 
@@ -104,15 +132,12 @@ const currentDisplayContent = computed(() => {
 
 function handleSelectLevel(level) {
   pendingLevel.value = level;
+  isPendingRandomOrder.value = false;
   isPracticeOrderConfirmOpen.value = true;
 }
 
-function startPendingLevelRandom() {
-  startPracticeSession(true);
-}
-
-function startPendingLevelInOrder() {
-  startPracticeSession(false);
+function startPendingLevel() {
+  startPracticeSession(isPendingRandomOrder.value);
 }
 
 function startPracticeSession(useRandomOrder) {
@@ -134,6 +159,7 @@ function startPracticeSession(useRandomOrder) {
 function closePracticeOrderConfirm() {
   isPracticeOrderConfirmOpen.value = false;
   pendingLevel.value = "";
+  isPendingRandomOrder.value = false;
 }
 
 function endSession() {
@@ -147,7 +173,7 @@ function confirmEndSession() {
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
-  isSessionRandomOrder.value = true;
+  isSessionRandomOrder.value = false;
   sessionQuestions.value = [];
 }
 
@@ -191,7 +217,7 @@ function changeLevel() {
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
-  isSessionRandomOrder.value = true;
+  isSessionRandomOrder.value = false;
   sessionQuestions.value = [];
 }
 
@@ -209,7 +235,7 @@ function getLevelKey(level) {
   }
 }
 
-function buildSessionQuestions(level, useRandomOrder = true) {
+function buildSessionQuestions(level, useRandomOrder = false) {
   const orderedVerses = useRandomOrder
     ? shuffleArray(versesData)
     : [...versesData];
@@ -346,7 +372,7 @@ function restoreSessionState() {
     sessionQuestions.value = questions;
     isFinished.value = Boolean(snapshot?.isFinished);
     isCurrentAnswerRevealed.value = Boolean(snapshot?.isCurrentAnswerRevealed);
-    isSessionRandomOrder.value = snapshot?.isSessionRandomOrder !== false;
+    isSessionRandomOrder.value = Boolean(snapshot?.isSessionRandomOrder);
     currentQuestionIndex.value = clamp(index, 0, questions.length - 1);
 
     if (isFinished.value) {
@@ -410,6 +436,65 @@ restoreSessionState();
   opacity: 0;
   filter: blur(3px);
   transform: translateY(-10px) scale(1.01);
+}
+
+.practice-start-settings {
+  margin: -4px 0 22px;
+}
+
+.order-toggle-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.order-toggle-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid rgba(122, 36, 16, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 234, 202, 0.58);
+  color: #5e3a2b;
+  font-family: "Abhaya Libre", serif;
+  font-size: clamp(18px, 2.5vw, 22px);
+  line-height: 1.1;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.order-toggle-option.selected {
+  border-color: rgba(122, 36, 16, 0.56);
+  background: #7a2410;
+  color: #ffeaca;
+  box-shadow: 0 8px 18px rgba(111, 31, 14, 0.14);
+}
+
+.order-toggle-option:hover {
+  transform: translateY(-2px);
+}
+
+.order-toggle-option:focus-visible {
+  outline: 3px solid rgba(122, 36, 16, 0.28);
+  outline-offset: 3px;
+}
+
+.order-toggle-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.order-toggle-option.selected .order-toggle-dot {
+  background: currentColor;
+  box-shadow: inset 0 0 0 3px #7a2410;
 }
 
 @media (prefers-reduced-motion: reduce) {

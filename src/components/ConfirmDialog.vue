@@ -23,6 +23,7 @@
             class="confirm-dialog-message"
             v-html="message"
           ></p>
+          <slot></slot>
 
           <div class="confirm-dialog-actions">
             <button
