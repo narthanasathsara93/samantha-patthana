@@ -34,7 +34,7 @@
     <Transition name="question-fade" mode="out-in">
       <h2 :key="questionContentKey" class="question-title">{{ title }}</h2>
     </Transition>
-
+    <span v-if="timerLabel" class="chip timer-chip">{{ timerLabel }}</span>
     <div class="verse-box">
       <Transition name="question-fade" mode="out-in">
         <p
@@ -53,11 +53,11 @@
         @click="$emit('go-next')"
       >
         <span>
-          {{ isLastQuestion ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
+          {{ showFinishButton ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
         </span>
 
         <span class="btn-symbol">
-          {{ isLastQuestion ? "⏻" : "❯❯" }}
+          {{ showFinishButton ? "⏻" : "❯❯" }}
         </span>
       </button>
     </div>
@@ -90,6 +90,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  timerLabel: {
+    type: String,
+    default: "",
+  },
 });
 
 defineEmits(["end-session", "toggle-answer", "go-next"]);
@@ -97,6 +101,9 @@ defineEmits(["end-session", "toggle-answer", "go-next"]);
 const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
+);
+const showFinishButton = computed(
+  () => isLastQuestion.value && !props.timerLabel,
 );
 const questionContentKey = computed(
   () => `${props.selectedLevel}-${props.currentIndex}`,
@@ -189,6 +196,13 @@ button {
   display: flex;
   align-items: center;
   transform: translateY(0.5px);
+}
+
+.timer-chip {
+  min-width: 58px;
+  background: #7a2410;
+  color: #ffeaca;
+  font-variant-numeric: tabular-nums;
 }
 
 .question {
@@ -326,7 +340,7 @@ button {
   border: 1px solid #d8b48f;
   border-radius: 10px;
   padding: 12px 18px;
-  background-color: #7a3310;
+  background-color: #7a2410;
   color: #ffe8c4;
   font-size: 22px;
   font-weight: 600;

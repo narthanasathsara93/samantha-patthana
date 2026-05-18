@@ -16,6 +16,7 @@
         :total-questions="sessionQuestions.length"
         :selected-level="selectedLevel"
         :is-answer-revealed="isCurrentAnswerRevealed"
+        :timer-label="timerLabel"
         @end-session="endSession"
         @toggle-answer="toggleAnswerReveal"
         @go-next="goNext"
@@ -68,6 +69,36 @@
             <span>අහඹු ලෙස</span>
           </button>
         </div>
+        <div class="time-select">
+          <span class="time-select-title">කාලය (මිනිත්තු)</span>
+          <div
+            class="time-wheel"
+            role="listbox"
+            tabindex="0"
+            aria-label="කාලය"
+            @wheel.prevent="handleTimeWheel"
+            @keydown.up.prevent="shiftPracticeMinutes(-1)"
+            @keydown.down.prevent="shiftPracticeMinutes(1)"
+            @touchstart.passive="handleTimeTouchStart"
+            @touchend="handleTimeTouchEnd"
+          >
+            <button
+              v-for="option in visiblePracticeMinuteOptions"
+              :key="`${option.offset}-${option.minutes}`"
+              class="time-wheel-option"
+              :class="{
+                selected: option.offset === 0,
+                near: Math.abs(option.offset) === 1,
+              }"
+              type="button"
+              role="option"
+              :aria-selected="option.offset === 0"
+              @click="selectedPracticeMinutes = option.minutes"
+            >
+              {{ option.minutes }}
+            </button>
+          </div>
+        </div>
       </div>
     </ConfirmDialog>
 
@@ -84,7 +115,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import ConfirmDialog from "../ConfirmDialog.vue";
 import LevelSelect from "./LevelSelect.vue";
@@ -103,8 +134,14 @@ const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
 const isPendingRandomOrder = ref(false);
 const isSessionRandomOrder = ref(false);
+const selectedPracticeMinutes = ref(60);
+const remainingSeconds = ref(0);
+const timerEndsAt = ref(0);
+const timerIntervalId = ref(null);
+const timeTouchStartY = ref(null);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
+const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20];
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
@@ -130,9 +167,30 @@ const currentDisplayContent = computed(() => {
     : currentQuestion.value.maskedContent;
 });
 
+const timerLabel = computed(() => formatTimer(remainingSeconds.value));
+const selectedPracticeMinuteIndex = computed(() => {
+  const optionIndex = practiceMinuteOptions.indexOf(selectedPracticeMinutes.value);
+
+  return optionIndex === -1 ? 0 : optionIndex;
+});
+const visiblePracticeMinuteOptions = computed(() => {
+  return [-2, -1, 0, 1, 2].map((offset) => {
+    const optionIndex = loopIndex(
+      selectedPracticeMinuteIndex.value + offset,
+      practiceMinuteOptions.length,
+    );
+
+    return {
+      minutes: practiceMinuteOptions[optionIndex],
+      offset,
+    };
+  });
+});
+
 function handleSelectLevel(level) {
   pendingLevel.value = level;
   isPendingRandomOrder.value = false;
+  selectedPracticeMinutes.value = 60;
   isPracticeOrderConfirmOpen.value = true;
 }
 
@@ -154,6 +212,7 @@ function startPracticeSession(useRandomOrder) {
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   sessionQuestions.value = buildSessionQuestions(level, useRandomOrder);
+  startSessionTimer(selectedPracticeMinutes.value);
 }
 
 function closePracticeOrderConfirm() {
@@ -168,6 +227,7 @@ function endSession() {
 
 function confirmEndSession() {
   isEndSessionConfirmOpen.value = false;
+  stopSessionTimer();
   clearSessionState();
   selectedLevel.value = "";
   currentQuestionIndex.value = 0;
@@ -181,11 +241,55 @@ function closeEndSessionConfirm() {
   isEndSessionConfirmOpen.value = false;
 }
 
+function handleTimeWheel(event) {
+  shiftPracticeMinutes(event.deltaY > 0 ? 1 : -1);
+}
+
+function handleTimeTouchStart(event) {
+  timeTouchStartY.value = event.changedTouches[0]?.clientY ?? null;
+}
+
+function handleTimeTouchEnd(event) {
+  if (timeTouchStartY.value === null) {
+    return;
+  }
+
+  const endY = event.changedTouches[0]?.clientY ?? timeTouchStartY.value;
+  const distance = timeTouchStartY.value - endY;
+  timeTouchStartY.value = null;
+
+  if (Math.abs(distance) < 18) {
+    return;
+  }
+
+  shiftPracticeMinutes(distance > 0 ? 1 : -1);
+}
+
+function shiftPracticeMinutes(direction) {
+  const nextIndex = loopIndex(
+    selectedPracticeMinuteIndex.value + direction,
+    practiceMinuteOptions.length,
+  );
+
+  selectedPracticeMinutes.value = practiceMinuteOptions[nextIndex];
+}
+
 function goNext() {
   const isLastQuestion =
     currentQuestionIndex.value === sessionQuestions.value.length - 1;
 
   if (isLastQuestion) {
+    if (timerEndsAt.value) {
+      sessionQuestions.value = buildSessionQuestions(
+        selectedLevel.value,
+        isSessionRandomOrder.value,
+      );
+      currentQuestionIndex.value = 0;
+      isCurrentAnswerRevealed.value = false;
+      return;
+    }
+
+    stopSessionTimer();
     isFinished.value = true;
     return;
   }
@@ -206,12 +310,14 @@ function restartLevel() {
     selectedLevel.value,
     isSessionRandomOrder.value,
   );
+  startSessionTimer(selectedPracticeMinutes.value);
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
 }
 
 function changeLevel() {
+  stopSessionTimer();
   clearSessionState();
   selectedLevel.value = "";
   currentQuestionIndex.value = 0;
@@ -336,6 +442,75 @@ function shuffleArray(items) {
   return cloned;
 }
 
+function startSessionTimer(minutes) {
+  const durationSeconds = Math.max(0, Number(minutes) * 60);
+  remainingSeconds.value = durationSeconds;
+  timerEndsAt.value = Date.now() + durationSeconds * 1000;
+  syncRemainingTime();
+  stopTimerInterval();
+  timerIntervalId.value = window.setInterval(syncRemainingTime, 1000);
+}
+
+function restoreSessionTimer() {
+  if (!selectedLevel.value || isFinished.value) {
+    return;
+  }
+
+  if (!timerEndsAt.value && remainingSeconds.value > 0) {
+    timerEndsAt.value = Date.now() + remainingSeconds.value * 1000;
+  }
+
+  syncRemainingTime();
+
+  if (!isFinished.value) {
+    stopTimerInterval();
+    timerIntervalId.value = window.setInterval(syncRemainingTime, 1000);
+  }
+}
+
+function syncRemainingTime() {
+  if (!timerEndsAt.value) {
+    remainingSeconds.value = 0;
+    return;
+  }
+
+  remainingSeconds.value = Math.max(
+    0,
+    Math.ceil((timerEndsAt.value - Date.now()) / 1000),
+  );
+
+  if (remainingSeconds.value === 0 && selectedLevel.value && !isFinished.value) {
+    stopSessionTimer();
+    isFinished.value = true;
+  }
+}
+
+function stopSessionTimer() {
+  stopTimerInterval();
+  timerEndsAt.value = 0;
+  remainingSeconds.value = 0;
+}
+
+function stopTimerInterval() {
+  if (!timerIntervalId.value) {
+    return;
+  }
+
+  window.clearInterval(timerIntervalId.value);
+  timerIntervalId.value = null;
+}
+
+function formatTimer(seconds) {
+  const safeSeconds = Math.max(0, Number(seconds) || 0);
+  const minutes = Math.floor(safeSeconds / 60);
+  const remaining = safeSeconds % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(
+    2,
+    "0",
+  )}`;
+}
+
 function saveSessionState() {
   const snapshot = {
     selectedLevel: selectedLevel.value,
@@ -343,6 +518,9 @@ function saveSessionState() {
     isFinished: isFinished.value,
     isCurrentAnswerRevealed: isCurrentAnswerRevealed.value,
     isSessionRandomOrder: isSessionRandomOrder.value,
+    selectedPracticeMinutes: selectedPracticeMinutes.value,
+    remainingSeconds: remainingSeconds.value,
+    timerEndsAt: timerEndsAt.value,
     sessionQuestions: sessionQuestions.value,
   };
 
@@ -373,11 +551,24 @@ function restoreSessionState() {
     isFinished.value = Boolean(snapshot?.isFinished);
     isCurrentAnswerRevealed.value = Boolean(snapshot?.isCurrentAnswerRevealed);
     isSessionRandomOrder.value = Boolean(snapshot?.isSessionRandomOrder);
+    selectedPracticeMinutes.value = practiceMinuteOptions.includes(
+      snapshot?.selectedPracticeMinutes,
+    )
+      ? snapshot.selectedPracticeMinutes
+      : 60;
+    timerEndsAt.value = Number(snapshot?.timerEndsAt || 0);
+    remainingSeconds.value = clamp(
+      Number(snapshot?.remainingSeconds ?? selectedPracticeMinutes.value * 60),
+      0,
+      selectedPracticeMinutes.value * 60,
+    );
     currentQuestionIndex.value = clamp(index, 0, questions.length - 1);
 
     if (isFinished.value) {
       currentQuestionIndex.value = questions.length - 1;
     }
+
+    restoreSessionTimer();
   } catch {
     clearSessionState();
   }
@@ -391,6 +582,10 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function loopIndex(index, length) {
+  return ((index % length) + length) % length;
+}
+
 watch(
   [
     selectedLevel,
@@ -398,6 +593,9 @@ watch(
     isFinished,
     isCurrentAnswerRevealed,
     isSessionRandomOrder,
+    selectedPracticeMinutes,
+    remainingSeconds,
+    timerEndsAt,
     sessionQuestions,
   ],
   saveSessionState,
@@ -405,6 +603,8 @@ watch(
 );
 
 restoreSessionState();
+
+onBeforeUnmount(stopTimerInterval);
 </script>
 
 <style scoped>
@@ -495,6 +695,89 @@ restoreSessionState();
 .order-toggle-option.selected .order-toggle-dot {
   background: currentColor;
   box-shadow: inset 0 0 0 3px #7a2410;
+}
+
+.time-select {
+  margin-top: 14px;
+  text-align: left;
+}
+
+.time-select-title {
+  display: block;
+  margin: 0 0 8px;
+  color: #5e3a2b;
+  font-family: "Abhaya Libre", serif;
+  font-size: clamp(17px, 2.3vw, 20px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.time-wheel {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  max-width: 66px;
+  min-width: 66px;
+  margin: 0 auto;
+  padding: 6px;
+  border: 1px solid rgba(122, 36, 16, 0.24);
+  border-radius: 33px;
+  background: rgba(255, 234, 202, 0.58);
+  outline: none;
+  touch-action: pan-y;
+}
+
+.time-wheel::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 50%;
+  height: 38px;
+  border-radius: 33px;
+  background: #7a2410;
+  box-shadow: 0 8px 18px rgba(111, 31, 14, 0.14);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.time-wheel-option {
+  position: relative;
+  z-index: 1;
+  min-height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #5e3a2b;
+  font-family: "Abhaya Libre", serif;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.time-wheel-option.near {
+  opacity: 0.72;
+}
+
+.time-wheel-option:not(.selected):not(.near) {
+  opacity: 0.42;
+  transform: scale(0.92);
+}
+
+.time-wheel-option.selected {
+  color: #ffeaca;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.time-wheel:focus-visible,
+.time-wheel-option:focus-visible {
+  outline: 3px solid rgba(122, 36, 16, 0.28);
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
