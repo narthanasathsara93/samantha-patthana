@@ -39,6 +39,7 @@
       message="ප්‍රත්‍යයන් තිරයේ දිස්විය යුතු පිළිවෙල තහවරු කරන්න."
       confirm-label="ආරම්භ කරන්න"
       cancel-label="අවලංගු කරන්න"
+      is-large-height="true"
       :dismiss-emits-cancel="false"
       @confirm="startPendingLevel"
       @cancel="closePracticeOrderConfirm"
@@ -69,7 +70,33 @@
             <span>අහඹු ලෙස</span>
           </button>
         </div>
-        <div class="time-select">
+
+        <div class="flow-toggle-group" role="radiogroup">
+          <button
+            class="order-toggle-option"
+            :class="{ selected: isPendingTimedPractice }"
+            type="button"
+            role="radio"
+            :aria-checked="isPendingTimedPractice"
+            @click="isPendingTimedPractice = true"
+          >
+            <span class="order-toggle-dot" aria-hidden="true"></span>
+            <span>with timer</span>
+          </button>
+          <button
+            class="order-toggle-option"
+            :class="{ selected: !isPendingTimedPractice }"
+            type="button"
+            role="radio"
+            :aria-checked="!isPendingTimedPractice"
+            @click="isPendingTimedPractice = false"
+          >
+            <span class="order-toggle-dot" aria-hidden="true"></span>
+            <span>no timer</span>
+          </button>
+        </div>
+
+        <div v-if="isPendingTimedPractice" class="time-select">
           <span class="time-select-title">කාලය (මිනිත්තු)</span>
           <div
             class="time-wheel"
@@ -77,8 +104,8 @@
             tabindex="0"
             aria-label="කාලය"
             @wheel.prevent="handleTimeWheel"
-            @keydown.up.prevent="shiftPracticeMinutes(-1)"
-            @keydown.down.prevent="shiftPracticeMinutes(1)"
+            @keydown.left.prevent="shiftPracticeMinutes(-1)"
+            @keydown.right.prevent="shiftPracticeMinutes(1)"
             @touchstart.passive="handleTimeTouchStart"
             @touchend="handleTimeTouchEnd"
           >
@@ -133,15 +160,18 @@ const isEndSessionConfirmOpen = ref(false);
 const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
 const isPendingRandomOrder = ref(false);
+const isPendingTimedPractice = ref(true);
 const isSessionRandomOrder = ref(false);
+const isSessionTimedPractice = ref(false);
 const selectedPracticeMinutes = ref(60);
 const remainingSeconds = ref(0);
 const timerEndsAt = ref(0);
 const timerIntervalId = ref(null);
-const timeTouchStartY = ref(null);
+const timeTouchStartX = ref(null);
+const lastTimeWheelAt = ref(0);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
-const practiceMinuteOptions  = [60, 55, 50, 45, 40, 35, 30, 25, 20];
+const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20];
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
@@ -167,7 +197,9 @@ const currentDisplayContent = computed(() => {
     : currentQuestion.value.maskedContent;
 });
 
-const timerLabel = computed(() => formatTimer(remainingSeconds.value));
+const timerLabel = computed(() => {
+  return isSessionTimedPractice.value ? formatTimer(remainingSeconds.value) : "";
+});
 const selectedPracticeMinuteIndex = computed(() => {
   const optionIndex = practiceMinuteOptions.indexOf(selectedPracticeMinutes.value);
 
@@ -190,6 +222,7 @@ const visiblePracticeMinuteOptions = computed(() => {
 function handleSelectLevel(level) {
   pendingLevel.value = level;
   isPendingRandomOrder.value = false;
+  isPendingTimedPractice.value = true;
   selectedPracticeMinutes.value = 60;
   isPracticeOrderConfirmOpen.value = true;
 }
@@ -207,18 +240,25 @@ function startPracticeSession(useRandomOrder) {
   isPracticeOrderConfirmOpen.value = false;
   pendingLevel.value = "";
   isSessionRandomOrder.value = useRandomOrder;
+  isSessionTimedPractice.value = isPendingTimedPractice.value;
   selectedLevel.value = level;
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   sessionQuestions.value = buildSessionQuestions(level, useRandomOrder);
-  startSessionTimer(selectedPracticeMinutes.value);
+
+  if (isSessionTimedPractice.value) {
+    startSessionTimer(selectedPracticeMinutes.value);
+  } else {
+    stopSessionTimer();
+  }
 }
 
 function closePracticeOrderConfirm() {
   isPracticeOrderConfirmOpen.value = false;
   pendingLevel.value = "";
   isPendingRandomOrder.value = false;
+  isPendingTimedPractice.value = true;
 }
 
 function endSession() {
@@ -234,6 +274,7 @@ function confirmEndSession() {
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   isSessionRandomOrder.value = false;
+  isSessionTimedPractice.value = false;
   sessionQuestions.value = [];
 }
 
@@ -242,21 +283,36 @@ function closeEndSessionConfirm() {
 }
 
 function handleTimeWheel(event) {
-  shiftPracticeMinutes(event.deltaY > 0 ? 1 : -1);
-}
+  const now = Date.now();
 
-function handleTimeTouchStart(event) {
-  timeTouchStartY.value = event.changedTouches[0]?.clientY ?? null;
-}
-
-function handleTimeTouchEnd(event) {
-  if (timeTouchStartY.value === null) {
+  if (now - lastTimeWheelAt.value < 180) {
     return;
   }
 
-  const endY = event.changedTouches[0]?.clientY ?? timeTouchStartY.value;
-  const distance = timeTouchStartY.value - endY;
-  timeTouchStartY.value = null;
+  const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+    ? event.deltaX
+    : event.deltaY;
+
+  if (Math.abs(delta) < 8) {
+    return;
+  }
+
+  lastTimeWheelAt.value = now;
+  shiftPracticeMinutes(delta > 0 ? 1 : -1);
+}
+
+function handleTimeTouchStart(event) {
+  timeTouchStartX.value = event.changedTouches[0]?.clientX ?? null;
+}
+
+function handleTimeTouchEnd(event) {
+  if (timeTouchStartX.value === null) {
+    return;
+  }
+
+  const endX = event.changedTouches[0]?.clientX ?? timeTouchStartX.value;
+  const distance = timeTouchStartX.value - endX;
+  timeTouchStartX.value = null;
 
   if (Math.abs(distance) < 18) {
     return;
@@ -310,7 +366,13 @@ function restartLevel() {
     selectedLevel.value,
     isSessionRandomOrder.value,
   );
-  startSessionTimer(selectedPracticeMinutes.value);
+
+  if (isSessionTimedPractice.value) {
+    startSessionTimer(selectedPracticeMinutes.value);
+  } else {
+    stopSessionTimer();
+  }
+
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
@@ -324,6 +386,7 @@ function changeLevel() {
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   isSessionRandomOrder.value = false;
+  isSessionTimedPractice.value = false;
   sessionQuestions.value = [];
 }
 
@@ -452,7 +515,7 @@ function startSessionTimer(minutes) {
 }
 
 function restoreSessionTimer() {
-  if (!selectedLevel.value || isFinished.value) {
+  if (!selectedLevel.value || isFinished.value || !isSessionTimedPractice.value) {
     return;
   }
 
@@ -518,6 +581,7 @@ function saveSessionState() {
     isFinished: isFinished.value,
     isCurrentAnswerRevealed: isCurrentAnswerRevealed.value,
     isSessionRandomOrder: isSessionRandomOrder.value,
+    isSessionTimedPractice: isSessionTimedPractice.value,
     selectedPracticeMinutes: selectedPracticeMinutes.value,
     remainingSeconds: remainingSeconds.value,
     timerEndsAt: timerEndsAt.value,
@@ -551,6 +615,9 @@ function restoreSessionState() {
     isFinished.value = Boolean(snapshot?.isFinished);
     isCurrentAnswerRevealed.value = Boolean(snapshot?.isCurrentAnswerRevealed);
     isSessionRandomOrder.value = Boolean(snapshot?.isSessionRandomOrder);
+    isSessionTimedPractice.value = Boolean(
+      snapshot?.isSessionTimedPractice || snapshot?.timerEndsAt,
+    );
     selectedPracticeMinutes.value = practiceMinuteOptions.includes(
       snapshot?.selectedPracticeMinutes,
     )
@@ -593,6 +660,7 @@ watch(
     isFinished,
     isCurrentAnswerRevealed,
     isSessionRandomOrder,
+    isSessionTimedPractice,
     selectedPracticeMinutes,
     remainingSeconds,
     timerEndsAt,
@@ -646,6 +714,13 @@ onBeforeUnmount(stopTimerInterval);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+.flow-toggle-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .order-toggle-option {
@@ -715,38 +790,40 @@ onBeforeUnmount(stopTimerInterval);
 .time-wheel {
   position: relative;
   display: grid;
-  gap: 4px;
-  max-width: 66px;
-  min-width: 66px;
+  grid-template-columns: repeat(5, 44px);
+  gap: 6px;
+  justify-content: center;
+  width: min(100%, 268px);
   margin: 0 auto;
   padding: 6px;
   border: 1px solid rgba(122, 36, 16, 0.24);
-  border-radius: 33px;
+  border-radius: 999px;
   background: rgba(255, 234, 202, 0.58);
   outline: none;
-  touch-action: pan-y;
+  touch-action: pan-x;
 }
 
 .time-wheel::before {
   content: "";
   position: absolute;
-  left: 6px;
-  right: 6px;
+  left: 50%;
   top: 50%;
+  width: 44px;
   height: 38px;
   border-radius: 33px;
   background: #7a2410;
   box-shadow: 0 8px 18px rgba(111, 31, 14, 0.14);
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
 .time-wheel-option {
   position: relative;
   z-index: 1;
-  min-height: 32px;
+  width: 44px;
+  min-height: 38px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   background: transparent;
   color: #5e3a2b;
   font-family: "Abhaya Libre", serif;
@@ -754,9 +831,9 @@ onBeforeUnmount(stopTimerInterval);
   line-height: 1;
   cursor: pointer;
   transition:
-    color 0.2s ease,
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    transform 0.22s ease,
+    opacity 0.22s ease,
+    color 0.22s ease;
 }
 
 .time-wheel-option.near {
@@ -772,6 +849,7 @@ onBeforeUnmount(stopTimerInterval);
   color: #ffeaca;
   font-size: 24px;
   font-weight: 700;
+  transform: scale(1.04);
 }
 
 .time-wheel:focus-visible,

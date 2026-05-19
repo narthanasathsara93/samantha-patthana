@@ -9,7 +9,11 @@
       >
         <section
           ref="dialogRef"
-          class="confirm-dialog"
+          :class="
+            isLargeHeight
+              ? 'level-settings-added confirm-dialog'
+              : 'confirm-dialog'
+          "
           role="dialog"
           aria-modal="true"
           :aria-labelledby="titleId"
@@ -75,6 +79,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  isLargeHeight: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["confirm", "cancel", "dismiss"]);
@@ -122,6 +130,10 @@ function emitDismiss() {
   backdrop-filter: blur(4px);
 }
 
+.level-settings-added {
+  height: calc(100vh - 10%);
+}
+
 .confirm-dialog {
   width: min(420px, 92vw);
   border: 1px solid rgba(122, 36, 16, 0.18);
@@ -149,16 +161,17 @@ function emitDismiss() {
 }
 
 .confirm-dialog-actions {
+  margin-top: 10%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
 .confirm-dialog-btn {
-  min-height: 44px;
+  min-height: 37px;
   border-radius: 10px;
   font-family: "Abhaya Libre", serif;
-  font-size: 24px;
+  font-size: 19px;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -167,18 +180,17 @@ function emitDismiss() {
     box-shadow 0.2s ease;
 }
 
-.confirm-dialog-btn.primary, .confirm-dialog-btn.secondary {
+.confirm-dialog-btn.primary,
+.confirm-dialog-btn.secondary {
   border: none;
   background: #7a2410;
-  color: #FFEACA;
+  color: #ffeaca;
 }
 
 .confirm-dialog-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 22px rgba(111, 31, 14, 0.16);
 }
-
-
 
 .confirm-dialog-btn:active {
   transform: translateY(0) scale(0.985);
