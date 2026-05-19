@@ -14,7 +14,7 @@
       />
 
       <p class="hero-description">
-        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
+        සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව වන්දනා කරමු.
       </p>
 
       <button
@@ -152,7 +152,7 @@ const getIcon = (img) => {
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #ffeaca;
   /* fluid typography */
-  font-size: clamp(20px, 2.2vw, 29px);
+  font-size: 25px;
   font-weight: 600;
   line-height: 1;
   font-family: "Abhaya Libre", serif !important;
@@ -189,7 +189,7 @@ const getIcon = (img) => {
 
 .mind-icon,
 .star-icon {
-  width: 43px;
+  width: 24px;
   height: auto;
 }
 
@@ -276,13 +276,18 @@ const getIcon = (img) => {
     font-size: 18px;
     margin-bottom: 34px;
   }
+
+  .begin-btn,
+  .practice-btn {
+    font-size: 20px;
+  }
 }
 
 /* Tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
   .begin-btn,
   .practice-btn {
-    font-size: 25px;
+    font-size: 20px;
     margin-bottom: 2%;
   }
 }
@@ -298,7 +303,7 @@ const getIcon = (img) => {
 @media (min-width: 1440px) {
   .begin-btn,
   .practice-btn {
-    font-size: 31px;
+    font-size: 25px;
     padding: 14px 42px;
   }
 }
