@@ -21,13 +21,15 @@
           tabindex="-1"
           @keydown.esc="emitDismiss"
         >
-          <h2 :id="titleId" class="confirm-dialog-title">{{ title }}</h2>
-          <p
-            :id="messageId"
-            class="confirm-dialog-message"
-            v-html="message"
-          ></p>
-          <slot></slot>
+          <div class="confirm-dialog-content">
+            <h2 :id="titleId" class="confirm-dialog-title">{{ title }}</h2>
+            <p
+              :id="messageId"
+              class="confirm-dialog-message"
+              v-html="message"
+            ></p>
+            <slot></slot>
+          </div>
 
           <div class="confirm-dialog-actions">
             <button
@@ -131,11 +133,18 @@ function emitDismiss() {
 }
 
 .level-settings-added {
-  height: calc(100vh - 10%);
+  height: calc(100vh - 31%);
+  max-height: calc(100vh - 36px);
+  height: min(calc(100dvh - 31%), calc(100dvh - 36px));
+  max-height: calc(100dvh - 36px);
+  justify-content: space-between;
 }
 
 .confirm-dialog {
   width: min(420px, 92vw);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(122, 36, 16, 0.18);
   border-radius: 14px;
   padding: 24px;
@@ -143,6 +152,14 @@ function emitDismiss() {
   box-shadow: 0 22px 60px rgba(35, 9, 5, 0.3);
   color: #3b0906;
   text-align: center;
+}
+
+.confirm-dialog-content {
+  min-height: 0;
+}
+
+.level-settings-added .confirm-dialog-content {
+  overflow: visible;
 }
 
 .confirm-dialog-title {
@@ -161,10 +178,16 @@ function emitDismiss() {
 }
 
 .confirm-dialog-actions {
-  margin-top: 10%;
+  flex-shrink: 0;
+  margin-top: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+.level-settings-added .confirm-dialog-actions {
+  margin-top: 14px;
+  padding-top: 0;
 }
 
 .confirm-dialog-btn {
@@ -223,6 +246,39 @@ function emitDismiss() {
 @media (max-width: 420px) {
   .confirm-dialog-actions {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-height: 700px) {
+  .confirm-dialog-backdrop {
+    padding: 12px;
+  }
+
+  .level-settings-added {
+    height: auto;
+    min-height: 0;
+    max-height: calc(100dvh - 24px);
+    min-height: calc(100dvh - 61px);
+    padding: 18px;
+  }
+
+  .level-settings-added .confirm-dialog-title {
+    font-size: clamp(22px, 5vh, 28px);
+  }
+
+  .level-settings-added .confirm-dialog-message {
+    margin: 8px 0 12px;
+    font-size: clamp(16px, 3vh, 18px);
+    line-height: 1.3;
+  }
+
+  .level-settings-added .confirm-dialog-actions {
+    margin-top: 12px;
+  }
+
+  .level-settings-added .confirm-dialog-btn {
+    min-height: 34px;
+    font-size: 18px;
   }
 }
 

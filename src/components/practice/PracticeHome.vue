@@ -46,85 +46,91 @@
       @dismiss="closePracticeOrderConfirm"
     >
       <div class="practice-start-settings">
-        <div class="order-toggle-group" role="radiogroup">
-          <button
-            class="order-toggle-option"
-            :class="{ selected: !isPendingRandomOrder }"
-            type="button"
-            role="radio"
-            :aria-checked="!isPendingRandomOrder"
-            @click="isPendingRandomOrder = false"
-          >
-            <span class="order-toggle-dot" aria-hidden="true"></span>
-            <span>පිළිවෙලින්</span>
-          </button>
-          <button
-            class="order-toggle-option"
-            :class="{ selected: isPendingRandomOrder }"
-            type="button"
-            role="radio"
-            :aria-checked="isPendingRandomOrder"
-            @click="isPendingRandomOrder = true"
-          >
-            <span class="order-toggle-dot" aria-hidden="true"></span>
-            <span>අහඹු ලෙස</span>
-          </button>
-        </div>
+        <!-- Question 1 -->
+        <div class="setting-block">
+          <p class="setting-question">ප්‍රත්‍යයන් අහඹු ලෙස දිස්වන්න අවශ්‍යද?</p>
 
-        <div class="flow-toggle-group" role="radiogroup">
-          <button
-            class="order-toggle-option"
-            :class="{ selected: isPendingTimedPractice }"
-            type="button"
-            role="radio"
-            :aria-checked="isPendingTimedPractice"
-            @click="isPendingTimedPractice = true"
-          >
-            <span class="order-toggle-dot" aria-hidden="true"></span>
-            <span>with timer</span>
-          </button>
-          <button
-            class="order-toggle-option"
-            :class="{ selected: !isPendingTimedPractice }"
-            type="button"
-            role="radio"
-            :aria-checked="!isPendingTimedPractice"
-            @click="isPendingTimedPractice = false"
-          >
-            <span class="order-toggle-dot" aria-hidden="true"></span>
-            <span>no timer</span>
-          </button>
-        </div>
-
-        <div v-if="isPendingTimedPractice" class="time-select">
-          <span class="time-select-title">කාලය (මිනිත්තු)</span>
-          <div
-            class="time-wheel"
-            role="listbox"
-            tabindex="0"
-            aria-label="කාලය"
-            @wheel.prevent="handleTimeWheel"
-            @keydown.left.prevent="shiftPracticeMinutes(-1)"
-            @keydown.right.prevent="shiftPracticeMinutes(1)"
-            @touchstart.passive="handleTimeTouchStart"
-            @touchend="handleTimeTouchEnd"
-          >
+          <div class="radio-group">
             <button
-              v-for="option in visiblePracticeMinuteOptions"
-              :key="`${option.offset}-${option.minutes}`"
-              class="time-wheel-option"
-              :class="{
-                selected: option.offset === 0,
-                near: Math.abs(option.offset) === 1,
-              }"
               type="button"
-              role="option"
-              :aria-selected="option.offset === 0"
-              @click="selectedPracticeMinutes = option.minutes"
+              class="radio-option"
+              :class="{ active: isPendingRandomOrder }"
+              @click="isPendingRandomOrder = true"
             >
-              {{ option.minutes }}
+              <span class="radio-circle"></span>
+              ඔව්
+            </button>
+
+            <button
+              type="button"
+              class="radio-option"
+              :class="{ active: !isPendingRandomOrder }"
+              @click="isPendingRandomOrder = false"
+            >
+              <span class="radio-circle"></span>
+              නැත
             </button>
           </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="setting-block">
+          <p class="setting-question">ටයිමරය අවශ්‍යද?</p>
+
+          <div class="radio-group">
+            <button
+              type="button"
+              class="radio-option"
+              :class="{ active: isPendingTimedPractice }"
+              @click="isPendingTimedPractice = true"
+            >
+              <span class="radio-circle"></span>
+              ඔව්
+            </button>
+
+            <button
+              type="button"
+              class="radio-option"
+              :class="{ active: !isPendingTimedPractice }"
+              @click="isPendingTimedPractice = false"
+            >
+              <span class="radio-circle"></span>
+              නැත
+            </button>
+          </div>
+
+          <!-- Timer -->
+          <Transition name="timer-fade">
+            <div v-if="isPendingTimedPractice" class="time-select">
+              <span class="time-select-title">කාලය (මිනිත්තු)</span>
+
+              <div
+                class="time-wheel"
+                role="listbox"
+                tabindex="0"
+                aria-label="කාලය"
+                @wheel.prevent="handleTimeWheel"
+                @keydown.left.prevent="shiftPracticeMinutes(-1)"
+                @keydown.right.prevent="shiftPracticeMinutes(1)"
+                @touchstart.passive="handleTimeTouchStart"
+                @touchend="handleTimeTouchEnd"
+              >
+                <button
+                  v-for="option in visiblePracticeMinuteOptions"
+                  :key="`${option.offset}-${option.minutes}`"
+                  class="time-wheel-option"
+                  :class="{
+                    selected: option.offset === 0,
+                    near: Math.abs(option.offset) === 1,
+                  }"
+                  type="button"
+                  @click="selectedPracticeMinutes = option.minutes"
+                >
+                  {{ option.minutes }}
+                </button>
+              </div>
+            </div>
+          </Transition>
         </div>
       </div>
     </ConfirmDialog>
@@ -159,7 +165,7 @@ const isCurrentAnswerRevealed = ref(false);
 const isEndSessionConfirmOpen = ref(false);
 const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
-const isPendingRandomOrder = ref(false);
+const isPendingRandomOrder = ref(true);
 const isPendingTimedPractice = ref(true);
 const isSessionRandomOrder = ref(false);
 const isSessionTimedPractice = ref(false);
@@ -171,6 +177,7 @@ const timeTouchStartX = ref(null);
 const lastTimeWheelAt = ref(0);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
+const practiceSettingsStorageKey = "practice-start-settings-v1";
 const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20];
 
 const difficultyRanges = {
@@ -198,10 +205,14 @@ const currentDisplayContent = computed(() => {
 });
 
 const timerLabel = computed(() => {
-  return isSessionTimedPractice.value ? formatTimer(remainingSeconds.value) : "";
+  return isSessionTimedPractice.value
+    ? formatTimer(remainingSeconds.value)
+    : "";
 });
 const selectedPracticeMinuteIndex = computed(() => {
-  const optionIndex = practiceMinuteOptions.indexOf(selectedPracticeMinutes.value);
+  const optionIndex = practiceMinuteOptions.indexOf(
+    selectedPracticeMinutes.value,
+  );
 
   return optionIndex === -1 ? 0 : optionIndex;
 });
@@ -221,9 +232,6 @@ const visiblePracticeMinuteOptions = computed(() => {
 
 function handleSelectLevel(level) {
   pendingLevel.value = level;
-  isPendingRandomOrder.value = false;
-  isPendingTimedPractice.value = true;
-  selectedPracticeMinutes.value = 60;
   isPracticeOrderConfirmOpen.value = true;
 }
 
@@ -257,8 +265,6 @@ function startPracticeSession(useRandomOrder) {
 function closePracticeOrderConfirm() {
   isPracticeOrderConfirmOpen.value = false;
   pendingLevel.value = "";
-  isPendingRandomOrder.value = false;
-  isPendingTimedPractice.value = true;
 }
 
 function endSession() {
@@ -289,9 +295,10 @@ function handleTimeWheel(event) {
     return;
   }
 
-  const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
-    ? event.deltaX
-    : event.deltaY;
+  const delta =
+    Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      ? event.deltaX
+      : event.deltaY;
 
   if (Math.abs(delta) < 8) {
     return;
@@ -515,7 +522,11 @@ function startSessionTimer(minutes) {
 }
 
 function restoreSessionTimer() {
-  if (!selectedLevel.value || isFinished.value || !isSessionTimedPractice.value) {
+  if (
+    !selectedLevel.value ||
+    isFinished.value ||
+    !isSessionTimedPractice.value
+  ) {
     return;
   }
 
@@ -542,7 +553,11 @@ function syncRemainingTime() {
     Math.ceil((timerEndsAt.value - Date.now()) / 1000),
   );
 
-  if (remainingSeconds.value === 0 && selectedLevel.value && !isFinished.value) {
+  if (
+    remainingSeconds.value === 0 &&
+    selectedLevel.value &&
+    !isFinished.value
+  ) {
     stopSessionTimer();
     isFinished.value = true;
   }
@@ -589,6 +604,44 @@ function saveSessionState() {
   };
 
   localStorage.setItem(practiceSessionStorageKey, JSON.stringify(snapshot));
+}
+
+function savePracticeSettings() {
+  const snapshot = {
+    isRandomOrder: isPendingRandomOrder.value,
+    isTimedPractice: isPendingTimedPractice.value,
+    selectedPracticeMinutes: selectedPracticeMinutes.value,
+  };
+
+  localStorage.setItem(practiceSettingsStorageKey, JSON.stringify(snapshot));
+}
+
+function restorePracticeSettings() {
+  const raw = localStorage.getItem(practiceSettingsStorageKey);
+
+  if (!raw) {
+    return;
+  }
+
+  try {
+    const snapshot = JSON.parse(raw);
+
+    isPendingRandomOrder.value =
+      snapshot?.isRandomOrder === undefined
+        ? true
+        : Boolean(snapshot.isRandomOrder);
+    isPendingTimedPractice.value =
+      snapshot?.isTimedPractice === undefined
+        ? true
+        : Boolean(snapshot.isTimedPractice);
+    selectedPracticeMinutes.value = practiceMinuteOptions.includes(
+      snapshot?.selectedPracticeMinutes,
+    )
+      ? snapshot.selectedPracticeMinutes
+      : 60;
+  } catch {
+    localStorage.removeItem(practiceSettingsStorageKey);
+  }
 }
 
 function restoreSessionState() {
@@ -655,6 +708,16 @@ function loopIndex(index, length) {
 
 watch(
   [
+    isPendingRandomOrder,
+    isPendingTimedPractice,
+    selectedPracticeMinutes,
+  ],
+  savePracticeSettings,
+  { flush: "sync" },
+);
+
+watch(
+  [
     selectedLevel,
     currentQuestionIndex,
     isFinished,
@@ -670,6 +733,7 @@ watch(
   { deep: true },
 );
 
+restorePracticeSettings();
 restoreSessionState();
 
 onBeforeUnmount(stopTimerInterval);
@@ -685,6 +749,10 @@ onBeforeUnmount(stopTimerInterval);
   background-size: cover;
   background-position: center bottom;
 }
+
+/* ======================
+TRANSITIONS
+====================== */
 
 .practice-view-enter-active,
 .practice-view-leave-active {
@@ -706,113 +774,176 @@ onBeforeUnmount(stopTimerInterval);
   transform: translateY(-10px) scale(1.01);
 }
 
+.timer-fade-enter-active,
+.timer-fade-leave-active {
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease;
+}
+
+.timer-fade-enter-from,
+.timer-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice-view-enter-active,
+  .practice-view-leave-active,
+  .timer-fade-enter-active,
+  .timer-fade-leave-active {
+    transition: none;
+  }
+
+  .practice-view-enter-from,
+  .practice-view-leave-to,
+  .timer-fade-enter-from,
+  .timer-fade-leave-to {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ======================
+SETTINGS AREA
+====================== */
+
 .practice-start-settings {
-  margin: -4px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 8px 0 0;
 }
 
-.order-toggle-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.setting-block {
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  background: rgba(255, 247, 233, 0.62);
+  border: 1px solid rgba(122, 36, 16, 0.14);
+  backdrop-filter: blur(2px);
 }
 
-.flow-toggle-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.order-toggle-option {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  border: 1px solid rgba(122, 36, 16, 0.24);
-  border-radius: 10px;
-  background: rgba(255, 234, 202, 0.58);
-  color: #5e3a2b;
+.setting-question {
+  margin: 0 0 14px;
+  color: #5e3929;
   font-family: "Abhaya Libre", serif;
-  font-size: clamp(18px, 2.5vw, 22px);
-  line-height: 1.1;
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* ======================
+RADIO OPTIONS
+====================== */
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-option {
+  position: relative;
+  width: fit-content;
+  border: none;
+  background: transparent;
+  padding: 0 0 0 30px;
+
+  color: #6d4837;
+  font-family: "Abhaya Libre", serif;
+  font-size: 22px;
+  line-height: 1.2;
+  text-align: left;
+
   cursor: pointer;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    color 0.18s ease,
+    transform 0.18s ease;
 }
 
-.order-toggle-option.selected {
-  border-color: rgba(122, 36, 16, 0.56);
-  background: #7a2410;
-  color: #ffeaca;
-  box-shadow: 0 8px 18px rgba(111, 31, 14, 0.14);
+.radio-option:hover {
+  font-weight: 700;
 }
 
-.order-toggle-option:hover {
-  transform: translateY(-2px);
+.radio-option.active {
+  color: #7a2410;
+  font-weight: bold;
 }
 
-.order-toggle-option:focus-visible {
-  outline: 3px solid rgba(122, 36, 16, 0.28);
-  outline-offset: 3px;
-}
-
-.order-toggle-dot {
-  width: 14px;
-  height: 14px;
-  border: 2px solid currentColor;
+.radio-circle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
+  border: 2px solid currentColor;
+  transform: translateY(-50%);
 }
 
-.order-toggle-option.selected .order-toggle-dot {
+.radio-option.active .radio-circle::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
   background: currentColor;
-  box-shadow: inset 0 0 0 3px #7a2410;
 }
+
+/* ======================
+TIME SELECT
+====================== */
 
 .time-select {
-  margin-top: 14px;
-  text-align: left;
+  padding-top: 4px;
 }
 
 .time-select-title {
   display: block;
-  margin: 0 0 8px;
-  color: #5e3a2b;
+  margin-bottom: 12px;
+
+  color: #7a4d3a;
   font-family: "Abhaya Libre", serif;
-  font-size: clamp(17px, 2.3vw, 20px);
-  line-height: 1.1;
+  font-size: 18px;
   text-align: center;
 }
+
+/* ======================
+TIME WHEEL
+====================== */
 
 .time-wheel {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, 44px);
+  grid-template-columns: repeat(5, 42px);
   gap: 6px;
   justify-content: center;
-  width: min(100%, 268px);
+
+  width: min(100%, 260px);
   margin: 0 auto;
   padding: 6px;
-  border: 1px solid rgba(122, 36, 16, 0.24);
+
   border-radius: 999px;
-  background: rgba(255, 234, 202, 0.58);
-  outline: none;
+  border: 1px solid rgba(122, 36, 16, 0.14);
+
+  background: rgba(255, 239, 214, 0.72);
+
   touch-action: pan-x;
+  outline: none;
 }
 
 .time-wheel::before {
   content: "";
+
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 44px;
-  height: 38px;
-  border-radius: 33px;
+
+  width: 42px;
+  height: 36px;
+
+  border-radius: 999px;
   background: #7a2410;
-  box-shadow: 0 8px 18px rgba(111, 31, 14, 0.14);
+
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -820,54 +951,162 @@ onBeforeUnmount(stopTimerInterval);
 .time-wheel-option {
   position: relative;
   z-index: 1;
-  width: 44px;
-  min-height: 38px;
-  border: 0;
-  border-radius: 999px;
+
+  width: 42px;
+  min-height: 36px;
+
+  border: none;
   background: transparent;
-  color: #5e3a2b;
+
+  color: #7b5a4c;
+
   font-family: "Abhaya Libre", serif;
   font-size: 20px;
   line-height: 1;
+
   cursor: pointer;
+
   transition:
-    transform 0.22s ease,
-    opacity 0.22s ease,
-    color 0.22s ease;
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .time-wheel-option.near {
-  opacity: 0.72;
+  opacity: 0.65;
 }
 
 .time-wheel-option:not(.selected):not(.near) {
-  opacity: 0.42;
-  transform: scale(0.92);
+  opacity: 0.3;
+  transform: scale(0.9);
 }
 
 .time-wheel-option.selected {
-  color: #ffeaca;
+  color: #fff3df;
   font-size: 24px;
   font-weight: 700;
-  transform: scale(1.04);
 }
 
 .time-wheel:focus-visible,
 .time-wheel-option:focus-visible {
-  outline: 3px solid rgba(122, 36, 16, 0.28);
-  outline-offset: 3px;
+  outline: 2px solid rgba(122, 36, 16, 0.22);
+  outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .practice-view-enter-active,
-  .practice-view-leave-active {
-    transition: opacity 0.01s linear;
+/* ======================
+MOBILE
+====================== */
+
+@media (max-width: 520px) {
+  .practice-start-settings {
+    gap: 14px;
   }
 
-  .practice-view-enter-from,
-  .practice-view-leave-to {
-    filter: none;
-    transform: none;
+  .setting-block {
+    padding: 16px 14px;
+    border-radius: 18px;
+  }
+
+  .setting-question {
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+
+  .radio-option {
+    font-size: 21px;
+  }
+
+  .time-select {
+    padding-top: 10px;
+  }
+
+  .time-select-title {
+    font-size: 17px;
+  }
+
+  .time-wheel {
+    grid-template-columns: repeat(5, 38px);
+    width: min(100%, 236px);
+    padding: 4px;
+  }
+
+  .time-wheel::before {
+    width: 38px;
+    height: 32px;
+  }
+
+  .time-wheel-option {
+    width: 38px;
+    min-height: 32px;
+    font-size: 18px;
+  }
+
+  .time-wheel-option.selected {
+    font-size: 22px;
+  }
+}
+
+@media (max-height: 700px) {
+  .practice-start-settings {
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .setting-block {
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+
+  .setting-question {
+    margin-bottom: 8px;
+    font-size: clamp(18px, 3vh, 21px);
+    line-height: 1.2;
+  }
+
+  .radio-group {
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .radio-option {
+    font-size: clamp(19px, 3vh, 21px);
+    padding-left: 24px;
+  }
+
+  .radio-circle {
+    width: 14px;
+    height: 14px;
+  }
+
+  .time-select {
+    padding-top: 10px;
+  }
+
+  .time-select-title {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  .time-wheel {
+    grid-template-columns: repeat(5, 36px);
+    width: min(100%, 224px);
+    padding: 4px;
+  }
+
+  .time-wheel::before {
+    width: 36px;
+    height: 30px;
+  }
+
+  .time-wheel-option {
+    width: 36px;
+    min-height: 30px;
+    font-size: 17px;
+  }
+
+  .time-wheel-option.selected {
+    font-size: 21px;
   }
 }
 </style>
