@@ -762,6 +762,7 @@ SETTINGS AREA
   font-size: clamp(20px, 2.5vw, 24px);
   font-weight: 700;
   line-height: 1.35;
+  text-align: center;
 }
 
 /* ======================
@@ -772,10 +773,14 @@ RADIO OPTIONS
   display: flex;
   flex-direction: row;
   gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .radio-option {
   position: relative;
+  display: inline-flex;
+  align-items: center;
   width: fit-content;
   border: none;
   background: transparent;

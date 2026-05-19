@@ -205,7 +205,8 @@ function emitDismiss() {
 
 .confirm-dialog-btn.primary,
 .confirm-dialog-btn.secondary {
-  border: 1px solid rgba(122, 36, 16, 0.14);
+  border: 2px solid rgba(122, 36, 16, 0.14);
+  font-weight: 600;
 }
 
 .confirm-dialog-btn.primary {
@@ -213,7 +214,7 @@ function emitDismiss() {
   color: #ffeaca;
 }
 .confirm-dialog-btn.secondary {
-  background: #49241626;
+  background: #af938926;
   color: #7a2410;
 }
 
