@@ -16,6 +16,7 @@
         :selected-level="selectedLevel"
         :is-answer-revealed="isCurrentAnswerRevealed"
         :timer-label="timerLabel"
+        :total-practice-seconds="selectedPracticeMinutes * 60"
         @end-session="endSession"
         @toggle-answer="toggleAnswerReveal"
         @go-next="goNext"
@@ -167,7 +168,7 @@ const lastTimeWheelAt = ref(0);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 const practiceSettingsStorageKey = "practice-start-settings-v1";
-const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20];
+const practiceMinuteOptions = [60, 55, 50, 45, 40, 35, 30, 25, 20, 1];
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
@@ -496,7 +497,18 @@ function restoreSessionTimer() {
 
 function syncRemainingTime() {
   if (!timerEndsAt.value) {
+    // If the timer is enabled and we've reached 00:00 (or timer state was lost),
+    // end the practice session immediately regardless of the current verse.
     remainingSeconds.value = 0;
+
+    if (
+      isSessionTimedPractice.value &&
+      selectedLevel.value &&
+      !isFinished.value
+    ) {
+      isFinished.value = true;
+    }
+
     return;
   }
   remainingSeconds.value = Math.max(

@@ -31,10 +31,22 @@
       </div>
     </div>
 
-    <Transition name="question-fade" mode="out-in">
-      <h2 :key="questionContentKey" class="question-title">{{ title }}</h2>
-    </Transition>
-    <span v-if="timerLabel" class="chip timer-chip">{{ timerLabel }}</span>
+    <div class="question-header">
+      <Transition name="question-fade" mode="out-in">
+        <h2 :key="questionContentKey" class="question-title">
+          {{ title }}
+        </h2>
+      </Transition>
+
+      <span
+        v-if="timerLabel"
+        class="timer-chip"
+        :class="{ warning: isTimerWarning }"
+      >
+        {{ timerLabel }}
+      </span>
+    </div>
+
     <div class="verse-box">
       <Transition name="question-fade" mode="out-in">
         <p
@@ -94,6 +106,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  totalPracticeSeconds: {
+    type: Number,
+    default: 0,
+  },
 });
 
 defineEmits(["end-session", "toggle-answer", "go-next"]);
@@ -108,6 +124,15 @@ const showFinishButton = computed(
 const questionContentKey = computed(
   () => `${props.selectedLevel}-${props.currentIndex}`,
 );
+const isTimerWarning = computed(() => {
+  if (!props.timerLabel || !props.totalPracticeSeconds) {
+    return false;
+  }
+
+  const [minutes, seconds] = props.timerLabel.split(":").map(Number);
+  const remaining = minutes * 60 + seconds;
+  return remaining <= props.totalPracticeSeconds * 0.2;
+});
 const getIcon = (img) => getAssetUrl(`icons/${img}`);
 
 const getLabelIcon = () => {
@@ -197,12 +222,29 @@ button {
   align-items: center;
   transform: translateY(0.5px);
 }
-
 .timer-chip {
-  min-width: 58px;
+  flex-shrink: 0;
+  min-width: 74px;
+  padding: 6px 12px;
+  border-radius: 999px;
   background: #7a2410;
   color: #ffeaca;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3px;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.timer-chip.warning {
+  background: #fff1ef;
+  color: #c62828;
+  box-shadow: 0 0 0 1px rgba(198, 40, 40, 0.16);
 }
 
 .question {
@@ -210,9 +252,16 @@ button {
   color: #4d3124;
   font-size: 16px;
 }
+.question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
 
 .question-title {
-  margin: 0 0 12px;
+  margin: 0;
   color: #3b0906;
   font-size: clamp(19px, 2.2vw, 26px);
 }
@@ -398,6 +447,16 @@ button {
   .end-session-icon {
     width: 18px;
     height: 16px;
+  }
+
+  .question-header {
+    align-items: flex-start;
+  }
+
+  .timer-chip {
+    min-width: 66px;
+    font-size: 16px;
+    padding: 5px 10px;
   }
 }
 
