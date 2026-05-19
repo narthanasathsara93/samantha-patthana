@@ -205,9 +205,16 @@ function emitDismiss() {
 
 .confirm-dialog-btn.primary,
 .confirm-dialog-btn.secondary {
-  border: none;
+  border: 1px solid rgba(122, 36, 16, 0.14);
+}
+
+.confirm-dialog-btn.primary {
   background: #7a2410;
   color: #ffeaca;
+}
+.confirm-dialog-btn.secondary {
+  background: #49241626;
+  color: #7a2410;
 }
 
 .confirm-dialog-btn:hover {
@@ -247,11 +254,21 @@ function emitDismiss() {
   .confirm-dialog-actions {
     grid-template-columns: 1fr;
   }
+
+  .confirm-dialog-content {
+    min-height: 0;
+    margin-top: 9%;
+  }
 }
 
 @media (max-height: 700px) {
   .confirm-dialog-backdrop {
     padding: 12px;
+  }
+
+  .confirm-dialog-content {
+    min-height: 0;
+    margin-top: 9%;
   }
 
   .level-settings-added {

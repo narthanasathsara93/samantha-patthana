@@ -91,7 +91,6 @@ const getIcon = (img) => {
   background: linear-gradient(180deg, #7a2410 0%, #5a1101 100%);
   color: #ffe8c4;
   cursor: pointer;
-
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -106,7 +105,6 @@ const getIcon = (img) => {
   border-radius: 12px;
   min-height: 62px;
   padding: 8px 12px;
-
   display: flex;
   align-items: center;
   justify-content: center;

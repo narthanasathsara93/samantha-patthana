@@ -7,7 +7,6 @@
         @select-level="handleSelectLevel"
         @go-home="goHome"
       />
-
       <QuestionCard
         v-else-if="!isFinished"
         :display-content="currentDisplayContent"
@@ -21,7 +20,6 @@
         @toggle-answer="toggleAnswerReveal"
         @go-next="goNext"
       />
-
       <ResultScreen
         v-else
         key="result-screen"
@@ -32,11 +30,10 @@
         @go-home="goHome"
       />
     </Transition>
-
     <ConfirmDialog
       :show="isPracticeOrderConfirmOpen"
       title="පුහුණව ඇරඹීමට පෙර"
-      message="ප්‍රත්‍යයන් තිරයේ දිස්විය යුතු පිළිවෙල තහවරු කරන්න."
+      message="පහත සකසනයන් භාවිතයෙන් වඩාත් සාර්ථක ලෙස පුහුණුවෙහි යෙදිය හැක."
       confirm-label="ආරම්භ කරන්න"
       cancel-label="අවලංගු කරන්න"
       is-large-height="true"
@@ -49,7 +46,6 @@
         <!-- Question 1 -->
         <div class="setting-block">
           <p class="setting-question">ප්‍රත්‍යයන් අහඹු ලෙස දිස්වන්න අවශ්‍යද?</p>
-
           <div class="radio-group">
             <button
               type="button"
@@ -60,7 +56,6 @@
               <span class="radio-circle"></span>
               ඔව්
             </button>
-
             <button
               type="button"
               class="radio-option"
@@ -72,11 +67,9 @@
             </button>
           </div>
         </div>
-
         <!-- Question 2 -->
         <div class="setting-block">
           <p class="setting-question">ටයිමරය අවශ්‍යද?</p>
-
           <div class="radio-group">
             <button
               type="button"
@@ -87,7 +80,6 @@
               <span class="radio-circle"></span>
               ඔව්
             </button>
-
             <button
               type="button"
               class="radio-option"
@@ -98,12 +90,10 @@
               නැත
             </button>
           </div>
-
           <!-- Timer -->
           <Transition name="timer-fade">
             <div v-if="isPendingTimedPractice" class="time-select">
               <span class="time-select-title">කාලය (මිනිත්තු)</span>
-
               <div
                 class="time-wheel"
                 role="listbox"
@@ -134,7 +124,6 @@
         </div>
       </div>
     </ConfirmDialog>
-
     <ConfirmDialog
       :show="isEndSessionConfirmOpen"
       title="පුහුණුව නැවත අරඹන්න?"
@@ -198,7 +187,6 @@ const currentDisplayContent = computed(() => {
   if (!currentQuestion.value) {
     return "";
   }
-
   return isCurrentAnswerRevealed.value
     ? currentQuestion.value.content
     : currentQuestion.value.maskedContent;
@@ -213,7 +201,6 @@ const selectedPracticeMinuteIndex = computed(() => {
   const optionIndex = practiceMinuteOptions.indexOf(
     selectedPracticeMinutes.value,
   );
-
   return optionIndex === -1 ? 0 : optionIndex;
 });
 const visiblePracticeMinuteOptions = computed(() => {
@@ -222,7 +209,6 @@ const visiblePracticeMinuteOptions = computed(() => {
       selectedPracticeMinuteIndex.value + offset,
       practiceMinuteOptions.length,
     );
-
     return {
       minutes: practiceMinuteOptions[optionIndex],
       offset,
@@ -243,7 +229,6 @@ function startPracticeSession(useRandomOrder) {
   if (!pendingLevel.value) {
     return;
   }
-
   const level = pendingLevel.value;
   isPracticeOrderConfirmOpen.value = false;
   pendingLevel.value = "";
@@ -254,7 +239,6 @@ function startPracticeSession(useRandomOrder) {
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
   sessionQuestions.value = buildSessionQuestions(level, useRandomOrder);
-
   if (isSessionTimedPractice.value) {
     startSessionTimer(selectedPracticeMinutes.value);
   } else {
@@ -290,20 +274,16 @@ function closeEndSessionConfirm() {
 
 function handleTimeWheel(event) {
   const now = Date.now();
-
   if (now - lastTimeWheelAt.value < 180) {
     return;
   }
-
   const delta =
     Math.abs(event.deltaX) > Math.abs(event.deltaY)
       ? event.deltaX
       : event.deltaY;
-
   if (Math.abs(delta) < 8) {
     return;
   }
-
   lastTimeWheelAt.value = now;
   shiftPracticeMinutes(delta > 0 ? 1 : -1);
 }
@@ -316,15 +296,12 @@ function handleTimeTouchEnd(event) {
   if (timeTouchStartX.value === null) {
     return;
   }
-
   const endX = event.changedTouches[0]?.clientX ?? timeTouchStartX.value;
   const distance = timeTouchStartX.value - endX;
   timeTouchStartX.value = null;
-
   if (Math.abs(distance) < 18) {
     return;
   }
-
   shiftPracticeMinutes(distance > 0 ? 1 : -1);
 }
 
@@ -333,14 +310,12 @@ function shiftPracticeMinutes(direction) {
     selectedPracticeMinuteIndex.value + direction,
     practiceMinuteOptions.length,
   );
-
   selectedPracticeMinutes.value = practiceMinuteOptions[nextIndex];
 }
 
 function goNext() {
   const isLastQuestion =
     currentQuestionIndex.value === sessionQuestions.value.length - 1;
-
   if (isLastQuestion) {
     if (timerEndsAt.value) {
       sessionQuestions.value = buildSessionQuestions(
@@ -351,7 +326,6 @@ function goNext() {
       isCurrentAnswerRevealed.value = false;
       return;
     }
-
     stopSessionTimer();
     isFinished.value = true;
     return;
@@ -368,18 +342,15 @@ function restartLevel() {
   if (!selectedLevel.value) {
     return;
   }
-
   sessionQuestions.value = buildSessionQuestions(
     selectedLevel.value,
     isSessionRandomOrder.value,
   );
-
   if (isSessionTimedPractice.value) {
     startSessionTimer(selectedPracticeMinutes.value);
   } else {
     stopSessionTimer();
   }
-
   currentQuestionIndex.value = 0;
   isFinished.value = false;
   isCurrentAnswerRevealed.value = false;
@@ -417,10 +388,8 @@ function buildSessionQuestions(level, useRandomOrder = false) {
     : [...versesData];
   const [minRatio, maxRatio] =
     difficultyRanges[getLevelKey(level)] || difficultyRanges.easy;
-
   return orderedVerses.map((verse) => {
     const hideRatio = randomInRange(minRatio, maxRatio);
-
     return {
       ...verse,
       maskedContent: createMaskedContent(verse.content, hideRatio),
@@ -431,33 +400,26 @@ function buildSessionQuestions(level, useRandomOrder = false) {
 function createMaskedContent(content, hideRatio) {
   const tokens = content.split(/(<br\s*\/?>|\s+)/gi).filter(Boolean);
   const wordIndexes = [];
-
   for (let i = 0; i < tokens.length; i += 1) {
     const token = tokens[i];
     const isBrToken = /^<br\s*\/?>$/i.test(token);
     const isWhitespace = /^\s+$/.test(token);
-
     if (!isBrToken && !isWhitespace) {
       wordIndexes.push(i);
     }
   }
-
   if (!wordIndexes.length) {
     return content;
   }
-
   const rawHideCount = Math.round(wordIndexes.length * hideRatio);
   const hideCount = Math.min(wordIndexes.length - 1, Math.max(1, rawHideCount));
   const hiddenIndexes = new Set(shuffleArray(wordIndexes).slice(0, hideCount));
-
   const maskedTokens = tokens.map((token, index) => {
     if (hiddenIndexes.has(index)) {
       return maskWordToken(token);
     }
-
     return token;
   });
-
   return maskedTokens.join("");
 }
 
@@ -478,37 +440,30 @@ function maskWordToken(token) {
   const punctuationRegex = /[.,!?;:()[\]{}"'`~\-–—]/;
   let start = 0;
   let end = token.length - 1;
-
   while (start <= end && punctuationRegex.test(token[start])) {
     start += 1;
   }
-
   while (end >= start && punctuationRegex.test(token[end])) {
     end -= 1;
   }
-
   if (start > end) {
     return token;
   }
-
   const prefix = escapeHtml(token.slice(0, start));
   const suffix = escapeHtml(token.slice(end + 1));
   const body = token.slice(start, end + 1);
   const charCount = Math.max(1, [...body].length);
   // Width scales with verse font-size (em); factor tuned for Sinhala vs. Latin `ch`.
   const blank = `<span class="word-blank" style="--word-blank-len:${charCount}" aria-hidden="true"></span>`;
-
   return `${prefix}${blank}${suffix}`;
 }
 
 function shuffleArray(items) {
   const cloned = [...items];
-
   for (let i = cloned.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
     [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
   }
-
   return cloned;
 }
 
@@ -529,13 +484,10 @@ function restoreSessionTimer() {
   ) {
     return;
   }
-
   if (!timerEndsAt.value && remainingSeconds.value > 0) {
     timerEndsAt.value = Date.now() + remainingSeconds.value * 1000;
   }
-
   syncRemainingTime();
-
   if (!isFinished.value) {
     stopTimerInterval();
     timerIntervalId.value = window.setInterval(syncRemainingTime, 1000);
@@ -547,12 +499,10 @@ function syncRemainingTime() {
     remainingSeconds.value = 0;
     return;
   }
-
   remainingSeconds.value = Math.max(
     0,
     Math.ceil((timerEndsAt.value - Date.now()) / 1000),
   );
-
   if (
     remainingSeconds.value === 0 &&
     selectedLevel.value &&
@@ -573,7 +523,6 @@ function stopTimerInterval() {
   if (!timerIntervalId.value) {
     return;
   }
-
   window.clearInterval(timerIntervalId.value);
   timerIntervalId.value = null;
 }
@@ -582,7 +531,6 @@ function formatTimer(seconds) {
   const safeSeconds = Math.max(0, Number(seconds) || 0);
   const minutes = Math.floor(safeSeconds / 60);
   const remaining = safeSeconds % 60;
-
   return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(
     2,
     "0",
@@ -602,7 +550,6 @@ function saveSessionState() {
     timerEndsAt: timerEndsAt.value,
     sessionQuestions: sessionQuestions.value,
   };
-
   localStorage.setItem(practiceSessionStorageKey, JSON.stringify(snapshot));
 }
 
@@ -612,20 +559,16 @@ function savePracticeSettings() {
     isTimedPractice: isPendingTimedPractice.value,
     selectedPracticeMinutes: selectedPracticeMinutes.value,
   };
-
   localStorage.setItem(practiceSettingsStorageKey, JSON.stringify(snapshot));
 }
 
 function restorePracticeSettings() {
   const raw = localStorage.getItem(practiceSettingsStorageKey);
-
   if (!raw) {
     return;
   }
-
   try {
     const snapshot = JSON.parse(raw);
-
     isPendingRandomOrder.value =
       snapshot?.isRandomOrder === undefined
         ? true
@@ -646,11 +589,9 @@ function restorePracticeSettings() {
 
 function restoreSessionState() {
   const raw = localStorage.getItem(practiceSessionStorageKey);
-
   if (!raw) {
     return;
   }
-
   try {
     const snapshot = JSON.parse(raw);
     const level = snapshot?.selectedLevel;
@@ -658,11 +599,9 @@ function restoreSessionState() {
       ? snapshot.sessionQuestions
       : [];
     const index = Number(snapshot?.currentQuestionIndex ?? 0);
-
     if (!level || !questions.length) {
       return;
     }
-
     selectedLevel.value = level;
     sessionQuestions.value = questions;
     isFinished.value = Boolean(snapshot?.isFinished);
@@ -683,11 +622,9 @@ function restoreSessionState() {
       selectedPracticeMinutes.value * 60,
     );
     currentQuestionIndex.value = clamp(index, 0, questions.length - 1);
-
     if (isFinished.value) {
       currentQuestionIndex.value = questions.length - 1;
     }
-
     restoreSessionTimer();
   } catch {
     clearSessionState();
@@ -707,11 +644,7 @@ function loopIndex(index, length) {
 }
 
 watch(
-  [
-    isPendingRandomOrder,
-    isPendingTimedPractice,
-    selectedPracticeMinutes,
-  ],
+  [isPendingRandomOrder, isPendingTimedPractice, selectedPracticeMinutes],
   savePracticeSettings,
   { flush: "sync" },
 );
@@ -794,7 +727,6 @@ TRANSITIONS
   .timer-fade-leave-active {
     transition: none;
   }
-
   .practice-view-enter-from,
   .practice-view-leave-to,
   .timer-fade-enter-from,
@@ -811,13 +743,13 @@ SETTINGS AREA
 .practice-start-settings {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin: 8px 0 0;
+  gap: 14px;
+  margin: 6px 0 10px;
 }
 
 .setting-block {
-  padding: 18px 18px 16px;
-  border-radius: 20px;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
   background: rgba(255, 247, 233, 0.62);
   border: 1px solid rgba(122, 36, 16, 0.14);
   backdrop-filter: blur(2px);
@@ -838,7 +770,7 @@ RADIO OPTIONS
 
 .radio-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 
@@ -847,14 +779,12 @@ RADIO OPTIONS
   width: fit-content;
   border: none;
   background: transparent;
-  padding: 0 0 0 30px;
-
+  padding-left: 20px;
   color: #6d4837;
   font-family: "Abhaya Libre", serif;
   font-size: 22px;
   line-height: 1.2;
   text-align: left;
-
   cursor: pointer;
   transition:
     color 0.18s ease,
@@ -894,13 +824,12 @@ TIME SELECT
 ====================== */
 
 .time-select {
-  padding-top: 4px;
+  padding-top: 8px;
 }
 
 .time-select-title {
   display: block;
   margin-bottom: 12px;
-
   color: #7a4d3a;
   font-family: "Abhaya Libre", serif;
   font-size: 18px;
@@ -917,33 +846,25 @@ TIME WHEEL
   grid-template-columns: repeat(5, 42px);
   gap: 6px;
   justify-content: center;
-
   width: min(100%, 260px);
   margin: 0 auto;
   padding: 6px;
-
   border-radius: 999px;
   border: 1px solid rgba(122, 36, 16, 0.14);
-
   background: rgba(255, 239, 214, 0.72);
-
   touch-action: pan-x;
   outline: none;
 }
 
 .time-wheel::before {
   content: "";
-
   position: absolute;
   left: 50%;
   top: 50%;
-
   width: 42px;
   height: 36px;
-
   border-radius: 999px;
   background: #7a2410;
-
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -951,21 +872,15 @@ TIME WHEEL
 .time-wheel-option {
   position: relative;
   z-index: 1;
-
   width: 42px;
   min-height: 36px;
-
   border: none;
   background: transparent;
-
   color: #7b5a4c;
-
   font-family: "Abhaya Libre", serif;
   font-size: 20px;
   line-height: 1;
-
   cursor: pointer;
-
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
@@ -1001,46 +916,37 @@ MOBILE
   .practice-start-settings {
     gap: 14px;
   }
-
   .setting-block {
     padding: 16px 14px;
     border-radius: 18px;
   }
-
   .setting-question {
     font-size: 19px;
     margin-bottom: 12px;
   }
-
   .radio-option {
     font-size: 21px;
   }
-
   .time-select {
     padding-top: 10px;
   }
-
   .time-select-title {
     font-size: 17px;
   }
-
   .time-wheel {
     grid-template-columns: repeat(5, 38px);
     width: min(100%, 236px);
     padding: 4px;
   }
-
   .time-wheel::before {
     width: 38px;
     height: 32px;
   }
-
   .time-wheel-option {
     width: 38px;
     min-height: 32px;
     font-size: 18px;
   }
-
   .time-wheel-option.selected {
     font-size: 22px;
   }
@@ -1051,60 +957,49 @@ MOBILE
     gap: 10px;
     margin-top: 6px;
   }
-
   .setting-block {
     padding: 12px 14px;
     border-radius: 16px;
   }
-
   .setting-question {
     margin-bottom: 8px;
     font-size: clamp(18px, 3vh, 21px);
     line-height: 1.2;
   }
-
   .radio-group {
     flex-direction: row;
     justify-content: center;
     gap: 6px;
   }
-
   .radio-option {
     font-size: clamp(19px, 3vh, 21px);
-    padding-left: 24px;
+    padding-left: 18px;
   }
-
   .radio-circle {
     width: 14px;
     height: 14px;
   }
-
   .time-select {
     padding-top: 10px;
   }
-
   .time-select-title {
     margin-bottom: 8px;
     font-size: 16px;
   }
-
   .time-wheel {
     grid-template-columns: repeat(5, 36px);
     width: min(100%, 224px);
     padding: 4px;
   }
-
   .time-wheel::before {
     width: 36px;
     height: 30px;
   }
-
   .time-wheel-option {
     width: 36px;
     min-height: 30px;
     font-size: 17px;
   }
-
   .time-wheel-option.selected {
     font-size: 21px;
   }
