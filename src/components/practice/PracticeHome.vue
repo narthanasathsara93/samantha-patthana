@@ -113,7 +113,9 @@
           <!-- Timer -->
           <Transition name="timer-fade">
             <div v-if="isPendingTimedPractice" class="time-select">
-              <span class="time-select-title">අවශ්‍ය කාලය (මිනිත්තු වලින්) තෝරාගන්න.</span>
+              <span class="time-select-title">
+                අවශ්‍ය කාලය (මිනිත්තු වලින්) තෝරාගන්න.
+              </span>
               <div
                 class="time-wheel"
                 role="listbox"
@@ -147,7 +149,7 @@
     <ConfirmDialog
       :show="isEndSessionConfirmOpen"
       title="පුහුණුව නැවත අරඹන්න?"
-      message="වත්මන් පුහුණුවීම් ප්‍රගතිය මැකෙනු ඇත.<br>අපහසුතා මට්ටම වෙනස් කිරීම හෝ නැවත මුල සිට ඇරඹිය හැක."
+      message="වත්මන් පුහුණුවේ ප්‍රගතිය මැකී යනු ඇත.<br>අපහසුතා මට්ටම වෙනස් කිරීම හෝ නැවත මුල සිට ඇරඹිය හැක."
       confirm-label="ඔව්"
       cancel-label="නැත"
       @confirm="confirmEndSession"
