@@ -24,9 +24,9 @@
           aria-label="Start chanting"
         >
           <span class="btn-icon">
-            <img class="star-icon" :src="getIcon('star.png')" alt="✦" />
+            <img class="star-icon" :src="getIcon('reading.png')" alt="reading" />
           </span>
-          <span class="btn-txt">අරඹන්න</span>
+          <span class="btn-txt">සජ්ඣායනය</span>
         </button>
 
         <button
@@ -35,7 +35,7 @@
           aria-label="Practice start — open practice mode"
         >
           <span class="btn-icon">
-            <img class="mind-icon" :src="getIcon('mindset2.png')" alt="✍︎" />
+            <img class="mind-icon" :src="getIcon('mindset2.png')" alt="thinking" />
           </span>
           <span class="btn-txt">පුහුණුව</span>
         </button>

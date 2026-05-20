@@ -43,6 +43,8 @@ defineEmits(["toggle-sidebar"]);
   cursor: pointer;
   background: none;
   border: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* ===== Responsive ===== */

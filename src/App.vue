@@ -791,7 +791,7 @@ resetActiveAudioRange();
 
 body {
   margin: 0;
-  background: #493030;
+  background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
     "Noto Sans Sinhala",
     -apple-system,
@@ -811,6 +811,18 @@ body,
 
 * {
   box-sizing: border-box;
+}
+
+button,
+.btn,
+a,
+div {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+button:active {
+  outline: none;
 }
 
 .page-open-enter-active,

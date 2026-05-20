@@ -56,6 +56,8 @@ defineEmits(["prev", "next"]);
   background: #8d8a8a31;
   cursor: pointer;
   transition: all 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .pagination button:hover {
