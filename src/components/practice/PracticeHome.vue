@@ -46,7 +46,16 @@
       <div class="practice-start-settings">
         <!-- Question 1 -->
         <div class="setting-block">
-          <p class="setting-question">ප්‍රත්‍යයන් අහඹු ලෙස දිස්වන්න අවශ්‍යද?</p>
+          <p class="setting-question">
+            <span class="timer-icon-wrapper">
+              <img
+                class="shuffle-icon"
+                :src="getIcon(`icons/shuffle.png`)"
+                alt=""
+            /></span>
+            <br />
+            ප්‍රත්‍යයන් අහඹු ලෙස දිස්වන්න අවශ්‍යද?
+          </p>
           <div class="radio-group">
             <button
               type="button"
@@ -70,7 +79,17 @@
         </div>
         <!-- Question 2 -->
         <div class="setting-block">
-          <p class="setting-question">ටයිමරය අවශ්‍යද?</p>
+          <p class="setting-question">
+            <span class="timer-icon-wrapper">
+              <img
+                class="timer-icon"
+                :src="getIcon(`icons/timer.png`)"
+                alt=""
+              />
+            </span>
+            <br />
+            ටයිමරය සැකසීමට අවශ්‍යද?
+          </p>
           <div class="radio-group">
             <button
               type="button"
@@ -94,7 +113,7 @@
           <!-- Timer -->
           <Transition name="timer-fade">
             <div v-if="isPendingTimedPractice" class="time-select">
-              <span class="time-select-title">කාලය (මිනිත්තු)</span>
+              <span class="time-select-title">අවශ්‍ය කාලය (මිනිත්තු වලින්) තෝරාගන්න.</span>
               <div
                 class="time-wheel"
                 role="listbox"
@@ -145,6 +164,7 @@ import LevelSelect from "./LevelSelect.vue";
 import QuestionCard from "./QuestionCard.vue";
 import ResultScreen from "./ResultScreen.vue";
 import { versesData } from "@/data/questionData";
+import { getAssetUrl } from "../../utils/assets";
 
 const router = useRouter();
 
@@ -168,7 +188,9 @@ const lastTimeWheelAt = ref(0);
 const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 const practiceSettingsStorageKey = "practice-start-settings-v1";
-const practiceMinuteOptions = [90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 1];
+const practiceMinuteOptions = [
+  90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 1,
+];
 
 const difficultyRanges = {
   easy: [0.2, 0.25],
@@ -216,7 +238,9 @@ const visiblePracticeMinuteOptions = computed(() => {
     };
   });
 });
-
+const getIcon = (icon) => {
+  return getAssetUrl(icon);
+};
 function handleSelectLevel(level) {
   pendingLevel.value = level;
   isPracticeOrderConfirmOpen.value = true;
@@ -318,15 +342,6 @@ function goNext() {
   const isLastQuestion =
     currentQuestionIndex.value === sessionQuestions.value.length - 1;
   if (isLastQuestion) {
-    if (timerEndsAt.value) {
-      sessionQuestions.value = buildSessionQuestions(
-        selectedLevel.value,
-        isSessionRandomOrder.value,
-      );
-      currentQuestionIndex.value = 0;
-      isCurrentAnswerRevealed.value = false;
-      return;
-    }
     stopSessionTimer();
     isFinished.value = true;
     return;
@@ -853,6 +868,13 @@ TIME SELECT
   text-align: center;
 }
 
+.timer-icon,
+.shuffle-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
 /* ======================
 TIME WHEEL
 ====================== */

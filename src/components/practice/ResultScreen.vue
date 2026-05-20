@@ -49,13 +49,13 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 
 .title {
   margin: 0;
-  color: #4d3124;
+  color: #7a2410;
   font-size: clamp(28px, 3.5vw, 40px);
 }
 
 .subtitle {
   margin: 10px 0 24px;
-  color: #5e3a2b;
+  color: #7a2410;
   font-size: clamp(18px, 2vw, 24px);
 }
 
@@ -83,14 +83,14 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 
 .primary-btn {
   border: none;
-  background: #4C1711;
+  background: #7a2410;
   color: #ffe8c4;
 }
 
 .secondary-btn {
-  border: 1px solid #4C1711;
+  border: 1px solid #7a2410;
   background: transparent;
-  color: #4C1711;
+  color: #7a2410;
 }
 
 .primary-btn:hover,

@@ -69,7 +69,7 @@
         </span>
 
         <span class="btn-symbol">
-          {{ showFinishButton ? "⏻" : "⬩➤" }}
+          {{ showFinishButton ? "✿" : "⬩➤" }}
         </span>
       </button>
     </div>
@@ -118,9 +118,7 @@ const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
-const showFinishButton = computed(
-  () => isLastQuestion.value && !props.timerLabel,
-);
+const showFinishButton = computed(() => isLastQuestion.value);
 const questionContentKey = computed(
   () => `${props.selectedLevel}-${props.currentIndex}`,
 );
