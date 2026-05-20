@@ -14,30 +14,32 @@
       />
 
       <p class="hero-description">
-        සමාධිමත් සිතින් ශ්‍රද්ධා පූර්වකව වන්දනා කරමු.
+        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව වන්දනා කරමු.
       </p>
 
-      <button
-        class="begin-btn"
-        v-on:click="startChanting()"
-        aria-label="Start chanting"
-      >
-        <span class="btn-icon">
-          <img class="star-icon" :src="getIcon('star.png')" alt="✦" />
-        </span>
-        <span class="btn-txt">අරඹන්න</span>
-      </button>
+      <div class="hero-actions">
+        <button
+          class="begin-btn"
+          v-on:click="startChanting()"
+          aria-label="Start chanting"
+        >
+          <span class="btn-icon">
+            <img class="star-icon" :src="getIcon('star.png')" alt="✦" />
+          </span>
+          <span class="btn-txt">අරඹන්න</span>
+        </button>
 
-      <button
-        class="practice-btn"
-        v-on:click="openPracticeMode()"
-        aria-label="Practice start — open practice mode"
-      >
-        <span class="btn-icon">
-          <img class="mind-icon" :src="getIcon('mindset2.png')" alt="✍︎" />
-        </span>
-        <span class="btn-txt">පුහුණුව</span>
-      </button>
+        <button
+          class="practice-btn"
+          v-on:click="openPracticeMode()"
+          aria-label="Practice start — open practice mode"
+        >
+          <span class="btn-icon">
+            <img class="mind-icon" :src="getIcon('mindset2.png')" alt="✍︎" />
+          </span>
+          <span class="btn-txt">පුහුණුව</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -129,44 +131,49 @@ const getIcon = (img) => {
   font-family: "Abhaya Libre", serif !important;
 }
 
-.begin-btn {
-  margin-right: 1%;
-}
-
-.practice-btn {
-  margin-left: 1%;
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .begin-btn,
 .practice-btn {
   border: none;
   outline: none;
-  margin-bottom: 2%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 1vw, 12px);
-  /* stable proportional sizing */
-  padding: clamp(10px, 1.1vw, 14px) clamp(26px, 4vw, 38px);
+
+  width: clamp(180px, 24vw, 240px);
+  min-width: 180px;
+
+  padding: clamp(11px, 1.2vw, 15px) 20px;
+
   border-radius: 999px;
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #ffeaca;
-  /* fluid typography */
-  font-size: 25px;
+
+  font-size: clamp(20px, 2vw, 25px);
   font-weight: 600;
   line-height: 1;
+
   font-family: "Abhaya Libre", serif !important;
   cursor: pointer;
+
   box-shadow:
     0 10px 30px rgba(111, 31, 14, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
     opacity 0.22s ease;
+
   white-space: nowrap;
-  /* equal width for both buttons */
-  width: clamp(160px, 18vw, 220px);
 }
 
 .begin-btn:hover,
@@ -259,6 +266,17 @@ const getIcon = (img) => {
     background-image: url("../assets/images/bg-1600.webp");
   }
 
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .begin-btn,
+  .practice-btn {
+    width: min(100%, 240px);
+    font-size: 20px;
+  }
+
   .hero-subtitle {
     font-weight: 600;
     font-size: 24px;
@@ -275,11 +293,6 @@ const getIcon = (img) => {
     font-weight: 600;
     font-size: 18px;
     margin-bottom: 34px;
-  }
-
-  .begin-btn,
-  .practice-btn {
-    font-size: 20px;
   }
 }
 

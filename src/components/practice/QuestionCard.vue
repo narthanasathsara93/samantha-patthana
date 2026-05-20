@@ -69,7 +69,7 @@
         </span>
 
         <span class="btn-symbol">
-          {{ showFinishButton ? "⏻" : "❯❯" }}
+          {{ showFinishButton ? "✿" : "⬩➤" }}
         </span>
       </button>
     </div>
@@ -118,9 +118,7 @@ const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
-const showFinishButton = computed(
-  () => isLastQuestion.value && !props.timerLabel,
-);
+const showFinishButton = computed(() => isLastQuestion.value);
 const questionContentKey = computed(
   () => `${props.selectedLevel}-${props.currentIndex}`,
 );
@@ -205,7 +203,7 @@ button {
   border-radius: 999px;
   background: #dfc1a763;
   color: #390701;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 700;
   line-height: 1;
 }
@@ -263,7 +261,7 @@ button {
 .question-title {
   margin: 0;
   color: #3b0906;
-  font-size: clamp(19px, 2.2vw, 26px);
+  font-size: clamp(17px, 2.2vw, 19px);
 }
 
 .verse-box {
@@ -378,6 +376,7 @@ button {
   justify-content: center;
   line-height: 1;
   font-size: 0.9em;
+  margin-bottom: -5px;
 }
 
 .action-btn {

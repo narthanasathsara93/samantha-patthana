@@ -791,7 +791,7 @@ resetActiveAudioRange();
 
 body {
   margin: 0;
-  background: linear-gradient(#4b1e1e, #7a1f1f);
+  background: #493030;
   font-family:
     "Noto Sans Sinhala",
     -apple-system,
