@@ -813,6 +813,18 @@ body,
   box-sizing: border-box;
 }
 
+button,
+.btn,
+a,
+div {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+button:active {
+  outline: none;
+}
+
 .page-open-enter-active,
 .page-open-leave-active {
   transition:

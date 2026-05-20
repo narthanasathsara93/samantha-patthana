@@ -2,12 +2,12 @@
   <section class="practice-card">
     <h1 class="title">මතක පරීක්ෂා පුහුණුව</h1>
     <p class="subtitle">
+      මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
+      ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
+      පුහුණුව අතරතුර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
+      <img class="sample-icon" :src="getIcon('show.png')" alt="👁" /> මගින්
+      පිළිතුර විමසිය හැක. <br /> <br />
       පුහුණුව ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />
-      මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් මතකයෙන් මෙනෙහි කිරීමට උත්සහ කිරීම
-      මගින් ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br />
-      (ප්‍රත්‍යන් සහ සැඟවුණු වචන අහඹු ලෙස දිස් වනු ඇත.)<br /><br />
-      පුහුණුව අතරතුර "↺" මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
-      "👁" මගින් පිළිතුර දැකිය හැක.
     </p>
 
     <div class="level-buttons">
@@ -49,9 +49,14 @@ const getIcon = (img) => {
 </script>
 
 <style scoped>
+.sample-icon {
+  width: 16px;
+  height: 16px;
+}
 .practice-card {
   font-family: "Abhaya Libre", serif !important;
   width: min(760px, 92vw);
+  box-sizing: border-box;
   border-radius: 18px;
   padding: 32px 28px;
   background: linear-gradient(148deg, #fdf1da 0%, #f8e7c7 100%);
@@ -76,17 +81,16 @@ const getIcon = (img) => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
+  min-width: 0;
 }
 
 .easy,
 .medium,
 .hard {
   border-radius: 25px;
-  background: linear-gradient(180deg, #7a3310 0%, rgb(107, 31, 14) 100%);
+  background: linear-gradient(180deg, #7a2410 0%, #5a1101 100%);
   color: #ffe8c4;
-  font-size: clamp(20px, 2.2vw, 29px);
   cursor: pointer;
-
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -95,16 +99,20 @@ const getIcon = (img) => {
 
 .level-btn {
   font-family: "Abhaya Libre", serif !important;
+  width: 100%;
+  min-width: 0;
   border: none;
   border-radius: 12px;
   min-height: 62px;
-
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-
+  font-size: 25px;
   font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -167,6 +175,34 @@ const getIcon = (img) => {
 @media (max-width: 720px) {
   .level-buttons {
     grid-template-columns: 1fr;
+  }
+
+  .level-btn {
+    min-height: 54px;
+    padding: 8px 10px;
+    font-size: 20px;
+  }
+
+  .level-btn-icon {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+@media (max-width: 420px) {
+  .practice-card {
+    width: min(100%, 92vw);
+    padding: 24px 18px;
+  }
+
+  .level-buttons {
+    gap: 10px;
+  }
+
+  .level-btn {
+    min-height: 50px;
+    gap: 8px;
+    font-size: 20px;
   }
 }
 

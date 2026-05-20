@@ -1,7 +1,10 @@
 <template>
   <section class="practice-card">
     <div class="header">
-      <span class="chip">{{ levelLabel }} මට්ටම</span>
+      <span class="chip">
+        <img class="level-chip-icon" :src="getLabelIcon()" alt="chip icon" />
+        <span class="chip-text">{{ levelLabel }} මට්ටම</span>
+      </span>
       <div class="session-meta">
         <button
           class="end-session-btn"
@@ -28,9 +31,21 @@
       </div>
     </div>
 
-    <Transition name="question-fade" mode="out-in">
-      <h2 :key="questionContentKey" class="question-title">{{ title }}</h2>
-    </Transition>
+    <div class="question-header">
+      <Transition name="question-fade" mode="out-in">
+        <h2 :key="questionContentKey" class="question-title">
+          {{ title }}
+        </h2>
+      </Transition>
+
+      <span
+        v-if="timerLabel"
+        class="timer-chip"
+        :class="{ warning: isTimerWarning }"
+      >
+        {{ timerLabel }}
+      </span>
+    </div>
 
     <div class="verse-box">
       <Transition name="question-fade" mode="out-in">
@@ -50,11 +65,11 @@
         @click="$emit('go-next')"
       >
         <span>
-          {{ isLastQuestion ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
+          {{ showFinishButton ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
         </span>
 
         <span class="btn-symbol">
-          {{ isLastQuestion ? "⏻" : "❯❯" }}
+          {{ showFinishButton ? "✿" : "⬩➤" }}
         </span>
       </button>
     </div>
@@ -87,6 +102,14 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  timerLabel: {
+    type: String,
+    default: "",
+  },
+  totalPracticeSeconds: {
+    type: Number,
+    default: 0,
+  },
 });
 
 defineEmits(["end-session", "toggle-answer", "go-next"]);
@@ -95,10 +118,33 @@ const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
   () => props.currentIndex === props.totalQuestions - 1,
 );
+const showFinishButton = computed(() => isLastQuestion.value);
 const questionContentKey = computed(
   () => `${props.selectedLevel}-${props.currentIndex}`,
 );
+const isTimerWarning = computed(() => {
+  if (!props.timerLabel || !props.totalPracticeSeconds) {
+    return false;
+  }
+
+  const [minutes, seconds] = props.timerLabel.split(":").map(Number);
+  const remaining = minutes * 60 + seconds;
+  return remaining <= props.totalPracticeSeconds * 0.2;
+});
 const getIcon = (img) => getAssetUrl(`icons/${img}`);
+
+const getLabelIcon = () => {
+  switch (props.selectedLevel) {
+    case "ආධුනික":
+      return getIcon("level1_1.png");
+    case "මධ්‍යස්ථ":
+      return getIcon("level2_1.png");
+    case "ප්‍රවීණ":
+      return getIcon("level3_1.png");
+    default:
+      return "";
+  }
+};
 
 const getTitleReveal = () =>
   props.isAnswerRevealed ? "පිළිතුර බලන්න" : "පිළිතුර වසන්න";
@@ -149,24 +195,73 @@ button {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: #dfc1a763;
   color: #390701;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 700;
+  line-height: 1;
+}
+
+.level-chip-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  object-fit: contain;
+}
+
+.chip-text {
+  display: flex;
+  align-items: center;
+  transform: translateY(0.5px);
+}
+.timer-chip {
+  flex-shrink: 0;
+  min-width: 74px;
   padding: 6px 12px;
+  border-radius: 999px;
+  background: #7a2410;
+  color: #ffeaca;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3px;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.timer-chip.warning {
+  background: #fff1ef;
+  color: #c62828;
+  box-shadow: 0 0 0 1px rgba(198, 40, 40, 0.16);
 }
 
 .question {
   margin: 0 0 20px;
   color: #4d3124;
-  font-size: clamp(23px, 2.8vw, 32px);
+  font-size: 16px;
+}
+.question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .question-title {
-  margin: 0 0 12px;
+  margin: 0;
   color: #3b0906;
-  font-size: clamp(19px, 2.2vw, 26px);
+  font-size: clamp(17px, 2.2vw, 19px);
 }
 
 .verse-box {
@@ -193,7 +288,7 @@ button {
   white-space: normal;
   color: #0e0a0a;
   line-height: 160%;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   scrollbar-width: thin;
   scrollbar-color: rgb(193 172 137) rgba(253, 241, 218, 0.9);
@@ -279,35 +374,27 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-
   line-height: 1;
-
   font-size: 0.9em;
+  margin-bottom: -5px;
 }
 
 .action-btn {
   width: auto;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   border: 1px solid #d8b48f;
   border-radius: 10px;
-
   padding: 12px 18px;
-
-  background-color: #7a3310;
+  background-color: #7a2410;
   color: #ffe8c4;
-
   font-size: 22px;
   font-weight: 600;
   line-height: 1.1;
   text-align: center;
-
   cursor: pointer;
-
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -343,12 +430,32 @@ button {
   }
 
   .verse-text {
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 8px;
   }
 
   .actions {
     grid-template-columns: 1fr;
+  }
+
+  .end-session-btn {
+    width: 27px;
+    height: 27px;
+  }
+
+  .end-session-icon {
+    width: 18px;
+    height: 16px;
+  }
+
+  .question-header {
+    align-items: flex-start;
+  }
+
+  .timer-chip {
+    min-width: 66px;
+    font-size: 16px;
+    padding: 5px 10px;
   }
 }
 
