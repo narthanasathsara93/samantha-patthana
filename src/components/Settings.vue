@@ -13,12 +13,8 @@
           එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් පිවිසිය හැක.
         </p>
 
-        <p v-if="isInstalled" class="status-message installed">
-          මෙම යෙදුම දැනටමත් ඔබේ දුරකථනයට ඉන්ස්ටෝල් කර ඇත.
-        </p>
-
         <button
-          v-else-if="canPromptInstall"
+          v-if="canPromptInstall"
           class="install-btn"
           type="button"
           :disabled="isInstalling"
@@ -44,7 +40,8 @@
 
         <p v-else-if="showInstallUnavailable" class="status-message">
           මෙම බ්‍රවුසරයේ ස්ථාපනය තවම ලබා ගත නොහැක. Chrome හෝ Edge භාවිතා කර නැවත
-          උත්සාහ කරන්න. නැතහොත් බ්‍රවුසර සෙටින්ග්ස් මෙනුවෙන් “Install app” තෝරන්න.
+          උත්සාහ කරන්න. නැතහොත් බ්‍රවුසර සෙටින්ග්ස් මෙනුවෙන් “Install app”
+          තෝරන්න.
         </p>
       </div>
 
@@ -64,7 +61,6 @@ const router = useRouter();
 const isInstalling = ref(false);
 
 const {
-  isInstalled,
   canPromptInstall,
   showIOSInstructions,
   showInstallUnavailable,
