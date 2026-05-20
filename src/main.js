@@ -1,6 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { initPwaInstallPrompt } from './composables/usePwaInstall'
+
+initPwaInstallPrompt()
 
 const app = createApp(App)
 

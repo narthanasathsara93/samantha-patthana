@@ -3,6 +3,7 @@
   <Transition name="page-open" mode="out-in">
     <Home v-if="isHomeRoute" key="home" />
     <PracticeHome v-else-if="isPracticeRoute" key="practice" />
+    <Settings v-else-if="isSettingsRoute" key="settings" />
     <div v-else key="reader" class="app-container">
       <div class="app">
         <!-- Sidebar -->
@@ -235,6 +236,7 @@ const Home = defineAsyncComponent(() => import("./components/Home.vue"));
 const PracticeHome = defineAsyncComponent(
   () => import("./components/practice/PracticeHome.vue"),
 );
+const Settings = defineAsyncComponent(() => import("./components/Settings.vue"));
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -360,6 +362,7 @@ const pullToReload = {
 const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
 const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 const isPracticeRoute = computed(() => route.name === "PracticeMode");
+const isSettingsRoute = computed(() => route.name === "Settings");
 // Load bookmarks on app start
 loadBookmarks();
 
