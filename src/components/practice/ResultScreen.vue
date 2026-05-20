@@ -83,14 +83,14 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 
 .primary-btn {
   border: none;
-  background: #7a3310;
+  background: #4C1711;
   color: #ffe8c4;
 }
 
 .secondary-btn {
-  border: 1px solid #7a3310;
+  border: 1px solid #4C1711;
   background: transparent;
-  color: #7a3310;
+  color: #4C1711;
 }
 
 .primary-btn:hover,
