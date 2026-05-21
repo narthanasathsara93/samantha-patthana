@@ -11,7 +11,10 @@ function detectInstalled() {
 }
 
 function detectIOS() {
-  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 }
 
 export function initPwaInstallPrompt() {
@@ -32,11 +35,13 @@ export function initPwaInstallPrompt() {
 
 export function usePwaInstall() {
   const isIOS = computed(() => detectIOS());
+
+  console.log(`isIOS :`, isIOS);
   const canPromptInstall = computed(
     () => Boolean(deferredPrompt.value) && !isInstalled.value,
   );
   const showIOSInstructions = computed(
-    () => isIOS.value && !isInstalled.value && !deferredPrompt.value,
+    () => detectIOS(),
   );
   const showInstallUnavailable = computed(
     () => !isInstalled.value && !canPromptInstall.value && !isIOS.value,
