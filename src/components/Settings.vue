@@ -15,7 +15,7 @@
         </p>
 
         <button
-          v-if="!showIOSInstructions && canPromptInstall"
+          v-if="!showIOSInstructions"
           class="install-btn"
           type="button"
           :disabled="isInstalling"
@@ -30,13 +30,9 @@
           </p>
 
           <ol>
-            <li>
-              පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.
-            </li>
+            <li>පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.</li>
 
-            <li>
-              <strong>(Add to Home Screen)</strong> තෝරන්න.
-            </li>
+            <li><strong>(Add to Home Screen)</strong> තෝරන්න.</li>
 
             <li>එක් කිරීම තහවුරු කරන්න.</li>
           </ol>
@@ -59,11 +55,8 @@ const router = useRouter();
 
 const isInstalling = ref(false);
 
-const {
-  canPromptInstall,
-  showIOSInstructions,
-  promptInstall,
-} = usePwaInstall();
+const { canPromptInstall, showIOSInstructions, promptInstall } =
+  usePwaInstall();
 
 async function handleInstall() {
   if (isInstalling.value) {
@@ -83,15 +76,11 @@ async function handleInstall() {
   }
 
   if (showIOSInstructions.value) {
-    alert(
-      "Safari බ්‍රවුසරයේ Share → Add to Home Screen තෝරන්න.",
-    );
+    alert("Safari බ්‍රවුසරයේ Share → Add to Home Screen තෝරන්න.");
     return;
   }
 
-  alert(
-    "බ්‍රවුසර මෙනුවෙන් “Install app” හෝ “Add to Home Screen” තෝරන්න.",
-  );
+  alert("බ්‍රවුසර මෙනුවෙන් “Install app” හෝ “Add to Home Screen” තෝරන්න.");
 }
 
 function goHome() {
