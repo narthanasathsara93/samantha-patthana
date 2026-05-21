@@ -20,10 +20,23 @@
           class="verse-audio-section"
           :class="{ active: index === activeAudioSectionIndex }"
           type="button"
+          disabled
+          aria-disabled="true"
+          v-html="section.content"
+        ></button>
+        <!-- TEMP audio release: verse-section click playback disabled.
+        <button
+          v-for="(section, index) in audioSections"
+          :key="`${section.startAt}-${section.endAt}-${index}`"
+          ref="sectionRefs"
+          class="verse-audio-section"
+          :class="{ active: index === activeAudioSectionIndex }"
+          type="button"
           @click="$emit('play-section', section, index)"
           :aria-label="`Play audio section ${index + 1}`"
           v-html="section.content"
         ></button>
+        -->
       </div>
     </div>
   </div>

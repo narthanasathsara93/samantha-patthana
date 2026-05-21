@@ -42,11 +42,13 @@
             </div>
 
             <div class="controls-row">
+              <!-- TEMP audio release: autoplay control hidden.
               <AutoplayButton
                 v-if="!isRoutePunyanumodana && !isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
                 @toggle-autoplay="toggleAutoplay"
               />
+              -->
               <button
                 v-if="!isRoutePunyanumodana"
                 class="sinhala-toggle-btn"
@@ -125,20 +127,22 @@
               />
             </div>
 
-            <AudioPlayer
-              v-if="
-                !isShowingResourcesPanel &&
-                !isSinhalaTextView &&
-                route.name !== 'punyanumodana'
-              "
-              ref="audioPlayerRef"
-              :audio-src="selectedVerseAudio"
-              :hls-src="selectedVerseHlsAudio"
-              :start-at="activeAudioStartAt"
-              :end-at="activeAudioEndAt"
-              @audio-ended="handleAudioEnded"
-              @audio-timeupdate="handleAudioTimeUpdate"
-            />
+            <!-- TEMP audio release: player hidden.
+              <AudioPlayer
+                v-if="
+                  !isShowingResourcesPanel &&
+                  !isSinhalaTextView &&
+                  route.name !== 'punyanumodana'
+                "
+                ref="audioPlayerRef"
+                :audio-src="selectedVerseAudio"
+                :hls-src="selectedVerseHlsAudio"
+                :start-at="activeAudioStartAt"
+                :end-at="activeAudioEndAt"
+                @audio-ended="handleAudioEnded"
+                @audio-timeupdate="handleAudioTimeUpdate"
+              />
+            -->
           </div>
 
           <div
@@ -178,28 +182,30 @@
             @next="handleNext"
           />
 
-          <button
-            v-if="!isShowingResourcesPanel && !isSinhalaTextView"
-            class="lower-controls-toggle"
-            type="button"
-            :class="
-              areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
-            "
-            :aria-label="
-              areMobileLowerControlsVisible
-                ? 'Hide audio controls'
-                : 'Show audio controls'
-            "
-            :aria-pressed="areMobileLowerControlsVisible"
-            :title="
-              areMobileLowerControlsVisible
-                ? 'Hide audio controls'
-                : 'Show audio controls'
-            "
-            @click="toggleMobileLowerControls"
-          >
-            <img class="arrow-up-down-icon" :src="getArrowIcon()" />
-          </button>
+          <!-- TEMP audio release: mobile audio controls toggle hidden.
+            <button
+              v-if="!isShowingResourcesPanel && !isSinhalaTextView"
+              class="lower-controls-toggle"
+              type="button"
+              :class="
+                areMobileLowerControlsVisible ? 'active toggle-down' : 'toggle-up'
+              "
+              :aria-label="
+                areMobileLowerControlsVisible
+                  ? 'Hide audio controls'
+                  : 'Show audio controls'
+              "
+              :aria-pressed="areMobileLowerControlsVisible"
+              :title="
+                areMobileLowerControlsVisible
+                  ? 'Hide audio controls'
+                  : 'Show audio controls'
+              "
+              @click="toggleMobileLowerControls"
+            >
+              <img class="arrow-up-down-icon" :src="getArrowIcon()" />
+            </button>
+          -->
         </main>
       </div>
     </div>
@@ -221,14 +227,16 @@ import { useRoute, useRouter } from "vue-router";
 // Components
 import Sidebar from "./components/Sidebar.vue";
 import MobileHeader from "./components/MobileHeader.vue";
-import AutoplayButton from "./components/AutoplayButton.vue";
+// TEMP audio release: autoplay control hidden.
+// import AutoplayButton from "./components/AutoplayButton.vue";
 import BookmarkButton from "./components/BookmarkButton.vue";
 import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import Pagination from "./components/Pagination.vue";
-const AudioPlayer = defineAsyncComponent(
-  () => import("./components/AudioPlayer.vue"),
-);
+// TEMP audio release: player hidden.
+// const AudioPlayer = defineAsyncComponent(
+//   () => import("./components/AudioPlayer.vue"),
+// );
 const ResourcesPanel = defineAsyncComponent(
   () => import("./components/ResourcesPanel.vue"),
 );
@@ -297,22 +305,23 @@ const contentTitle = computed(() => {
     ? "මූලාශ්‍ර සහ සම්පත්"
     : selectedVerseTitle.value;
 });
-const fullAudioSrc = "";
-const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
-const selectedVerseAudio = computed(() => {
-  const hasAudioSection =
-    selectedVerse.value?.audioStartAt !== undefined &&
-    selectedVerse.value?.audioEndAt !== undefined;
-
-  return hasAudioSection ? fullAudioSrc : selectedVerse.value?.audio;
-});
-const selectedVerseHlsAudio = computed(() => {
-  const hasAudioSection =
-    selectedVerse.value?.audioStartAt !== undefined &&
-    selectedVerse.value?.audioEndAt !== undefined;
-
-  return hasAudioSection ? fullAudioHlsSrc : "";
-});
+// TEMP audio release: player source values hidden with the player.
+// const fullAudioSrc = "";
+// const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
+// const selectedVerseAudio = computed(() => {
+//   const hasAudioSection =
+//     selectedVerse.value?.audioStartAt !== undefined &&
+//     selectedVerse.value?.audioEndAt !== undefined;
+//
+//   return hasAudioSection ? fullAudioSrc : selectedVerse.value?.audio;
+// });
+// const selectedVerseHlsAudio = computed(() => {
+//   const hasAudioSection =
+//     selectedVerse.value?.audioStartAt !== undefined &&
+//     selectedVerse.value?.audioEndAt !== undefined;
+//
+//   return hasAudioSection ? fullAudioHlsSrc : "";
+// });
 const activeAudioStartAt = ref(null);
 const activeAudioEndAt = ref(null);
 const selectedVerseAudioSections = computed(() => {
@@ -345,7 +354,8 @@ const handleCloseResourcesPanel = () => {
 const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,
-  onAudioEnded,
+  // TEMP audio release: audio-ended handler hidden with the player.
+  // onAudioEnded,
 } = useAutoplay(playCurrent);
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
@@ -560,85 +570,86 @@ function handleNext() {
   }
 }
 
-function parseAudioTimestamp(value) {
-  if (value === null || value === undefined || value === "") {
-    return null;
-  }
-
-  if (typeof value === "number") {
-    return Number.isFinite(value) ? value : null;
-  }
-
-  const parts = String(value)
-    .trim()
-    .split(":")
-    .map((part) => Number(part));
-
-  if (parts.some((part) => !Number.isFinite(part))) {
-    return null;
-  }
-
-  return parts.reduce((total, part) => total * 60 + part, 0);
-}
-
-function getAudioSectionIndex(currentTime) {
-  return selectedVerseAudioSections.value.findIndex((section) => {
-    const startAt = parseAudioTimestamp(section.startAt);
-    const endAt = parseAudioTimestamp(section.endAt);
-
-    if (startAt === null || endAt === null) {
-      return false;
-    }
-
-    return currentTime >= startAt && currentTime < endAt;
-  });
-}
-
-function handleAudioTimeUpdate(currentTime) {
-  // Only update active section when audio is actually playing
-  if (
-    selectedVerseAudioSections.value.length === 0 ||
-    !audioRef.value ||
-    audioRef.value.paused
-  ) {
-    return;
-  }
-
-  const sectionIndex = getAudioSectionIndex(currentTime);
-
-  if (sectionIndex === -1 || sectionIndex === activeAudioSectionIndex.value) {
-    return;
-  }
-
-  activeAudioSectionIndex.value = sectionIndex;
-
-  // Only auto-scroll if autoplay is enabled
-  if (isAutoPlaying.value) {
-    nextTick(() => {
-      verseContentRef.value?.scrollToAudioSection(sectionIndex);
-    });
-  }
-}
-
-function handleAutoplayNext() {
-  if (currentIndex.value < flattenedVerses.value.length - 1) {
-    const nextVerse = flattenedVerses.value[currentIndex.value + 1];
-    if (nextVerse) {
-      router.push({
-        name: nextVerse.englishName,
-      });
-    }
-  }
-}
-
-function handleAudioEnded() {
-  onAudioEnded(
-    handleAutoplayNext,
-    flattenedVerses.value.length,
-    currentIndex,
-    audioRef,
-  );
-}
+// TEMP audio release: player time tracking and autoplay-next handlers hidden.
+// function parseAudioTimestamp(value) {
+//   if (value === null || value === undefined || value === "") {
+//     return null;
+//   }
+//
+//   if (typeof value === "number") {
+//     return Number.isFinite(value) ? value : null;
+//   }
+//
+//   const parts = String(value)
+//     .trim()
+//     .split(":")
+//     .map((part) => Number(part));
+//
+//   if (parts.some((part) => !Number.isFinite(part))) {
+//     return null;
+//   }
+//
+//   return parts.reduce((total, part) => total * 60 + part, 0);
+// }
+//
+// function getAudioSectionIndex(currentTime) {
+//   return selectedVerseAudioSections.value.findIndex((section) => {
+//     const startAt = parseAudioTimestamp(section.startAt);
+//     const endAt = parseAudioTimestamp(section.endAt);
+//
+//     if (startAt === null || endAt === null) {
+//       return false;
+//     }
+//
+//     return currentTime >= startAt && currentTime < endAt;
+//   });
+// }
+//
+// function handleAudioTimeUpdate(currentTime) {
+//   // Only update active section when audio is actually playing
+//   if (
+//     selectedVerseAudioSections.value.length === 0 ||
+//     !audioRef.value ||
+//     audioRef.value.paused
+//   ) {
+//     return;
+//   }
+//
+//   const sectionIndex = getAudioSectionIndex(currentTime);
+//
+//   if (sectionIndex === -1 || sectionIndex === activeAudioSectionIndex.value) {
+//     return;
+//   }
+//
+//   activeAudioSectionIndex.value = sectionIndex;
+//
+//   // Only auto-scroll if autoplay is enabled
+//   if (isAutoPlaying.value) {
+//     nextTick(() => {
+//       verseContentRef.value?.scrollToAudioSection(sectionIndex);
+//     });
+//   }
+// }
+//
+// function handleAutoplayNext() {
+//   if (currentIndex.value < flattenedVerses.value.length - 1) {
+//     const nextVerse = flattenedVerses.value[currentIndex.value + 1];
+//     if (nextVerse) {
+//       router.push({
+//         name: nextVerse.englishName,
+//       });
+//     }
+//   }
+// }
+//
+// function handleAudioEnded() {
+//   onAudioEnded(
+//     handleAutoplayNext,
+//     flattenedVerses.value.length,
+//     currentIndex,
+//     audioRef,
+//   );
+// }
 
 function handleToggleBookmark() {
   toggleBookmark(selectedVerse.value.id);
@@ -648,14 +659,15 @@ function toggleFontSettings() {
   isFontSettingsOpen.value = !isFontSettingsOpen.value;
 }
 
-function toggleMobileLowerControls() {
-  areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
-  isPlayerManuallyToggled.value = true;
-  if (playerAutoHideTimer) {
-    clearTimeout(playerAutoHideTimer);
-    playerAutoHideTimer = null;
-  }
-}
+// TEMP audio release: mobile lower-controls toggle hidden.
+// function toggleMobileLowerControls() {
+//   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
+//   isPlayerManuallyToggled.value = true;
+//   if (playerAutoHideTimer) {
+//     clearTimeout(playerAutoHideTimer);
+//     playerAutoHideTimer = null;
+//   }
+// }
 
 function clearAutoplayControlsHideTimer() {
   if (autoplayControlsHideTimer) {
@@ -691,25 +703,26 @@ function handleDocumentClick(event) {
   }
 }
 
-function toggleAutoplay() {
-  toggleAutoplayLogic(audioRef);
-
-  clearAutoplayControlsHideTimer();
-
-  if (isAutoPlaying.value && isMobileView()) {
-    // If player is hidden, show it first
-    if (!areMobileLowerControlsVisible.value) {
-      areMobileLowerControlsVisible.value = true;
-    }
-
-    // Auto-hide after 5 seconds
-    autoplayControlsHideTimer = setTimeout(() => {
-      if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
-        areMobileLowerControlsVisible.value = false;
-      }
-    }, 5000);
-  }
-}
+// TEMP audio release: autoplay button hidden.
+// function toggleAutoplay() {
+//   toggleAutoplayLogic(audioRef);
+//
+//   clearAutoplayControlsHideTimer();
+//
+//   if (isAutoPlaying.value && isMobileView()) {
+//     // If player is hidden, show it first
+//     if (!areMobileLowerControlsVisible.value) {
+//       areMobileLowerControlsVisible.value = true;
+//     }
+//
+//     // Auto-hide after 5 seconds
+//     autoplayControlsHideTimer = setTimeout(() => {
+//       if (isAutoPlaying.value && areMobileLowerControlsVisible.value) {
+//         areMobileLowerControlsVisible.value = false;
+//       }
+//     }, 5000);
+//   }
+// }
 
 const getFontSizeIcon = () => {
   return getAssetUrl("icons/font_resize.png");
@@ -721,11 +734,12 @@ const getSinhalaToggleIcon = () => {
     : getAssetUrl("icons/sinhala.png");
 };
 
-const getArrowIcon = () => {
-  return areMobileLowerControlsVisible.value
-    ? getAssetUrl("icons/arrow_down.png")
-    : getAssetUrl("icons/arrow_up.png");
-};
+// TEMP audio release: mobile lower-controls toggle hidden.
+// const getArrowIcon = () => {
+//   return areMobileLowerControlsVisible.value
+//     ? getAssetUrl("icons/arrow_down.png")
+//     : getAssetUrl("icons/arrow_up.png");
+// };
 
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
