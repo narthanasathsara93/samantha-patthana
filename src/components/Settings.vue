@@ -31,12 +31,11 @@
 
           <ol>
             <li>
-              පහළ තිරයේ <strong>බෙදාගන්න</strong> (Share) බොත්තම තට්ටු කරන්න.
+              පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.
             </li>
 
             <li>
-              <strong>මුල් තිරයට එක් කරන්න</strong>
-              (Add to Home Screen) තෝරන්න.
+              <strong>(Add to Home Screen)</strong> තෝරන්න.
             </li>
 
             <li>එක් කිරීම තහවුරු කරන්න.</li>
