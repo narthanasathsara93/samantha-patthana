@@ -5,6 +5,7 @@
 
       <div class="settings-block">
         <h2 class="block-title">දුරකථනයට ස්ථාපනය</h2>
+
         <p class="block-description">
           PWA (Progressive Web App) ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ සාමාන්‍ය
           වෙනත් ඇප් එකක් මෙන් ස්ථාපනය කර භාවිතා කළ හැක.
@@ -14,7 +15,7 @@
         </p>
 
         <button
-          v-if="canPromptInstall"
+          v-if="!showIOSInstructions && canPromptInstall"
           class="install-btn"
           type="button"
           :disabled="isInstalling"
@@ -23,26 +24,23 @@
           {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "යෙදුම ඉන්ස්ටෝල් කරන්න" }}
         </button>
 
-        <div v-else-if="showIOSInstructions" class="ios-instructions">
+        <div v-if="showIOSInstructions" class="ios-instructions">
           <p class="status-message">
             iPhone / iPad හි Safari මගින් ස්ථාපනය කිරීමට:
           </p>
+
           <ol>
             <li>
-              පහළ තිරයේ <strong>බෙදාගන්න</strong> (Share) බොත්තම තට්ටු කරන්න.
+              පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.
             </li>
+
             <li>
-              <strong>මුල් තිරයට එක් කරන්න</strong> (Add to Home Screen) තෝරන්න.
+              <strong>(Add to Home Screen)</strong> තෝරන්න.
             </li>
+
             <li>එක් කිරීම තහවුරු කරන්න.</li>
           </ol>
         </div>
-
-        <p v-else-if="showInstallUnavailable" class="status-message">
-          මෙම බ්‍රවුසරයේ ස්ථාපනය තවම ලබා ගත නොහැක. Chrome හෝ Edge භාවිතා කර නැවත
-          උත්සාහ කරන්න. නැතහොත් බ්‍රවුසර සෙටින්ග්ස් මෙනුවෙන් “Install app”
-          තෝරන්න.
-        </p>
       </div>
 
       <button class="back-btn" type="button" @click="goHome">
@@ -58,26 +56,42 @@ import { useRouter } from "vue-router";
 import { usePwaInstall } from "@/composables/usePwaInstall";
 
 const router = useRouter();
+
 const isInstalling = ref(false);
 
 const {
   canPromptInstall,
   showIOSInstructions,
-  showInstallUnavailable,
   promptInstall,
 } = usePwaInstall();
 
 async function handleInstall() {
-  if (!canPromptInstall.value || isInstalling.value) {
+  if (isInstalling.value) {
     return;
   }
 
-  isInstalling.value = true;
-  try {
-    await promptInstall();
-  } finally {
-    isInstalling.value = false;
+  if (canPromptInstall.value) {
+    isInstalling.value = true;
+
+    try {
+      await promptInstall();
+    } finally {
+      isInstalling.value = false;
+    }
+
+    return;
   }
+
+  if (showIOSInstructions.value) {
+    alert(
+      "Safari බ්‍රවුසරයේ Share → Add to Home Screen තෝරන්න.",
+    );
+    return;
+  }
+
+  alert(
+    "බ්‍රවුසර මෙනුවෙන් “Install app” හෝ “Add to Home Screen” තෝරන්න.",
+  );
 }
 
 function goHome() {
@@ -93,11 +107,14 @@ function goHome() {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+
   padding: clamp(12px, 3vh, 48px) clamp(14px, 4vw, 24px);
+
   background-image: url("../assets/images/bg-480.webp");
   background-size: cover;
   background-position: center bottom;
@@ -109,17 +126,23 @@ function goHome() {
   box-sizing: border-box;
   flex-shrink: 0;
   margin-block: auto;
+
   border-radius: 18px;
   padding: 32px 28px;
+
   background: linear-gradient(148deg, #fdf1da 0%, #f8e7c7 100%);
+
   box-shadow: 0 14px 38px rgba(59, 9, 6, 0.2);
+
   text-align: center;
   font-family: "Abhaya Libre", serif;
+
   animation: fadeIn 0.5s ease;
 }
 
 .settings-title {
   margin: 0 0 24px;
+
   font-size: clamp(30px, 4vw, 40px);
   color: #4d3124;
 }
@@ -127,55 +150,65 @@ function goHome() {
 .settings-block {
   margin-bottom: 28px;
   padding: 20px 18px;
+
   border-radius: 16px;
+
   background: rgba(255, 247, 233, 0.72);
   border: 1px solid rgba(122, 36, 16, 0.14);
+
   text-align: left;
 }
 
 .block-title {
   margin: 0 0 12px;
+
   font-size: clamp(22px, 3vw, 26px);
   color: #5e3929;
+
   text-align: center;
 }
 
 .block-description {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
+
   font-size: clamp(17px, 2.2vw, 20px);
-  line-height: 1.45;
+  line-height: 1.5;
   color: #6a3f2e;
+
   text-align: justify;
 }
 
 .status-message {
-  margin: 0;
-  font-size: clamp(16px, 2vw, 19px);
-  line-height: 1.4;
-  color: #6a3f2e;
-}
+  margin: 18px 0 0;
 
-.status-message.installed {
-  text-align: center;
-  color: #5a7a3a;
-  font-weight: 600;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.5;
+  color: #6a3f2e;
 }
 
 .install-btn {
   display: block;
-  width: 100%;
-  max-width: 320px;
+
+  width: min(100%, 320px);
+
   margin: 0 auto;
+
   padding: 14px 24px;
+
   border: none;
   border-radius: 999px;
+
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #ffeaca;
+
   font-family: inherit;
   font-size: clamp(19px, 2.4vw, 22px);
   font-weight: 600;
+
   cursor: pointer;
+
   box-shadow: 0 10px 28px rgba(111, 31, 14, 0.28);
+
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
@@ -183,6 +216,10 @@ function goHome() {
 
 .install-btn:hover:not(:disabled) {
   transform: translateY(-1px);
+}
+
+.install-btn:active:not(:disabled) {
+  transform: scale(0.985);
 }
 
 .install-btn:disabled {
@@ -193,8 +230,10 @@ function goHome() {
 .ios-instructions ol {
   margin: 10px 0 0;
   padding-left: 22px;
+
   font-size: clamp(16px, 2vw, 19px);
   line-height: 1.5;
+
   color: #6a3f2e;
 }
 
@@ -204,12 +243,17 @@ function goHome() {
 
 .back-btn {
   border: 1px solid rgba(122, 36, 16, 0.28);
+
   background: rgba(255, 247, 233, 0.9);
   color: #6f1f0e;
+
   border-radius: 999px;
+
   padding: 10px 22px;
+
   font-family: inherit;
   font-size: 18px;
+
   cursor: pointer;
 }
 
@@ -222,6 +266,7 @@ function goHome() {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
