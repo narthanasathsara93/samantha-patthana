@@ -114,7 +114,7 @@
           <Transition name="timer-fade">
             <div v-if="isPendingTimedPractice" class="time-select">
               <span class="time-select-title">
-                අවශ්‍ය කාලය (මිනිත්තු වලින්) තෝරාගන්න.
+                සූදානම් කාලය (මිනිත්තු වලින්) තෝරාගන්න.
               </span>
               <div
                 class="time-wheel"

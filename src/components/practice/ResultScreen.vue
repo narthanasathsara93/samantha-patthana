@@ -11,7 +11,7 @@
         අසීරුතා මට්ටම වෙනස් කිරීමට
       </button>
       <button class="secondary-btn" @click="$emit('go-home')">
-        මුල් පිටුවට
+        මුල් පිටුව වෙත
       </button>
     </div>
   </section>
