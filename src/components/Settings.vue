@@ -15,7 +15,7 @@
         </p>
 
         <button
-          v-if="!showIOSInstructions"
+          v-if="!showIOSInstructions && canPromptInstall"
           class="install-btn"
           type="button"
           :disabled="isInstalling"
