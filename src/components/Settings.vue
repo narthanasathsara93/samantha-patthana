@@ -4,14 +4,14 @@
       <h1 class="settings-title">සැකසුම්</h1>
 
       <div class="settings-block">
-        <h2 class="block-title">දුරකථනයට ස්ථාපනය</h2>
+        <h2 class="block-title">දුරකථනයට ඉන්ස්ටෝල් කිරීම</h2>
 
         <p class="block-description">
-          PWA (Progressive Web App) ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ සාමාන්‍ය
-          වෙනත් ඇප් එකක් මෙන් ස්ථාපනය කර භාවිතා කළ හැක.
+          PWA (Progressive Web App) එකක් ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ සාමාන්‍ය
+          වෙනත් ඇප් එකක් මෙන් ඉන්ස්ටෝල් කර භාවිතා කළ හැක.
           <br />
           <br />
-          එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් පිවිසිය හැක.
+          එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් සෘජුවම පිවිසිය හැක.
         </p>
 
         <button
@@ -21,8 +21,10 @@
           :disabled="isInstalling"
           @click="handleInstall"
         >
-          {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "යෙදුම ඉන්ස්ටෝල් කරන්න" }}
+          {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "ඉන්ස්ටෝල් කරන්න" }}
         </button>
+
+        <span class="installed-txt">දැනටමත් ඉන්ස්ටෝල් කර ඇත.</span>
 
         <div v-if="showIOSInstructions" class="ios-instructions">
           <p class="status-message">
@@ -173,6 +175,27 @@ function goHome() {
   font-size: clamp(16px, 2vw, 19px);
   line-height: 1.5;
   color: #6a3f2e;
+}
+
+.installed-txt {
+  border: 1px solid !important;
+  display: block;
+  width: min(100%, 320px);
+  margin: 0 auto;
+  padding: 5px 5px;
+  text-align: center;
+  border: none;
+  border-radius: 21px;
+  background: linear-gradient(180deg, #f6e0ba73 0%, #f6e0ba73 100%);
+  color: #5c3826;
+  font-family: inherit;
+  font-size: clamp(19px, 2.4vw, 22px);
+  font-weight: 800;
+  cursor: pointer;
+  /* box-shadow: 0 10px 28px rgba(111, 31, 14, 0.28); */
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .install-btn {
