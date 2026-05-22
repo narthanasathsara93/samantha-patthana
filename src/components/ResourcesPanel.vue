@@ -3,9 +3,19 @@
     <div class="resources-panel-header">භාවිතා කල මූලාශ්‍ර සහ සම්පත්</div>
 
     <div class="resources-panel-body">
+      <a :href="youtubeUrlSS" target="_blank" rel="noopener noreferrer">
+        <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
+        සමන්ත පට්ඨාන ධර්ම දේශනාව | Samantha Pattana Dharma Wandanawa | Sri
+        Saddharmaya<br />
+        (ශ්‍රී සද්ධර්මය යූටියුබ් නාලිකාව)
+      </a>
+    </div>
+
+    <div class="resources-panel-body">
       <a :href="youtubeUrlND" target="_blank" rel="noopener noreferrer">
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
-        පට්ඨාන ධර්මවන්දනාව - පූජනීය කිරිවත්තුඩුවේ අරියදස්සන ස්වාමින්වහන්සේ<br />
+        Pattana Sajjayana | සමන්ත පට්ඨාන ධර්ම වන්දනාව | Kiriwaththuduwe
+        Ariyadassana Thero<br />
         (නිර්වාණ ද්වාර යූටියුබ් නාලිකාව)
       </a>
     </div>
@@ -77,6 +87,7 @@
 import { getAssetUrl } from "../utils/assets";
 
 const youtubeUrlND = "https://youtu.be/foa2bgzz7G8?si=-_smELECz6Z5YF4X";
+const youtubeUrlSS = "https://www.youtube.com/watch?v=rkj6qsGDips";
 const pindeemaUrl = "https://youtu.be/bPM8dwdJ174?si=7EjVVPRNOX3X71oS&t=5582";
 const googleDriveUrl =
   "https://drive.google.com/drive/folders/12SewlKCZrcYMpxcw5MOJ7UmJaUn9JY9e?usp=drive_link";
