@@ -38,10 +38,17 @@
             :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
           >
             <div class="content-title">
-              <div>{{ contentTitle }}</div>
+              <div>
+                {{
+                  selectedVerse.showVerseTitle
+                    ? `───────── •❖• ${contentTitle} •❖• ─────────`
+                    : "── ⋆⋅𖤓⋅⋆ ──"
+                }}
+              </div>
             </div>
 
             <div class="controls-row">
+              <span class="guard">【</span>
               <AutoplayButton
                 v-if="!isRoutePunyanumodana && !isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
@@ -96,6 +103,7 @@
                   <span class="font-size-value">{{ readerFontSize }}px</span>
                 </div>
               </span>
+              <span class="guard">】</span>
             </div>
           </div>
           <div v-if="isShowingResourcesPanel" class="verse-content">
@@ -116,7 +124,6 @@
                 :title="selectedVerseTitle"
                 :content="selectedVerseContent"
                 :audio-sections="selectedVerseAudioSections"
-                :show-verse-title="selectedVerse.showVerseTitle"
                 :font-size="readerFontSize"
                 :sinhala-view-on="isSinhalaTextView"
                 :active-audio-section-index="activeAudioSectionIndex"
@@ -236,7 +243,9 @@ const Home = defineAsyncComponent(() => import("./components/Home.vue"));
 const PracticeHome = defineAsyncComponent(
   () => import("./components/practice/PracticeHome.vue"),
 );
-const Settings = defineAsyncComponent(() => import("./components/Settings.vue"));
+const Settings = defineAsyncComponent(
+  () => import("./components/Settings.vue"),
+);
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -923,12 +932,16 @@ button:active {
   min-width: 0;
   font-size: 20px;
   font-weight: 900;
-  color: #0e0a0a;
+  color: #410707;
 }
 
 .content-title > div {
   max-width: 100%;
   text-align: center;
+}
+
+.guard {
+  color: #410707;
 }
 
 .controls-row {
@@ -1122,6 +1135,10 @@ button:active {
       rgba(248, 231, 199, 1) 77%,
       rgb(255 231 189) 100%
     );
+  }
+
+  .guard {
+    display: none;
   }
 
   .reader-scroll-controls {
