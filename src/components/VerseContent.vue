@@ -41,10 +41,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  showVerseTitle: {
-    type: Boolean,
-    default: false,
-  },
   fontSize: {
     type: Number,
     default: 15,
