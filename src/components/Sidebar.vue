@@ -1,13 +1,16 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
     <div class="sidebar-header" v-on:click="goToHome()">
-      <img
-        class="logo-img"
-        :src="getImage(`images/logo.png`)"
-        alt="Samantha Patthana Logo"
-      />
-      <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
+      <span class="header-details">
+        <img
+          class="logo-img"
+          :src="getImage(`images/logo.png`)"
+          alt="Samantha Patthana Logo"
+        />
+        <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
+      </span>
     </div>
+    <div class="liner"></div>
     <ul>
       <li
         v-for="(verse, index) in verses"
@@ -270,7 +273,11 @@ const goToPracticeHome = () => {
   overflow: hidden;
 }
 
-.sidebar-header {
+.liner {
+  border-bottom: 2px solid #dfc59c73;
+}
+
+.header-details {
   flex-direction: column;
   justify-content: center;
   text-align: center;
@@ -280,14 +287,13 @@ const goToPracticeHome = () => {
   padding: 16px;
   font-weight: 900;
   font-size: 18px;
-  border-bottom: 2px solid #dfc59c73;
-  transition: all 0.2s ease;
+  transition: all 0.4s ease;
 }
 
-.sidebar-header:hover {
+.header-details:hover {
   cursor: pointer;
-  transition: all 0.2s ease;
-  transform: scale(1.04);
+  transition: all 0.4s ease;
+  transform: scale(1.1);
 }
 
 /* List */
@@ -444,9 +450,8 @@ const goToPracticeHome = () => {
   transform: translateX(-50%);
 }
 
-
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .sidebar {
     position: fixed;
     top: 0;

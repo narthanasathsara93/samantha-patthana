@@ -67,7 +67,6 @@
         <span>
           {{ showFinishButton ? "පුහුණු වටය අවසන් කරන්න" : "ඊළඟ" }}
         </span>
-
         <span class="btn-symbol">
           {{ showFinishButton ? "✿" : "⬩➤" }}
         </span>
@@ -203,7 +202,7 @@ button {
   border-radius: 999px;
   background: #dfc1a763;
   color: #390701;
-  font-size: 10px;
+  font-size:13px;
   font-weight: 700;
   line-height: 1;
 }
@@ -334,7 +333,7 @@ button {
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 300px;
   margin-top: auto;
 }
 
@@ -390,7 +389,7 @@ button {
   padding: 12px 18px;
   background-color: #7a2410;
   color: #ffe8c4;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.1;
   text-align: center;
@@ -423,6 +422,10 @@ button {
 }
 
 @media (max-width: 720px) {
+  .chip {
+    font-size: 11px;
+  }
+
   .practice-card {
     height: calc(100dvh - 26px);
     border-radius: 20px;

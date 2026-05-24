@@ -1,3 +1,3 @@
 export const isMobileContactDevice = () => {
-  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+  return window.matchMedia("(max-width: 870px), (pointer: coarse)").matches;
 };

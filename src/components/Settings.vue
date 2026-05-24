@@ -250,7 +250,7 @@ function goHome() {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .settings-page {
     border-radius: 20px;
   }

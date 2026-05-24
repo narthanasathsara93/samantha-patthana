@@ -279,7 +279,7 @@ const getIcon = (img) => {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .logo-img {
     width: 50px;
     height: auto;
