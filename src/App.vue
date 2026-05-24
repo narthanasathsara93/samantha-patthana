@@ -624,13 +624,6 @@ function handleAudioTimeUpdate(currentTime) {
   }
 
   activeAudioSectionIndex.value = sectionIndex;
-
-  // Only auto-scroll if autoplay is enabled
-  if (isAutoPlaying.value) {
-    nextTick(() => {
-      verseContentRef.value?.scrollToAudioSection(sectionIndex);
-    });
-  }
 }
 
 function handleAutoplayNext() {
