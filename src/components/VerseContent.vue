@@ -241,7 +241,7 @@ defineExpose({
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .reader h1 {
     font-size: 23px;
   }

@@ -1,20 +1,29 @@
 <template>
   <div class="pagination">
     <button
+      class="action-btn"
+      type="button"
       @click="$emit('prev')"
       :disabled="currentIndex === 0"
       aria-label="Previous verse"
     >
-      &lt;&lt; පෙර
+      <span class="left-arrow btn-symbol"> ⬩➤ </span>
+      <span> පෙර </span>
     </button>
     <span>{{ currentIndex + 1 }} / {{ totalVerses }}</span>
+
     <button
+      class="action-btn"
+      type="button"
       @click="$emit('next')"
       :disabled="currentIndex === totalVerses - 1"
       aria-label="Next verse"
     >
-      ඊළඟ &gt;&gt;
+      <span> ඊළඟ </span>
+      <span class="btn-symbol"> ⬩➤ </span>
     </button>
+
+    <div class="actions"></div>
   </div>
 </template>
 
@@ -34,44 +43,87 @@ defineEmits(["prev", "next"]);
 </script>
 
 <style scoped>
-/* ===== Pagination ===== */
 .pagination {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 24px;
-  padding: 5px 0;
-  margin-top: 3px;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 18px);
+  width: 100%;
+  margin-top: 6px;
+  padding: 4px 0;
+  font-family: "Abhaya Libre", serif !important;
 }
 
 .pagination span {
-  font-size: 14px;
-  color: #666;
+  flex-shrink: 0;
+  color: #5c2b1c;
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 700;
+  line-height: 1;
 }
 
-.pagination button {
-  padding: 8px 16px;
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 10px);
+  min-width: clamp(96px, 24vw, 140px);
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 18px);
+  border: 1px solid #d8b48f;
   border-radius: 999px;
-  border: none;
   background: #8d8a8a31;
+  color: #ffeaca;
+  font-family: inherit;
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 600;
+  line-height: 1;
   cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-appearance: none;
-  appearance: none;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    background 0.18s ease;
 }
 
-.pagination button:hover {
-  background: #46000024;
+.action-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  background: #e9dbc1;
 }
 
-.pagination button:disabled {
-  opacity: 0.4;
+.action-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.action-btn:disabled {
+  opacity: 0.42;
   cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
+.btn-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  line-height: 1;
+  margin-bottom: -5px;
+}
+
+.left-arrow {
+  transform: scaleX(-1);
+}
+
+@media (max-width: 520px) {
   .pagination {
-    margin-top: 0x;
+    gap: 8px;
+  }
+
+  .action-btn {
+    min-width: 88px;
+    padding: 8px 10px;
+    font-size: 16px;
+  }
+
+  .pagination span {
+    font-size: 16px;
   }
 }
 </style>

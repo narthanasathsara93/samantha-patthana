@@ -180,7 +180,7 @@ const getIcon = (icon) => {
   color: #f7e5c4;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .resource-icon {
     width: 20px;
     height: auto;

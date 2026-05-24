@@ -38,13 +38,16 @@
             :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
           >
             <div class="content-title">
-              <div>
-                {{
-                  selectedVerse.showVerseTitle
-                    ? `──────·༻𐫱 ${contentTitle} 𐫱༺·──────`
-                    : "──────·༻𐫱•☸︎•𐫱༺·──────"
-                }}
-              </div>
+
+
+              {{ displayTitle }}
+
+              <span
+                v-if="selectedVerse.showVerseTitle"
+                class="title-deco desktop-only"
+              >
+
+              </span>
             </div>
 
             <div class="controls-row">
@@ -396,7 +399,7 @@ function loadSinhalaTextView() {
 }
 
 function isMobileView() {
-  return window.matchMedia("(max-width: 768px)").matches;
+  return window.matchMedia("(max-width: 870px)").matches;
 }
 
 function getGestureReader(target) {
@@ -737,6 +740,19 @@ const getArrowIcon = () => {
     : getAssetUrl("icons/arrow_up.png");
 };
 
+const displayTitle = computed(() => {
+  const isSmallScreen = window.innerWidth < 1070;
+console.log(selectedVerse.value.showVerseTitle)
+  if (!selectedVerse.value.showVerseTitle) {
+    console.log("dfdffgfdg")
+    return "──────·༻𐫱•☸︎•𐫱༺·──────";
+  }
+
+  return !isSmallScreen
+    ? `·༻𐫱•☸︎•𐫱༺· ${selectedVerse.value.title} ·༻𐫱•☸︎•𐫱༺·`
+    : `${selectedVerse.value.title}`;
+});
+
 onMounted(() => {
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("touchstart", handlePullReloadStart, {
@@ -801,11 +817,26 @@ resetActiveAudioRange();
 
 <style>
 /* ===== Global ===== */
+@font-face {
+  font-family: "UN Arundathee";
+  src: url("./assets/fonts/un_arundathee.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UN Ganganee";
+  src: url("./assets/fonts/un_ganganee.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
+    "Noto Sans Arundathee",
+    serif,
     "Noto Sans Sinhala",
     -apple-system,
     BlinkMacSystemFont,
@@ -921,7 +952,7 @@ button:active {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
+
   padding: 0;
   z-index: 10;
 }
@@ -931,8 +962,8 @@ button:active {
   display: flex;
   justify-content: center;
   min-width: 0;
-  font-size: 20px;
-  font-weight: 900;
+  font-family: "UN Arundathee" !important;
+  font-size: 22px;
   color: #410707;
 }
 
@@ -1126,8 +1157,18 @@ button:active {
   opacity: 0.35;
 }
 
+.desktop-only {
+  display: inline;
+}
+
+@media (max-width: 1085px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .content {
     background: #fdf1da;
     background: linear-gradient(
