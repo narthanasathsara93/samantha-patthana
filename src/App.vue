@@ -41,8 +41,8 @@
               <div>
                 {{
                   selectedVerse.showVerseTitle
-                    ? `───────── •❖• ${contentTitle} •❖• ─────────`
-                    : "── ⋆⋅𖤓⋅⋆ ──"
+                    ? `──────·༻𐫱 ${contentTitle} 𐫱༺·──────`
+                    : "──────·༻𐫱•☸︎•𐫱༺·──────"
                 }}
               </div>
             </div>
@@ -106,6 +106,7 @@
               <span class="guard">】</span>
             </div>
           </div>
+
           <div v-if="isShowingResourcesPanel" class="verse-content">
             <ResourcesPanel @close="handleCloseResourcesPanel" />
           </div>
