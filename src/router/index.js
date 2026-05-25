@@ -40,6 +40,14 @@ const routes = [
       title: "Settings",
     },
   },
+  {
+    path: "/contact",
+    name: "ContactUs",
+    component: () => import("@/components/ContactUs.vue"),
+    meta: {
+      title: "Contact Us",
+    },
+  },
   ...verseRoutes,
   {
     path: "/:pathMatch(.*)*",

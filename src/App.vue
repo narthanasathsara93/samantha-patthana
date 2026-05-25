@@ -4,6 +4,7 @@
     <Home v-if="isHomeRoute" key="home" />
     <PracticeHome v-else-if="isPracticeRoute" key="practice" />
     <Settings v-else-if="isSettingsRoute" key="settings" />
+    <ContactUs v-else-if="isContactRoute" key="contact" />
     <div v-else key="reader" class="app-container">
       <div class="app">
         <!-- Sidebar -->
@@ -38,15 +39,12 @@
             :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
           >
             <div class="content-title">
-
-
               {{ displayTitle }}
 
               <span
                 v-if="selectedVerse.showVerseTitle"
                 class="title-deco desktop-only"
               >
-
               </span>
             </div>
 
@@ -250,6 +248,9 @@ const PracticeHome = defineAsyncComponent(
 const Settings = defineAsyncComponent(
   () => import("./components/Settings.vue"),
 );
+const ContactUs = defineAsyncComponent(
+  () => import("./components/ContactUs.vue"),
+);
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -376,6 +377,7 @@ const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
 const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 const isPracticeRoute = computed(() => route.name === "PracticeMode");
 const isSettingsRoute = computed(() => route.name === "Settings");
+const isContactRoute = computed(() => route.name === "ContactUs");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -734,10 +736,10 @@ const getArrowIcon = () => {
 };
 
 const displayTitle = computed(() => {
-  const isSmallScreen = window.innerWidth < 1070;
-console.log(selectedVerse.value.showVerseTitle)
+  const minScreenWidth = 1070;
+  const isSmallScreen = window.innerWidth < minScreenWidth;
+
   if (!selectedVerse.value.showVerseTitle) {
-    console.log("dfdffgfdg")
     return "──────·༻𐫱•☸︎•𐫱༺·──────";
   }
 

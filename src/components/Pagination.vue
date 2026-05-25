@@ -89,10 +89,6 @@ defineEmits(["prev", "next"]);
   background: #e9dbc1;
 }
 
-.action-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
 .action-btn:disabled {
   opacity: 0.42;
   cursor: not-allowed;
