@@ -202,7 +202,7 @@ button {
   border-radius: 999px;
   background: #dfc1a763;
   color: #390701;
-  font-size:13px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1;
 }
