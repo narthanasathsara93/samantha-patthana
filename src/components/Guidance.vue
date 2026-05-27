@@ -27,41 +27,50 @@
           </button>
 
           <div class="guidance-header">
-            <span class="guidance-mark" aria-hidden="true">&#127807;</span>
-            <p class="guidance-eyebrow">First visit guide</p>
-            <h2 id="guidance-title">Welcome to Samantha Patthana</h2>
+            <span class="guidance-mark" aria-hidden="true">
+              {{ activeSection.icon }}
+            </span>
+            <p class="guidance-eyebrow">
+              {{ activeSection.eyebrow }}
+              <span class="guidance-progress">
+                {{ activeSectionIndex + 1 }} / {{ guidanceSections.length }}
+              </span>
+            </p>
+            <h2 id="guidance-title">{{ activeSection.title }}</h2>
             <p id="guidance-description">
-              A short, calm introduction to help you begin reading, listening,
-              and practicing with confidence.
+              {{ activeSection.description }}
             </p>
           </div>
 
-          <div class="guidance-steps" aria-label="Application guidance">
-            <article
-              v-for="(step, index) in steps"
-              :key="step.title"
-              class="guidance-step"
-              :style="getStepStyle(index)"
+          <Transition name="guidance-section" mode="out-in">
+            <div
+              :key="activeSection.id"
+              class="guidance-steps"
+              aria-label="Application guidance"
             >
-              <div class="guidance-step-number" aria-hidden="true">
-                {{ index + 1 }}
-              </div>
-              <div class="guidance-step-copy">
-                <h3>
-                  <span aria-hidden="true">{{ step.icon }}</span>
-                  {{ step.title }}
-                </h3>
-                <p>{{ step.text }}</p>
-              </div>
-            </article>
-          </div>
+              <article
+                v-for="(step, index) in activeSection.steps"
+                :key="step.title"
+                class="guidance-step"
+                :style="getStepStyle(index)"
+              >
+                <div class="guidance-step-number" aria-hidden="true">
+                  {{ index + 1 }}
+                </div>
+                <div class="guidance-step-copy">
+                  <h3>
+                    <span aria-hidden="true">{{ step.icon }}</span>
+                    {{ step.title }}
+                  </h3>
+                  <p>{{ step.text }}</p>
+                </div>
+              </article>
+            </div>
+          </Transition>
 
           <div class="guidance-actions">
-            <button class="guidance-secondary" type="button" @click="close">
-              Close
-            </button>
-            <button class="guidance-primary" type="button" @click="close">
-              Got it
+            <button class="guidance-primary" type="button" @click="handlePrimaryAction">
+              {{ isLastSection ? "Got it" : "Next" }}
             </button>
           </div>
         </section>
@@ -71,7 +80,7 @@
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -83,36 +92,83 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "close"]);
 
 const dialogRef = ref(null);
+const activeSectionIndex = ref(0);
 let previousBodyOverflow = "";
 let previousBodyPaddingRight = "";
 let previousActiveElement = null;
 
-const steps = [
+const guidanceSections = [
   {
+    id: "chanting",
     icon: "\u{1F3A7}",
-    title: "Begin with the reader",
-    text: "Use the begin button to open the chanting reader and follow the content at your own pace.",
+    eyebrow: "Normal chanting",
+    title: "Start chanting with the reader",
+    description:
+      "Use the normal chanting path when you want to read, listen, and move through the verses calmly.",
+    steps: [
+      {
+        icon: "\u{1F4D6}",
+        title: "Open the reader",
+        text: "Tap Begin to enter the chanting reader and follow the text at your own pace.",
+      },
+      {
+        icon: "\u{1F50A}",
+        title: "Use audio support",
+        text: "Play, pause, repeat sections, or listen while you read through the content.",
+      },
+      {
+        icon: "\u{2B50}",
+        title: "Save important places",
+        text: "Bookmark useful sections so you can return to them later without searching.",
+      },
+    ],
   },
   {
-    icon: "\u{1F4D6}",
-    title: "Listen and follow along",
-    text: "Audio controls, section playback, and text display options are available inside the reader.",
-  },
-  {
+    id: "practice",
     icon: "\u{1F9D8}",
-    title: "Practice gently",
-    text: "Practice mode helps you review selected material with simple guided prompts.",
-  },
-  {
-    icon: "\u{2B50}",
-    title: "Keep useful places",
-    text: "Bookmark important sections and return to them later from the navigation tools.",
+    eyebrow: "Practice mode",
+    title: "Practice in small guided steps",
+    description:
+      "Use practice mode when you want a more active review experience with simple prompts.",
+    steps: [
+      {
+        icon: "\u{1F3AF}",
+        title: "Choose a level",
+        text: "Start with the practice level that feels comfortable and continue gradually.",
+      },
+      {
+        icon: "\u{1F9E0}",
+        title: "Answer gently",
+        text: "Review each prompt without rushing; the goal is familiarity and steady progress.",
+      },
+      {
+        icon: "\u{2728}",
+        title: "Review your result",
+        text: "Use the result screen as feedback, then repeat any area that needs more care.",
+      },
+    ],
   },
 ];
+
+const activeSection = computed(
+  () => guidanceSections[activeSectionIndex.value] || guidanceSections[0],
+);
+const isLastSection = computed(
+  () => activeSectionIndex.value === guidanceSections.length - 1,
+);
 
 function close() {
   emit("update:modelValue", false);
   emit("close");
+}
+
+function handlePrimaryAction() {
+  if (isLastSection.value) {
+    close();
+    return;
+  }
+
+  activeSectionIndex.value += 1;
 }
 
 function getStepStyle(index) {
@@ -154,6 +210,7 @@ watch(
   () => props.modelValue,
   async (isOpen) => {
     if (isOpen) {
+      activeSectionIndex.value = 0;
       previousActiveElement = document.activeElement;
       lockBodyScroll();
       document.addEventListener("keydown", handleKeydown);
@@ -199,9 +256,9 @@ onBeforeUnmount(() => {
 .guidance-dialog {
   position: relative;
   width: min(100%, 560px);
-  max-height: min(720px, calc(100dvh - 32px));
+  max-height: min(640px, calc(100dvh - 32px));
   overflow-y: auto;
-  padding: 24px;
+  padding: 22px;
   border: 1px solid rgba(90, 42, 24, 0.14);
   border-radius: 18px;
   background:
@@ -254,6 +311,10 @@ onBeforeUnmount(() => {
 }
 
 .guidance-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 16px 0 8px;
   color: #7d5134;
   font-size: 12px;
@@ -262,16 +323,27 @@ onBeforeUnmount(() => {
   text-transform: uppercase;
 }
 
+.guidance-progress {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(84, 35, 18, 0.08);
+  color: #5e3828;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .guidance-header h2 {
   margin: 0;
   color: #35170f;
-  font-size: 26px;
+  font-size: 24px;
   line-height: 1.14;
   letter-spacing: 0;
 }
 
 .guidance-header p {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   max-width: 460px;
   color: #664536;
   font-size: 15px;
@@ -280,15 +352,15 @@ onBeforeUnmount(() => {
 
 .guidance-steps {
   display: grid;
-  gap: 10px;
-  margin-top: 22px;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .guidance-step {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
   gap: 12px;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid rgba(84, 35, 18, 0.1);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.52);
@@ -321,7 +393,7 @@ onBeforeUnmount(() => {
 }
 
 .guidance-step-copy p {
-  margin: 6px 0 0;
+  margin: 5px 0 0;
   color: #6d4a3d;
   font-size: 13px;
   line-height: 1.45;
@@ -331,7 +403,7 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 22px;
+  margin-top: 18px;
 }
 
 .guidance-primary,
@@ -393,6 +465,23 @@ onBeforeUnmount(() => {
   transform: translateY(10px) scale(0.97);
 }
 
+.guidance-section-enter-active,
+.guidance-section-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.guidance-section-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.guidance-section-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
 @keyframes guidanceStepIn {
   from {
     opacity: 0;
@@ -414,21 +503,21 @@ onBeforeUnmount(() => {
 
   .guidance-dialog {
     max-height: calc(100dvh - 24px);
-    padding: 20px;
+    padding: 18px;
     border-radius: 16px;
   }
 
   .guidance-header h2 {
-    font-size: 23px;
+    font-size: 21px;
   }
 
   .guidance-actions {
     position: sticky;
-    bottom: -20px;
-    margin-left: -20px;
-    margin-right: -20px;
-    margin-bottom: -20px;
-    padding: 14px 20px 20px;
+    bottom: -18px;
+    margin-left: -18px;
+    margin-right: -18px;
+    margin-bottom: -18px;
+    padding: 12px 18px 18px;
     background: linear-gradient(
       180deg,
       rgba(252, 239, 215, 0),
@@ -447,6 +536,8 @@ onBeforeUnmount(() => {
   .guidance-fade-leave-active,
   .guidance-fade-enter-active .guidance-dialog,
   .guidance-fade-leave-active .guidance-dialog,
+  .guidance-section-enter-active,
+  .guidance-section-leave-active,
   .guidance-step {
     animation: none;
     transition: none;
