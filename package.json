@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vite --host 127.0.0.1",
-    "dev": "vite --host 127.0.0.1",
+    "serve": "vite --host",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1",
-    "lint": "eslint --ext .js,.vue src"
+    "preview": "vite preview --host",
+    "lint": "eslint --ext .js,.vue src",
+    "version:bump": "node ./scripts/bump-version.mjs",
+    "version:force-reset": "node ./scripts/bump-version.mjs --force-reset"
   },
   "dependencies": {
     "core-js": "^3.8.3",

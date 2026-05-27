@@ -213,6 +213,12 @@
       </div>
     </div>
   </Transition>
+  <UpdatePrompt
+    :is-update-available="isUpdateAvailable"
+    :is-refreshing="isRefreshing"
+    :is-hard-reset-in-progress="isHardResetInProgress"
+    @refresh="applySoftUpdate"
+  />
 </template>
 
 <script setup>
@@ -235,6 +241,7 @@ import BookmarkButton from "./components/BookmarkButton.vue";
 import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import Pagination from "./components/Pagination.vue";
+import UpdatePrompt from "./components/UpdatePrompt.vue";
 const AudioPlayer = defineAsyncComponent(
   () => import("./components/AudioPlayer.vue"),
 );
@@ -259,6 +266,7 @@ import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { useBfcache } from "./composables/useBfcache";
+import { useAppVersion } from "./composables/useAppVersion";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
 import { sinhalaTexts } from "./data/sinhalaText";
@@ -364,6 +372,8 @@ const {
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 useBfcache(); // Initialize bfcache optimization
+const { isUpdateAvailable, isRefreshing, isHardResetInProgress, checkVersion, applySoftUpdate } =
+  useAppVersion();
 const route = useRoute();
 const router = useRouter();
 const pullToReload = {
@@ -749,6 +759,7 @@ const displayTitle = computed(() => {
 });
 
 onMounted(() => {
+  void checkVersion();
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("touchstart", handlePullReloadStart, {
     passive: true,
