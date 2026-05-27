@@ -227,6 +227,11 @@ defineExpose({
 
 .reader-content {
   font-weight: 600;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .reader-content,
@@ -240,6 +245,11 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 18px;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .verse-audio-section {
