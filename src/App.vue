@@ -219,6 +219,7 @@
     :is-hard-reset-in-progress="isHardResetInProgress"
     @refresh="applySoftUpdate"
   />
+  <Guidance v-model="isGuidanceOpen" @close="closeGuidance" />
 </template>
 
 <script setup>
@@ -242,6 +243,7 @@ import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import Pagination from "./components/Pagination.vue";
 import UpdatePrompt from "./components/UpdatePrompt.vue";
+import Guidance from "./components/Guidance.vue";
 const AudioPlayer = defineAsyncComponent(
   () => import("./components/AudioPlayer.vue"),
 );
@@ -267,6 +269,7 @@ import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { useBfcache } from "./composables/useBfcache";
 import { useAppVersion } from "./composables/useAppVersion";
+import { useGuidance } from "./composables/useGuidance";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
 import { sinhalaTexts } from "./data/sinhalaText";
@@ -374,6 +377,7 @@ const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 useBfcache(); // Initialize bfcache optimization
 const { isUpdateAvailable, isRefreshing, isHardResetInProgress, checkVersion, applySoftUpdate } =
   useAppVersion();
+const { isGuidanceOpen, initializeGuidance, closeGuidance } = useGuidance();
 const route = useRoute();
 const router = useRouter();
 const pullToReload = {
@@ -759,6 +763,7 @@ const displayTitle = computed(() => {
 });
 
 onMounted(() => {
+  initializeGuidance();
   void checkVersion();
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("touchstart", handlePullReloadStart, {

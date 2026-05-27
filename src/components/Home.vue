@@ -68,15 +68,19 @@
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
+import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
+const { openGuidance } = useGuidance();
 
 const startChanting = () => {
+  openGuidance({ force: false });
   router.push({ name: "namaskaraya" });
 };
 
 const openPracticeMode = () => {
+  openGuidance({ force: false });
   router.push("/practice");
 };
 
