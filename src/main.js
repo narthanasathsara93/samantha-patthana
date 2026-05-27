@@ -5,6 +5,11 @@ import { initPwaInstallPrompt } from './composables/usePwaInstall'
 
 initPwaInstallPrompt()
 
+window.addEventListener("vite:preloadError", (event) => {
+  event.preventDefault()
+  window.location.href = window.location.origin
+})
+
 const app = createApp(App)
 
 app.use(router)

@@ -24,7 +24,12 @@
           {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "ඉන්ස්ටෝල් කරන්න" }}
         </button>
 
-        <span class="installed-txt">දැනටමත් ඉන්ස්ටෝල් කර ඇත.</span>
+        <span
+          v-if="!showIOSInstructions && !canPromptInstall"
+          class="installed-txt"
+        >
+          දැනටමත් ඉන්ස්ටෝල් කර ඇත.
+        </span>
 
         <div v-if="showIOSInstructions" class="ios-instructions">
           <p class="status-message">
