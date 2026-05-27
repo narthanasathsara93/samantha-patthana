@@ -65,6 +65,7 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
@@ -72,16 +73,25 @@ import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
-const { openGuidance } = useGuidance();
+const { hasCompletedGuidance, openGuidance } = useGuidance();
+const pendingRoute = ref(null);
+
+const navigateWithGuidance = (routeLocation) => {
+  if (hasCompletedGuidance.value) {
+    router.push(routeLocation);
+    return;
+  }
+
+  pendingRoute.value = routeLocation;
+  openGuidance({ force: false });
+};
 
 const startChanting = () => {
-  openGuidance({ force: false });
-  router.push({ name: "namaskaraya" });
+  navigateWithGuidance({ name: "namaskaraya" });
 };
 
 const openPracticeMode = () => {
-  openGuidance({ force: false });
-  router.push("/practice");
+  navigateWithGuidance("/practice");
 };
 
 const openSettings = () => {
@@ -91,6 +101,16 @@ const openSettings = () => {
 const getIcon = (img) => {
   return getAssetUrl(`icons/${img}`);
 };
+
+watch(hasCompletedGuidance, (isCompleted) => {
+  if (!isCompleted || !pendingRoute.value) {
+    return;
+  }
+
+  const routeLocation = pendingRoute.value;
+  pendingRoute.value = null;
+  router.push(routeLocation);
+});
 </script>
 
 <style scoped>

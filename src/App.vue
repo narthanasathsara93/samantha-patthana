@@ -763,7 +763,7 @@ const displayTitle = computed(() => {
 });
 
 onMounted(() => {
-  initializeGuidance();
+  initializeGuidance({ autoOpen: false });
   void checkVersion();
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("touchstart", handlePullReloadStart, {
