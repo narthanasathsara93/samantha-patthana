@@ -41,10 +41,6 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  showVerseTitle: {
-    type: Boolean,
-    default: false,
-  },
   fontSize: {
     type: Number,
     default: 15,
@@ -71,6 +67,11 @@ const isScrollable = ref(false);
 const canScrollUp = ref(false);
 const canScrollDown = ref(false);
 let resizeObserver = null;
+let pendingSectionScroll = null;
+
+const sectionScrollTopRatio = 0.22;
+const sectionVisiblePadding = 20;
+const minScrollDistance = 6;
 
 function updateScrollState() {
   const reader = readerRef.value;
@@ -113,9 +114,50 @@ function scrollToTop() {
 }
 
 function scrollToAudioSection(index) {
-  sectionRefs.value[index]?.scrollIntoView({
-    behavior: "smooth",
-    block: "center",
+  const reader = readerRef.value;
+  const section = sectionRefs.value[index];
+
+  if (!reader || !section) {
+    return;
+  }
+
+  if (pendingSectionScroll !== null) {
+    cancelAnimationFrame(pendingSectionScroll);
+  }
+
+  pendingSectionScroll = requestAnimationFrame(() => {
+    pendingSectionScroll = null;
+
+    const readerRect = reader.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
+    const comfortableTop =
+      readerRect.top + reader.clientHeight * sectionScrollTopRatio;
+    const comfortableBottom = readerRect.bottom - sectionVisiblePadding;
+    const isComfortablyVisible =
+      sectionRect.top >= readerRect.top + sectionVisiblePadding &&
+      sectionRect.top <= comfortableTop &&
+      sectionRect.bottom <= comfortableBottom;
+
+    if (isComfortablyVisible) {
+      return;
+    }
+
+    const targetScrollTop =
+      reader.scrollTop +
+      sectionRect.top -
+      readerRect.top -
+      reader.clientHeight * sectionScrollTopRatio;
+    const maxScrollTop = reader.scrollHeight - reader.clientHeight;
+    const nextScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
+
+    if (Math.abs(nextScrollTop - reader.scrollTop) < minScrollDistance) {
+      return;
+    }
+
+    reader.scrollTo({
+      top: nextScrollTop,
+      behavior: "smooth",
+    });
   });
 }
 
@@ -135,6 +177,10 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  if (pendingSectionScroll !== null) {
+    cancelAnimationFrame(pendingSectionScroll);
+  }
+
   resizeObserver?.disconnect();
   window.removeEventListener("resize", updateScrollState);
 });
@@ -142,6 +188,19 @@ onBeforeUnmount(() => {
 watch(
   () => [props.content, props.fontSize, props.audioSections],
   syncScrollState,
+);
+
+watch(
+  () => props.activeAudioSectionIndex,
+  (index) => {
+    if (index < 0) {
+      return;
+    }
+
+    nextTick(() => {
+      scrollToAudioSection(index);
+    });
+  },
 );
 
 defineExpose({
@@ -245,7 +304,7 @@ defineExpose({
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .reader h1 {
     font-size: 23px;
   }

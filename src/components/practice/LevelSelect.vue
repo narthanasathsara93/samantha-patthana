@@ -6,7 +6,8 @@
       ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
       පුහුණුව අතරතුර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
       <img class="sample-icon" :src="getIcon('show.png')" alt="👁" /> මගින්
-      පිළිතුර විමසිය හැක. <br /> <br />
+      පිළිතුර විමසිය හැක. <br />
+      <br />
       පුහුණුව ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />
     </p>
 
@@ -149,13 +150,14 @@ const getIcon = (img) => {
 }
 
 .back-btn {
+  font-family: "Abhaya Libre", serif;
   margin-top: 20px;
   border: 1px solid #6f1f0e;
   border-radius: 999px;
   background: transparent;
   color: #6f1f0e;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -164,7 +166,8 @@ const getIcon = (img) => {
 }
 
 .back-btn:hover {
-  background: rgba(111, 31, 14, 0.08);
+  background: #6f200e73;
+  color: #fdf1da;
   transform: translateY(-1px);
 }
 

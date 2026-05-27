@@ -1,5 +1,17 @@
 <template>
   <div class="home-page">
+    <button
+      class="settings-btn"
+      type="button"
+      aria-label="සැකසුම්"
+      title="සැකසුම්"
+      @click="openSettings"
+    >
+      <span class="gear-btn-icon">
+        <img class="gear-icon" :src="getIcon('gear.png')" alt="thinking" />
+      </span>
+    </button>
+
     <div class="hero-content">
       <img class="logo-img" :src="logoImage" alt="Logo" />
       <div class="hero-subtitle">
@@ -24,7 +36,11 @@
           aria-label="Start chanting"
         >
           <span class="btn-icon">
-            <img class="star-icon" :src="getIcon('reading.png')" alt="reading" />
+            <img
+              class="star-icon"
+              :src="getIcon('reading.png')"
+              alt="reading"
+            />
           </span>
           <span class="btn-txt">සජ්ඣායනය</span>
         </button>
@@ -35,7 +51,11 @@
           aria-label="Practice start — open practice mode"
         >
           <span class="btn-icon">
-            <img class="mind-icon" :src="getIcon('mindset2.png')" alt="thinking" />
+            <img
+              class="mind-icon"
+              :src="getIcon('mindset2.png')"
+              alt="thinking"
+            />
           </span>
           <span class="btn-txt">පුහුණුව</span>
         </button>
@@ -58,6 +78,10 @@ const startChanting = () => {
 
 const openPracticeMode = () => {
   router.push("/practice");
+};
+
+const openSettings = () => {
+  router.push({ name: "Settings" });
 };
 
 const getIcon = (img) => {
@@ -85,6 +109,7 @@ const getIcon = (img) => {
 }
 
 .home-page {
+  position: relative;
   min-height: 100dvh;
   display: flex;
   align-items: flex-start;
@@ -92,6 +117,9 @@ const getIcon = (img) => {
   padding-top: 80px;
   padding-left: 24px;
   padding-right: 24px;
+}
+.settings-btn {
+  display: none;
 }
 
 .hero-content {
@@ -251,9 +279,38 @@ const getIcon = (img) => {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .logo-img {
     width: 50px;
+    height: auto;
+  }
+
+  .settings-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #6f1f0e;
+    cursor: pointer;
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .settings-btn:hover {
+    transform: rotate(45deg);
+  }
+
+  .gear-icon {
+    width: 20px;
     height: auto;
   }
 

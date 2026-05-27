@@ -896,7 +896,7 @@ defineExpose({
    MOBILE
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .player {
     padding-top: 8px;
     border-top: none;

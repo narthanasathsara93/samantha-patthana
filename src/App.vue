@@ -3,6 +3,8 @@
   <Transition name="page-open" mode="out-in">
     <Home v-if="isHomeRoute" key="home" />
     <PracticeHome v-else-if="isPracticeRoute" key="practice" />
+    <Settings v-else-if="isSettingsRoute" key="settings" />
+    <ContactUs v-else-if="isContactRoute" key="contact" />
     <div v-else key="reader" class="app-container">
       <div class="app">
         <!-- Sidebar -->
@@ -37,10 +39,17 @@
             :class="{ 'hidden-on-mobile-menu': isSidebarOpen }"
           >
             <div class="content-title">
-              <div>{{ contentTitle }}</div>
+              {{ displayTitle }}
+
+              <span
+                v-if="selectedVerse.showVerseTitle"
+                class="title-deco desktop-only"
+              >
+              </span>
             </div>
 
             <div class="controls-row">
+              <span class="guard">【</span>
               <AutoplayButton
                 v-if="!isRoutePunyanumodana && !isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
@@ -95,8 +104,10 @@
                   <span class="font-size-value">{{ readerFontSize }}px</span>
                 </div>
               </span>
+              <span class="guard">】</span>
             </div>
           </div>
+
           <div v-if="isShowingResourcesPanel" class="verse-content">
             <ResourcesPanel @close="handleCloseResourcesPanel" />
           </div>
@@ -115,7 +126,6 @@
                 :title="selectedVerseTitle"
                 :content="selectedVerseContent"
                 :audio-sections="selectedVerseAudioSections"
-                :show-verse-title="selectedVerse.showVerseTitle"
                 :font-size="readerFontSize"
                 :sinhala-view-on="isSinhalaTextView"
                 :active-audio-section-index="activeAudioSectionIndex"
@@ -203,6 +213,12 @@
       </div>
     </div>
   </Transition>
+  <UpdatePrompt
+    :is-update-available="isUpdateAvailable"
+    :is-refreshing="isRefreshing"
+    :is-hard-reset-in-progress="isHardResetInProgress"
+    @refresh="applySoftUpdate"
+  />
 </template>
 
 <script setup>
@@ -225,6 +241,7 @@ import BookmarkButton from "./components/BookmarkButton.vue";
 import Overlay from "./components/Overlay.vue";
 import VerseContent from "./components/VerseContent.vue";
 import Pagination from "./components/Pagination.vue";
+import UpdatePrompt from "./components/UpdatePrompt.vue";
 const AudioPlayer = defineAsyncComponent(
   () => import("./components/AudioPlayer.vue"),
 );
@@ -235,6 +252,12 @@ const Home = defineAsyncComponent(() => import("./components/Home.vue"));
 const PracticeHome = defineAsyncComponent(
   () => import("./components/practice/PracticeHome.vue"),
 );
+const Settings = defineAsyncComponent(
+  () => import("./components/Settings.vue"),
+);
+const ContactUs = defineAsyncComponent(
+  () => import("./components/ContactUs.vue"),
+);
 
 // Composables
 import { useAudio } from "./composables/useAudio";
@@ -243,6 +266,7 @@ import { useAutoplay } from "./composables/useAutoplay";
 import { useSidebar } from "./composables/useSidebar";
 import { useBookmarks } from "./composables/useBookmarks";
 import { useBfcache } from "./composables/useBfcache";
+import { useAppVersion } from "./composables/useAppVersion";
 import { getAssetUrl } from "./utils/assets";
 import { audioSections } from "./data/audioSections";
 import { sinhalaTexts } from "./data/sinhalaText";
@@ -348,6 +372,8 @@ const {
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 useBfcache(); // Initialize bfcache optimization
+const { isUpdateAvailable, isRefreshing, isHardResetInProgress, checkVersion, applySoftUpdate } =
+  useAppVersion();
 const route = useRoute();
 const router = useRouter();
 const pullToReload = {
@@ -360,6 +386,8 @@ const pullToReload = {
 const isRoutePunyanumodana = computed(() => route.name === "punyanumodana");
 const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 const isPracticeRoute = computed(() => route.name === "PracticeMode");
+const isSettingsRoute = computed(() => route.name === "Settings");
+const isContactRoute = computed(() => route.name === "ContactUs");
 // Load bookmarks on app start
 loadBookmarks();
 
@@ -383,7 +411,7 @@ function loadSinhalaTextView() {
 }
 
 function isMobileView() {
-  return window.matchMedia("(max-width: 768px)").matches;
+  return window.matchMedia("(max-width: 870px)").matches;
 }
 
 function getGestureReader(target) {
@@ -608,13 +636,6 @@ function handleAudioTimeUpdate(currentTime) {
   }
 
   activeAudioSectionIndex.value = sectionIndex;
-
-  // Only auto-scroll if autoplay is enabled
-  if (isAutoPlaying.value) {
-    nextTick(() => {
-      verseContentRef.value?.scrollToAudioSection(sectionIndex);
-    });
-  }
 }
 
 function handleAutoplayNext() {
@@ -724,7 +745,21 @@ const getArrowIcon = () => {
     : getAssetUrl("icons/arrow_up.png");
 };
 
+const displayTitle = computed(() => {
+  const minScreenWidth = 1070;
+  const isSmallScreen = window.innerWidth < minScreenWidth;
+
+  if (!selectedVerse.value.showVerseTitle) {
+    return "──────·༻𐫱•☸︎•𐫱༺·──────";
+  }
+
+  return !isSmallScreen
+    ? `·༻𐫱•☸︎•𐫱༺· ${selectedVerse.value.title} ·༻𐫱•☸︎•𐫱༺·`
+    : `${selectedVerse.value.title}`;
+});
+
 onMounted(() => {
+  void checkVersion();
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("touchstart", handlePullReloadStart, {
     passive: true,
@@ -788,11 +823,26 @@ resetActiveAudioRange();
 
 <style>
 /* ===== Global ===== */
+@font-face {
+  font-family: "UN Arundathee";
+  src: url("./assets/fonts/un_arundathee.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UN Ganganee";
+  src: url("./assets/fonts/un_ganganee.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
+    "Noto Sans Arundathee",
+    serif,
     "Noto Sans Sinhala",
     -apple-system,
     BlinkMacSystemFont,
@@ -908,7 +958,7 @@ button:active {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
+
   padding: 0;
   z-index: 10;
 }
@@ -918,14 +968,18 @@ button:active {
   display: flex;
   justify-content: center;
   min-width: 0;
-  font-size: 20px;
-  font-weight: 900;
-  color: #0e0a0a;
+  font-family: "UN Arundathee" !important;
+  font-size: 22px;
+  color: #410707;
 }
 
 .content-title > div {
   max-width: 100%;
   text-align: center;
+}
+
+.guard {
+  color: #410707;
 }
 
 .controls-row {
@@ -1109,8 +1163,18 @@ button:active {
   opacity: 0.35;
 }
 
+.desktop-only {
+  display: inline;
+}
+
+@media (max-width: 1085px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .content {
     background: #fdf1da;
     background: linear-gradient(
@@ -1119,6 +1183,10 @@ button:active {
       rgba(248, 231, 199, 1) 77%,
       rgb(255 231 189) 100%
     );
+  }
+
+  .guard {
+    display: none;
   }
 
   .reader-scroll-controls {
