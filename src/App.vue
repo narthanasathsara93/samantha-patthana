@@ -219,7 +219,7 @@
     :is-hard-reset-in-progress="isHardResetInProgress"
     @refresh="applySoftUpdate"
   />
-  <Guidance v-model="isGuidanceOpen" @close="closeGuidance" />
+  <Guidance v-model="isGuidanceOpen" @close="markGuidanceAsComplete" @close-only="closeGuidanceModal" />
 </template>
 
 <script setup>
@@ -367,6 +367,15 @@ const handleShowResources = () => {
 const handleCloseResourcesPanel = () => {
   isShowingResourcesPanel.value = false;
 };
+
+const closeGuidanceModal = () => {
+  closeGuidance({ complete: false });
+};
+
+const markGuidanceAsComplete = () => {
+  closeGuidance({ complete: true });
+};
+
 const {
   isAutoPlaying,
   toggleAutoplay: toggleAutoplayLogic,

@@ -1,6 +1,13 @@
 <template>
   <Teleport to="body">
-    <Transition name="guidance-fade">
+    <Transition
+      :name="
+        transitionDirection === 'next'
+          ? 'guidance-section-next'
+          : 'guidance-section-prev'
+      "
+      mode="out-in"
+    >
       <div v-if="modelValue" class="guidance-overlay" role="presentation">
         <section
           ref="dialogRef"
@@ -16,7 +23,7 @@
             class="guidance-close"
             type="button"
             aria-label="Close guidance"
-            @click="close"
+            @click="closeModal"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -104,7 +111,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "close"]);
+const emit = defineEmits(["update:modelValue", "close", "close-only"]);
+
+const transitionDirection = ref("next");
 
 const dialogRef = ref(null);
 const activeSectionIndex = ref(0);
@@ -112,7 +121,8 @@ let previousBodyOverflow = "";
 let previousBodyPaddingRight = "";
 let previousActiveElement = null;
 
-const mindset1Icon = getAssetUrl("icons/mindset1.png");
+// const mindset1Icon = getAssetUrl("icons/mindset1.png");
+//  <span class="info-icon" aria-hidden="true"><img class="info-icon" src="${mindset1Icon}" alt="" /></span>
 const guidanceSections = [
   {
     id: "chanting",
@@ -128,17 +138,17 @@ const guidanceSections = [
       {
         icon: "",
         title: "ප්‍රත්‍යයන් ශ්‍රවණය කිරීමට",
-        text: `පහළ ප්‍රධාන ධාවකයෙන් ආරම්භ කරන්න.<br><br>
+        text: `පහළ ප්‍රධාන ධාවකයෙන් ආරම්භ කරන්න.<br>
 (එක් ගාථාවක් ටච් හෝ ක්ලික් කිරීමෙන්ද එම ගාථා කොටසේ සිට ශ්‍රවණය කළ හැක.)`,
       },
       {
-        title: "සිංහල / පාලි පෙළ",
+        title: "සිංහල/පාලි පෙළ",
         text: `ඉහළ දකුණු පස 99 මගින් අවශ්‍ය පෙළ පිරික්සීමට හෝ සැඟවීමට හැක.`,
       },
       {
         title: "බුක්මාර්ක් කිරීමට",
-        text: `ඉහළ දකුණු පස 99 මගින් පසුව නැවත කියවීමට සටහන් කළ හැක.<br><br>
-(ඒවා පැති මෙනුවේ <span class="info-icon" aria-hidden="true"><img class="info-icon" src="${mindset1Icon}" alt="" /></span> මගින් සලකුණු වේ.)`,
+        text: `ඉහළ දකුණු පස 99 මගින් පසුව නැවත කියවීමට සටහන් කළ හැක.<br>
+(ඒවා පැති මෙනුවේ 88 මගින් සලකුණු වේ.)`,
       },
       {
         title: "අකුරු ප්‍රමාණය වෙනස් කිරීමට ",
@@ -146,9 +156,14 @@ const guidanceSections = [
       },
       {
         title: "පැති මෙනුවේ පහළ,",
-        text: `777 මගින් පුහුණුවීම් සඳහා පිවිසිය හැක.<br><br>
-777 මගින් අදහස් සහ යෝජනා අප වෙත එවිය හැක.<br><br>
-777 මගින් යොදාගත් මූලාශ්‍ර පරිශීලනය කළ හැක.<br><br>`,
+        text: `777 මගින් පුහුණුවීම් සඳහා පිවිසිය හැක.<br>
+777 මගින් අදහස් සහ යෝජනා අප වෙත එවිය හැක.<br>
+777 මගින් යොදාගත් මූලාශ්‍ර පරිශීලනය කළ හැක.<br>`,
+      },
+
+      {
+        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
+        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ⚙︎ මගින් පිවිසිය හැක.`,
       },
     ],
   },
@@ -158,23 +173,27 @@ const guidanceSections = [
     eyebrow: "මගපෙන්වීම",
     title: "පුහුණුව කොටස",
     description:
-      "Use practice mode when you want a more active review experience with simple prompts.",
+      "ඔබට අවශ්‍ය පුහුණු මට්ටම තෝරාගෙන සඟවා ඇති වචන මතකයෙන් ආවර්ජනය කරමින් පුහුණුවෙහි නිරත විය හැක.",
     steps: [
       {
-        title: "Use audio support",
-        text: "Play, pause, repeat sections, or listen while you read through the content.",
+        title: "අසීරුතා මට්ටම් තෝරා ගැනීම",
+        text: "ඔබේ ප්‍රවීණතාවය අනුව ආධුනික, මධ්‍යස්ථ, ප්‍රවීණ යන මට්ටම් 3ක් යටතේ තෝරා ගත හැක.",
       },
       {
-        title: "Save important places",
-        text: "Bookmark useful sections so you can return to them later without searching.",
+        title: "පුහුණු ආකාරය සැකසීම.",
+        text: `මෙය ප්‍රත්‍ය අහඹු ලෙස හෝ අනුපිළිවෙලින් දිස් වන ආකාරයට තෝරා ගත හැක.<br>
+ටයිමරය මගින් පුහුණු කාලයක් පනවා හෝ නොපනවාද භාවිත කළ හැක.<br>
+ටයිමරය සඳහා ඔබට සුදුසු කාලයක් මිනිත්තු වලින් පැනවිය හැක.<br>
+කාලය අවසන් වූ විට ස්වයංව පුහුණුව අවසන් වනු ඇත.`,
       },
       {
-        title: "Use audio support",
-        text: "Play, pause, repeat sections, or listen while you read through the content.",
+        title: "පාලක අයිතම",
+        text: `දකුණු පස ඉහළ කෙලවර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br>
+👁 මගින් පිළිතුර පිරික්සිය හැක.`,
       },
       {
-        title: "Save important places",
-        text: "Bookmark useful sections so you can return to them later without searching.",
+        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
+        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ⚙︎ මගින් පිවිසිය හැක.`,
       },
     ],
   },
@@ -195,6 +214,11 @@ const isLastSection = computed(
   () => activeSectionIndex.value === guidanceSections.length - 1,
 );
 
+function closeModal() {
+  emit("update:modelValue", false);
+  emit("close-only");
+}
+
 function close() {
   emit("update:modelValue", false);
   emit("close");
@@ -206,6 +230,7 @@ function handlePrimaryAction() {
     return;
   }
 
+  transitionDirection.value = "next";
   activeSectionIndex.value += 1;
 }
 
@@ -213,7 +238,7 @@ function showPreviousSection() {
   if (isFirstSection.value) {
     return;
   }
-
+  transitionDirection.value = "prev";
   activeSectionIndex.value -= 1;
 }
 
@@ -232,11 +257,9 @@ function handleKeydown(event) {
 function lockBodyScroll() {
   const scrollbarWidth =
     window.innerWidth - document.documentElement.clientWidth;
-
   previousBodyOverflow = document.body.style.overflow;
   previousBodyPaddingRight = document.body.style.paddingRight;
   document.body.style.overflow = "hidden";
-
   if (scrollbarWidth > 0) {
     document.body.style.paddingRight = `${scrollbarWidth}px`;
   }
@@ -255,7 +278,6 @@ watch(
       previousActiveElement = document.activeElement;
       lockBodyScroll();
       document.addEventListener("keydown", handleKeydown);
-
       await nextTick();
       dialogRef.value?.focus({ preventScroll: true });
       return;
@@ -297,9 +319,11 @@ onBeforeUnmount(() => {
 
 .guidance-dialog {
   position: relative;
-  width: min(100%, 560px);
-  max-height: min(640px, calc(100dvh - 32px));
-  overflow-y: auto;
+  width: min(100%, 699px);
+  max-height: min(782px, calc(100dvh - 32px));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
   padding: 22px;
   border: 1px solid rgba(90, 42, 24, 0.14);
   border-radius: 18px;
@@ -310,10 +334,11 @@ onBeforeUnmount(() => {
       rgba(252, 239, 215, 0.98)
     ),
     #fff8ec;
-  color: #2b1b15;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
-  outline: none;
 }
+
+/* -------------------------------- */
+/* CLOSE BUTTON */
+/* -------------------------------- */
 
 .guidance-close {
   position: absolute;
@@ -341,8 +366,13 @@ onBeforeUnmount(() => {
   transform: scale(1.04);
 }
 
+/* -------------------------------- */
+/* HEADER */
+/* -------------------------------- */
+
 .guidance-header {
   padding-right: 32px;
+  flex-shrink: 0;
 }
 
 .guidance-mark {
@@ -390,16 +420,23 @@ onBeforeUnmount(() => {
 
 .guidance-header p {
   margin: 10px 0 0;
-  max-width: 460px;
   color: #664536;
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 19px;
 }
 
+/* -------------------------------- */
+/* STEPS */
+/* -------------------------------- */
+
 .guidance-steps {
+  position: relative;
   display: grid;
   gap: 8px;
   margin-top: 18px;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 6px;
+  scrollbar-width: thin;
 }
 
 .guidance-step {
@@ -410,8 +447,21 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(84, 35, 18, 0.1);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.52);
-  animation: guidanceStepIn 0.42s ease both;
+
+  animation: guidanceStepIn 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+
   animation-delay: var(--step-delay);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.guidance-step:hover {
+  transform: translateY(-1px);
+  border-color: rgba(84, 35, 18, 0.16);
+  box-shadow: 0 10px 24px rgba(84, 35, 18, 0.08);
 }
 
 .guidance-step-number {
@@ -434,22 +484,31 @@ onBeforeUnmount(() => {
   gap: 8px;
   margin: 0;
   color: #37180f;
-  font-size: 15px;
+  font-size: 21px;
   line-height: 1.25;
 }
 
-.guidance-step-copy p {
+.guidance-step-copy p,
+.guidance-step-copy div {
   margin: 5px 0 0;
-  color: #6d4a3d;
-  font-size: 13px;
-  line-height: 1.45;
+  color: #2b2827;
+  font-size: 17px;
+  line-height: 1.55;
 }
+
+/* -------------------------------- */
+/* ACTIONS */
+/* -------------------------------- */
 
 .guidance-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 16px;
+  flex-shrink: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(84, 35, 18, 0.08);
+  background: rgb(252 240 218);
 }
 
 .guidance-primary,
@@ -461,6 +520,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   font-size: 14px;
   font-weight: 800;
+
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -488,9 +548,13 @@ onBeforeUnmount(() => {
   transform: scale(0.98);
 }
 
+/* -------------------------------- */
+/* MODAL OPEN/CLOSE */
+/* -------------------------------- */
+
 .guidance-fade-enter-active,
 .guidance-fade-leave-active {
-  transition: opacity 0.22s ease;
+  transition: opacity 0.28s ease;
 }
 
 .guidance-fade-enter-from,
@@ -501,32 +565,63 @@ onBeforeUnmount(() => {
 .guidance-fade-enter-active .guidance-dialog,
 .guidance-fade-leave-active .guidance-dialog {
   transition:
-    opacity 0.24s ease,
-    transform 0.24s ease;
+    opacity 0.34s ease,
+    transform 0.34s ease,
+    filter 0.34s ease;
 }
 
 .guidance-fade-enter-from .guidance-dialog,
 .guidance-fade-leave-to .guidance-dialog {
   opacity: 0;
-  transform: translateY(10px) scale(0.97);
+  transform: translateY(12px) scale(0.97);
+  filter: blur(6px);
 }
 
-.guidance-section-enter-active,
-.guidance-section-leave-active {
+/* -------------------------------- */
+/* SECTION TRANSITIONS */
+/* -------------------------------- */
+
+.guidance-section-next-enter-active,
+.guidance-section-next-leave-active,
+.guidance-section-prev-enter-active,
+.guidance-section-prev-leave-active {
   transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
+    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.guidance-section-enter-from {
+/* NEXT */
+
+.guidance-section-next-enter-from {
   opacity: 0;
-  transform: translateX(10px);
+  transform: translateX(26px) scale(0.985);
+  filter: blur(5px);
 }
 
-.guidance-section-leave-to {
+.guidance-section-next-leave-to {
   opacity: 0;
-  transform: translateX(-10px);
+  transform: translateX(-26px) scale(0.985);
+  filter: blur(5px);
 }
+
+/* PREVIOUS */
+
+.guidance-section-prev-enter-from {
+  opacity: 0;
+  transform: translateX(-26px) scale(0.985);
+  filter: blur(5px);
+}
+
+.guidance-section-prev-leave-to {
+  opacity: 0;
+  transform: translateX(26px) scale(0.985);
+  filter: blur(5px);
+}
+
+/* -------------------------------- */
+/* ICONS */
+/* -------------------------------- */
 
 .step-icon,
 .section-icon {
@@ -538,17 +633,28 @@ onBeforeUnmount(() => {
   width: 15px;
   height: 15px;
 }
+
+/* -------------------------------- */
+/* STEP ENTRANCE */
+/* -------------------------------- */
+
 @keyframes guidanceStepIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px) scale(0.985);
+    filter: blur(4px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
+
+/* -------------------------------- */
+/* MOBILE */
+/* -------------------------------- */
 
 @media (max-width: 480px) {
   .guidance-overlay {
@@ -567,18 +673,24 @@ onBeforeUnmount(() => {
     font-size: 21px;
   }
 
+  .guidance-header p {
+    font-size: 17px;
+  }
+
+  .guidance-step-copy h3 {
+    font-size: 18px;
+  }
+
+  .guidance-step-copy p,
+  .guidance-step-copy div {
+    font-size: 16px;
+  }
+
   .guidance-actions {
-    position: sticky;
-    bottom: -18px;
-    margin-left: -18px;
-    margin-right: -18px;
-    margin-bottom: -18px;
-    padding: 12px 18px 18px;
-    background: linear-gradient(
-      180deg,
-      rgba(252, 239, 215, 0),
-      rgba(252, 239, 215, 0.98) 28%
-    );
+    position: relative;
+    bottom: auto;
+    margin: 0;
+    padding-top: 14px;
   }
 
   .guidance-primary,
@@ -587,13 +699,19 @@ onBeforeUnmount(() => {
   }
 }
 
+/* -------------------------------- */
+/* REDUCED MOTION */
+/* -------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
   .guidance-fade-enter-active,
   .guidance-fade-leave-active,
   .guidance-fade-enter-active .guidance-dialog,
   .guidance-fade-leave-active .guidance-dialog,
-  .guidance-section-enter-active,
-  .guidance-section-leave-active,
+  .guidance-section-next-enter-active,
+  .guidance-section-next-leave-active,
+  .guidance-section-prev-enter-active,
+  .guidance-section-prev-leave-active,
   .guidance-step {
     animation: none;
     transition: none;
