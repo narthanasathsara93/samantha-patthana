@@ -375,8 +375,13 @@ const {
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useSidebar();
 const { isBookmarked, toggleBookmark, loadBookmarks } = useBookmarks();
 useBfcache(); // Initialize bfcache optimization
-const { isUpdateAvailable, isRefreshing, isHardResetInProgress, checkVersion, applySoftUpdate } =
-  useAppVersion();
+const {
+  isUpdateAvailable,
+  isRefreshing,
+  isHardResetInProgress,
+  checkVersion,
+  applySoftUpdate,
+} = useAppVersion();
 const { isGuidanceOpen, initializeGuidance, closeGuidance } = useGuidance();
 const route = useRoute();
 const router = useRouter();
@@ -828,25 +833,12 @@ resetActiveAudioRange();
 
 <style>
 /* ===== Global ===== */
-@font-face {
-  font-family: "UN Arundathee";
-  src: url("./assets/fonts/un_arundathee.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "UN Ganganee";
-  src: url("./assets/fonts/un_ganganee.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
 
 body {
   margin: 0;
   background: linear-gradient(#4b1e1e, #7a1f1f);
   font-family:
-    "Noto Sans Arundathee",
+    "Abhaya Libre",
     serif,
     "Noto Sans Sinhala",
     -apple-system,
