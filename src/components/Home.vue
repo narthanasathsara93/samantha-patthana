@@ -142,9 +142,6 @@ watch(hasCompletedGuidance, (isCompleted) => {
   padding-left: 24px;
   padding-right: 24px;
 }
-.settings-btn {
-  display: none;
-}
 
 .hero-content {
   font-weight: 600;
@@ -251,6 +248,37 @@ watch(hasCompletedGuidance, (isCompleted) => {
   width: 24px;
   height: auto;
 }
+
+
+  .settings-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #6f1f0e;
+    cursor: pointer;
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .settings-btn:hover {
+    transform: rotate(45deg);
+  }
+
+  .gear-icon {
+    width: 20px;
+    height: auto;
+  }
+
 
 @keyframes fadeIn {
   from {
