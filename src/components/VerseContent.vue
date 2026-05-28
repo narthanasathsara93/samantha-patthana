@@ -209,11 +209,6 @@ defineExpose({
   scrollToAudioSection,
 });
 
-// const getContent = () => {
-//   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-//   const result = normalized.replace(/\n/g, "<br>");
-//   return result;
-// };
 </script>
 
 <style scoped>

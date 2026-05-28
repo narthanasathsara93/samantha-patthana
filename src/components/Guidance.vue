@@ -1,12 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="guidance-fade">
-      <div
-        v-if="modelValue"
-        class="guidance-overlay"
-        role="presentation"
-        @click="handleOverlayClick"
-      >
+      <div v-if="modelValue" class="guidance-overlay" role="presentation">
         <section
           ref="dialogRef"
           class="guidance-dialog"
@@ -28,7 +23,11 @@
 
           <div class="guidance-header">
             <span class="guidance-mark" aria-hidden="true">
-              {{ activeSection.icon }}
+              <img
+                class="section-icon"
+                :src="getIcon(activeSection.icon)"
+                alt=""
+              />
             </span>
             <p class="guidance-eyebrow">
               {{ activeSection.eyebrow }}
@@ -59,18 +58,32 @@
                 </div>
                 <div class="guidance-step-copy">
                   <h3>
-                    <span aria-hidden="true">{{ step.icon }}</span>
+                    <span aria-hidden="true" v-if="step.icon">
+                      <img class="step-icon" :src="getIcon(step.icon)" alt="" />
+                    </span>
                     {{ step.title }}
                   </h3>
-                  <p>{{ step.text }}</p>
+                  <div v-html="step.text"></div>
                 </div>
               </article>
             </div>
           </Transition>
 
           <div class="guidance-actions">
-            <button class="guidance-primary" type="button" @click="handlePrimaryAction">
-              {{ isLastSection ? "Got it" : "Next" }}
+            <button
+              v-if="!isFirstSection"
+              class="guidance-secondary"
+              type="button"
+              @click="showPreviousSection"
+            >
+              පෙර
+            </button>
+            <button
+              class="guidance-primary"
+              type="button"
+              @click="handlePrimaryAction"
+            >
+              {{ isLastSection ? "පිවිසෙන්න" : "ඊළඟ" }}
             </button>
           </div>
         </section>
@@ -81,6 +94,8 @@
 
 <script setup>
 import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
+
+import { getAssetUrl } from "../utils/assets";
 
 const props = defineProps({
   modelValue: {
@@ -97,62 +112,85 @@ let previousBodyOverflow = "";
 let previousBodyPaddingRight = "";
 let previousActiveElement = null;
 
+const mindset1Icon = getAssetUrl("icons/mindset1.png");
 const guidanceSections = [
   {
     id: "chanting",
-    icon: "\u{1F3A7}",
-    eyebrow: "Normal chanting",
-    title: "Start chanting with the reader",
-    description:
-      "Use the normal chanting path when you want to read, listen, and move through the verses calmly.",
+    icon: "reading.png",
+    eyebrow: "මගපෙන්වීම",
+    title: "සජ්ඣායනය කොටස",
+    description: "මෙම කොටස දෛනික සජ්ඣායනය සහ කටපාඩම් කිරීම සඳහා යෝග්‍යවේ.",
     steps: [
       {
-        icon: "\u{1F4D6}",
-        title: "Open the reader",
-        text: "Tap Begin to enter the chanting reader and follow the text at your own pace.",
+        title: "කැමති ප්‍රත්‍යයන් තේරීම",
+        text: `වම් පැති මෙනුවේ හෝ ඉහළ 99 මගින් පිවිසී කැමති ප්‍රත්‍යක් තේරිය හැක.`,
       },
       {
-        icon: "\u{1F50A}",
-        title: "Use audio support",
-        text: "Play, pause, repeat sections, or listen while you read through the content.",
+        icon: "",
+        title: "ප්‍රත්‍යයන් ශ්‍රවණය කිරීමට",
+        text: `පහළ ප්‍රධාන ධාවකයෙන් ආරම්භ කරන්න.<br><br>
+(එක් ගාථාවක් ටච් හෝ ක්ලික් කිරීමෙන්ද එම ගාථා කොටසේ සිට ශ්‍රවණය කළ හැක.)`,
       },
       {
-        icon: "\u{2B50}",
-        title: "Save important places",
-        text: "Bookmark useful sections so you can return to them later without searching.",
+        title: "සිංහල / පාලි පෙළ",
+        text: `ඉහළ දකුණු පස 99 මගින් අවශ්‍ය පෙළ පිරික්සීමට හෝ සැඟවීමට හැක.`,
+      },
+      {
+        title: "බුක්මාර්ක් කිරීමට",
+        text: `ඉහළ දකුණු පස 99 මගින් පසුව නැවත කියවීමට සටහන් කළ හැක.<br><br>
+(ඒවා පැති මෙනුවේ <span class="info-icon" aria-hidden="true"><img class="info-icon" src="${mindset1Icon}" alt="" /></span> මගින් සලකුණු වේ.)`,
+      },
+      {
+        title: "අකුරු ප්‍රමාණය වෙනස් කිරීමට ",
+        text: `ඉහළ දකුණු පස 99 මගින් ඔබට පහසු ලෙස අකුරු විශාලත්වය වෙනස් කළ හැක.`,
+      },
+      {
+        title: "පැති මෙනුවේ පහළ,",
+        text: `777 මගින් පුහුණුවීම් සඳහා පිවිසිය හැක.<br><br>
+777 මගින් අදහස් සහ යෝජනා අප වෙත එවිය හැක.<br><br>
+777 මගින් යොදාගත් මූලාශ්‍ර පරිශීලනය කළ හැක.<br><br>`,
       },
     ],
   },
   {
     id: "practice",
     icon: "\u{1F9D8}",
-    eyebrow: "Practice mode",
-    title: "Practice in small guided steps",
+    eyebrow: "මගපෙන්වීම",
+    title: "පුහුණුව කොටස",
     description:
       "Use practice mode when you want a more active review experience with simple prompts.",
     steps: [
       {
-        icon: "\u{1F3AF}",
-        title: "Choose a level",
-        text: "Start with the practice level that feels comfortable and continue gradually.",
+        title: "Use audio support",
+        text: "Play, pause, repeat sections, or listen while you read through the content.",
       },
       {
-        icon: "\u{1F9E0}",
-        title: "Answer gently",
-        text: "Review each prompt without rushing; the goal is familiarity and steady progress.",
+        title: "Save important places",
+        text: "Bookmark useful sections so you can return to them later without searching.",
       },
       {
-        icon: "\u{2728}",
-        title: "Review your result",
-        text: "Use the result screen as feedback, then repeat any area that needs more care.",
+        title: "Use audio support",
+        text: "Play, pause, repeat sections, or listen while you read through the content.",
+      },
+      {
+        title: "Save important places",
+        text: "Bookmark useful sections so you can return to them later without searching.",
       },
     ],
   },
 ];
 
+const getIcon = (icon) => {
+  console.log("icon : ", icon);
+  const x = getAssetUrl(`icons/${icon}`);
+  console.log(x);
+  return x;
+};
+
 const activeSection = computed(
   () => guidanceSections[activeSectionIndex.value] || guidanceSections[0],
 );
+const isFirstSection = computed(() => activeSectionIndex.value === 0);
 const isLastSection = computed(
   () => activeSectionIndex.value === guidanceSections.length - 1,
 );
@@ -171,16 +209,18 @@ function handlePrimaryAction() {
   activeSectionIndex.value += 1;
 }
 
+function showPreviousSection() {
+  if (isFirstSection.value) {
+    return;
+  }
+
+  activeSectionIndex.value -= 1;
+}
+
 function getStepStyle(index) {
   return {
     "--step-delay": `${index * 60}ms`,
   };
-}
-
-function handleOverlayClick(event) {
-  if (event.target === event.currentTarget) {
-    close();
-  }
 }
 
 function handleKeydown(event) {
@@ -190,7 +230,8 @@ function handleKeydown(event) {
 }
 
 function lockBodyScroll() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
 
   previousBodyOverflow = document.body.style.overflow;
   previousBodyPaddingRight = document.body.style.paddingRight;
@@ -239,6 +280,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .guidance-overlay {
+  font-family: "Abhaya Libre", serif;
   position: fixed;
   inset: 0;
   z-index: 1500;
@@ -262,7 +304,11 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(90, 42, 24, 0.14);
   border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(255, 251, 242, 0.98), rgba(252, 239, 215, 0.98)),
+    linear-gradient(
+      180deg,
+      rgba(255, 251, 242, 0.98),
+      rgba(252, 239, 215, 0.98)
+    ),
     #fff8ec;
   color: #2b1b15;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
@@ -329,7 +375,7 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   background: rgba(84, 35, 18, 0.08);
   color: #5e3828;
-  font-size: 11px;
+  font-size: 17px;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -337,7 +383,7 @@ onBeforeUnmount(() => {
 .guidance-header h2 {
   margin: 0;
   color: #35170f;
-  font-size: 24px;
+  font-size: 26px;
   line-height: 1.14;
   letter-spacing: 0;
 }
@@ -482,6 +528,16 @@ onBeforeUnmount(() => {
   transform: translateX(-10px);
 }
 
+.step-icon,
+.section-icon {
+  width: 15px;
+  height: auto;
+}
+
+.info-icon {
+  width: 15px;
+  height: 15px;
+}
 @keyframes guidanceStepIn {
   from {
     opacity: 0;
