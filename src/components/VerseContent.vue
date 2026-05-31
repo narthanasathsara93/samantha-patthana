@@ -209,11 +209,6 @@ defineExpose({
   scrollToAudioSection,
 });
 
-// const getContent = () => {
-//   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-//   const result = normalized.replace(/\n/g, "<br>");
-//   return result;
-// };
 </script>
 
 <style scoped>
@@ -227,6 +222,11 @@ defineExpose({
 
 .reader-content {
   font-weight: 600;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .reader-content,
@@ -240,6 +240,11 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 18px;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .verse-audio-section {
