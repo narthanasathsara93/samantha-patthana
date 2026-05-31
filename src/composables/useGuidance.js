@@ -5,6 +5,7 @@ const STORAGE_KEY = "app_guidance_completed";
 const isOpen = ref(false);
 const isReady = ref(false);
 const hasCompleted = ref(false);
+const showContinueLabel = ref(true);
 
 function canUseStorage() {
   return (
@@ -52,11 +53,13 @@ export function useGuidance() {
     }
   }
 
-  function openGuidance({ force = true } = {}) {
+  function openGuidance({ force = true, continueLabel = true } = {}) {
     if (!isReady.value) {
       hasCompleted.value = readCompletionState();
       isReady.value = true;
     }
+
+    showContinueLabel.value = continueLabel;
 
     if (force || !hasCompleted.value) {
       isOpen.value = true;
@@ -90,6 +93,7 @@ export function useGuidance() {
     isGuidanceOpen: isOpen,
     isGuidanceReady: isReady,
     hasCompletedGuidance: hasCompleted,
+    showContinueLabel,
     shouldShowOnboarding,
     initializeGuidance,
     openGuidance,

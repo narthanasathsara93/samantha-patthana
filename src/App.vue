@@ -219,7 +219,13 @@
     :is-hard-reset-in-progress="isHardResetInProgress"
     @refresh="applySoftUpdate"
   />
-  <Guidance v-model="isGuidanceOpen" @close="markGuidanceAsComplete" @close-only="closeGuidanceModal" />
+
+  <Guidance
+    v-model="isGuidanceOpen"
+    :show-continue-label="showContinueLabel"
+    @close="markGuidanceAsComplete"
+    @close-only="closeGuidanceModal"
+  />
 </template>
 
 <script setup>
@@ -391,7 +397,8 @@ const {
   checkVersion,
   applySoftUpdate,
 } = useAppVersion();
-const { isGuidanceOpen, initializeGuidance, closeGuidance } = useGuidance();
+const { isGuidanceOpen, showContinueLabel, initializeGuidance, closeGuidance } =
+  useGuidance();
 const route = useRoute();
 const router = useRouter();
 const pullToReload = {

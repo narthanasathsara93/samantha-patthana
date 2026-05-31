@@ -1,13 +1,6 @@
 <template>
   <Teleport to="body">
-    <Transition
-      :name="
-        transitionDirection === 'next'
-          ? 'guidance-section-next'
-          : 'guidance-section-prev'
-      "
-      mode="out-in"
-    >
+    <Transition name="guidance-fade" mode="out-in">
       <div v-if="modelValue" class="guidance-overlay" role="presentation">
         <section
           ref="dialogRef"
@@ -28,54 +21,67 @@
             <span aria-hidden="true">&times;</span>
           </button>
 
-          <div class="guidance-header">
-            <span class="guidance-mark" aria-hidden="true">
-              <img
-                class="section-icon"
-                :src="getIcon(activeSection.icon)"
-                alt=""
-              />
-            </span>
-            <p class="guidance-eyebrow">
-              {{ activeSection.eyebrow }}
-              <span class="guidance-progress">
-                {{ activeSectionIndex + 1 }} / {{ guidanceSections.length }}
-              </span>
-            </p>
-            <h2 id="guidance-title">{{ activeSection.title }}</h2>
-            <p id="guidance-description">
-              {{ activeSection.description }}
-            </p>
-          </div>
-
-          <Transition name="guidance-section" mode="out-in">
+          <Transition
+            :name="
+              transitionDirection === 'next'
+                ? 'guidance-section-next'
+                : 'guidance-section-prev'
+            "
+            mode="out-in"
+          >
             <div
               :key="activeSection.id"
-              class="guidance-steps"
+              class="guidance-section-panel"
               aria-label="Application guidance"
             >
-              <article
-                v-for="(step, index) in activeSection.steps"
-                :key="step.title"
-                class="guidance-step"
-                :style="getStepStyle(index)"
-              >
-                <div class="guidance-step-number" aria-hidden="true">
-                  {{ index + 1 }}
-                </div>
-                <div class="guidance-step-copy">
-                  <h3>
-                    <span aria-hidden="true" v-if="step.icon">
-                      <img class="step-icon" :src="getIcon(step.icon)" alt="" />
-                    </span>
-                    {{ step.title }}
-                  </h3>
-                  <div v-html="step.text"></div>
-                </div>
-              </article>
+              <div class="guidance-header">
+                <span class="guidance-mark" aria-hidden="true">
+                  <img
+                    class="section-icon"
+                    :src="getIcon(activeSection.icon)"
+                    alt=""
+                  />
+                </span>
+
+                <p class="guidance-eyebrow">
+                  {{ activeSection.eyebrow }}
+                  <span class="guidance-progress">
+                    {{ activeSectionIndex + 1 }} / {{ guidanceSections.length }}
+                  </span>
+                </p>
+                <h2 id="guidance-title">{{ activeSection.title }}</h2>
+                <p id="guidance-description">
+                  {{ activeSection.description }}
+                </p>
+              </div>
+
+              <div class="guidance-steps">
+                <article
+                  v-for="(step, index) in activeSection.steps"
+                  :key="step.title"
+                  class="guidance-step"
+                  :style="getStepStyle(index)"
+                >
+                  <div class="guidance-step-number" aria-hidden="true">
+                    {{ index + 1 }}
+                  </div>
+                  <div class="guidance-step-copy">
+                    <h3>
+                      <span aria-hidden="true" v-if="step.icon">
+                        <img
+                          class="step-icon"
+                          :src="getIcon(step.icon)"
+                          alt=""
+                        />
+                      </span>
+                      {{ step.title }}
+                    </h3>
+                    <div v-html="step.text"></div>
+                  </div>
+                </article>
+              </div>
             </div>
           </Transition>
-
           <div class="guidance-actions">
             <button
               v-if="!isFirstSection"
@@ -90,7 +96,7 @@
               type="button"
               @click="handlePrimaryAction"
             >
-              {{ isLastSection ? "පිවිසෙන්න" : "ඊළඟ" }}
+              {{ isLastSection ? (showContinueLabel ? "පිවිසෙන්න" : "සැකසුම් වෙත") : "ඊළඟ" }}
             </button>
           </div>
         </section>
@@ -108,6 +114,10 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false,
+  },
+  showContinueLabel: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -322,7 +332,7 @@ onBeforeUnmount(() => {
   width: min(100%, 699px);
   max-height: min(782px, calc(100dvh - 32px));
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
   padding: 22px;
   border: 1px solid rgba(90, 42, 24, 0.14);
@@ -427,6 +437,13 @@ onBeforeUnmount(() => {
 /* -------------------------------- */
 /* STEPS */
 /* -------------------------------- */
+
+.guidance-section-panel {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  will-change: opacity, transform, filter;
+}
 
 .guidance-steps {
   position: relative;
@@ -586,37 +603,37 @@ onBeforeUnmount(() => {
 .guidance-section-prev-enter-active,
 .guidance-section-prev-leave-active {
   transition:
-    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* NEXT */
 
 .guidance-section-next-enter-from {
   opacity: 0;
-  transform: translateX(26px) scale(0.985);
-  filter: blur(5px);
+  transform: translate3d(18px, 4px, 0) scale(0.992);
+  filter: blur(3px);
 }
 
 .guidance-section-next-leave-to {
   opacity: 0;
-  transform: translateX(-26px) scale(0.985);
-  filter: blur(5px);
+  transform: translate3d(-18px, -4px, 0) scale(0.992);
+  filter: blur(3px);
 }
 
 /* PREVIOUS */
 
 .guidance-section-prev-enter-from {
   opacity: 0;
-  transform: translateX(-26px) scale(0.985);
-  filter: blur(5px);
+  transform: translate3d(-18px, 4px, 0) scale(0.992);
+  filter: blur(3px);
 }
 
 .guidance-section-prev-leave-to {
   opacity: 0;
-  transform: translateX(26px) scale(0.985);
-  filter: blur(5px);
+  transform: translate3d(18px, -4px, 0) scale(0.992);
+  filter: blur(3px);
 }
 
 /* -------------------------------- */
