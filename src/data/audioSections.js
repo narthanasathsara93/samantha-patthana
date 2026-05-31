@@ -1565,8 +1565,8 @@ export const audioSections = {
   ],
   "verse-28": [
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "47:31",
+      endAt: "47:48",
       content:
         "ඝටීකාරෝ බ්‍රහ්මරාජා<br>\n" +
         "ඉමං පුඤ්ඤානුමෝදතු!<br>\n" +
@@ -1578,8 +1578,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ සාසනං",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "47:49",
+      endAt: "48:06",
       content:
         "සක්කෝ දේවානමින්දෝ<br>\n" +
         "ඉමං පුඤ්ඤානුමෝදතු!<br>\n" +
@@ -1591,8 +1591,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ සාසනං",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "48:07",
+      endAt: "48:27",
       content:
         "පුරිමං දිසං ධතරට්ඨෝ<br>\n" +
         "දක්ඛිණේන විරූළ්හකෝ<br>\n" +
@@ -1604,8 +1604,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ සාසනං!",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "48:28",
+      endAt: "49:26",
       content:
         "ඉන්දෝ සෝමෝ වරුණෝ ච<br>\n" +
         "භාරද්වාජෝ පජාපතී,<br>\n" +
@@ -1631,8 +1631,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ සාසනං.",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "49:27",
+      endAt: "49:38",
       content:
         "ආකාසට්ඨා ච භුම්මට්ඨා<br>\n" +
         "දේවා නාගා මහිද්ධිකා<br>\n" +
@@ -1640,8 +1640,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ සාසනං",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "49:39",
+      endAt: "49:50",
       content:
         "ආකාසට්ඨා ච භුම්මට්ඨා<br>\n" +
         "දේවා නාගා මහිද්ධිකා<br>\n" +
@@ -1649,8 +1649,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු බුද්ධ දේසනං",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "49:51",
+      endAt: "50:04",
       content:
         "ආකාසට්ඨා ච භුම්මට්ඨා<br>\n" +
         "දේවා නාගා මහිද්ධිකා<br>\n" +
@@ -1659,8 +1659,8 @@ export const audioSections = {
         "චිරං රක්ඛන්තු මං පරන්ති",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "50:05",
+      endAt: "50:20",
       content:
         "එත්තාවතාච අම්හෙහි<br>\n" +
         "සම්භතං පුඤ්ඤ සම්පදං<br>\n" +
@@ -1670,13 +1670,13 @@ export const audioSections = {
         "සබ්බ සම්පත්ති සිද්ධියා",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "50:21",
+      endAt: "50:24",
       content: "සාධූ! සාධූ!! සාධූ!!!",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "50:25",
+      endAt: "50:43",
       content:
         "කප්ප සත සහස්සානි<br>\n" +
         "සෝලසාපි අසංඛියේ<br>\n" +
@@ -1688,8 +1688,8 @@ export const audioSections = {
         "පුඤ්ඤං මේ අනුමෝදතු",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "50:44",
+      endAt: "51:02",
       content:
         "අස්මිං විහාරේච ආරාමේ<br>\n" +
         "අධිවත්තාච දේවතා<br>\n" +
@@ -1701,8 +1701,8 @@ export const audioSections = {
         "බුජ්ධන්තු අමතං පදං",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "51:03",
+      endAt: "51:14",
       content:
         "ඉදං වෝ ඤාතිනං හෝතු<br>\n" +
         "සුඛිතා හොන්තු ඤාතයෝ<br>\n" +
@@ -1712,8 +1712,8 @@ export const audioSections = {
         "සුඛිතා හොන්තු ඤාතයෝ",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "51:15",
+      endAt: "51:42",
       content:
         "සබ්බේ සංඛාරා අනිච්චාති යදා පඤ්ඤාය පස්සති<br>\n" +
         "අථ නිබ්බින්දති දුක්ඛේ ඒස මග්ගෝ විසුද්ධියා<br>\n" +
@@ -1723,8 +1723,8 @@ export const audioSections = {
         "අථ නිබ්බින්දති දුක්ඛේ ඒස මග්ගෝ විසුද්ධියා",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "51:43",
+      endAt: "52:01",
       content:
         "අප්පමාදේන භික්ඛවේ සම්පාදේථ<br>\n" +
         "දුල්ලභෝ බුද්ධුප්පාදෝ ලෝකස්මිං<br>\n" +
@@ -1735,8 +1735,8 @@ export const audioSections = {
         "දුල්ලභෝ සප්පුරිස සංසේවෝ",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "52:02",
+      endAt: "52:20",
       content:
         "ඉමාය ධම්මානුධම්ම පටිපත්තියා බුද්ධං පූජේමි<br>\n" +
         "ඉමාය ධම්මානුධම්ම පටිපත්තියා ධම්මං පූජේමි<br>\n" +
@@ -1744,25 +1744,25 @@ export const audioSections = {
         "අද්ධා ඉමාය පටිපත්තියා ජාති ජරා මරණම්හා පරිමුච්චිස්සාමි.",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "52:21",
+      endAt: "52:23",
       content:
         "කායෙන වාචා චිත්තේන පමාදෙන මයා කතං<br>\nඅච්චයං ඛම මේ භන්තෙ භූරිපඤ්ඤ තථගත",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "52:24",
+      endAt: "52:26",
       content:
         "කායෙන වාචා චිත්තේන පමාදෙන මයා කතං<br>\n" +
         "අච්චයං ඛම මේ ධම්ම සන්ධිට්ඨික අකාලික",
     },
     {
-      startAt: "0",
-      endAt: "0",
+      startAt: "52:27",
+      endAt: "52:30",
       content:
         "කායෙන වාචා චිත්තේන පමාදෙන මයා කතං<br>\n" +
         "අච්චයං ඛම මේ සංඝ පුඤ්ඤක්ඛෙත්ත අනුත්තර",
     },
-    { startAt: "0", endAt: "0", content: "සාධූ! සාධූ! සාධූ!" },
+    { startAt: "52:29", endAt: "52:30", content: "සාධූ! සාධූ! සාධූ!" },
   ],
 };

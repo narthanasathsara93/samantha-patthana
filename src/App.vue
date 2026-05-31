@@ -137,10 +137,10 @@
             <AudioPlayer
               v-if="
                 !isShowingResourcesPanel &&
-                !isSinhalaTextView &&
-                route.name !== 'punyanumodana'
+                !isSinhalaTextView
               "
               ref="audioPlayerRef"
+              :class="{ 'punyanumodana-audio-player': isRoutePunyanumodana }"
               :audio-src="selectedVerseAudio"
               :hls-src="selectedVerseHlsAudio"
               :start-at="activeAudioStartAt"
@@ -298,6 +298,7 @@ const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
+const pendingManualAudioSectionIndex = ref(-1);
 const isPlayerManuallyToggled = ref(false);
 let autoplayControlsHideTimer = null;
 let playerAutoHideTimer = null;
@@ -519,6 +520,7 @@ function resetActiveAudioRange() {
   activeAudioStartAt.value = selectedVerse.value?.audioStartAt ?? null;
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? null;
   activeAudioSectionIndex.value = -1;
+  pendingManualAudioSectionIndex.value = -1;
 }
 
 function handlePlayAudioSection(section, index = -1) {
@@ -528,6 +530,7 @@ function handlePlayAudioSection(section, index = -1) {
 
   // If clicking same section while playing, toggle pause
   if (isSameSection && isPlaying) {
+    pendingManualAudioSectionIndex.value = -1;
     audio.pause();
     return;
   }
@@ -536,6 +539,7 @@ function handlePlayAudioSection(section, index = -1) {
   activeAudioStartAt.value = section.startAt;
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
   activeAudioSectionIndex.value = index;
+  pendingManualAudioSectionIndex.value = index;
 
   // Always play the section
   nextTick(() => {
@@ -655,6 +659,14 @@ function handleAudioTimeUpdate(currentTime) {
   }
 
   const sectionIndex = getAudioSectionIndex(currentTime);
+
+  if (pendingManualAudioSectionIndex.value !== -1) {
+    if (sectionIndex === pendingManualAudioSectionIndex.value) {
+      pendingManualAudioSectionIndex.value = -1;
+    }
+
+    return;
+  }
 
   if (sectionIndex === -1 || sectionIndex === activeAudioSectionIndex.value) {
     return;
@@ -934,6 +946,19 @@ button:active {
   width: 0;
   height: 0;
   display: none;
+}
+
+.punyanumodana-audio-player {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  clip-path: inset(50%) !important;
 }
 
 /* ===== Container ===== */
