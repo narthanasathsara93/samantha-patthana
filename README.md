@@ -24,13 +24,5 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
-
-
-### TODO
-
-when audio player is currently paused or havent started, if use touch, click any section, no need to play the audio..
-
-
-
-### DONE
-
+### Icons
+<a href="https://www.flaticon.com/free-icons/manual" title="manual icons">Manual icons created by Freepik - Flaticon</a>
