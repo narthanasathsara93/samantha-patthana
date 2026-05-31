@@ -297,12 +297,12 @@ export const verses = [
   },
   {
     id: "verse-28",
-    title: "දේව පුණ්‍යානුමෝදනා",
+    title: "දේවතා පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
-    audioStartAt: 0,
-    audioEndAt: 0,
+    audioStartAt:'47:31',
+    audioEndAt: '52:30',
     audioSectionsKey: "verse-28",
-    sinhalaTitle: "Sinhal ප්‍රත්‍ය යනු",
+    sinhalaTitle: "",
   },
 ];
