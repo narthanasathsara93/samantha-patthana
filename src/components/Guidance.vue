@@ -18,7 +18,7 @@
             aria-label="Close guidance"
             @click="closeModal"
           >
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">×</span>
           </button>
 
           <Transition
@@ -49,7 +49,17 @@
                     {{ activeSectionIndex + 1 }} / {{ guidanceSections.length }}
                   </span>
                 </p>
-                <h2 id="guidance-title">{{ activeSection.title }}</h2>
+
+                <h2 id="guidance-title">
+                  {{ activeSection.title }}
+                  <span class="guidance-title-icon" aria-hidden="true">
+                    <img
+                      class="title-icon"
+                      :src="getIcon(activeSection.titleIcon)"
+                      alt=""
+                    />
+                  </span>
+                </h2>
                 <p id="guidance-description">
                   {{ activeSection.description }}
                 </p>
@@ -96,7 +106,13 @@
               type="button"
               @click="handlePrimaryAction"
             >
-              {{ isLastSection ? (showContinueLabel ? "පිවිසෙන්න" : "සැකසුම් වෙත") : "ඊළඟ" }}
+              {{
+                isLastSection
+                  ? showContinueLabel
+                    ? "පිවිසෙන්න"
+                    : "සැකසුම් වෙත"
+                  : "ඊළඟ"
+              }}
             </button>
           </div>
         </section>
@@ -107,7 +123,6 @@
 
 <script setup>
 import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
-
 import { getAssetUrl } from "../utils/assets";
 
 const props = defineProps({
@@ -131,90 +146,14 @@ let previousBodyOverflow = "";
 let previousBodyPaddingRight = "";
 let previousActiveElement = null;
 
-// const mindset1Icon = getAssetUrl("icons/mindset1.png");
-//  <span class="info-icon" aria-hidden="true"><img class="info-icon" src="${mindset1Icon}" alt="" /></span>
-const guidanceSections = [
-  {
-    id: "chanting",
-    icon: "reading.png",
-    eyebrow: "මගපෙන්වීම",
-    title: "සජ්ඣායනය කොටස",
-    description: "මෙම කොටස දෛනික සජ්ඣායනය සහ කටපාඩම් කිරීම සඳහා යෝග්‍යවේ.",
-    steps: [
-      {
-        title: "කැමති ප්‍රත්‍යයන් තේරීම",
-        text: `වම් පැති මෙනුවේ හෝ ඉහළ 99 මගින් පිවිසී කැමති ප්‍රත්‍යක් තේරිය හැක.`,
-      },
-      {
-        icon: "",
-        title: "ප්‍රත්‍යයන් ශ්‍රවණය කිරීමට",
-        text: `පහළ ප්‍රධාන ධාවකයෙන් ආරම්භ කරන්න.<br>
-(එක් ගාථාවක් ටච් හෝ ක්ලික් කිරීමෙන්ද එම ගාථා කොටසේ සිට ශ්‍රවණය කළ හැක.)`,
-      },
-      {
-        title: "සිංහල/පාලි පෙළ",
-        text: `ඉහළ දකුණු පස 99 මගින් අවශ්‍ය පෙළ පිරික්සීමට හෝ සැඟවීමට හැක.`,
-      },
-      {
-        title: "බුක්මාර්ක් කිරීමට",
-        text: `ඉහළ දකුණු පස 99 මගින් පසුව නැවත කියවීමට සටහන් කළ හැක.<br>
-(ඒවා පැති මෙනුවේ 88 මගින් සලකුණු වේ.)`,
-      },
-      {
-        title: "අකුරු ප්‍රමාණය වෙනස් කිරීමට ",
-        text: `ඉහළ දකුණු පස 99 මගින් ඔබට පහසු ලෙස අකුරු විශාලත්වය වෙනස් කළ හැක.`,
-      },
-      {
-        title: "පැති මෙනුවේ පහළ,",
-        text: `777 මගින් පුහුණුවීම් සඳහා පිවිසිය හැක.<br>
-777 මගින් අදහස් සහ යෝජනා අප වෙත එවිය හැක.<br>
-777 මගින් යොදාගත් මූලාශ්‍ර පරිශීලනය කළ හැක.<br>`,
-      },
-
-      {
-        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
-        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ⚙︎ මගින් පිවිසිය හැක.`,
-      },
-    ],
-  },
-  {
-    id: "practice",
-    icon: "\u{1F9D8}",
-    eyebrow: "මගපෙන්වීම",
-    title: "පුහුණුව කොටස",
-    description:
-      "ඔබට අවශ්‍ය පුහුණු මට්ටම තෝරාගෙන සඟවා ඇති වචන මතකයෙන් ආවර්ජනය කරමින් පුහුණුවෙහි නිරත විය හැක.",
-    steps: [
-      {
-        title: "අසීරුතා මට්ටම් තෝරා ගැනීම",
-        text: "ඔබේ ප්‍රවීණතාවය අනුව ආධුනික, මධ්‍යස්ථ, ප්‍රවීණ යන මට්ටම් 3ක් යටතේ තෝරා ගත හැක.",
-      },
-      {
-        title: "පුහුණු ආකාරය සැකසීම.",
-        text: `මෙය ප්‍රත්‍ය අහඹු ලෙස හෝ අනුපිළිවෙලින් දිස් වන ආකාරයට තෝරා ගත හැක.<br>
-ටයිමරය මගින් පුහුණු කාලයක් පනවා හෝ නොපනවාද භාවිත කළ හැක.<br>
-ටයිමරය සඳහා ඔබට සුදුසු කාලයක් මිනිත්තු වලින් පැනවිය හැක.<br>
-කාලය අවසන් වූ විට ස්වයංව පුහුණුව අවසන් වනු ඇත.`,
-      },
-      {
-        title: "පාලක අයිතම",
-        text: `දකුණු පස ඉහළ කෙලවර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br>
-👁 මගින් පිළිතුර පිරික්සිය හැක.`,
-      },
-      {
-        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
-        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ⚙︎ මගින් පිවිසිය හැක.`,
-      },
-    ],
-  },
-];
-
 const getIcon = (icon) => {
-  console.log("icon : ", icon);
-  const x = getAssetUrl(`icons/${icon}`);
-  console.log(x);
-  return x;
+  return getAssetUrl(`icons/${icon}.png`);
 };
+
+const iconHtml = (icon) =>
+  `<span class="info-icon-cont" aria-hidden="true">
+    <img class="info-icon" src="${getIcon(icon)}" alt="" />
+  </span>`;
 
 const activeSection = computed(
   () => guidanceSections[activeSectionIndex.value] || guidanceSections[0],
@@ -308,6 +247,84 @@ onBeforeUnmount(() => {
 
   document.removeEventListener("keydown", handleKeydown);
 });
+
+const guidanceSections = [
+  {
+    id: "chanting",
+    icon: "manual",
+    titleIcon: "reading2",
+    eyebrow: "මගපෙන්වීම",
+    title: "සජ්ඣායනය කොටස",
+    description: "මෙම කොටස දෛනික සජ්ඣායනය සහ කටපාඩම් කිරීම සඳහා යෝග්‍යවේ.",
+    steps: [
+      {
+        title: "කැමති ප්‍රත්‍යයන් තේරීම",
+        text: `වම් පැති මෙනුවේ හෝ ඉහළ ${iconHtml("menu")} මගින් පිවිසී කැමති ප්‍රත්‍යක් තේරිය හැක.`,
+      },
+      {
+        icon: "",
+        title: "ප්‍රත්‍යයන් ශ්‍රවණය කිරීමට",
+        text: `පහළ ප්‍රධාන ධාවකයෙන් ${iconHtml("play")} ආරම්භ කරන්න.<br>
+(එක් ගාථාවක් ටච් හෝ ක්ලික් කිරීමෙන්ද එම ගාථා කොටසේ සිට ශ්‍රවණය කළ හැක.)`,
+      },
+      {
+        title: "සිංහල/පාලි පෙළ",
+        text: `ඉහළ දකුණු පස ${iconHtml("sinhala")}/${iconHtml("paali")} මගින් අවශ්‍ය පෙළ පිරික්සීමට හෝ සැඟවීමට හැක.`,
+      },
+      {
+        title: "බුක්මාර්ක් කිරීමට",
+        text: `ඉහළ දකුණු පස ${iconHtml("bookmark")} මගින් පසුව නැවත කියවීමට සටහන් කළ හැක.<br>
+(ඒවා පැති මෙනුවේ ${iconHtml("bookmarked")}  මගින් සලකුණු වේ.)`,
+      },
+      {
+        title: "අකුරු ප්‍රමාණය වෙනස් කිරීමට ",
+        text: `ඉහළ දකුණු පස ${iconHtml("font_resize")} මගින් ඔබට පහසු ලෙස අකුරු විශාලත්වය වෙනස් කළ හැක.`,
+      },
+      {
+        title: "පැති මෙනුවේ පහළ",
+        text: `${iconHtml("mindset1")} මගින් පුහුණුවීම් සඳහා පිවිසිය හැක.<br>
+${iconHtml("contact1")} මගින් අදහස් සහ යෝජනා අප වෙත එවිය හැක.<br>
+${iconHtml("diamond1")} මගින් භාවිත කළ මූලාශ්‍ර පරිශීලනය කළ හැක.<br>`,
+      },
+
+      {
+        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
+        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ${iconHtml("gear")} මගින් පිවිසිය හැක.`,
+      },
+    ],
+  },
+  {
+    id: "practice",
+    icon: "manual",
+    titleIcon: "mindset1",
+    eyebrow: "මගපෙන්වීම",
+    title: "පුහුණුව කොටස",
+    description:
+      "ඔබට අවශ්‍ය පුහුණු මට්ටම තෝරාගෙන සඟවා ඇති වචන මතකයෙන් ආවර්ජනය කරමින් පුහුණුවෙහි නිරත විය හැක.",
+    steps: [
+      {
+        title: "අසීරුතා මට්ටම් තෝරා ගැනීම",
+        text: "ඔබේ ප්‍රවීණතාවය අනුව ආධුනික, මධ්‍යස්ථ, ප්‍රවීණ යන මට්ටම් 3ක් යටතේ තෝරා ගත හැක.",
+      },
+      {
+        title: "පුහුණු ආකාරය සැකසීම.",
+        text: `මෙය ප්‍රත්‍ය අහඹු ලෙස හෝ අනුපිළිවෙලින් දිස් වන ආකාරයට තෝරා ගත හැක.<br>
+ටයිමරය මගින් පුහුණු කාලයක් පනවා හෝ නොපනවාද භාවිත කළ හැක.<br>
+ටයිමරය සඳහා ඔබට සුදුසු කාලයක් මිනිත්තු වලින් පැනවිය හැක.<br>
+කාලය අවසන් වූ විට ස්වයංව පුහුණුව අවසන් වනු ඇත.`,
+      },
+      {
+        title: "පාලක අයිතම",
+        text: `දකුණු පස ඉහළ කෙලවර ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br>
+${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැක.`,
+      },
+      {
+        title: "උපදෙස් නැවත අධ්‍යනය සඳහා",
+        text: `මෙම උපදෙස් සඳහා මුල් පිටුවේ ඉහල ${iconHtml("gear")} මගින් පිවිසිය හැක.`,
+      },
+    ],
+  },
+];
 </script>
 
 <style scoped>
@@ -640,15 +657,25 @@ onBeforeUnmount(() => {
 /* ICONS */
 /* -------------------------------- */
 
-.step-icon,
-.section-icon {
-  width: 15px;
+.guidance-title-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: rgba(99, 71, 40, 0.11);
+  font-size: 23px;
+}
+
+.title-icon {
+  width: 16px;
   height: auto;
 }
 
-.info-icon {
-  width: 15px;
-  height: 15px;
+.section-icon {
+  width: 31px;
+  height: auto;
 }
 
 /* -------------------------------- */
@@ -733,5 +760,23 @@ onBeforeUnmount(() => {
     animation: none;
     transition: none;
   }
+}
+</style>
+
+<style>
+.info-icon-cont {
+  border-radius: 20px;
+  display: inline-flex;
+  object-fit: contain;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background: #54231214;
+}
+
+.info-icon {
+  width: 14px;
+  height: 14px;
 }
 </style>
