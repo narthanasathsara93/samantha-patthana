@@ -51,7 +51,7 @@
             <div class="controls-row">
               <span class="guard">【</span>
               <AutoplayButton
-                v-if="!isRoutePunyanumodana && !isSinhalaTextView"
+                v-if="!isSinhalaTextView"
                 :is-auto-playing="isAutoPlaying"
                 @toggle-autoplay="toggleAutoplay"
               />

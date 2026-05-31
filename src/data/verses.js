@@ -297,7 +297,7 @@ export const verses = [
   },
   {
     id: "verse-28",
-    title: "දේව පුණ්‍යානුමෝදනා",
+    title: "දේවතා පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
     audioStartAt: 0,
