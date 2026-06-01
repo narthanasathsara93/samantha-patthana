@@ -666,7 +666,8 @@ watch(
     const oldHlsSrc = oldVal?.[1];
 
     // Only pause and reset if the actual audio source changed
-    const sourceChanged = oldVal && (newAudioSrc !== oldAudioSrc || newHlsSrc !== oldHlsSrc);
+    const sourceChanged =
+      oldVal && (newAudioSrc !== oldAudioSrc || newHlsSrc !== oldHlsSrc);
 
     if (sourceChanged) {
       hasStartedSection.value = false;
@@ -895,7 +896,9 @@ defineExpose({
 /* =========================
    MOBILE
 ========================= */
-
+/* =========================
+   MOBILE / TABLET
+========================= */
 @media (max-width: 870px) {
   .player {
     padding-top: 8px;
@@ -990,6 +993,38 @@ defineExpose({
     width: 22px;
     height: auto;
     margin-top: 11%;
+  }
+}
+
+/* =========================
+   SMALL PHONES (≤420px)
+========================= */
+@media (max-width: 420px) {
+  .audio-shell {
+    gap: 0;
+    padding: 10px 12px;
+    background: #e5d3b48c;
+    border-radius: 22px;
+  }
+
+  .custom-controls {
+    gap: 4px;
+  }
+
+  .mobile-volume-buttons {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .time-display {
+    min-width: 30px;
+    font-size: 11px;
+  }
+
+  .volume-action-btn,
+  .mobile-volume-btn {
+    width: 23px;
+    height: 23px;
   }
 }
 </style>

@@ -1,20 +1,12 @@
 <template>
   <section class="practice-card">
     <h1 class="title">මතක පරීක්ෂා පුහුණුව</h1>
-    <p class="subtitle">
-      මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
-      ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
-      පුහුණුව අතරතුර ↺ මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
-      <img class="sample-icon" :src="getIcon('show.png')" alt="👁" /> මගින්
-      පිළිතුර පිරික්සිය හැක. <br />
-      <br />
-      පුහුණුව ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />
-    </p>
+    <div class="subtitle" v-html="subText"></div>
 
     <div class="level-buttons">
       <button class="level-btn easy" @click="$emit('select-level', 'ආධුනික')">
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level1.png')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level1')" alt="✦" />
         </span>
         ආධුනික
       </button>
@@ -23,13 +15,13 @@
         @click="$emit('select-level', 'මධ්‍යස්ථ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level2.png')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level2')" alt="✦" />
         </span>
         මධ්‍යස්ථ
       </button>
       <button class="level-btn hard" @click="$emit('select-level', 'ප්‍රවීණ')">
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level3.png')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level3')" alt="✦" />
         </span>
         ප්‍රවීණ
       </button>
@@ -44,9 +36,21 @@ import { getAssetUrl } from "../../utils/assets";
 
 defineEmits(["select-level", "go-home"]);
 
-const getIcon = (img) => {
-  return getAssetUrl(`icons/${img}`);
+const getIcon = (icon) => {
+  return getAssetUrl(`icons/${icon}.png`);
 };
+
+const iconHtml = (icon) =>
+  `<span class="info-icon-cont" aria-hidden="true">
+    <img class="info-icon" src="${getIcon(icon)}" alt="" />
+  </span>`;
+
+const subText = `මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
+      ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
+      පුහුණුව අතරතුර ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
+      ${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැක. <br />
+      <br />
+      පුහුණුව ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />`;
 </script>
 
 <style scoped>
@@ -173,6 +177,89 @@ const getIcon = (img) => {
 
 .back-btn:active {
   transform: scale(0.97);
+}
+
+@media (max-width: 420px){
+  .subtitle {
+    margin: 4px 0 15px;
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .level-btn {
+    min-height: 35px;
+    gap: 8px;
+    font-size: 17px;
+  }
+
+  .back-btn {
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .practice-start-settings {
+    gap: 8px;
+    margin: 4px 0 6px;
+  }
+
+  .setting-block {
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .setting-question {
+    margin-bottom: 6px;
+    font-size: 17px;
+    line-height: 1.15;
+  }
+
+  .radio-option {
+    font-size: 18px;
+    padding-left: 16px;
+  }
+
+  .radio-circle {
+    width: 12px;
+    height: 12px;
+  }
+
+  .time-select-title {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .time-wheel {
+    grid-template-columns: repeat(5, 32px);
+    width: 200px;
+    padding: 3px;
+  }
+
+  .time-wheel::before {
+    width: 32px;
+    height: 28px;
+  }
+
+  .time-wheel-option {
+    width: 32px;
+    min-height: 28px;
+    font-size: 15px;
+  }
+
+  .time-wheel-option.selected {
+    font-size: 18px;
+  }
+
+  .timer-icon,
+  .shuffle-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
 }
 
 @media (max-width: 720px) {

@@ -65,7 +65,6 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
@@ -73,25 +72,27 @@ import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
-const { hasCompletedGuidance, openGuidance } = useGuidance();
-const pendingRoute = ref(null);
+const { isGuidanceSectionComplete, openGuidance } = useGuidance();
 
-const navigateWithGuidance = (routeLocation) => {
-  if (hasCompletedGuidance.value) {
+const navigateWithGuidance = (routeLocation, guidanceSection) => {
+  if (isGuidanceSectionComplete(guidanceSection)) {
     router.push(routeLocation);
     return;
   }
 
-  pendingRoute.value = routeLocation;
-  openGuidance({ force: false });
+  openGuidance({
+    force: false,
+    section: guidanceSection,
+    route: routeLocation,
+  });
 };
 
 const startChanting = () => {
-  navigateWithGuidance({ name: "namaskaraya" });
+  navigateWithGuidance({ name: "namaskaraya" }, "chanting");
 };
 
 const openPracticeMode = () => {
-  navigateWithGuidance("/practice");
+  navigateWithGuidance("/practice", "practice");
 };
 
 const openSettings = () => {
@@ -101,16 +102,6 @@ const openSettings = () => {
 const getIcon = (img) => {
   return getAssetUrl(`icons/${img}`);
 };
-
-watch(hasCompletedGuidance, (isCompleted) => {
-  if (!isCompleted || !pendingRoute.value) {
-    return;
-  }
-
-  const routeLocation = pendingRoute.value;
-  pendingRoute.value = null;
-  router.push(routeLocation);
-});
 </script>
 
 <style scoped>

@@ -46,7 +46,8 @@
                 <p class="guidance-eyebrow">
                   {{ activeSection.eyebrow }}
                   <span class="guidance-progress">
-                    {{ activeSectionIndex + 1 }} / {{ guidanceSections.length }}
+                    {{ activeSectionIndex + 1 }} /
+                    {{ visibleGuidanceSections.length }}
                   </span>
                 </p>
 
@@ -134,6 +135,11 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  section: {
+    type: String,
+    default: "all",
+    validator: (value) => ["all", "chanting", "practice"].includes(value),
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "close", "close-only"]);
@@ -155,12 +161,23 @@ const iconHtml = (icon) =>
     <img class="info-icon" src="${getIcon(icon)}" alt="" />
   </span>`;
 
+const visibleGuidanceSections = computed(() => {
+  if (props.section === "all") {
+    return guidanceSections;
+  }
+
+  return guidanceSections.filter((section) => section.id === props.section);
+});
+
 const activeSection = computed(
-  () => guidanceSections[activeSectionIndex.value] || guidanceSections[0],
+  () =>
+    visibleGuidanceSections.value[activeSectionIndex.value] ||
+    visibleGuidanceSections.value[0] ||
+    guidanceSections[0],
 );
 const isFirstSection = computed(() => activeSectionIndex.value === 0);
 const isLastSection = computed(
-  () => activeSectionIndex.value === guidanceSections.length - 1,
+  () => activeSectionIndex.value === visibleGuidanceSections.value.length - 1,
 );
 
 function closeModal() {
@@ -368,6 +385,7 @@ ${iconHtml("show")} මගින් පිළිතුර පිරික්ස�
 /* -------------------------------- */
 
 .guidance-close {
+  z-index: 5;
   position: absolute;
   top: 12px;
   right: 12px;
@@ -389,6 +407,7 @@ ${iconHtml("show")} මගින් පිළිතුර පිරික්ස�
 }
 
 .guidance-close:hover {
+  z-index: 5;
   background: rgba(84, 35, 18, 0.14);
   transform: scale(1.04);
 }
@@ -552,9 +571,9 @@ ${iconHtml("show")} මගින් පිළිතුර පිරික්ස�
   border-radius: 999px;
   padding: 0 18px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
-
+  font-family: "Abhaya Libre", serif;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
