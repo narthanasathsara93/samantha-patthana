@@ -6,7 +6,7 @@
     :title="isAutoPlaying ? 'ස්වයං වාදනය නවතන්න' : 'ස්වයං වාදනය ආරම්භ කරන්න'"
     :aria-label="isAutoPlaying ? 'Stop autoplay' : 'Start autoplay'"
   >
-    <img class="autoplay-icon" :src="getIcon(isAutoPlaying)" alt="" />
+    <img class="autoplay-icon" :src="getIcon(isAutoPlaying)" alt="autoplay" />
   </button>
 </template>
 

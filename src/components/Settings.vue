@@ -10,7 +10,6 @@
           PWA (Progressive Web App) එකක් ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ
           සාමාන්‍ය වෙනත් ඇප් එකක් මෙන් ඉන්ස්ටෝල් කර භාවිතා කළ හැක.
           <br />
-          <br />
           එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් සෘජුවම පිවිසිය හැක.
         </p>
 
@@ -46,6 +45,18 @@
         </div>
       </div>
 
+      <div class="settings-block">
+        <h2 class="block-title">භාවිතයට උපදෙස්</h2>
+
+        <p class="block-description">
+          සජ්ඣායනය සහ පුහුණුව භාවිත කරන ආකාරය මගපෙන්වීම් පිරික්සීමට අවශ්‍යනම්,
+        </p>
+
+        <button class="install-btn" type="button" @click="openGuidanceSection">
+          පිවිසෙන්න
+        </button>
+      </div>
+
       <button class="back-btn" type="button" @click="goHome">
         මුල් පිටුව වෙත
       </button>
@@ -57,6 +68,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePwaInstall } from "@/composables/usePwaInstall";
+import { useGuidance } from "@/composables/useGuidance";
 
 const router = useRouter();
 
@@ -64,6 +76,7 @@ const isInstalling = ref(false);
 
 const { canPromptInstall, showIOSInstructions, promptInstall } =
   usePwaInstall();
+const { openGuidance } = useGuidance();
 
 async function handleInstall() {
   if (isInstalling.value) {
@@ -87,6 +100,10 @@ async function handleInstall() {
   }
 
   alert("බ්‍රවුසර මෙනුවෙන් “Install app” හෝ “Add to Home Screen” තෝරන්න.");
+}
+
+function openGuidanceSection() {
+  openGuidance({ force: true, continueLabel: false });
 }
 
 function goHome() {

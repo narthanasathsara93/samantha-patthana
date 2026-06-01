@@ -54,7 +54,7 @@
                 alt=""
             /></span>
             <br />
-            ප්‍රත්‍යයන් අහඹු ලෙස දිස්වන්න අවශ්‍යද?
+            ප්‍රත්‍යයන් අහඹු ලෙස දිස් විය යුතුද?
           </p>
           <div class="radio-group">
             <button
@@ -222,12 +222,14 @@ const timerLabel = computed(() => {
     ? formatTimer(remainingSeconds.value)
     : "";
 });
+
 const selectedPracticeMinuteIndex = computed(() => {
   const optionIndex = practiceMinuteOptions.indexOf(
     selectedPracticeMinutes.value,
   );
   return optionIndex === -1 ? 0 : optionIndex;
 });
+
 const visiblePracticeMinuteOptions = computed(() => {
   return [-2, -1, 0, 1, 2].map((offset) => {
     const optionIndex = loopIndex(
@@ -240,9 +242,11 @@ const visiblePracticeMinuteOptions = computed(() => {
     };
   });
 });
+
 const getIcon = (icon) => {
   return getAssetUrl(icon);
 };
+
 function handleSelectLevel(level) {
   pendingLevel.value = level;
   isPracticeOrderConfirmOpen.value = true;

@@ -26,7 +26,7 @@
       />
 
       <p class="hero-description">
-        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව වන්දනා කරමු.
+        සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
       </p>
 
       <div class="hero-actions">
@@ -68,16 +68,31 @@
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
+import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
+const { isGuidanceSectionComplete, openGuidance } = useGuidance();
+
+const navigateWithGuidance = (routeLocation, guidanceSection) => {
+  if (isGuidanceSectionComplete(guidanceSection)) {
+    router.push(routeLocation);
+    return;
+  }
+
+  openGuidance({
+    force: false,
+    section: guidanceSection,
+    route: routeLocation,
+  });
+};
 
 const startChanting = () => {
-  router.push({ name: "namaskaraya" });
+  navigateWithGuidance({ name: "namaskaraya" }, "chanting");
 };
 
 const openPracticeMode = () => {
-  router.push("/practice");
+  navigateWithGuidance("/practice", "practice");
 };
 
 const openSettings = () => {
@@ -117,9 +132,6 @@ const getIcon = (img) => {
   padding-top: 80px;
   padding-left: 24px;
   padding-right: 24px;
-}
-.settings-btn {
-  display: none;
 }
 
 .hero-content {
@@ -227,6 +239,37 @@ const getIcon = (img) => {
   width: 24px;
   height: auto;
 }
+
+
+  .settings-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #6f1f0e;
+    cursor: pointer;
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .settings-btn:hover {
+    transform: rotate(45deg);
+  }
+
+  .gear-icon {
+    width: 20px;
+    height: auto;
+  }
+
 
 @keyframes fadeIn {
   from {

@@ -16,11 +16,11 @@
         <button
           v-for="(section, index) in audioSections"
           :key="`${section.startAt}-${section.endAt}-${index}`"
-          ref="sectionRefs"
+          :ref="(element) => setSectionRef(element, index)"
           class="verse-audio-section"
           :class="{ active: index === activeAudioSectionIndex }"
           type="button"
-          @click="$emit('play-section', section, index)"
+          @click="handleSectionClick(section, index)"
           :aria-label="`Play audio section ${index + 1}`"
           v-html="section.content"
         ></button>
@@ -30,7 +30,14 @@
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import {
+  nextTick,
+  onBeforeUnmount,
+  onBeforeUpdate,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 
 const props = defineProps({
   title: {
@@ -68,6 +75,7 @@ const canScrollUp = ref(false);
 const canScrollDown = ref(false);
 let resizeObserver = null;
 let pendingSectionScroll = null;
+let suppressedManualScrollIndex = -1;
 
 const sectionScrollTopRatio = 0.22;
 const sectionVisiblePadding = 20;
@@ -111,6 +119,17 @@ function scrollToTop() {
     top: 0,
     behavior: "smooth",
   });
+}
+
+function setSectionRef(element, index) {
+  if (element) {
+    sectionRefs.value[index] = element;
+  }
+}
+
+function handleSectionClick(section, index) {
+  suppressedManualScrollIndex = index;
+  emit("play-section", section, index);
 }
 
 function scrollToAudioSection(index) {
@@ -176,6 +195,10 @@ onMounted(() => {
   window.addEventListener("resize", updateScrollState);
 });
 
+onBeforeUpdate(() => {
+  sectionRefs.value = [];
+});
+
 onBeforeUnmount(() => {
   if (pendingSectionScroll !== null) {
     cancelAnimationFrame(pendingSectionScroll);
@@ -187,13 +210,21 @@ onBeforeUnmount(() => {
 
 watch(
   () => [props.content, props.fontSize, props.audioSections],
-  syncScrollState,
+  () => {
+    suppressedManualScrollIndex = -1;
+    syncScrollState();
+  },
 );
 
 watch(
   () => props.activeAudioSectionIndex,
   (index) => {
     if (index < 0) {
+      return;
+    }
+
+    if (index === suppressedManualScrollIndex) {
+      suppressedManualScrollIndex = -1;
       return;
     }
 
@@ -209,11 +240,6 @@ defineExpose({
   scrollToAudioSection,
 });
 
-// const getContent = () => {
-//   const normalized = props.content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-//   const result = normalized.replace(/\n/g, "<br>");
-//   return result;
-// };
 </script>
 
 <style scoped>
@@ -227,6 +253,11 @@ defineExpose({
 
 .reader-content {
   font-weight: 600;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .reader-content,
@@ -240,6 +271,11 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 18px;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .verse-audio-section {
