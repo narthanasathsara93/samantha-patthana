@@ -73,25 +73,28 @@ import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
-const { hasCompletedGuidance, openGuidance } = useGuidance();
+const { completedGuidanceSections, isGuidanceSectionComplete, openGuidance } =
+  useGuidance();
 const pendingRoute = ref(null);
+const pendingGuidanceSection = ref(null);
 
-const navigateWithGuidance = (routeLocation) => {
-  if (hasCompletedGuidance.value) {
+const navigateWithGuidance = (routeLocation, guidanceSection) => {
+  if (isGuidanceSectionComplete(guidanceSection)) {
     router.push(routeLocation);
     return;
   }
 
   pendingRoute.value = routeLocation;
-  openGuidance({ force: false });
+  pendingGuidanceSection.value = guidanceSection;
+  openGuidance({ force: false, section: guidanceSection });
 };
 
 const startChanting = () => {
-  navigateWithGuidance({ name: "namaskaraya" });
+  navigateWithGuidance({ name: "namaskaraya" }, "chanting");
 };
 
 const openPracticeMode = () => {
-  navigateWithGuidance("/practice");
+  navigateWithGuidance("/practice", "practice");
 };
 
 const openSettings = () => {
@@ -102,13 +105,17 @@ const getIcon = (img) => {
   return getAssetUrl(`icons/${img}`);
 };
 
-watch(hasCompletedGuidance, (isCompleted) => {
-  if (!isCompleted || !pendingRoute.value) {
+watch(completedGuidanceSections, () => {
+  if (
+    !pendingRoute.value ||
+    !isGuidanceSectionComplete(pendingGuidanceSection.value)
+  ) {
     return;
   }
 
   const routeLocation = pendingRoute.value;
   pendingRoute.value = null;
+  pendingGuidanceSection.value = null;
   router.push(routeLocation);
 });
 </script>

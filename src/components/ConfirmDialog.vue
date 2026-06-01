@@ -252,13 +252,36 @@ function emitDismiss() {
 }
 
 @media (max-width: 420px) {
-  .confirm-dialog-actions {
-    grid-template-columns: 1fr;
+  .confirm-dialog {
+    padding: 18px;
+  }
+
+  .confirm-dialog-title {
+    font-size: 22px;
+  }
+
+  .confirm-dialog-message {
+    font-size: 16px;
+    margin: 10px 0 18px;
+    line-height: 1.35;
   }
 
   .confirm-dialog-content {
     min-height: 0;
     margin-top: 9%;
+  }
+
+  .confirm-dialog-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .confirm-dialog-btn {
+    flex: 1;
+    min-width: 0;
+    min-height: 36px;
+    font-size: 17px;
   }
 }
 
