@@ -65,7 +65,6 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.png";
 import mainTitleImage from "../assets/images/titletxt.png";
@@ -73,10 +72,7 @@ import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
 const router = useRouter();
-const { completedGuidanceSections, isGuidanceSectionComplete, openGuidance } =
-  useGuidance();
-const pendingRoute = ref(null);
-const pendingGuidanceSection = ref(null);
+const { isGuidanceSectionComplete, openGuidance } = useGuidance();
 
 const navigateWithGuidance = (routeLocation, guidanceSection) => {
   if (isGuidanceSectionComplete(guidanceSection)) {
@@ -84,9 +80,11 @@ const navigateWithGuidance = (routeLocation, guidanceSection) => {
     return;
   }
 
-  pendingRoute.value = routeLocation;
-  pendingGuidanceSection.value = guidanceSection;
-  openGuidance({ force: false, section: guidanceSection });
+  openGuidance({
+    force: false,
+    section: guidanceSection,
+    route: routeLocation,
+  });
 };
 
 const startChanting = () => {
@@ -104,20 +102,6 @@ const openSettings = () => {
 const getIcon = (img) => {
   return getAssetUrl(`icons/${img}`);
 };
-
-watch(completedGuidanceSections, () => {
-  if (
-    !pendingRoute.value ||
-    !isGuidanceSectionComplete(pendingGuidanceSection.value)
-  ) {
-    return;
-  }
-
-  const routeLocation = pendingRoute.value;
-  pendingRoute.value = null;
-  pendingGuidanceSection.value = null;
-  router.push(routeLocation);
-});
 </script>
 
 <style scoped>

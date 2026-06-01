@@ -9,6 +9,7 @@ const isReady = ref(false);
 const completedSections = ref([]);
 const showContinueLabel = ref(true);
 const activeSection = ref("all");
+const continueRoute = ref(null);
 
 function canUseStorage() {
   return (
@@ -86,6 +87,7 @@ export function useGuidance() {
     force = true,
     continueLabel = true,
     section = "all",
+    route = null,
   } = {}) {
     if (!isReady.value) {
       completedSections.value = readCompletionState();
@@ -94,6 +96,7 @@ export function useGuidance() {
 
     showContinueLabel.value = continueLabel;
     activeSection.value = section;
+    continueRoute.value = route;
 
     if (force || !isGuidanceSectionComplete(section)) {
       isOpen.value = true;
@@ -101,7 +104,9 @@ export function useGuidance() {
   }
 
   function closeGuidance({ complete = true } = {}) {
+    const routeToContinue = complete ? continueRoute.value : null;
     isOpen.value = false;
+    continueRoute.value = null;
 
     if (complete) {
       const sectionsToComplete =
@@ -113,6 +118,8 @@ export function useGuidance() {
 
       writeCompletionState(completedSections.value);
     }
+
+    return routeToContinue;
   }
 
   function resetGuidance() {
@@ -137,6 +144,7 @@ export function useGuidance() {
     completedGuidanceSections,
     showContinueLabel,
     activeGuidanceSection: activeSection,
+    guidanceContinueRoute: continueRoute,
     shouldShowOnboarding,
     isGuidanceSectionComplete,
     initializeGuidance,

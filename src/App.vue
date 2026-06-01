@@ -80,7 +80,7 @@
                 >
                   <img
                     class="sinhala-toggle-icon"
-                    :src="sinhalaToggleIcon()"
+                    :src="getSinhalaToggleIcon()"
                     alt=""
                   />
                 </button>
@@ -99,7 +99,7 @@
                   >
                     <img
                       class="font-resize-icon"
-                      :src="fontSizeIcon()"
+                      :src="getFontSizeIcon()"
                       alt=""
                     />
                   </button>
@@ -218,7 +218,7 @@
               "
               @click="toggleMobileLowerControls"
             >
-              <img class="arrow-up-down-icon" :src="arrowIcon()" />
+              <img class="arrow-up-down-icon" :src="getArrowIcon()" />
             </button>
           </main>
         </div>
@@ -395,7 +395,11 @@ const closeGuidanceModal = () => {
 };
 
 const markGuidanceAsComplete = () => {
-  closeGuidance({ complete: true });
+  const routeToContinue = closeGuidance({ complete: true });
+
+  if (routeToContinue) {
+    router.push(routeToContinue);
+  }
 };
 
 const {
@@ -802,22 +806,26 @@ function pauseForLandscapeOrientation() {
   audioRef.value?.pause?.();
 }
 
-const fontSizeIcon = getAssetUrl("icons/font_resize.png");
 const rotateDeviceIcon = getAssetUrl("icons/rotate.gif");
 
-const sinhalaToggleIcon = computed(() =>
-  getAssetUrl(
-    isSinhalaTextView.value ? "icons/paali.png" : "icons/sinhala.png",
-  ),
-);
 
-const arrowIcon = computed(() =>
-  getAssetUrl(
-    areMobileLowerControlsVisible.value
-      ? "icons/arrow_down.png"
-      : "icons/arrow_up.png",
-  ),
-);
+const getFontSizeIcon = () => {
+  return getAssetUrl("icons/font_resize.png");
+};
+
+const getSinhalaToggleIcon = () => {
+  return isSinhalaTextView.value
+    ? getAssetUrl("icons/paali.png")
+    : getAssetUrl("icons/sinhala.png");
+};
+
+const getArrowIcon = () => {
+  return areMobileLowerControlsVisible.value
+    ? getAssetUrl("icons/arrow_down.png")
+    : getAssetUrl("icons/arrow_up.png");
+};
+
+
 
 const displayTitle = computed(() => {
   const minScreenWidth = 1070;
