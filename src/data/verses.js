@@ -1,3 +1,5 @@
+import { deco } from "../utils/util";
+
 export const verses = [
   {
     id: "verse-1",
@@ -288,7 +290,7 @@ export const verses = [
   },
   {
     id: "verse-27",
-    title: "ඒතේන සච්චවජ්ජේන",
+    title: deco,
     englishName: "nimawa",
     showVerseTitle: false,
     audioStartAt: "46:43",
@@ -300,8 +302,8 @@ export const verses = [
     title: "දේවතා පුණ්‍යානුමෝදනා",
     englishName: "punyanumodana",
     showVerseTitle: true,
-    audioStartAt:'47:31',
-    audioEndAt: '52:30',
+    audioStartAt: "47:31",
+    audioEndAt: "52:30",
     audioSectionsKey: "verse-28",
     sinhalaTitle: "",
   },

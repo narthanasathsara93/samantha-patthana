@@ -40,7 +40,7 @@
             <!-- Mobile Header -->
             <MobileHeader
               :is-bookmarked="isBookmarked(selectedVerse.id)"
-              :title="contentTitle"
+              :title="mobileHeaderTitle"
               @toggle-sidebar="toggleSidebar"
               @toggle-bookmark="handleToggleBookmark"
             />
@@ -252,6 +252,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { deco } from "./utils/util";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -343,6 +344,18 @@ const contentTitle = computed(() => {
   return isShowingResourcesPanel.value
     ? "මූලාශ්‍ර සහ සම්පත්"
     : selectedVerseTitle.value;
+});
+const mobileHeaderTitle = computed(() => {
+  if (isShowingResourcesPanel.value) {
+    return contentTitle.value;
+  }
+
+  const verseNumber = Number(selectedVerse.value?.id?.replace("verse-", ""));
+  if (verseNumber >= 3 && verseNumber <= 26) {
+    return String(verseNumber - 2).padStart(2, "0");
+  }
+
+  return selectedVerseTitle.value;
 });
 const fullAudioSrc = "";
 const fullAudioHlsSrc = "/audios/v1/playlist.m3u8";
@@ -808,7 +821,6 @@ function pauseForLandscapeOrientation() {
 
 const rotateDeviceIcon = getAssetUrl("icons/rotate.gif");
 
-
 const getFontSizeIcon = () => {
   return getAssetUrl("icons/font_resize.png");
 };
@@ -825,18 +837,16 @@ const getArrowIcon = () => {
     : getAssetUrl("icons/arrow_up.png");
 };
 
-
-
 const displayTitle = computed(() => {
   const minScreenWidth = 1070;
   const isSmallScreen = window.innerWidth < minScreenWidth;
 
   if (!selectedVerse.value.showVerseTitle) {
-    return "──────·༻𐫱•☸︎•𐫱༺·──────";
+    return `──────${deco}──────`;
   }
 
   return !isSmallScreen
-    ? `·༻𐫱•☸︎•𐫱༺· ${selectedVerse.value.title} ·༻𐫱•☸︎•𐫱༺·`
+    ? `${deco} ${selectedVerse.value.title} ${deco}`
     : `${selectedVerse.value.title}`;
 });
 
