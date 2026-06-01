@@ -385,6 +385,7 @@ ${iconHtml("show")} මගින් පිළිතුර පිරික්ස�
 /* -------------------------------- */
 
 .guidance-close {
+  z-index: 5;
   position: absolute;
   top: 12px;
   right: 12px;
@@ -406,6 +407,7 @@ ${iconHtml("show")} මගින් පිළිතුර පිරික්ස�
 }
 
 .guidance-close:hover {
+  z-index: 5;
   background: rgba(84, 35, 18, 0.14);
   transform: scale(1.04);
 }
