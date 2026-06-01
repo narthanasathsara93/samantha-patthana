@@ -354,6 +354,9 @@ const mobileHeaderTitle = computed(() => {
   if (verseNumber >= 3 && verseNumber <= 26) {
     return String(verseNumber - 2).padStart(2, "0");
   }
+  if (verseNumber === 27) {
+    return deco;
+  }
 
   return selectedVerseTitle.value;
 });

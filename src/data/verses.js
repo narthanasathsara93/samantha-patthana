@@ -1,5 +1,3 @@
-import { deco } from "../utils/util";
-
 export const verses = [
   {
     id: "verse-1",
@@ -290,7 +288,7 @@ export const verses = [
   },
   {
     id: "verse-27",
-    title: deco,
+    title: "ඒතේන සච්චවජ්ජේන",
     englishName: "nimawa",
     showVerseTitle: false,
     audioStartAt: "46:43",
