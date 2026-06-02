@@ -20,6 +20,7 @@
         @end-session="endSession"
         @toggle-answer="toggleAnswerReveal"
         @go-next="goNext"
+        @go-home="isEndSessionGotoHomeConfirmOpen = true"
       />
       <ResultScreen
         v-else
@@ -155,6 +156,18 @@
       @confirm="confirmEndSession"
       @cancel="closeEndSessionConfirm"
     />
+
+    <ConfirmDialog
+      :show="isEndSessionGotoHomeConfirmOpen"
+      title="පුහුණුව මෙතනින් අවසන් කරන්න."
+      message="වත්මන් පුහුණුවේ ප්‍රගතිය මැකී යනු ඇත.<br>ඔබව මුල් පිටුව වෙත රැගෙන යනු ඇත."
+      confirm-label="ඔව්"
+      cancel-label="නැත"
+      :dismiss-emits-cancel="false"
+      @confirm="confirmEndSessionAndGoHome"
+      @cancel="closeEndSessionGotoHomeConfirm"
+    />
+
   </div>
 </template>
 
@@ -175,6 +188,7 @@ const currentQuestionIndex = ref(0);
 const isFinished = ref(false);
 const isCurrentAnswerRevealed = ref(false);
 const isEndSessionConfirmOpen = ref(false);
+const isEndSessionGotoHomeConfirmOpen = ref(false);
 const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
 const isPendingRandomOrder = ref(true);
@@ -301,6 +315,17 @@ function confirmEndSession() {
 
 function closeEndSessionConfirm() {
   isEndSessionConfirmOpen.value = false;
+}
+
+function confirmEndSessionAndGoHome() {
+  isEndSessionGotoHomeConfirmOpen.value = false;
+  // reuse existing cleanup logic
+  confirmEndSession();
+  goHome();
+}
+
+function closeEndSessionGotoHomeConfirm() {
+  isEndSessionGotoHomeConfirmOpen.value = false;
 }
 
 function handleTimeWheel(event) {

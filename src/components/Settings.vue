@@ -221,7 +221,7 @@ function goHome() {
 }
 
 .install-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(-4px);
 }
 
 .install-btn:active:not(:disabled) {
@@ -257,7 +257,9 @@ function goHome() {
 }
 
 .back-btn:hover {
-  background: #fff8eb;
+  background: #6f200e73;
+  color: #fdf1da;
+  transform: translateY(-1px);
 }
 
 @keyframes fadeIn {

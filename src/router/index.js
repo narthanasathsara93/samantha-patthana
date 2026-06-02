@@ -48,6 +48,14 @@ const routes = [
       title: "Contact Us",
     },
   },
+  {
+    path: "/resources",
+    name: "Resources",
+    component: App,
+    meta: {
+      title: "Resources",
+    },
+  },
   ...verseRoutes,
   {
     path: "/:pathMatch(.*)*",

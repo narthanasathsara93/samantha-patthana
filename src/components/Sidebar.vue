@@ -83,7 +83,7 @@
       </button>
 
       <button
-        class="contact-link abc"
+        class="contact-link"
         type="button"
         aria-label="Resources"
         title="මූලාශ්‍ර ගොමුව"
@@ -147,6 +147,7 @@ const handleVerseClick = (verse) => {
 };
 
 const handleResourcesClick = () => {
+  router.push({ name: "Resources" });
   emit("show-resources");
   emit("close-sidebar");
 };
