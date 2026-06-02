@@ -20,6 +20,7 @@
         @end-session="endSession"
         @toggle-answer="toggleAnswerReveal"
         @go-next="goNext"
+        @go-home="openEndSessionGotoHomeConfirm"
       />
       <ResultScreen
         v-else
@@ -152,9 +153,22 @@
       message="වත්මන් පුහුණුවේ ප්‍රගතිය මැකී යනු ඇත.<br>අපහසුතා මට්ටම වෙනස් කිරීම හෝ නැවත මුල සිට ඇරඹිය හැක."
       confirm-label="ඔව්"
       cancel-label="නැත"
+      :dismiss-emits-cancel="false"
       @confirm="confirmEndSession"
-      @cancel="closeEndSessionConfirm"
+      @cancel="closeEndSessionConfirmAndMaybeResume"
     />
+
+    <ConfirmDialog
+      :show="isEndSessionGotoHomeConfirmOpen"
+      title="පුහුණුව මෙතනින් අවසන් කරන්න."
+      message="වත්මන් පුහුණුවේ ප්‍රගතිය මැකී යනු ඇත.<br>ඔබව මුල් පිටුව වෙත රැගෙන යනු ඇත."
+      confirm-label="ඔව්"
+      cancel-label="නැත"
+      :dismiss-emits-cancel="false"
+      @confirm="confirmEndSessionAndGoHome"
+      @cancel="closeEndSessionGotoHomeConfirmAndMaybeResume"
+    />
+
   </div>
 </template>
 
@@ -175,6 +189,7 @@ const currentQuestionIndex = ref(0);
 const isFinished = ref(false);
 const isCurrentAnswerRevealed = ref(false);
 const isEndSessionConfirmOpen = ref(false);
+const isEndSessionGotoHomeConfirmOpen = ref(false);
 const isPracticeOrderConfirmOpen = ref(false);
 const pendingLevel = ref("");
 const isPendingRandomOrder = ref(true);
@@ -185,6 +200,9 @@ const selectedPracticeMinutes = ref(60);
 const remainingSeconds = ref(0);
 const timerEndsAt = ref(0);
 const timerIntervalId = ref(null);
+const isTimerPaused = ref(false);
+const wasEndSessionTimerPaused = ref(false);
+const wasEndSessionGotoHomeTimerPaused = ref(false);
 const timeTouchStartX = ref(null);
 const lastTimeWheelAt = ref(0);
 const sessionQuestions = ref([]);
@@ -283,7 +301,7 @@ function closePracticeOrderConfirm() {
 }
 
 function endSession() {
-  isEndSessionConfirmOpen.value = true;
+  openEndSessionConfirm();
 }
 
 function confirmEndSession() {
@@ -301,6 +319,63 @@ function confirmEndSession() {
 
 function closeEndSessionConfirm() {
   isEndSessionConfirmOpen.value = false;
+}
+
+function pauseIfTimerRunning() {
+  if (isSessionTimedPractice.value && timerIntervalId.value) {
+    syncRemainingTime();
+    stopTimerInterval();
+    timerEndsAt.value = 0;
+    isTimerPaused.value = true;
+    return true;
+  }
+  return false;
+}
+
+function resumeIfWasPaused(wasPaused) {
+  if (wasPaused) {
+    timerEndsAt.value = Date.now() + remainingSeconds.value * 1000;
+    isTimerPaused.value = false;
+    if (remainingSeconds.value > 0 && !timerIntervalId.value) {
+      timerIntervalId.value = window.setInterval(syncRemainingTime, 1000);
+      syncRemainingTime();
+    }
+  }
+}
+
+function confirmEndSessionAndGoHome() {
+  isEndSessionGotoHomeConfirmOpen.value = false;
+  // reuse existing cleanup logic
+  confirmEndSession();
+  goHome();
+}
+
+function closeEndSessionGotoHomeConfirm() {
+  isEndSessionGotoHomeConfirmOpen.value = false;
+}
+
+function openEndSessionConfirm() {
+  wasEndSessionTimerPaused.value = pauseIfTimerRunning();
+  isEndSessionConfirmOpen.value = true;
+}
+
+function openEndSessionGotoHomeConfirm() {
+  wasEndSessionGotoHomeTimerPaused.value = pauseIfTimerRunning();
+  isEndSessionGotoHomeConfirmOpen.value = true;
+}
+
+function closeEndSessionConfirmAndMaybeResume() {
+  const wasPaused = wasEndSessionTimerPaused.value;
+  isEndSessionConfirmOpen.value = false;
+  wasEndSessionTimerPaused.value = false;
+  resumeIfWasPaused(wasPaused);
+}
+
+function closeEndSessionGotoHomeConfirmAndMaybeResume() {
+  const wasPaused = wasEndSessionGotoHomeTimerPaused.value;
+  isEndSessionGotoHomeConfirmOpen.value = false;
+  wasEndSessionGotoHomeTimerPaused.value = false;
+  resumeIfWasPaused(wasPaused);
 }
 
 function handleTimeWheel(event) {
@@ -491,6 +566,7 @@ function shuffleArray(items) {
 
 function startSessionTimer(minutes) {
   const durationSeconds = Math.max(0, Number(minutes) * 60);
+  isTimerPaused.value = false;
   remainingSeconds.value = durationSeconds;
   timerEndsAt.value = Date.now() + durationSeconds * 1000;
   syncRemainingTime();
@@ -509,6 +585,7 @@ function restoreSessionTimer() {
   if (!timerEndsAt.value && remainingSeconds.value > 0) {
     timerEndsAt.value = Date.now() + remainingSeconds.value * 1000;
   }
+  isTimerPaused.value = false;
   syncRemainingTime();
   if (!isFinished.value) {
     stopTimerInterval();
@@ -517,6 +594,9 @@ function restoreSessionTimer() {
 }
 
 function syncRemainingTime() {
+  if (isTimerPaused.value) {
+    return;
+  }
   if (!timerEndsAt.value) {
     // If the timer is enabled and we've reached 00:00 (or timer state was lost),
     // end the practice session immediately regardless of the current verse.
@@ -548,6 +628,7 @@ function syncRemainingTime() {
 
 function stopSessionTimer() {
   stopTimerInterval();
+  isTimerPaused.value = false;
   timerEndsAt.value = 0;
   remainingSeconds.value = 0;
 }

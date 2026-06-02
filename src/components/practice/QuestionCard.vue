@@ -25,7 +25,16 @@
           title="පුහුණුව නැවත මුල සිට අරඹන්න"
           @click="$emit('end-session')"
         >
-          <img class="end-session-icon" :src="getIcon('restart.png')" alt="" />
+          <img class="end-session-icon" :src="getIcon('restart.png')" alt="restart" />
+        </button>
+        <button
+          class="end-session-btn"
+          type="button"
+          aria-label="End session"
+          title="මුල් පිටුව වෙත"
+          @click="$emit('go-home')"
+        >
+          <img class="end-session-icon" :src="getIcon('home.png')" alt="home" />
         </button>
         <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
       </div>
@@ -111,7 +120,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(["end-session", "toggle-answer", "go-next"]);
+defineEmits(["end-session", "toggle-answer", "go-next", "go-home"]);
 
 const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
