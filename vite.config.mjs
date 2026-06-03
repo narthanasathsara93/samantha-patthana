@@ -3,9 +3,34 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 
+function asyncStylesheetLinks() {
+  return {
+    name: "async-stylesheet-links",
+    enforce: "post",
+    transformIndexHtml(html, context) {
+      if (!context.bundle) {
+        return html;
+      }
+
+      return html.replace(
+        /<link rel="stylesheet"([^>]*?)href="([^"]+\.css)"([^>]*)>/g,
+        (_match, beforeHref, href, afterHref) => {
+          const attributes = `${beforeHref} ${afterHref}`;
+          const crossorigin = /\bcrossorigin\b/.test(attributes)
+            ? " crossorigin"
+            : "";
+
+          return `<link rel="preload"${crossorigin} href="${href}" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet"${crossorigin} href="${href}"></noscript>`;
+        },
+      );
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     vue(),
+    asyncStylesheetLinks(),
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
