@@ -1,11 +1,19 @@
 <template>
   <aside :class="['sidebar', { open: isSidebarOpen }]">
-    <div class="sidebar-header" @click="goToHome">
+    <div
+      class="sidebar-header"
+      role="button"
+      tabindex="0"
+      aria-label="Go to home page"
+      @click="goToHome"
+      @keydown.enter.prevent="goToHome"
+      @keydown.space.prevent="goToHome"
+    >
       <span class="header-details">
         <img
           class="logo-img"
-          :src="getImage('images/logo.png')"
-          alt="Samantha Patthana Logo"
+          :src="logoImage"
+          alt="Samantha Patthana logo"
         />
         <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
       </span>
@@ -23,7 +31,7 @@
           class="verse-row"
           type="button"
           @click="handleVerseClick(verse)"
-          :aria-label="`Go to ${verse.title}`"
+          :aria-label="`Go to verse ${index + 1}`"
         >
           <span class="number">{{ index + 1 }}. </span>
           <span class="verse-title">
@@ -33,7 +41,7 @@
               <img
                 class="bookmark-indicator-img"
                 :src="getImage('icons/bookmarked.png')"
-                alt=""
+                alt="Bookmarked verse"
               />
             </span>
           </span>
@@ -58,7 +66,7 @@
               ? getImage('icons/mindset3.png')
               : getImage('icons/mindset1.png')
           "
-          alt="පුහුණුව"
+          alt=""
         />
       </button>
 
@@ -78,7 +86,7 @@
               ? getImage('icons/contact2.png')
               : getImage('icons/contact1.png')
           "
-          alt="ප්‍රතිචාර"
+          alt=""
         />
       </button>
 
@@ -98,7 +106,7 @@
               ? getImage('icons/diamond2.png')
               : getImage('icons/diamond1.png')
           "
-          alt="මූලාශ්‍ර"
+          alt=""
         />
       </button>
     </div>
@@ -110,6 +118,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
+import logoImage from "../assets/images/logo.png";
 
 const props = defineProps({
   isSidebarOpen: {

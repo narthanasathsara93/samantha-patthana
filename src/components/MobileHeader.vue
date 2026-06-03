@@ -1,7 +1,7 @@
 <template>
   <span class="mobile-header">
-    <button @click="$emit('toggle-sidebar')" aria-label="Toggle sidebar">
-      <img class="gear-icon" :src="getIcon('gear.png')" alt="thinking" />
+    <button @click="$emit('toggle-sidebar')" aria-label="Open navigation menu">
+      <img class="gear-icon" :src="getIcon('gear.png')" alt="" />
     </button>
     <span class="mobile-header-title">{{ title }}</span>
   </span>

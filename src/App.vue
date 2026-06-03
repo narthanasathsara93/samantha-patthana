@@ -6,7 +6,7 @@
       <img
         class="rotate-device-icon"
         :src="rotateDeviceIcon"
-        alt="device rotate"
+        alt=""
       />
     </span>
   </div>
@@ -218,7 +218,7 @@
               "
               @click="toggleMobileLowerControls"
             >
-              <img class="arrow-up-down-icon" :src="getArrowIcon()" />
+              <img class="arrow-up-down-icon" :src="getArrowIcon()" alt="" />
             </button>
           </main>
         </div>
@@ -275,7 +275,7 @@
                     ? getDisclaimerIcon('contact2.png')
                     : getDisclaimerIcon('contact1.png')
                 "
-                alt="ප්‍රතිචාර"
+                alt=""
               />
             </button>
 
@@ -288,6 +288,7 @@
           <button
             type="button"
             class="disclaimer-close-btn"
+            aria-label="Close disclaimer"
             @click="closeDisclaimer"
           >
             <span aria-hidden="true">පැහැදිලියි</span>

@@ -4,30 +4,45 @@
     <div class="subtitle" v-html="subText"></div>
 
     <div class="level-buttons">
-      <button class="level-btn easy" @click="$emit('select-level', 'ආධුනික')">
+      <button
+        class="level-btn easy"
+        aria-label="Select beginner practice level"
+        @click="$emit('select-level', 'ආධුනික')"
+      >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level1')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level1')" alt="" />
         </span>
         ආධුනික
       </button>
       <button
         class="level-btn medium"
+        aria-label="Select intermediate practice level"
         @click="$emit('select-level', 'මධ්‍යස්ථ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level2')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level2')" alt="" />
         </span>
         මධ්‍යස්ථ
       </button>
-      <button class="level-btn hard" @click="$emit('select-level', 'ප්‍රවීණ')">
+      <button
+        class="level-btn hard"
+        aria-label="Select advanced practice level"
+        @click="$emit('select-level', 'ප්‍රවීණ')"
+      >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level3')" alt="✦" />
+          <img class="level-btn-icon" :src="getIcon('level3')" alt="" />
         </span>
         ප්‍රවීණ
       </button>
     </div>
 
-    <button class="back-btn" @click="$emit('go-home')">මුල් පිටුව වෙත</button>
+    <button
+      class="back-btn"
+      aria-label="Go to home page"
+      @click="$emit('go-home')"
+    >
+      මුල් පිටුව වෙත
+    </button>
   </section>
 </template>
 

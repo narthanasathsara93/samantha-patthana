@@ -3,7 +3,12 @@
     <div class="resources-panel-header">භාවිතා කල මූලාශ්‍ර සහ සම්පත්</div>
 
     <div class="resources-panel-body">
-      <a :href="youtubeUrlSS" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="youtubeUrlSS"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Samantha Patthana Dharma Wandanawa video on YouTube"
+      >
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
         සමන්ත පට්ඨාන ධර්ම දේශනාව | Samantha Pattana Dharma Wandanawa | Sri
         Saddharmaya<br />
@@ -12,7 +17,12 @@
     </div>
 
     <div class="resources-panel-body">
-      <a :href="youtubeUrlND" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="youtubeUrlND"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Pattana Sajjayana video on YouTube"
+      >
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
         Pattana Sajjayana | සමන්ත පට්ඨාන ධර්ම වන්දනාව | Kiriwaththuduwe
         Ariyadassana Thero<br />
@@ -21,7 +31,12 @@
     </div>
 
     <div class="resources-panel-body">
-      <a :href="googleDriveUrl" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="googleDriveUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Patthana audio resources in Google Drive"
+      >
         <img
           class="resource-icon"
           :src="getIcon(`icons/google_drive.png`)"
@@ -32,7 +47,12 @@
     </div>
 
     <div class="resources-panel-body">
-      <a :href="pattanaAnuhasUrl" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="pattanaAnuhasUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Patthana PDF resource"
+      >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ටානය අනුහස් අවසන් සංස්කරණය
       </a>
@@ -42,6 +62,7 @@
         :href="pattanaNayaTipitakaLk"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Open Patthana Naya resource on pitaka.lk"
       >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන නය - අභිධර්ම චන්ද්‍රිකාව - pitaka.lk <br />
@@ -54,6 +75,7 @@
         :href="pattanaWandanawaTipitakaLk"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Open Patthana Wandanawa resource on tipitaka.lk"
       >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         සමන්ත පට්ඨාන ධර්ම වන්දනාව - tipitaka.lk
@@ -65,6 +87,7 @@
         href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Open Patthana Pakarana resource on pitaka.lk"
       >
         <img class="resource-icon" :src="getIcon(`icons/pdf.png`)" alt="" />
         පට්ඨාන මහා පකරණ සන්නය - pitaka.lk
@@ -72,7 +95,12 @@
     </div>
 
     <div class="resources-panel-body">
-      <a :href="pindeemaUrl" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="pindeemaUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open Patthana Pindeema video on YouTube"
+      >
         <img class="resource-icon" :src="getIcon(`icons/youtube.png`)" alt="" />
         පට්ඨාන දේශනා අංක 02 - බුරුමරට වැඩවාසී පූජ්‍ය ධම්මගවේසී හිමි<br />
         (දේව පුණ්‍යානුමෝදනාව)
