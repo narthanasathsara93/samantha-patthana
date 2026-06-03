@@ -32,7 +32,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="googleDriveUrl"
+        :href="patthanaLipiGonu"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana audio resources in Google Drive"
@@ -117,9 +117,10 @@ import { getAssetUrl } from "../utils/assets";
 const youtubeUrlND = "https://youtu.be/foa2bgzz7G8?si=-_smELECz6Z5YF4X";
 const youtubeUrlSS = "https://www.youtube.com/watch?v=rkj6qsGDips";
 const pindeemaUrl = "https://youtu.be/bPM8dwdJ174?si=7EjVVPRNOX3X71oS&t=5582";
-const googleDriveUrl =
-  "https://drive.google.com/drive/folders/12SewlKCZrcYMpxcw5MOJ7UmJaUn9JY9e?usp=drive_link";
-const pattanaAnuhasUrl = "https://shorturl.at/yVofN";
+const patthanaLipiGonu =
+  "https://drive.google.com/drive/folders/1ngWOjMZ6_XPSxTGe6-SBToF2Lsq_Rkri?usp=sharing";
+const pattanaAnuhasUrl =
+  "https://drive.google.com/file/d/1tt_6y15NeAvrwosEWbu1f4BSJrhQ9lEU/view?usp=sharing";
 const pattanaWandanawaTipitakaLk = "https://tipitaka.lk/library/1012";
 const pattanaNayaTipitakaLk =
   "https://pitaka.lk/books/abhidharma-chandrikava/9-11.html";
