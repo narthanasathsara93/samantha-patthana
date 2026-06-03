@@ -118,6 +118,10 @@ defineEmits(["prev", "next"]);
     font-size: 16px;
   }
 
+  .action-btn:hover:not(:disabled) {
+    transform: none;
+  }
+
   .pagination span {
     font-size: 16px;
   }
