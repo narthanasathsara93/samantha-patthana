@@ -1153,19 +1153,16 @@ button:active {
 .page-open-leave-active {
   transition:
     opacity 0.45s ease,
-    transform 0.45s ease,
-    filter 0.45s ease;
+    transform 0.45s ease;
 }
 
 .page-open-enter-from {
   opacity: 0;
-  filter: blur(8px);
   transform: translateY(24px) scale(0.98);
 }
 
 .page-open-leave-to {
   opacity: 0;
-  filter: blur(4px);
   transform: translateY(-12px) scale(1.01);
 }
 

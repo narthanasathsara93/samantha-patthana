@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <main class="home-page">
     <button
       class="settings-btn"
       type="button"
@@ -61,7 +61,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -240,36 +240,34 @@ const getIcon = (img) => {
   height: auto;
 }
 
+.settings-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #6f1f0e;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
 
-  .settings-btn {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 2;
-    width: 20px;
-    height: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: #6f1f0e;
-    cursor: pointer;
-    transition:
-      transform 0.25s ease,
-      background 0.25s ease;
-  }
+.settings-btn:hover {
+  transform: rotate(45deg);
+}
 
-  .settings-btn:hover {
-    transform: rotate(45deg);
-  }
-
-  .gear-icon {
-    width: 20px;
-    height: auto;
-  }
-
+.gear-icon {
+  width: 20px;
+  height: auto;
+}
 
 @keyframes fadeIn {
   from {
@@ -363,6 +361,7 @@ const getIcon = (img) => {
     padding-right: 18px;
     align-items: flex-start;
     border-radius: 20px;
+    background-attachment: scroll;
     background-image: url("../assets/images/bg-1600.webp");
   }
 
