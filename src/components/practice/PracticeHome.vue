@@ -168,7 +168,6 @@
       @confirm="confirmEndSessionAndGoHome"
       @cancel="closeEndSessionGotoHomeConfirmAndMaybeResume"
     />
-
   </div>
 </template>
 
@@ -209,7 +208,7 @@ const sessionQuestions = ref([]);
 const practiceSessionStorageKey = "practice-mode-session-v1";
 const practiceSettingsStorageKey = "practice-start-settings-v1";
 const practiceMinuteOptions = [
-  90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 1,
+  90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20,
 ];
 
 const difficultyRanges = {
