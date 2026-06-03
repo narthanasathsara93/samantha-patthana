@@ -3,17 +3,17 @@
     <button
       class="settings-btn"
       type="button"
-      aria-label="සැකසුම්"
-      title="සැකසුම්"
+      aria-label="Open settings"
+      title="Open settings"
       @click="openSettings"
     >
       <span class="gear-btn-icon">
-        <img class="gear-icon" :src="getIcon('gear.png')" alt="thinking" />
+        <img class="gear-icon" :src="getIcon('gear.png')" alt="" />
       </span>
     </button>
 
     <div class="hero-content">
-      <img class="logo-img" :src="logoImage" alt="Logo" />
+      <img class="logo-img" :src="logoImage" alt="Samantha Patthana logo" />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
@@ -22,7 +22,7 @@
       <img
         class="hero-title"
         :src="mainTitleImage"
-        alt="සමන්ත පට්ඨාන වන්දනාව"
+        alt="Samantha Patthana Wandana"
       />
 
       <p class="hero-description">
@@ -39,7 +39,7 @@
             <img
               class="star-icon"
               :src="getIcon('reading.png')"
-              alt="reading"
+              alt=""
             />
           </span>
           <span class="btn-txt">සජ්ඣායනය</span>
@@ -48,13 +48,13 @@
         <button
           class="practice-btn"
           v-on:click="openPracticeMode()"
-          aria-label="Practice start — open practice mode"
+          aria-label="Open practice mode"
         >
           <span class="btn-icon">
             <img
               class="mind-icon"
               :src="getIcon('mindset2.png')"
-              alt="thinking"
+              alt=""
             />
           </span>
           <span class="btn-txt">පුහුණුව</span>
@@ -291,7 +291,6 @@ const getIcon = (img) => {
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 @media (min-width: 360px) {

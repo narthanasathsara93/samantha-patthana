@@ -17,6 +17,7 @@
           v-if="!showIOSInstructions && canPromptInstall"
           class="install-btn"
           type="button"
+          aria-label="Install app"
           :disabled="isInstalling"
           @click="handleInstall"
         >
@@ -52,12 +53,22 @@
           සජ්ඣායනය සහ පුහුණුව භාවිත කරන ආකාරය මගපෙන්වීම් පිරික්සීමට අවශ්‍යනම්,
         </p>
 
-        <button class="install-btn" type="button" @click="openGuidanceSection">
+        <button
+          class="install-btn"
+          type="button"
+          aria-label="Open application guidance"
+          @click="openGuidanceSection"
+        >
           පිවිසෙන්න
         </button>
       </div>
 
-      <button class="back-btn" type="button" @click="goHome">
+      <button
+        class="back-btn"
+        type="button"
+        aria-label="Go to home page"
+        @click="goHome"
+      >
         මුල් පිටුව වෙත
       </button>
     </section>

@@ -35,6 +35,7 @@
             <button
               class="confirm-dialog-btn secondary"
               type="button"
+              :aria-label="cancelLabel"
               @click="emitCancel"
             >
               {{ cancelLabel }}
@@ -42,6 +43,7 @@
             <button
               class="confirm-dialog-btn primary"
               type="button"
+              :aria-label="confirmLabel"
               @click="$emit('confirm')"
             >
               {{ confirmLabel }}

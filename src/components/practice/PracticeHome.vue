@@ -61,6 +61,7 @@
             <button
               type="button"
               class="radio-option"
+              aria-label="Use random question order"
               :class="{ active: isPendingRandomOrder }"
               @click="isPendingRandomOrder = true"
             >
@@ -70,6 +71,7 @@
             <button
               type="button"
               class="radio-option"
+              aria-label="Use sequential question order"
               :class="{ active: !isPendingRandomOrder }"
               @click="isPendingRandomOrder = false"
             >
@@ -95,6 +97,7 @@
             <button
               type="button"
               class="radio-option"
+              aria-label="Enable timed practice"
               :class="{ active: isPendingTimedPractice }"
               @click="isPendingTimedPractice = true"
             >
@@ -104,6 +107,7 @@
             <button
               type="button"
               class="radio-option"
+              aria-label="Disable timed practice"
               :class="{ active: !isPendingTimedPractice }"
               @click="isPendingTimedPractice = false"
             >
@@ -121,7 +125,7 @@
                 class="time-wheel"
                 role="listbox"
                 tabindex="0"
-                aria-label="කාලය"
+                aria-label="Practice duration"
                 @wheel.prevent="handleTimeWheel"
                 @keydown.left.prevent="shiftPracticeMinutes(-1)"
                 @keydown.right.prevent="shiftPracticeMinutes(1)"
@@ -137,6 +141,7 @@
                     near: Math.abs(option.offset) === 1,
                   }"
                   type="button"
+                  :aria-label="`${option.minutes} minute practice duration`"
                   @click="selectedPracticeMinutes = option.minutes"
                 >
                   {{ option.minutes }}

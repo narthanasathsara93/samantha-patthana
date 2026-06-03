@@ -68,7 +68,12 @@
         </a>
       </div>
 
-      <button class="back-btn" type="button" @click="goBack">
+      <button
+        class="back-btn"
+        type="button"
+        aria-label="Go back"
+        @click="goBack"
+      >
         පෙර පිටුව වෙත
       </button>
     </section>
