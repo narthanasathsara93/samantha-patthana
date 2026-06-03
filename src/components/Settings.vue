@@ -17,6 +17,7 @@
           v-if="!showIOSInstructions && canPromptInstall"
           class="install-btn"
           type="button"
+          aria-label="Install app"
           :disabled="isInstalling"
           @click="handleInstall"
         >
@@ -52,12 +53,22 @@
           සජ්ඣායනය සහ පුහුණුව භාවිත කරන ආකාරය මගපෙන්වීම් පිරික්සීමට අවශ්‍යනම්,
         </p>
 
-        <button class="install-btn" type="button" @click="openGuidanceSection">
+        <button
+          class="install-btn"
+          type="button"
+          aria-label="Open application guidance"
+          @click="openGuidanceSection"
+        >
           පිවිසෙන්න
         </button>
       </div>
 
-      <button class="back-btn" type="button" @click="goHome">
+      <button
+        class="back-btn"
+        type="button"
+        aria-label="Go to home page"
+        @click="goHome"
+      >
         මුල් පිටුව වෙත
       </button>
     </section>
@@ -221,7 +232,7 @@ function goHome() {
 }
 
 .install-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(-4px);
 }
 
 .install-btn:active:not(:disabled) {
@@ -254,10 +265,16 @@ function goHome() {
   font-family: inherit;
   font-size: 18px;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .back-btn:hover {
-  background: #fff8eb;
+  background: #ffeccf;
+  font-weight: 600;
+  transform: translateY(-3px);
 }
 
 @keyframes fadeIn {

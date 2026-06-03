@@ -4,13 +4,25 @@
     <p class="subtitle">(අසීරුතා මට්ටම : {{ selectedLevelLabel }})</p>
 
     <div class="actions">
-      <button class="primary-btn" @click="$emit('restart-level')">
+      <button
+        class="primary-btn"
+        aria-label="Restart this practice level"
+        @click="$emit('restart-level')"
+      >
         නැවත උත්සාහ කිරීමට
       </button>
-      <button class="secondary-btn" @click="$emit('change-level')">
+      <button
+        class="secondary-btn"
+        aria-label="Change practice level"
+        @click="$emit('change-level')"
+      >
         අසීරුතා මට්ටම වෙනස් කිරීමට
       </button>
-      <button class="secondary-btn" @click="$emit('go-home')">
+      <button
+        class="secondary-btn"
+        aria-label="Go to home page"
+        @click="$emit('go-home')"
+      >
         මුල් පිටුව වෙත
       </button>
     </div>

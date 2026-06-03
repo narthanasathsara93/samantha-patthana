@@ -6,7 +6,7 @@
       <img
         class="rotate-device-icon"
         :src="rotateDeviceIcon"
-        alt="device rotate"
+        alt=""
       />
     </span>
   </div>
@@ -218,7 +218,7 @@
               "
               @click="toggleMobileLowerControls"
             >
-              <img class="arrow-up-down-icon" :src="getArrowIcon()" />
+              <img class="arrow-up-down-icon" :src="getArrowIcon()" alt="" />
             </button>
           </main>
         </div>
@@ -230,6 +230,72 @@
       :is-hard-reset-in-progress="isHardResetInProgress"
       @refresh="applySoftUpdate"
     />
+
+    <button
+      v-if="isHomeRoute"
+      title="පාඨ සටහන"
+      class="disclaimer-trigger"
+      type="button"
+      @click="toggleDisclaimer"
+      :aria-expanded="isDisclaimerOpen"
+      aria-label="Show disclaimer"
+    >
+      <span>i</span>
+    </button>
+
+    <Transition name="disclaimer-popup">
+      <div
+        v-if="isDisclaimerOpen && isHomeRoute"
+        class="disclaimer-popup-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="disclaimer-title"
+        @click.self="closeDisclaimer"
+      >
+        <section class="disclaimer-popup">
+          <h2 id="disclaimer-title">පාඨ සටහන</h2>
+          <div class="disclaimer-popup-message">
+            මෙම යෙදුමේ අන්තර්ගත පාඨ විවිධ ඩිජිටල් මූලාශ්‍ර ඇසුරින් සම්පාදනය කර
+            ඇත. නිරවද්‍යතාවය තහවුරු කිරීම සඳහා උපරිම උත්සාහය ගෙන තිබුණද, අක්ෂර
+            දෝෂ හෝ වෙනත් අඩුපාඩු පැවතිය හැකිය. යම් දෝෂයක් හෝ සංශෝධනයක් දැනුම්
+            දීමට කැමති නම්, කරුණාකර අප හා සම්බන්ධ වන්න.
+            <button
+              class="contact-link"
+              type="button"
+              aria-label="Contact us"
+              title="ඔබේ ප්‍රතිචාර"
+              @click="goContactUs"
+              @mouseenter="hoveredContact = 'contact'"
+              @mouseleave="hoveredContact = null"
+            >
+              <img
+                class="contact-icon"
+                :src="
+                  hoveredContact === 'contact'
+                    ? getDisclaimerIcon('contact2.png')
+                    : getDisclaimerIcon('contact1.png')
+                "
+                alt=""
+              />
+            </button>
+
+            <br /><br />
+
+            මෙම යෙදුම ධර්ම දානයක් ලෙස පිරිනමනු ලබන අතර, මුල් මූලාශ්‍රයන්ට ගෞරවය
+            පිරිනමනු ලැබේ.<br />
+            තෙරුවන් සරණයි!!!
+          </div>
+          <button
+            type="button"
+            class="disclaimer-close-btn"
+            aria-label="Close disclaimer"
+            @click="closeDisclaimer"
+          >
+            <span aria-hidden="true">පැහැදිලියි</span>
+          </button>
+        </section>
+      </div>
+    </Transition>
 
     <Guidance
       v-model="isGuidanceOpen"
@@ -310,6 +376,7 @@ const minReaderFontSize = 15;
 const maxReaderFontSize = 30;
 const readerFontSize = ref(loadReaderFontSize());
 const isShowingResourcesPanel = ref(false);
+const isDisclaimerOpen = ref(false);
 const areMobileLowerControlsVisible = ref(true);
 const activeAudioSectionIndex = ref(-1);
 const pendingManualAudioSectionIndex = ref(-1);
@@ -387,6 +454,10 @@ const selectedVerseAudioSections = computed(() => {
 
   return sectionsKey ? audioSections[sectionsKey] || [] : [];
 });
+
+const goContactUs = () => {
+  router.push({ name: "ContactUs" });
+};
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio();
@@ -547,6 +618,8 @@ function handlePullReloadEnd(event) {
     window.location.reload();
   }
 }
+
+const hoveredContact = ref(null);
 
 function scrollVerseContentToTop() {
   nextTick(() => {
@@ -749,6 +822,18 @@ function toggleFontSettings() {
   isFontSettingsOpen.value = !isFontSettingsOpen.value;
 }
 
+function openDisclaimer() {
+  isDisclaimerOpen.value = true;
+}
+
+function closeDisclaimer() {
+  isDisclaimerOpen.value = false;
+}
+
+function toggleDisclaimer() {
+  isDisclaimerOpen.value = !isDisclaimerOpen.value;
+}
+
 function toggleMobileLowerControls() {
   areMobileLowerControlsVisible.value = !areMobileLowerControlsVisible.value;
   isPlayerManuallyToggled.value = true;
@@ -823,6 +908,10 @@ function pauseForLandscapeOrientation() {
 }
 
 const rotateDeviceIcon = getAssetUrl("icons/rotate.gif");
+
+const getDisclaimerIcon = (img) => {
+  return getAssetUrl(`icons/${img}`);
+};
 
 const getFontSizeIcon = () => {
   return getAssetUrl("icons/font_resize.png");
@@ -1065,19 +1154,16 @@ button:active {
 .page-open-leave-active {
   transition:
     opacity 0.45s ease,
-    transform 0.45s ease,
-    filter 0.45s ease;
+    transform 0.45s ease;
 }
 
 .page-open-enter-from {
   opacity: 0;
-  filter: blur(8px);
   transform: translateY(24px) scale(0.98);
 }
 
 .page-open-leave-to {
   opacity: 0;
-  filter: blur(4px);
   transform: translateY(-12px) scale(1.01);
 }
 
@@ -1260,6 +1346,92 @@ button:active {
   accent-color: #8b1e13;
 }
 
+.disclaimer-trigger {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2200;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: rgb(58 31 15 / 38%);
+  color: #f7e7c8;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.disclaimer-trigger:hover {
+  transform: scale(1.08);
+  background: rgba(58, 31, 15, 1);
+}
+
+.disclaimer-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: grid;
+  place-items: center;
+  background: rgba(35, 9, 5, 0.55);
+  backdrop-filter: blur(4px);
+  padding: 16px;
+}
+
+.disclaimer-popup {
+  max-width: 520px;
+  border-radius: 18px;
+  padding: 22px 22px 18px;
+  background: #fff7e3;
+  box-shadow: 0 22px 56px rgba(35, 9, 5, 0.26);
+  color: #3b0906;
+  text-align: left;
+}
+
+.disclaimer-popup h2 {
+  margin: 0 0 12px;
+  font-family: "Abhaya Libre", serif;
+  font-size: 25px;
+}
+
+.disclaimer-popup-message {
+  margin-bottom: 20px;
+  font-family: "Abhaya Libre", serif;
+  font-size: 19px;
+  line-height: 1.65;
+  color: #4b1e1e;
+  text-align: justify;
+}
+
+.disclaimer-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  background: #7a2410;
+  color: #ffebd8;
+  font-size: 17px;
+  font-family: "Abhaya Libre", serif;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.disclaimer-close-btn:hover {
+  background: #a43b23;
+  transform: translateY(-1px);
+}
+
 .font-size-value {
   min-width: 36px;
   color: #3b0906;
@@ -1364,6 +1536,36 @@ button:active {
 
 .desktop-only {
   display: inline;
+}
+
+.contact-link {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 36%;
+  background: transparent;
+  color: #4c1711;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  color: #c63100;
+  transform: scale(1.08);
+  outline: none;
+}
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 @media (max-width: 1085px) {

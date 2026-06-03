@@ -1,19 +1,19 @@
 <template>
-  <div class="home-page">
+  <main class="home-page">
     <button
       class="settings-btn"
       type="button"
-      aria-label="සැකසුම්"
-      title="සැකසුම්"
+      aria-label="Open settings"
+      title="Open settings"
       @click="openSettings"
     >
       <span class="gear-btn-icon">
-        <img class="gear-icon" :src="getIcon('gear.png')" alt="thinking" />
+        <img class="gear-icon" :src="getIcon('gear.png')" alt="" />
       </span>
     </button>
 
     <div class="hero-content">
-      <img class="logo-img" :src="logoImage" alt="Logo" />
+      <img class="logo-img" :src="logoImage" alt="Samantha Patthana logo" />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
@@ -22,7 +22,7 @@
       <img
         class="hero-title"
         :src="mainTitleImage"
-        alt="සමන්ත පට්ඨාන වන්දනාව"
+        alt="Samantha Patthana Wandana"
       />
 
       <p class="hero-description">
@@ -39,7 +39,7 @@
             <img
               class="star-icon"
               :src="getIcon('reading.png')"
-              alt="reading"
+              alt=""
             />
           </span>
           <span class="btn-txt">සජ්ඣායනය</span>
@@ -48,20 +48,20 @@
         <button
           class="practice-btn"
           v-on:click="openPracticeMode()"
-          aria-label="Practice start — open practice mode"
+          aria-label="Open practice mode"
         >
           <span class="btn-icon">
             <img
               class="mind-icon"
               :src="getIcon('mindset2.png')"
-              alt="thinking"
+              alt=""
             />
           </span>
           <span class="btn-txt">පුහුණුව</span>
         </button>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -240,36 +240,34 @@ const getIcon = (img) => {
   height: auto;
 }
 
+.settings-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #6f1f0e;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
 
-  .settings-btn {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 2;
-    width: 20px;
-    height: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: #6f1f0e;
-    cursor: pointer;
-    transition:
-      transform 0.25s ease,
-      background 0.25s ease;
-  }
+.settings-btn:hover {
+  transform: rotate(45deg);
+}
 
-  .settings-btn:hover {
-    transform: rotate(45deg);
-  }
-
-  .gear-icon {
-    width: 20px;
-    height: auto;
-  }
-
+.gear-icon {
+  width: 20px;
+  height: auto;
+}
 
 @keyframes fadeIn {
   from {
@@ -293,7 +291,6 @@ const getIcon = (img) => {
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 @media (min-width: 360px) {
@@ -363,6 +360,7 @@ const getIcon = (img) => {
     padding-right: 18px;
     align-items: flex-start;
     border-radius: 20px;
+    background-attachment: scroll;
     background-image: url("../assets/images/bg-1600.webp");
   }
 

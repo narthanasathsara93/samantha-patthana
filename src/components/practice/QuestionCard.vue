@@ -2,13 +2,14 @@
   <section class="practice-card">
     <div class="header">
       <span class="chip">
-        <img class="level-chip-icon" :src="getLabelIcon()" alt="chip icon" />
+        <img class="level-chip-icon" :src="getLabelIcon()" alt="" />
         <span class="chip-text">{{ levelLabel }} මට්ටම</span>
       </span>
       <div class="session-meta">
         <button
           class="end-session-btn"
           type="button"
+          :aria-label="isAnswerRevealed ? 'Hide answer' : 'Show answer'"
           :title="getTitleReveal()"
           @click="$emit('toggle-answer')"
         >
@@ -26,6 +27,15 @@
           @click="$emit('end-session')"
         >
           <img class="end-session-icon" :src="getIcon('restart.png')" alt="" />
+        </button>
+        <button
+          class="end-session-btn"
+          type="button"
+          aria-label="Go to home page"
+          title="මුල් පිටුව වෙත"
+          @click="$emit('go-home')"
+        >
+          <img class="end-session-icon" :src="getIcon('home.png')" alt="" />
         </button>
         <span class="chip">{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
       </div>
@@ -61,6 +71,7 @@
       <button
         class="action-btn"
         type="button"
+        :aria-label="showFinishButton ? 'Finish practice session' : 'Next question'"
         :disabled="totalQuestions === 0"
         @click="$emit('go-next')"
       >
@@ -111,7 +122,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(["end-session", "toggle-answer", "go-next"]);
+defineEmits(["end-session", "toggle-answer", "go-next", "go-home"]);
 
 const levelLabel = computed(() => props.selectedLevel);
 const isLastQuestion = computed(
@@ -401,7 +412,7 @@ button {
 }
 
 .action-btn:hover:not(:disabled) {
-  transform: translateY(5px);
+  transform: translateX(6px);
 }
 
 .action-btn:active:not(:disabled) {
