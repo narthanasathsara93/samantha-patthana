@@ -254,12 +254,16 @@ function goHome() {
   font-family: inherit;
   font-size: 18px;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .back-btn:hover {
-  background: #6f200e73;
-  color: #fdf1da;
-  transform: translateY(-1px);
+  background: #ffeccf;
+  font-weight: 600;
+  transform: translateY(-3px);
 }
 
 @keyframes fadeIn {
