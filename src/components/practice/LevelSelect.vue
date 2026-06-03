@@ -170,16 +170,16 @@ const subText = `මෙම පුහුණුවේදී තිරයේ දි
 }
 
 .back-btn:hover {
-  background: #6f200e73;
-  color: #fdf1da;
-  transform: translateY(-1px);
+  background: #ffeccf;
+  font-weight: 600;
+  transform: translateY(-3px);
 }
 
 .back-btn:active {
   transform: scale(0.97);
 }
 
-@media (max-width: 420px){
+@media (max-width: 420px) {
   .subtitle {
     margin: 4px 0 15px;
     font-size: 14px;
