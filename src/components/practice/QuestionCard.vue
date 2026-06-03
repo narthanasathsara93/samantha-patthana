@@ -412,7 +412,7 @@ button {
 }
 
 .action-btn:hover:not(:disabled) {
-  transform: translateY(5px);
+  transform: translateX(6px);
 }
 
 .action-btn:active:not(:disabled) {
