@@ -66,7 +66,7 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import logoImage from "../assets/images/logo.png";
+import logoImage from "../assets/images/logo.webp";
 import mainTitleImage from "../assets/images/titletxt.png";
 import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
