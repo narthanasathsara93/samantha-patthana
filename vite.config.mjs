@@ -76,6 +76,9 @@ export default defineConfig({
           },
         ],
         navigateFallback: "/index.html",
+        navigateFallbackDenylist: [
+          /\.(?:xml|txt|webmanifest)$/i,
+        ],
       },
       devOptions: {
         enabled: true,
