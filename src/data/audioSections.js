@@ -18,7 +18,7 @@ export const audioSections = {
         "විමලාමිත බුද්ධියා",
     },
     {
-      startAt: "00:06",
+      startAt: "00:56",
       endAt: "01:13",
       content:
         "යස්ස දේහා නික්ඛමිංසු<br>\n" +

@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 import { registerSW } from "virtual:pwa-register";
 
 const VERSION_STORAGE_KEY = "app_version";
@@ -17,6 +17,7 @@ const shouldForceReset = ref(false);
 
 let swUpdateFn = null;
 let swRegistered = false;
+let versionCheckAbortController = null;
 
 function hasWindowApi() {
   return typeof window !== "undefined";
@@ -82,17 +83,20 @@ function registerServiceWorkerUpdateFlow() {
   });
 }
 
-async function fetchVersionWithTimeout(timeoutMs = 7000) {
-  const controller = new AbortController();
+async function fetchVersionWithTimeout(timeoutMs = 7000, signal = null) {
+  const controller = signal ? null : new AbortController();
+  const abortSignal = signal || controller?.signal;
 
   const timeoutId = window.setTimeout(() => {
-    controller.abort();
+    if (controller) {
+      controller.abort();
+    }
   }, timeoutMs);
 
   try {
     const response = await fetch(`/version.json?t=${Date.now()}`, {
       cache: "no-store",
-      signal: controller.signal,
+      signal: abortSignal,
     });
 
     if (!response.ok) {
@@ -295,8 +299,11 @@ async function checkVersion() {
   isCheckingVersion.value = true;
   lastError.value = null;
 
+  // Create abort controller for this version check
+  versionCheckAbortController = new AbortController();
+
   try {
-    const latest = await fetchVersionWithTimeout();
+    const latest = await fetchVersionWithTimeout(7000, versionCheckAbortController.signal);
 
     remoteVersion.value = latest.version;
 
@@ -358,10 +365,29 @@ async function checkVersion() {
     );
   } finally {
     isCheckingVersion.value = false;
+    versionCheckAbortController = null;
   }
 }
 
 export function useAppVersion() {
+  // Initialize bfcache-friendly abort handling
+  onMounted(() => {
+    // Cancel pending version checks when page is frozen for bfcache
+    window.addEventListener("pagehide", () => {
+      if (versionCheckAbortController) {
+        versionCheckAbortController.abort();
+      }
+    });
+  });
+
+  onBeforeUnmount(() => {
+    // Cleanup abort controller
+    if (versionCheckAbortController) {
+      versionCheckAbortController.abort();
+      versionCheckAbortController = null;
+    }
+  });
+
   return {
     isCheckingVersion: computed(() => isCheckingVersion.value),
 

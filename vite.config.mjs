@@ -60,7 +60,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],
         cleanupOutdatedCaches: true,
-        skipWaiting: true,
+        skipWaiting: false,
         clientsClaim: true,
         runtimeCaching: [
           {
