@@ -118,7 +118,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
-import logoImage from "../assets/images/logo.png";
+import logoImage from "../assets/images/logo.webp";
 
 const props = defineProps({
   isSidebarOpen: {
