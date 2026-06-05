@@ -182,7 +182,7 @@ function goHome() {
   font-size: clamp(17px, 2.2vw, 20px);
   line-height: 1.5;
   color: #6a3f2e;
-  text-align: justify;
+  text-align: center;
 }
 
 .status-message {
