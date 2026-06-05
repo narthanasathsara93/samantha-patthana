@@ -295,7 +295,6 @@ const getIcon = (img) => {
 
 @media (min-width: 360px) {
   .home-page {
-    border-radius: 20px;
     background-image: url("../assets/images/bg-720.webp");
   }
   .begin-btn,
@@ -306,7 +305,6 @@ const getIcon = (img) => {
 
 @media (min-width: 480px) {
   .home-page {
-    border-radius: 20px;
     background-image: url("../assets/images/bg-1080.webp");
   }
 
@@ -359,7 +357,6 @@ const getIcon = (img) => {
     padding-left: 18px;
     padding-right: 18px;
     align-items: flex-start;
-    border-radius: 20px;
     background-attachment: scroll;
     background-image: url("../assets/images/bg-1600.webp");
   }
@@ -405,7 +402,6 @@ const getIcon = (img) => {
 
 @media (min-width: 1024px) {
   .home-page {
-    border-radius: 0px;
     background-image: url("../assets/images/bg-1493.webp");
   }
 }
