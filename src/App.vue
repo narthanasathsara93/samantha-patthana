@@ -17,6 +17,43 @@
       <PracticeHome v-else-if="isPracticeRoute" key="practice" />
       <Settings v-else-if="isSettingsRoute" key="settings" />
       <ContactUs v-else-if="isContactRoute" key="contact" />
+      <div v-else-if="isResourcesRoute" key="resources" class="app-container">
+        <div class="app">
+          <!-- Sidebar -->
+          <Sidebar
+            :is-sidebar-open="isSidebarOpen"
+            :selected-id="null"
+            :verse-index-map="verseIndexMap"
+            :is-bookmarked="isBookmarked"
+            @verse-selected="handleVerseSelected"
+            @show-resources="handleShowResources"
+            @close-sidebar="closeSidebar"
+          />
+
+          <!-- Content -->
+          <main
+            class="content"
+            :class="{
+              'mobile-lower-controls-hidden': !areMobileLowerControlsVisible,
+            }"
+          >
+            <!-- Mobile Header -->
+            <MobileHeader
+              :is-bookmarked="false"
+              :title="contentTitle"
+              @toggle-sidebar="toggleSidebar"
+              @toggle-bookmark="handleToggleBookmark"
+            />
+
+            <div class="verse-content">
+              <ResourcesPanel @close="handleCloseResourcesPanel" />
+            </div>
+
+            <!-- Overlay -->
+            <Overlay :show="isSidebarOpen" @click="toggleSidebar" />
+          </main>
+        </div>
+      </div>
       <div v-else key="reader" class="app-container">
         <div class="app">
           <!-- Sidebar -->
@@ -525,6 +562,7 @@ const isHomeRoute = computed(() => route.name === "Home" || route.path === "/");
 const isPracticeRoute = computed(() => route.name === "PracticeMode");
 const isSettingsRoute = computed(() => route.name === "Settings");
 const isContactRoute = computed(() => route.name === "ContactUs");
+const isResourcesRoute = computed(() => route.name === "Resources");
 // Load bookmarks on app start
 loadBookmarks();
 
