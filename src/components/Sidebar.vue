@@ -10,11 +10,7 @@
       @keydown.space.prevent="goToHome"
     >
       <span class="header-details">
-        <img
-          class="logo-img"
-          :src="logoImage"
-          alt="Samantha Patthana logo"
-        />
+        <img class="logo-img" :src="logoImage" alt="Samantha Patthana logo" />
         <div class="header-text">සමන්ත පට්ඨාන වන්දනා</div>
       </span>
     </div>
@@ -33,7 +29,9 @@
           @click="handleVerseClick(verse)"
           :aria-label="`Go to verse ${index + 1}`"
         >
-          <span class="number">{{ index + 1 }}. </span>
+          <span class="number">
+            {{ String(index + 1).padStart(2, "0") }}.
+          </span>
           <span class="verse-title">
             {{ verse.title }}
 
