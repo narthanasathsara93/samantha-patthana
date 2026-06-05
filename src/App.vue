@@ -1407,7 +1407,7 @@ button:active {
 }
 
 .disclaimer-trigger:hover {
-  transform: scale(1.08);
+  transform: scale(1.02);
 }
 
 .disclaimer-popup-backdrop {
@@ -1607,6 +1607,11 @@ button:active {
 .info-icon {
   width: 20px;
   height: auto;
+  opacity: 0.50;
+}
+
+.info-icon:hover {
+  opacity: 1;
 }
 
 @media (max-width: 1085px) {
