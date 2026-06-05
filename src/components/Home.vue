@@ -27,13 +27,7 @@
         අති ගම්භීර
       </div>
 
-      <div
-        class="hero-main-title"
-        :class="{ glowing: isTitleGlowing }"
-        @click="triggerTitleGlow"
-      >
-        සමන්ත පට්ඨාන වන්දනාව
-      </div>
+      <div class="hero-main-title">සමන්ත පට්ඨාන වන්දනාව</div>
 
       <p class="hero-description">
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
@@ -71,19 +65,7 @@ import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.webp";
 import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
-import { ref } from "vue";
 
-const isTitleGlowing = ref(false);
-
-const triggerTitleGlow = () => {
-  isTitleGlowing.value = false;
-  requestAnimationFrame(() => {
-    isTitleGlowing.value = true;
-    setTimeout(() => {
-      isTitleGlowing.value = false;
-    }, 5000);
-  });
-};
 const router = useRouter();
 const { isGuidanceSectionComplete, openGuidance } = useGuidance();
 
@@ -164,131 +146,9 @@ const getIcon = (img) => {
   font-family: "UN Arundathee", serif !important;
   font-size: clamp(2.8rem, 8vw, 7.5rem);
   cursor: pointer;
-  z-index: 10;
+  z-index: 2;
 }
 
-.hero-main-title::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 300vmax;
-  height: 300vmax;
-  transform: translate(-50%, -50%) scale(0.05);
-  pointer-events: none;
-  opacity: 0;
-  z-index: -2;
-  background: repeating-conic-gradient(
-    from 0deg,
-    rgba(255, 215, 80, 0.95) 0deg,
-    rgba(255, 215, 80, 0.95) 0.15deg,
-
-    transparent 0.15deg,
-    transparent 1.6deg
-  );
-  mix-blend-mode: screen;
-}
-
-.hero-main-title::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 200vmax;
-  height: 200vmax;
-  transform: translate(-50%, -50%) scale(0.1);
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1;
-  background: conic-gradient(
-    #0000ff,
-    #ffff00,
-    #ff0000,
-    #ffffff,
-    #cf0000,
-    #f8f8ff
-  );
-  filter: blur(100px);
-  mix-blend-mode: screen;
-}
-
-.hero-main-title.glowing {
-  animation: title-divine-glow 2.2s ease-out;
-}
-
-@keyframes title-divine-glow {
-  0% {
-    text-shadow: none;
-  }
-
-  20% {
-    text-shadow:
-      0 0 15px rgba(255, 230, 140, 0.9),
-      0 0 30px rgba(255, 210, 80, 0.8),
-      0 0 60px rgba(255, 180, 0, 0.5);
-  }
-
-  100% {
-    text-shadow: none;
-  }
-}
-
-.hero-main-title.glowing::before {
-  animation: golden-rays 2s ease-out forwards;
-}
-
-.hero-main-title.glowing::after {
-  animation: six-color-aura 2s ease-out forwards;
-}
-
-@keyframes golden-rays {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.05) rotate(0deg);
-  }
-
-  15% {
-    opacity: 0.45;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1) rotate(10deg);
-  }
-}
-
-@keyframes six-color-aura {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.1);
-  }
-
-  20% {
-    opacity: 0.45;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2);
-  }
-}
-
-@keyframes title-divine-glow {
-  0% {
-    text-shadow: none;
-  }
-
-  25% {
-    text-shadow:
-      0 0 8px rgba(255, 210, 100, 0.35),
-      0 0 20px rgba(255, 230, 160, 0.25);
-  }
-
-  100% {
-    text-shadow: none;
-  }
-}
 .hero-subtitle {
   font-size: 43px;
   line-height: 1.1;
