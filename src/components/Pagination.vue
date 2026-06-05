@@ -10,7 +10,9 @@
       <span class="left-arrow btn-symbol"> ⬩➤ </span>
       <span> පෙර </span>
     </button>
-    <span>{{ currentIndex + 1 }} / {{ totalVerses }}</span>
+    <span>
+      {{ String(currentIndex + 1).padStart(2, "0") }}/{{ totalVerses }}
+    </span>
 
     <button
       class="action-btn"
