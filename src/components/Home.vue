@@ -27,15 +27,7 @@
         අති ගම්භීර
       </div>
 
-      <img
-        class="hero-title"
-        rel="preload"
-        as="image"
-        loading="eager"
-        fetchpriority="high"
-        :src="mainTitleImage"
-        alt="Samantha Patthana Wandana"
-      />
+      <div class="hero-main-title">සමන්ත පට්ඨාන වන්දනාව</div>
 
       <p class="hero-description">
         සමාධිමත් සිතින් යුතුව ශ්‍රද්ධා පූර්වකව ශ්‍රවණය කරමින් වන්දනා කරමු.
@@ -71,7 +63,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 import logoImage from "../assets/images/logo.webp";
-import mainTitleImage from "../assets/images/titletxt.png";
 import { useGuidance } from "../composables/useGuidance";
 import { getAssetUrl } from "../utils/assets";
 
@@ -139,10 +130,18 @@ const getIcon = (img) => {
 }
 
 .hero-content {
-  font-weight: 600;
   width: 100%;
   max-width: 950px;
   text-align: center;
+}
+
+.hero-main-title {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  font-size: 120px;
+  color: #4C1711;
+  font-family: "UN Arundathee", serif !important;
+  font-size: clamp(2.8rem, 8vw, 7.5rem);
 }
 
 .hero-subtitle {
