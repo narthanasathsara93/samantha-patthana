@@ -81,7 +81,7 @@ const triggerTitleGlow = () => {
     isTitleGlowing.value = true;
     setTimeout(() => {
       isTitleGlowing.value = false;
-    }, 20000000);
+    }, 5000);
   });
 };
 const router = useRouter();
