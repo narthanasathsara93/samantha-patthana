@@ -3,11 +3,7 @@
   <div class="rotate-device" role="status" aria-live="polite">
     කරුණාකර සිරස් හරවා (Portrait) භාවිතා කරන්න.
     <span class="rotate-icon-cont" aria-hidden="true">
-      <img
-        class="rotate-device-icon"
-        :src="rotateDeviceIcon"
-        alt=""
-      />
+      <img class="rotate-device-icon" :src="rotateDeviceIcon" alt="" />
     </span>
   </div>
 
@@ -255,7 +251,11 @@
               "
               @click="toggleMobileLowerControls"
             >
-              <img class="arrow-up-down-icon" :src="getArrowIcon()" alt="" />
+              <img
+                class="arrow-up-down-icon"
+                :src="getArrowIcon()"
+                alt="Open Audio Player"
+              />
             </button>
           </main>
         </div>
@@ -277,7 +277,7 @@
       :aria-expanded="isDisclaimerOpen"
       aria-label="Show disclaimer"
     >
-      <span>i</span>
+      <img class="info-icon" :src="getInfoIcon()" alt="Info" />
     </button>
 
     <Transition name="disclaimer-popup">
@@ -967,6 +967,10 @@ const getArrowIcon = () => {
     : getAssetUrl("icons/arrow_up.png");
 };
 
+const getInfoIcon = () => {
+  return getAssetUrl("icons/info.png");
+};
+
 const displayTitle = computed(() => {
   const minScreenWidth = 1070;
   const isSmallScreen = window.innerWidth < minScreenWidth;
@@ -1393,15 +1397,10 @@ button:active {
   height: 20px;
   border: none;
   border-radius: 50%;
-  background: rgb(58 31 15 / 38%);
-  color: #f7e7c8;
-  font-style: italic;
-  font-size: 12px;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+
   transition:
     transform 0.2s ease,
     background 0.2s ease;
@@ -1409,7 +1408,6 @@ button:active {
 
 .disclaimer-trigger:hover {
   transform: scale(1.08);
-  background: rgba(58, 31, 15, 1);
 }
 
 .disclaimer-popup-backdrop {
@@ -1604,6 +1602,11 @@ button:active {
   width: 18px;
   height: 18px;
   fill: currentColor;
+}
+
+.info-icon {
+  width: 20px;
+  height: auto;
 }
 
 @media (max-width: 1085px) {

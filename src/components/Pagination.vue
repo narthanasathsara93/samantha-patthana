@@ -11,7 +11,7 @@
       <span> පෙර </span>
     </button>
     <span>
-      {{ String(currentIndex + 1).padStart(2, "0") }}/ {{ totalVerses }}
+      {{ String(currentIndex + 1).padStart(2, "0") }}/{{ totalVerses }}
     </span>
 
     <button
