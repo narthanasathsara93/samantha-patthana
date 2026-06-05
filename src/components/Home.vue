@@ -130,6 +130,7 @@ const getIcon = (img) => {
 }
 
 .hero-content {
+  cursor: default;
   width: 100%;
   max-width: 950px;
   text-align: center;
@@ -139,7 +140,7 @@ const getIcon = (img) => {
   margin-top: 2%;
   margin-bottom: 2%;
   font-size: 120px;
-  color: #4C1711;
+  color: #4c1711;
   font-family: "UN Arundathee", serif !important;
   font-size: clamp(2.8rem, 8vw, 7.5rem);
 }
