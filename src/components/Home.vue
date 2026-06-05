@@ -13,7 +13,15 @@
     </button>
 
     <div class="hero-content">
-      <img class="logo-img" :src="logoImage" alt="Samantha Patthana logo" />
+      <img
+        rel="preload"
+        as="image"
+        class="logo-img"
+        :src="logoImage"
+        alt="Samantha Patthana logo"
+        loading="eager"
+        fetchpriority="high"
+      />
       <div class="hero-subtitle">
         අනන්ත නය සමන්නාගත චතුවීසති <br />
         අති ගම්භීර
@@ -21,6 +29,10 @@
 
       <img
         class="hero-title"
+        rel="preload"
+        as="image"
+        loading="eager"
+        fetchpriority="high"
         :src="mainTitleImage"
         alt="Samantha Patthana Wandana"
       />
@@ -36,11 +48,7 @@
           aria-label="Start chanting"
         >
           <span class="btn-icon">
-            <img
-              class="star-icon"
-              :src="getIcon('reading.png')"
-              alt=""
-            />
+            <img class="star-icon" :src="getIcon('reading.png')" alt="" />
           </span>
           <span class="btn-txt">සජ්ඣායනය</span>
         </button>
@@ -51,11 +59,7 @@
           aria-label="Open practice mode"
         >
           <span class="btn-icon">
-            <img
-              class="mind-icon"
-              :src="getIcon('mindset2.png')"
-              alt=""
-            />
+            <img class="mind-icon" :src="getIcon('mindset2.png')" alt="" />
           </span>
           <span class="btn-txt">පුහුණුව</span>
         </button>
@@ -139,7 +143,6 @@ const getIcon = (img) => {
   width: 100%;
   max-width: 950px;
   text-align: center;
-  animation: fadeIn 0.8s ease;
 }
 
 .hero-subtitle {
@@ -269,18 +272,6 @@ const getIcon = (img) => {
   height: auto;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .logo-img {
   width: 60px;
   height: auto;
@@ -295,7 +286,6 @@ const getIcon = (img) => {
 
 @media (min-width: 360px) {
   .home-page {
-    border-radius: 20px;
     background-image: url("../assets/images/bg-720.webp");
   }
   .begin-btn,
@@ -306,7 +296,6 @@ const getIcon = (img) => {
 
 @media (min-width: 480px) {
   .home-page {
-    border-radius: 20px;
     background-image: url("../assets/images/bg-1080.webp");
   }
 
@@ -359,7 +348,6 @@ const getIcon = (img) => {
     padding-left: 18px;
     padding-right: 18px;
     align-items: flex-start;
-    border-radius: 20px;
     background-attachment: scroll;
     background-image: url("../assets/images/bg-1600.webp");
   }
@@ -405,7 +393,6 @@ const getIcon = (img) => {
 
 @media (min-width: 1024px) {
   .home-page {
-    border-radius: 0px;
     background-image: url("../assets/images/bg-1493.webp");
   }
 }
