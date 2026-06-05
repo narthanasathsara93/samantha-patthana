@@ -3,7 +3,7 @@
     <div class="header">
       <span class="chip">
         <img class="level-chip-icon" :src="getLabelIcon()" alt="" />
-        <span class="chip-text">{{ levelLabel }} මට්ටම</span>
+        <span class="chip-text">{{ levelLabel }}</span>
       </span>
       <div class="session-meta">
         <button
