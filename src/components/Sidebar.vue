@@ -229,6 +229,7 @@ const goContactUs = () => {
 }
 
 .header-text {
+  color: #3e0502 !important;
   font-size: clamp(20px, 2.5vw, 24px);
   font-weight: 300;
   font-family: "UN Arundathee", serif !important;
