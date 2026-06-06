@@ -10,7 +10,7 @@
         @click="$emit('select-level', 'ආධුනික')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level1')" alt="" />
+          <img class="level-btn-icon" :src="getIcon('level1')" alt="Level1 Icon" />
         </span>
         ආධුනික
       </button>
@@ -20,7 +20,7 @@
         @click="$emit('select-level', 'මධ්‍යස්ථ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level2')" alt="" />
+          <img class="level-btn-icon" :src="getIcon('level2')" alt="Level2 Icon" />
         </span>
         මධ්‍යස්ථ
       </button>
@@ -30,7 +30,7 @@
         @click="$emit('select-level', 'ප්‍රවීණ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level3')" alt="" />
+          <img class="level-btn-icon" :src="getIcon('level3')" alt="Level3 Icon" />
         </span>
         ප්‍රවීණ
       </button>

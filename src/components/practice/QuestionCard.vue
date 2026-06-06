@@ -70,8 +70,11 @@
     <div class="actions">
       <button
         class="action-btn"
+        :class="showFinishButton ? 'finish-session' : ''"
         type="button"
-        :aria-label="showFinishButton ? 'Finish practice session' : 'Next question'"
+        :aria-label="
+          showFinishButton ? 'Finish practice session' : 'Next question'
+        "
         :disabled="totalQuestions === 0"
         @click="$emit('go-next')"
       >
@@ -422,6 +425,11 @@ button {
 .action-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.action-btn.finish-session {
+  background-color: #af0000;
+  border-color: #c62828;
 }
 
 .reveal {

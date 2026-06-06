@@ -1,7 +1,11 @@
 <template>
   <section class="practice-card">
     <h2 class="title">මෙම පුහුණු වටය අවසන් කරන ලදී.</h2>
-    <p class="subtitle">(අසීරුතා මට්ටම : {{ selectedLevelLabel }})</p>
+    <p class="subtitle">
+      (අසීරුතා මට්ටම :
+      <img class="level-btn-icon" :src="getLevelIcon()" alt="Level Icon" />
+      {{ selectedLevelLabel }})
+    </p>
 
     <div class="actions">
       <button
@@ -31,6 +35,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { getAssetUrl } from "../../utils/assets";
 
 const props = defineProps({
   selectedLevel: {
@@ -43,7 +48,21 @@ const props = defineProps({
   },
 });
 
+const getIcon = (icon) => {
+  return getAssetUrl(`icons/${icon}.png`);
+};
+
 const selectedLevelLabel = computed(() => props.selectedLevel.toUpperCase());
+
+const getLevelIcon = () => {
+  if (props.selectedLevel === "ආධුනික") {
+    return getIcon("level1_1");
+  } else if (props.selectedLevel === "මධ්‍යස්ථ") {
+    return getIcon("level2_1");
+  } else if (props.selectedLevel === "ප්‍රවීණ") {
+    return getIcon("level3_1");
+  }
+};
 
 defineEmits(["restart-level", "change-level", "go-home"]);
 </script>
@@ -59,15 +78,20 @@ defineEmits(["restart-level", "change-level", "go-home"]);
   text-align: center;
 }
 
+.level-btn-icon {
+  width: 24px;
+  height: 24px;
+}
+
 .title {
   margin: 0;
-  color: #7a2410;
+  color: #390701;
   font-size: clamp(28px, 3.5vw, 40px);
 }
 
 .subtitle {
   margin: 10px 0 24px;
-  color: #7a2410;
+  color: #390701;
   font-size: clamp(18px, 2vw, 24px);
 }
 
@@ -102,7 +126,7 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 .secondary-btn {
   border: 1px solid #7a2410;
   background: transparent;
-  color: #7a2410;
+  color: #390701;
 }
 
 .primary-btn:hover,
