@@ -450,13 +450,19 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const mobileHeaderTitle = computed(() => {
+  console.log(contentTitle.value);
   if (isShowingResourcesPanel.value) {
     return contentTitle.value;
   }
 
   const verseNumber = Number(selectedVerse.value?.id?.replace("verse-", ""));
   if (verseNumber >= 3 && verseNumber <= 26) {
-    return String(verseNumber - 2).padStart(2, "0");
+    let sinhalaTitle = String(verseNumber - 2).padStart(2, "0");
+    if (isSinhalaTextView.value && contentTitle.value) {
+      return `${sinhalaTitle}. ${contentTitle.value}`;
+    }
+
+    return sinhalaTitle;
   }
   if (verseNumber === 27) {
     return deco;
@@ -1607,7 +1613,7 @@ button:active {
 .home-info-icon {
   width: 20px;
   height: auto;
-  opacity: 0.50;
+  opacity: 0.5;
 }
 
 .home-info-icon:hover {

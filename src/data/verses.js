@@ -30,7 +30,7 @@ export const verses = [
     audioStartAt: "02:43",
     audioEndAt: "03:19",
     audioSectionsKey: "verse-3",
-    sinhalaTitle: "හේතු ප‍්‍රත්‍යය යනු",
+    sinhalaTitle: "හේතු ප‍්‍රත්‍යය",
     sinhalaTextKey: "verse-3",
   },
   {
@@ -52,7 +52,7 @@ export const verses = [
     audioStartAt: "06:01",
     audioEndAt: "07:45",
     audioSectionsKey: "verse-5",
-    sinhalaTitle: "අධිපති ප්‍රත්‍ය යනු",
+    sinhalaTitle: "අධිපති ප්‍රත්‍ය",
     sinhalaTextKey: "verse-5",
   },
   {
@@ -63,7 +63,7 @@ export const verses = [
     audioStartAt: "07:47",
     audioEndAt: "13:07",
     audioSectionsKey: "verse-6",
-    sinhalaTitle: "අනන්තර ප්‍රත්‍ය යනු",
+    sinhalaTitle: "අනන්තර ප්‍රත්‍ය",
     sinhalaTextKey: "verse-6",
   },
   {
@@ -74,7 +74,7 @@ export const verses = [
     audioStartAt: "13:08",
     audioEndAt: "18:28",
     audioSectionsKey: "verse-7",
-    sinhalaTitle: "සමනන්තර ප්‍රත්‍ය යනු",
+    sinhalaTitle: "සමනන්තර ප්‍රත්‍ය",
     sinhalaTextKey: "verse-7",
   },
   {
@@ -85,7 +85,7 @@ export const verses = [
     audioStartAt: "18:29",
     audioEndAt: "19:50",
     audioSectionsKey: "verse-8",
-    sinhalaTitle: "සහජාත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "සහජාත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-8",
   },
   {
@@ -96,7 +96,7 @@ export const verses = [
     audioStartAt: "19:51",
     audioEndAt: "20:32",
     audioSectionsKey: "verse-9",
-    sinhalaTitle: "අඤ්ඤමඤ්ඤ ප්‍රත්‍ය යනු",
+    sinhalaTitle: "අඤ්ඤමඤ්ඤ ප්‍රත්‍ය",
     sinhalaTextKey: "verse-9",
   },
   {
@@ -107,7 +107,7 @@ export const verses = [
     audioStartAt: "20:33",
     audioEndAt: "23:16",
     audioSectionsKey: "verse-10",
-    sinhalaTitle: "නිස්සය ප්‍රත්‍ය යනු",
+    sinhalaTitle: "නිස්සය ප්‍රත්‍ය",
     sinhalaTextKey: "verse-10",
   },
   {
@@ -118,7 +118,7 @@ export const verses = [
     audioStartAt: "23:18",
     audioEndAt: "26:06",
     audioSectionsKey: "verse-11",
-    sinhalaTitle: "උපනිස්සය ප්‍රත්‍ය යනු",
+    sinhalaTitle: "උපනිස්සය ප්‍රත්‍ය",
     sinhalaTextKey: "verse-11",
   },
   {
@@ -129,7 +129,7 @@ export const verses = [
     audioStartAt: "26:07",
     audioEndAt: "29:50",
     audioSectionsKey: "verse-12",
-    sinhalaTitle: "පුරේජාත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "පුරේජාත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-12",
   },
   {
@@ -140,7 +140,7 @@ export const verses = [
     audioStartAt: "29:51",
     audioEndAt: "30:21",
     audioSectionsKey: "verse-13",
-    sinhalaTitle: "පච්ඡාජාත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "පච්ඡාජාත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-13",
   },
   {
@@ -151,7 +151,7 @@ export const verses = [
     audioStartAt: "30:22",
     audioEndAt: "31:23",
     audioSectionsKey: "verse-14",
-    sinhalaTitle: "ආසේවන ප්‍රත්‍ය යනු",
+    sinhalaTitle: "ආසේවන ප්‍රත්‍ය",
     sinhalaTextKey: "verse-14",
   },
   {
@@ -162,7 +162,7 @@ export const verses = [
     audioStartAt: "31:24",
     audioEndAt: "32:05",
     audioSectionsKey: "verse-15",
-    sinhalaTitle: "කම්ම ප්‍රත්‍ය යනු",
+    sinhalaTitle: "කම්ම ප්‍රත්‍ය",
     sinhalaTextKey: "verse-15",
   },
   {
@@ -173,7 +173,7 @@ export const verses = [
     audioStartAt: "32:07",
     audioEndAt: "32:34",
     audioSectionsKey: "verse-16",
-    sinhalaTitle: "විපාක ප්‍රත්‍ය යනු",
+    sinhalaTitle: "විපාක ප්‍රත්‍ය",
     sinhalaTextKey: "verse-16",
   },
   {
@@ -184,7 +184,7 @@ export const verses = [
     audioStartAt: "32:35",
     audioEndAt: "33:17",
     audioSectionsKey: "verse-17",
-    sinhalaTitle: "ආහාර ප්‍රත්‍ය යනු",
+    sinhalaTitle: "ආහාර ප්‍රත්‍ය",
     sinhalaTextKey: "verse-17",
   },
   {
@@ -195,7 +195,7 @@ export const verses = [
     audioStartAt: "33:18",
     audioEndAt: "35:10",
     audioSectionsKey: "verse-18",
-    sinhalaTitle: "ඉන්ද්‍රිය ප්‍රත්‍ය යනු",
+    sinhalaTitle: "ඉන්ද්‍රිය ප්‍රත්‍ය",
     sinhalaTextKey: "verse-18",
   },
   {
@@ -206,7 +206,7 @@ export const verses = [
     audioStartAt: "35:11",
     audioEndAt: "35:43",
     audioSectionsKey: "verse-19",
-    sinhalaTitle: "ඣාන ප්‍රත්‍ය යනු",
+    sinhalaTitle: "ඣාන ප්‍රත්‍ය",
     sinhalaTextKey: "verse-19",
   },
   {
@@ -217,7 +217,7 @@ export const verses = [
     audioStartAt: "35:44",
     audioEndAt: "36:16",
     audioSectionsKey: "verse-20",
-    sinhalaTitle: "මග්ග ප්‍රත්‍ය යනු",
+    sinhalaTitle: "මග්ග ප්‍රත්‍ය",
     sinhalaTextKey: "verse-20",
   },
   {
@@ -228,7 +228,7 @@ export const verses = [
     audioStartAt: "36:17",
     audioEndAt: "36:43",
     audioSectionsKey: "verse-21",
-    sinhalaTitle: "සම්පයුත්ත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "සම්පයුත්ත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-21",
   },
   {
@@ -239,7 +239,7 @@ export const verses = [
     audioStartAt: "36:44",
     audioEndAt: "37:20",
     audioSectionsKey: "verse-22",
-    sinhalaTitle: "විප්පයුත්ත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "විප්පයුත්ත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-22",
   },
   {
@@ -250,7 +250,7 @@ export const verses = [
     audioStartAt: "37:21",
     audioEndAt: "41:27",
     audioSectionsKey: "verse-23",
-    sinhalaTitle: "අත්ථි ප්‍රත්‍ය යනු",
+    sinhalaTitle: "අත්ථි ප්‍රත්‍ය",
     sinhalaTextKey: "verse-23",
   },
   {
@@ -261,7 +261,7 @@ export const verses = [
     audioStartAt: "41:28",
     audioEndAt: "42:01",
     audioSectionsKey: "verse-24",
-    sinhalaTitle: "නත්ථි ප්‍රත්‍ය යනු",
+    sinhalaTitle: "නත්ථි ප්‍රත්‍ය",
     sinhalaTextKey: "verse-24",
   },
   {
@@ -272,7 +272,7 @@ export const verses = [
     audioStartAt: "42:02",
     audioEndAt: "42:34",
     audioSectionsKey: "verse-25",
-    sinhalaTitle: "විගත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "විගත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-25",
   },
   {
@@ -283,7 +283,7 @@ export const verses = [
     audioStartAt: "42:35",
     audioEndAt: "46:42 ",
     audioSectionsKey: "verse-26",
-    sinhalaTitle: "අවිගත ප්‍රත්‍ය යනු",
+    sinhalaTitle: "අවිගත ප්‍රත්‍ය",
     sinhalaTextKey: "verse-26",
   },
   {
