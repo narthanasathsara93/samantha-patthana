@@ -84,7 +84,7 @@ const statusText = computed(() => {
 
 .update-button {
   border: none;
-  border-radius: 10px;
+  border-radius: 999px;
   padding: 8px 12px;
   font-size: 12px;
   font-weight: 700;

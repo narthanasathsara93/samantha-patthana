@@ -145,7 +145,7 @@ const getIcon = (img) => {
   color: #4c1711;
   font-family: "UN Arundathee", serif !important;
   font-size: clamp(2.8rem, 8vw, 7.5rem);
-  cursor: pointer;
+  cursor: arrow;
   z-index: 2;
 }
 

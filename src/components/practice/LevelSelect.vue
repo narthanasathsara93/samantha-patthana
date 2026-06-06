@@ -122,7 +122,7 @@ const subText = `මෙම පුහුණුවේදී තිරයේ දි
   width: 100%;
   min-width: 0;
   border: none;
-  border-radius: 12px;
+  border-radius: 999px;
   min-height: 62px;
   padding: 8px 12px;
   display: flex;

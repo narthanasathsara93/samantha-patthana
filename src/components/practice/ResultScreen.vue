@@ -84,7 +84,7 @@ defineEmits(["restart-level", "change-level", "go-home"]);
 .primary-btn,
 .secondary-btn {
   min-height: 46px;
-  border-radius: 10px;
+  border-radius: 999px;
   cursor: pointer;
   transition:
     background 0.22s ease,

@@ -277,7 +277,7 @@
       :aria-expanded="isDisclaimerOpen"
       aria-label="Show disclaimer"
     >
-      <img class="info-icon" :src="getInfoIcon()" alt="Info" />
+      <img class="home-info-icon" :src="getInfoIcon()" alt="Info" />
     </button>
 
     <Transition name="disclaimer-popup">
@@ -1604,13 +1604,13 @@ button:active {
   fill: currentColor;
 }
 
-.info-icon {
+.home-info-icon {
   width: 20px;
   height: auto;
   opacity: 0.50;
 }
 
-.info-icon:hover {
+.home-info-icon:hover {
   opacity: 1;
 }
 

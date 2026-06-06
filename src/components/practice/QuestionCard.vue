@@ -396,7 +396,7 @@ button {
   justify-content: center;
   gap: 10px;
   border: 1px solid #d8b48f;
-  border-radius: 10px;
+  border-radius: 999px;
   padding: 12px 18px;
   background-color: #7a2410;
   color: #ffe8c4;
