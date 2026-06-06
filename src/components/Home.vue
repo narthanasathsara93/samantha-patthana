@@ -150,14 +150,14 @@ const getIcon = (img) => {
 }
 
 .hero-subtitle {
-  font-size: 43px;
+  font-size: clamp(19px, 2.5vw, 37px);
   line-height: 1.1;
   color: #4d3124;
   font-weight: 600;
   letter-spacing: 0.4px;
   margin-bottom: 12px;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
-  font-family: "Abhaya Libre", serif !important;
+  font-family: "UN Ganganee", serif !important;
 }
 
 .hero-title {
@@ -269,6 +269,7 @@ const getIcon = (img) => {
 }
 
 .logo-img {
+  margin-bottom: 1%;
   width: 60px;
   height: auto;
 }
@@ -306,6 +307,7 @@ const getIcon = (img) => {
 
 @media (max-width: 870px) {
   .logo-img {
+    margin-bottom: 1%;
     width: 50px;
     height: auto;
   }
@@ -361,7 +363,6 @@ const getIcon = (img) => {
 
   .hero-subtitle {
     font-weight: 600;
-    font-size: 24px;
     line-height: 1.1;
     margin-bottom: 10px;
   }
