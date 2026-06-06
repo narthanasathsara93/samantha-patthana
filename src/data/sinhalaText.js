@@ -1,13 +1,3 @@
-import { getAssetUrl } from "../utils/assets";
-const getIcon = (icon) => {
-  return getAssetUrl(`icons/${icon}.png`);
-};
-
-const iconHtml = (icon) =>
-  `<span class="prayer-icons-cont" aria-hidden="true">
-    <img class="prayer-icons" src="${getIcon(icon)}" alt="Prayer Icons" />
-  </span>`;
-
 const setUrl = (url, text) => {
   return `<a class="sinhala-text-url-ext" target="_blank" rel="noopener noreferrer" href="${url}">${text}</a>`;
 };
