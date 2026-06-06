@@ -239,7 +239,6 @@ defineExpose({
   scrollToTop,
   scrollToAudioSection,
 });
-
 </script>
 
 <style scoped>
@@ -360,5 +359,19 @@ defineExpose({
   font-weight: 600;
   display: inline-block;
   text-align: justify;
+}
+.prayer-icons-cont {
+  border-radius: 20px;
+  display: inline-flex;
+  object-fit: contain;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background: #54231214;
+}
+.prayer-icons {
+  width: 14px;
+  height: 14px;
 }
 </style>

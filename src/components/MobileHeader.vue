@@ -1,9 +1,9 @@
 <template>
   <span class="mobile-header">
     <button @click="$emit('toggle-sidebar')" aria-label="Open navigation menu">
-      <img class="gear-icon" :src="getIcon('gear.png')" alt="" />
+      <img class="gear-icon" :src="getIcon('menu')" alt="" />
     </button>
-    <span class="mobile-header-title">{{ title }}</span>
+    <span class="mobile-header-title">{{ title }} </span>
   </span>
 </template>
 
@@ -21,8 +21,8 @@ defineProps({
   },
 });
 
-const getIcon = () => {
-  return getAssetUrl(`icons/menu.png`);
+const getIcon = (img) => {
+  return getAssetUrl(`icons/${img}.png`);
 };
 
 defineEmits(["toggle-sidebar"]);
