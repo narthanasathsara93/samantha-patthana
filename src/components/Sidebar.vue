@@ -228,6 +228,11 @@ const goContactUs = () => {
   transform: scale(1.05);
 }
 
+.header-text {
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 300;
+  font-family: "UN Arundathee", serif !important;
+}
 /* ===== Verse List ===== */
 
 .sidebar ul {
