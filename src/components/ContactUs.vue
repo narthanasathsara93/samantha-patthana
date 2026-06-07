@@ -19,7 +19,7 @@
             </svg>
           </div>
 
-          <div class="contact-text">ගූගල් ෆෝරමය</div>
+          <div class="contact-text">ගූගල් ෆෝරමය (නිර්නාමික)</div>
         </a>
 
         <a
@@ -37,7 +37,7 @@
           </div>
 
           <div class="contact-text">
-            විද්‍යුත් තැපෑල (ඊමේල්)
+            අපගේ විද්‍යුත් තැපෑල (ඊමේල්)
             <span v-if="isEmailCopied" class="contact-feedback" role="status">
               ලිපිනය කොපි කරගන්නා ලදී.
               <img
