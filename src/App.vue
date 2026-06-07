@@ -363,7 +363,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { deco } from "./utils/util";
+import { deco, miniDeco } from "./utils/util";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -986,11 +986,20 @@ const getInfoIcon = () => {
 };
 
 const displayTitle = computed(() => {
-  const minScreenWidth = 1070;
+  const minScreenWidth = 1067;
+  const minScreenWidthForMiniDeco = 871;
+  const maxScreenWidthForMiniDeco = 1066;
   const isSmallScreen = window.innerWidth < minScreenWidth;
+  const isSmallScreenForMiniDeco =
+    window.innerWidth < maxScreenWidthForMiniDeco &&
+    window.innerWidth >= minScreenWidthForMiniDeco;
 
   if (!selectedVerse.value.showVerseTitle) {
     return `──────${deco}──────`;
+  }
+
+  if (isSmallScreenForMiniDeco) {
+    return `${miniDeco} ${selectedVerse.value.title} ${miniDeco}`;
   }
 
   return !isSmallScreen
