@@ -10,7 +10,11 @@
         @click="$emit('select-level', 'ආධුනික')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level1')" alt="Level1 Icon" />
+          <img
+            class="level-btn-icon"
+            :src="getIcon('level1')"
+            alt="Level1 Icon"
+          />
         </span>
         ආධුනික
       </button>
@@ -20,7 +24,11 @@
         @click="$emit('select-level', 'මධ්‍යස්ථ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level2')" alt="Level2 Icon" />
+          <img
+            class="level-btn-icon"
+            :src="getIcon('level2')"
+            alt="Level2 Icon"
+          />
         </span>
         මධ්‍යස්ථ
       </button>
@@ -30,7 +38,11 @@
         @click="$emit('select-level', 'ප්‍රවීණ')"
       >
         <span class="btn-icon">
-          <img class="level-btn-icon" :src="getIcon('level3')" alt="Level3 Icon" />
+          <img
+            class="level-btn-icon"
+            :src="getIcon('level3')"
+            alt="Level3 Icon"
+          />
         </span>
         ප්‍රවීණ
       </button>
@@ -62,10 +74,12 @@ const iconHtml = (icon) =>
 
 const subText = `මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
       ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
-      පුහුණුව අතරතුර ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැකි අතර<br />
-      ${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැක. <br />
-      <br />
-      පුහුණුව ආරම්භ කිරීම සඳහා කැමති මට්ටමක් තෝරාගන්න. <br />`;
+      පුහුණුව අතරතුර<br />
+      ${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැකි අතර<br />
+      ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br />
+      ${iconHtml("home")} මගින් පුහුණුව එසැනින් නවතා මුල් පිටුව වෙත ගෙන යනු ඇත.
+      <br /><br />
+      පුහුණුව ආරම්භ කිරීම සඳහා සුදුසු මට්ටමක් තෝරාගන්න. <br />`;
 </script>
 
 <style scoped>
