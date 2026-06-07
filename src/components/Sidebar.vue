@@ -17,10 +17,11 @@
 
     <div class="liner"></div>
 
-    <ul>
+    <ul ref="verseListRef">
       <li
         v-for="(verse, index) in verses"
         :key="verse.id"
+        :ref="(element) => setVerseItemRef(element, verse.id)"
         :class="{ active: isActiveVerse(verse) }"
       >
         <button
@@ -112,7 +113,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { verses } from "../data/verses";
 import { getAssetUrl } from "../utils/assets";
@@ -141,9 +142,42 @@ const emit = defineEmits(["verse-selected", "show-resources", "close-sidebar"]);
 const router = useRouter();
 
 const hoveredContact = ref(null);
+const verseListRef = ref(null);
+const verseItemsRef = ref({});
 
 const isActiveVerse = (verse) => {
   return verse.id === props.selectedId;
+};
+
+const setVerseItemRef = (element, verseId) => {
+  if (element) {
+    verseItemsRef.value[verseId] = element;
+  }
+};
+
+const scrollToActiveVerse = () => {
+  nextTick(() => {
+    const container = verseListRef.value;
+    const activeItem = verseItemsRef.value[props.selectedId];
+
+    if (!container || !activeItem) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const itemRect = activeItem.getBoundingClientRect();
+
+    const isItemVisible =
+      itemRect.top >= containerRect.top &&
+      itemRect.bottom <= containerRect.bottom;
+
+    if (!isItemVisible) {
+      const scrollTop =
+        activeItem.offsetTop - (container.clientHeight / 2) + activeItem.clientHeight / 2;
+      container.scrollTo({
+        top: scrollTop,
+        behavior: "smooth",
+      });
+    }
+  });
 };
 
 const handleVerseClick = (verse) => {
@@ -177,6 +211,17 @@ const goContactUs = () => {
   router.push({ name: "ContactUs" });
   emit("close-sidebar");
 };
+
+// Auto-scroll sidebar to active verse on large screens
+watch(
+  () => props.selectedId,
+  () => {
+    // Only auto-scroll on large screens (> 870px)
+    if (window.innerWidth > 870) {
+      scrollToActiveVerse();
+    }
+  },
+);
 </script>
 
 <style scoped>
@@ -228,6 +273,12 @@ const goContactUs = () => {
   transform: scale(1.05);
 }
 
+.header-text {
+  color: #3e0502 !important;
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 300;
+  font-family: "UN Arundathee", serif !important;
+}
 /* ===== Verse List ===== */
 
 .sidebar ul {

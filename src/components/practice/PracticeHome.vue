@@ -51,7 +51,7 @@
             <span class="timer-icon-wrapper">
               <img
                 class="shuffle-icon"
-                :src="getIcon(`icons/shuffle.png`)"
+                :src="getIcon(`icons/random.gif`)"
                 alt=""
             /></span>
             <br />
@@ -86,7 +86,7 @@
             <span class="timer-icon-wrapper">
               <img
                 class="timer-icon"
-                :src="getIcon(`icons/timer.png`)"
+                :src="getIcon(`icons/timer.gif`)"
                 alt=""
               />
             </span>
@@ -874,7 +874,7 @@ SETTINGS AREA
 }
 
 .setting-question {
-  margin: 0 0 14px;
+  margin: 0 0 1px;
   color: #5e3929;
   font-family: "Abhaya Libre", serif;
   font-size: clamp(20px, 2.5vw, 24px);
@@ -929,7 +929,7 @@ RADIO OPTIONS
   top: 50%;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
+  border-radius: 40%;
   border: 2px solid currentColor;
   transform: translateY(-50%);
 }

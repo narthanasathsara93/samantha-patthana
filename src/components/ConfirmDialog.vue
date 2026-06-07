@@ -194,7 +194,7 @@ function emitDismiss() {
 
 .confirm-dialog-btn {
   min-height: 37px;
-  border-radius: 10px;
+  border-radius: 999px;
   font-family: "Abhaya Libre", serif;
   font-size: 19px;
   cursor: pointer;

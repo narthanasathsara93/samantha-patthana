@@ -3,3 +3,5 @@ export const isMobileContactDevice = () => {
 };
 
 export const deco ='·༻𐫱•☸︎•𐫱༺·'
+
+export const miniDeco = '༺☸༻'

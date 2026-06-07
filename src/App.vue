@@ -277,7 +277,7 @@
       :aria-expanded="isDisclaimerOpen"
       aria-label="Show disclaimer"
     >
-      <img class="info-icon" :src="getInfoIcon()" alt="Info" />
+      <img class="home-info-icon" :src="getInfoIcon()" alt="Info" />
     </button>
 
     <Transition name="disclaimer-popup">
@@ -315,11 +315,19 @@
                 alt=""
               />
             </button>
+            <br />
+            <br />
 
-            <br /><br />
+            ඔබගේ පෞද්ගලික තොරතුරු හෝ දත්ත කිසිවක් මෙම වෙබ් ඇප් එක තුළ රැස්
+            කිරීමක් හෝ ගබඩා කිරීමක් සිදු නොවේ.
+            <br />
+            <br />
 
             මෙම යෙදුම ධර්ම දානයක් ලෙස පිරිනමනු ලබන අතර, මුල් මූලාශ්‍රයන්ට ගෞරවය
-            පිරිනමනු ලැබේ.<br />
+            සහ ස්තූතිපූර්වක පුණ්‍යානුමෝදනාව පුදකරන්නෙමු.
+            <br />
+            <br />
+
             තෙරුවන් සරණයි!!!
           </div>
           <button
@@ -355,7 +363,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { deco } from "./utils/util";
+import { deco, miniDeco } from "./utils/util";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -450,13 +458,19 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const mobileHeaderTitle = computed(() => {
+  console.log(contentTitle.value);
   if (isShowingResourcesPanel.value) {
     return contentTitle.value;
   }
 
   const verseNumber = Number(selectedVerse.value?.id?.replace("verse-", ""));
   if (verseNumber >= 3 && verseNumber <= 26) {
-    return String(verseNumber - 2).padStart(2, "0");
+    let sinhalaTitle = String(verseNumber - 2).padStart(2, "0");
+    if (isSinhalaTextView.value && contentTitle.value) {
+      return `${sinhalaTitle}. ${contentTitle.value}`;
+    }
+
+    return sinhalaTitle;
   }
   if (verseNumber === 27) {
     return deco;
@@ -972,11 +986,20 @@ const getInfoIcon = () => {
 };
 
 const displayTitle = computed(() => {
-  const minScreenWidth = 1070;
+  const minScreenWidth = 1067;
+  const minScreenWidthForMiniDeco = 871;
+  const maxScreenWidthForMiniDeco = 1066;
   const isSmallScreen = window.innerWidth < minScreenWidth;
+  const isSmallScreenForMiniDeco =
+    window.innerWidth < maxScreenWidthForMiniDeco &&
+    window.innerWidth >= minScreenWidthForMiniDeco;
 
   if (!selectedVerse.value.showVerseTitle) {
     return `──────${deco}──────`;
+  }
+
+  if (isSmallScreenForMiniDeco) {
+    return `${miniDeco} ${selectedVerse.value.title} ${miniDeco}`;
   }
 
   return !isSmallScreen
@@ -1604,13 +1627,13 @@ button:active {
   fill: currentColor;
 }
 
-.info-icon {
+.home-info-icon {
   width: 20px;
   height: auto;
-  opacity: 0.50;
+  opacity: 0.5;
 }
 
-.info-icon:hover {
+.home-info-icon:hover {
   opacity: 1;
 }
 
