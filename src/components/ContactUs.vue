@@ -252,24 +252,24 @@ function goBack() {
 }
 
 .back-btn {
-  border: 1px solid rgba(122, 36, 16, 0.24);
-  background: rgba(255, 247, 233, 0.92);
+  border: 1px solid rgba(122, 36, 16, 0.28);
+  background: rgba(255, 247, 233, 0.9);
   color: #6f1f0e;
   border-radius: 999px;
-  padding: 12px 24px;
+  padding: 10px 22px;
   font-family: inherit;
-  font-size: 21px;
-  font-weight: 600;
+  font-size: 18px;
   cursor: pointer;
   transition:
-    background 0.18s ease,
-    transform 0.18s ease;
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .back-btn:hover {
-  background: #8d5907;
-  color: #fdf1da ;
-  transform: translateY(-1px);
+  background: #ffeccf;
+  font-weight: 600;
+  transform: translateY(-3px);
 }
 
 .back-btn:active {

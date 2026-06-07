@@ -3,7 +3,7 @@
     <section class="settings-card">
       <h1 class="settings-title">සැකසුම්</h1>
 
-      <div class="settings-block">
+      <div class="settings-block" v-if="showPwaGuide">
         <h2 class="block-title">දුරකථනයට ඉන්ස්ටෝල් කිරීම</h2>
 
         <p class="block-description">
@@ -84,6 +84,12 @@ import { useGuidance } from "@/composables/useGuidance";
 const router = useRouter();
 
 const isInstalling = ref(false);
+
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+const isInstalled = window.matchMedia("(display-mode: standalone)").matches;
+
+const showPwaGuide = isMobile && !isInstalled;
 
 const { canPromptInstall, showIOSInstructions, promptInstall } =
   usePwaInstall();

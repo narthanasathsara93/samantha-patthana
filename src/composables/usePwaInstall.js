@@ -40,9 +40,7 @@ export function usePwaInstall() {
   const canPromptInstall = computed(
     () => Boolean(deferredPrompt.value) && !isInstalled.value,
   );
-  const showIOSInstructions = computed(
-    () => detectIOS(),
-  );
+  const showIOSInstructions = computed(() => detectIOS());
   const showInstallUnavailable = computed(
     () => !isInstalled.value && !canPromptInstall.value && !isIOS.value,
   );
