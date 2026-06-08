@@ -1,7 +1,6 @@
 <template>
   <div class="reader-shell">
     <div ref="readerRef" class="reader" @scroll="updateScrollState">
-      88
       <div
         v-if="audioSections.length === 0"
         :class="!sinhalaViewOn ? 'reader-content' : 'sinhala-view-on'"
