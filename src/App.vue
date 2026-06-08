@@ -706,6 +706,11 @@ function handlePlayAudioSection(section, index = -1) {
     return;
   }
 
+  // Show audio player on mobile when clicking verse section
+  if (isMobileView() && !areMobileLowerControlsVisible.value) {
+    areMobileLowerControlsVisible.value = true;
+  }
+
   // Set the clicked section as active
   activeAudioStartAt.value = section.startAt;
   activeAudioEndAt.value = selectedVerse.value?.audioEndAt ?? section.endAt;
@@ -715,6 +720,11 @@ function handlePlayAudioSection(section, index = -1) {
   // Always play the section
   nextTick(() => {
     audioPlayerRef.value?.playSection();
+    
+    // Start auto-hide timer after showing the player
+    if (isMobileView()) {
+      startPlayerAutoHideTimer();
+    }
   });
 }
 
