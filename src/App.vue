@@ -458,7 +458,6 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const mobileHeaderTitle = computed(() => {
-  console.log(contentTitle.value);
   if (isShowingResourcesPanel.value) {
     return contentTitle.value;
   }
