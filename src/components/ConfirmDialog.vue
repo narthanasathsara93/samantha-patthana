@@ -25,7 +25,7 @@
             <h2 :id="titleId" class="confirm-dialog-title">{{ title }}</h2>
             <p
               :id="messageId"
-              class="confirm-dialog-message"
+              class="confirm-dialog-message box-container"
               v-html="message"
             ></p>
             <slot></slot>
@@ -123,6 +123,13 @@ function emitDismiss() {
 </script>
 
 <style scoped>
+.box-container {
+  background: rgb(233 221 195);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 11px;
+}
+
 .confirm-dialog-backdrop {
   position: fixed;
   inset: 0;

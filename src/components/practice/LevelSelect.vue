@@ -1,7 +1,8 @@
 <template>
   <section class="practice-card">
     <h1 class="title">මතක පරීක්ෂා පුහුණුව</h1>
-    <div class="subtitle" v-html="subText"></div>
+    <div class="subtitle practice-highlight" v-html="subTextHead"></div>
+    <div class="subtitle practice-highlight" v-html="subText"></div>
 
     <div class="level-buttons">
       <button
@@ -72,17 +73,26 @@ const iconHtml = (icon) =>
     <img class="info-icon" src="${getIcon(icon)}" alt="" />
   </span>`;
 
-const subText = `මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
-      ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.<br /><br />
-      පුහුණුව අතරතුර<br />
-      ${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැකි අතර<br />
-      ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br />
-      ${iconHtml("home")} මගින් පුහුණුව එසැනින් නවතා මුල් පිටුව වෙත ගෙන යනු ඇත.
-      <br /><br />
-      පුහුණුව ආරම්භ කිරීම සඳහා සුදුසු මට්ටමක් තෝරාගන්න. <br />`;
+const subTextHead = `මෙම පුහුණුවේදී තිරයේ දිස්වන ප්‍රත්‍යයන් සැඟවුන වචන සමග මතකයෙන් ආවර්ජනය කිරීමට උත්සහ කිරීම මගින්
+    ප්‍රත්‍යයන් පිළිබඳව මතකය පරික්ෂා කර ගත හැක.`;
+
+const subText = `පුහුණුව අතරතුර<br />
+  ${iconHtml("show")} මගින් පිළිතුර පිරික්සිය හැකි අතර<br />
+  ${iconHtml("restart")} මගින් මුල සිට නව ඇරඹුමක් කල හැක.<br />
+  ${iconHtml("home")} මගින් පුහුණුව එසැනින් නවතා මුල් පිටුව වෙත ගෙන යනු ඇත.
+  <br /><br />
+  පුහුණුව ආරම්භ කිරීම සඳහා සුදුසු මට්ටමක් තෝරාගන්න. <br />
+`;
 </script>
 
 <style scoped>
+.practice-highlight {
+  background: rgb(233 221 195);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 11px;
+}
+
 .sample-icon {
   width: 16px;
   height: 16px;

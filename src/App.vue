@@ -458,7 +458,6 @@ const contentTitle = computed(() => {
     : selectedVerseTitle.value;
 });
 const mobileHeaderTitle = computed(() => {
-  console.log(contentTitle.value);
   if (isShowingResourcesPanel.value) {
     return contentTitle.value;
   }
@@ -702,8 +701,19 @@ function handlePlayAudioSection(section, index = -1) {
   // If clicking same section while playing, toggle pause
   if (isSameSection && isPlaying) {
     pendingManualAudioSectionIndex.value = -1;
+
     audio.pause();
+
+    activeAudioSectionIndex.value = -1;
+    activeAudioStartAt.value = null;
+    activeAudioEndAt.value = null;
+
     return;
+  }
+
+  // Show audio player on mobile when clicking verse section
+  if (isMobileView() && !areMobileLowerControlsVisible.value) {
+    areMobileLowerControlsVisible.value = true;
   }
 
   // Set the clicked section as active
@@ -715,6 +725,11 @@ function handlePlayAudioSection(section, index = -1) {
   // Always play the section
   nextTick(() => {
     audioPlayerRef.value?.playSection();
+
+    // Start auto-hide timer after showing the player
+    if (isMobileView()) {
+      startPlayerAutoHideTimer();
+    }
   });
 }
 

@@ -36,7 +36,6 @@ export function initPwaInstallPrompt() {
 export function usePwaInstall() {
   const isIOS = computed(() => detectIOS());
 
-  console.log(`isIOS :`, isIOS);
   const canPromptInstall = computed(
     () => Boolean(deferredPrompt.value) && !isInstalled.value,
   );

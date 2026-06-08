@@ -147,7 +147,7 @@ export const audioSections = {
     },
     {
       startAt: "05:45",
-      endAt: "05:59",
+      endAt: "06:00",
       content:
         "ආරම්මණ ඤාණජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -204,7 +204,7 @@ export const audioSections = {
     },
     {
       startAt: "07:31",
-      endAt: "07:45",
+      endAt: "07:46",
       content:
         "අධිපති ඤාණ සංජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -611,13 +611,13 @@ export const audioSections = {
         "රූපිනෝ ධම්මා අරූපීනං ධම්මානං<br>\nකිඤ්චි කාලේ<br>\nසහජාතපච්චයේන පච්චයෝ.",
     },
     {
-      startAt: "19:32 ",
+      startAt: "19:32",
       endAt: "19:36",
       content: "කිඤ්චි කාලේ න<br>\nසහජාතපච්චයේන පච්චයෝ.",
     },
     {
       startAt: "19:38",
-      endAt: "19:50",
+      endAt: "19:51",
       content:
         "සහජාත ඤාණජාත<br>\n" +
         "ඡබ්බණ්ණ රසිං භාසුරං<br>\n" +
@@ -627,7 +627,7 @@ export const audioSections = {
   ],
   "verse-9": [
     {
-      startAt: "19:51",
+      startAt: "19:52",
       endAt: "20:03",
       content:
         "අඤ්ඤමඤ්ඤපච්චයෝ’ති<br><br>\n චත්තාරෝ ඛන්ධා අරූපිනෝ<br>\nඅඤ්ඤමඤ්ඤපච්චයේන පච්චයෝ.",
@@ -644,7 +644,7 @@ export const audioSections = {
     },
     {
       startAt: "20:19",
-      endAt: "20:32",
+      endAt: "20:33",
       content:
         "අඤ්ඤමඤ්ඤ ඤාණජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -654,7 +654,7 @@ export const audioSections = {
   ],
   "verse-10": [
     {
-      startAt: "20:33",
+      startAt: "20:34",
       endAt: "20:45",
       content:
         "නිස්සයපච්චයෝ’ති<br><br>\n චත්තාරෝ ඛන්ධා අරූපිනෝ<br>\nඅඤ්ඤමඤ්ඤං නිස්සයපච්චයේන පච්චයෝ.",
@@ -734,7 +734,7 @@ export const audioSections = {
     },
     {
       startAt: "23:03",
-      endAt: "23:16",
+      endAt: "23:17",
       content:
         "නිස්සය ඤාණ සංජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -974,7 +974,7 @@ export const audioSections = {
     },
     {
       startAt: "30:08",
-      endAt: "30:21",
+      endAt: "30:22",
       content:
         "පච්ඡාජාත ඤාණජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -1009,7 +1009,7 @@ export const audioSections = {
     },
     {
       startAt: "31:10",
-      endAt: "31:23",
+      endAt: "31:24",
       content:
         "ආසේවන ඤාණජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -1036,7 +1036,7 @@ export const audioSections = {
     },
     {
       startAt: "31:53",
-      endAt: "32:05",
+      endAt: "32:06",
       content:
         "කම්මපච්චය ඤාණේන<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -1143,7 +1143,7 @@ export const audioSections = {
     },
     {
       startAt: "34:57",
-      endAt: "35:10",
+      endAt: "35:11",
       content:
         "ඉන්ද්‍රිය ඤාණ සංජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -1215,7 +1215,7 @@ export const audioSections = {
     },
     {
       startAt: "36:58",
-      endAt: "37:06:",
+      endAt: "37:06",
       content: "අරූපිනෝ ධම්මා රූපීනං ධම්මානං<br>\nවිප්පයුත්තපච්චයේන පච්චයෝ.",
     },
     {
@@ -1397,7 +1397,7 @@ export const audioSections = {
     },
     {
       startAt: "42:21",
-      endAt: "42:34",
+      endAt: "42:35",
       content:
         "විගත ඤාණ සංජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +
@@ -1536,7 +1536,7 @@ export const audioSections = {
     },
     {
       startAt: "46:28",
-      endAt: "46:42 ",
+      endAt: "46:42",
       content:
         "අවිගත ඤාණ සංජාත<br>\n" +
         "ඡබ්බණ්ණ රංසි භාසුරං<br>\n" +

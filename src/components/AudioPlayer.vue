@@ -593,6 +593,10 @@ function handleTimeUpdate() {
   }
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function safePlay() {
   if (!audioRef.value) {
     return false;
@@ -605,11 +609,23 @@ async function safePlay() {
 
     return true;
   } catch (error) {
-    console.error("Playback failed:", error);
-
     isPlaying.value = false;
 
-    return false;
+    await delay(120);
+
+    try {
+      await audioRef.value.play();
+
+      isPlaying.value = true;
+
+      return true;
+    } catch (retryError) {
+      console.error("Playback retry failed:", retryError);
+
+      isPlaying.value = false;
+
+      return false;
+    }
   }
 }
 
@@ -619,6 +635,22 @@ async function togglePlay() {
   }
 
   if (audioRef.value.paused) {
+    if (isUpdatingSource && sourceUpdatePromise) {
+      await sourceUpdatePromise;
+    }
+
+    await updateResolvedAudioSource();
+    await nextTick();
+
+    if (
+      sectionStart.value !== null &&
+      (isBeforeSectionStart() ||
+        (sectionEnd.value !== null &&
+          audioRef.value.currentTime >= sectionEnd.value))
+    ) {
+      seekToSectionStart();
+    }
+
     await safePlay();
   } else {
     audioRef.value.pause();
@@ -637,11 +669,14 @@ async function playSection() {
     await sourceUpdatePromise;
   }
 
+  await updateResolvedAudioSource();
+  await nextTick();
+
   // Double check we have a valid source before playing
-  // For HLS: hls.js attaches programmatically, so check if HLS is attached
-  // For native: check if src is set
-  const hasNativeSource = resolvedAudioSrc.value && audioRef.value.src;
-  const hasHlsSource = hls && attachedHlsSrc.value === props.hlsSrc;
+  // For HLS: hls.js attaches programmatically, so check if src is set
+  // For native: rely on resolvedAudioSrc rather than audio element src
+  const hasNativeSource = Boolean(resolvedAudioSrc.value);
+  const hasHlsSource = Boolean(hls && attachedHlsSrc.value === props.hlsSrc);
 
   if (!hasNativeSource && !hasHlsSource) {
     console.warn("No valid audio source available");
