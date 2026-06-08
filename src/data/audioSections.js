@@ -1215,7 +1215,7 @@ export const audioSections = {
     },
     {
       startAt: "36:58",
-      endAt: "37:06:",
+      endAt: "37:06",
       content: "අරූපිනෝ ධම්මා රූපීනං ධම්මානං<br>\nවිප්පයුත්තපච්චයේන පච්චයෝ.",
     },
     {
