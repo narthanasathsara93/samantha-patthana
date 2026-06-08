@@ -93,10 +93,6 @@ const subText = `පුහුණුව අතරතුර<br />
   margin-top: 11px;
 }
 
-.sample-icon {
-  width: 16px;
-  height: 16px;
-}
 .practice-card {
   font-family: "Abhaya Libre", serif !important;
   width: min(760px, 92vw);
