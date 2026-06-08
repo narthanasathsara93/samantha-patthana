@@ -702,7 +702,13 @@ function handlePlayAudioSection(section, index = -1) {
   // If clicking same section while playing, toggle pause
   if (isSameSection && isPlaying) {
     pendingManualAudioSectionIndex.value = -1;
+
     audio.pause();
+
+    activeAudioSectionIndex.value = -1;
+    activeAudioStartAt.value = null;
+    activeAudioEndAt.value = null;
+
     return;
   }
 
@@ -720,7 +726,7 @@ function handlePlayAudioSection(section, index = -1) {
   // Always play the section
   nextTick(() => {
     audioPlayerRef.value?.playSection();
-    
+
     // Start auto-hide timer after showing the player
     if (isMobileView()) {
       startPlayerAutoHideTimer();
