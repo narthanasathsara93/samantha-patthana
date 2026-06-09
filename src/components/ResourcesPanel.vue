@@ -163,27 +163,6 @@ const getIcon = (icon) => {
   gap: 16px;
 }
 
-.resources-back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.92);
-  color: #3b0906;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.resources-back-btn:hover {
-  background: #fff;
-  transform: translateX(-1px);
-}
-
 .resources-panel-body {
   background-color: #f9e9cb87;
   border-radius: 18px;

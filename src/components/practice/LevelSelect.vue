@@ -87,7 +87,7 @@ const subText = `පුහුණුව අතරතුර<br />
 
 <style scoped>
 .practice-highlight {
-  background: rgb(233 221 195);
+  background: #e9ddc38a;
   border-radius: 10px;
   padding: 14px 16px;
   margin-top: 11px;
