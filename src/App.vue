@@ -269,7 +269,7 @@
     />
 
     <button
-      v-if="isHomeRoute"
+      v-if="isHomeRoute && !isDisclaimerOpen"
       title="පාඨ සටහන"
       class="disclaimer-trigger"
       type="button"
@@ -292,10 +292,10 @@
         <section class="disclaimer-popup">
           <h2 id="disclaimer-title">පාඨ සටහන</h2>
           <div class="disclaimer-popup-message">
-            මෙම යෙදුමේ අන්තර්ගත පාඨ විවිධ ඩිජිටල් මූලාශ්‍ර ඇසුරින් සම්පාදනය කර
-            ඇත. නිරවද්‍යතාවය තහවුරු කිරීම සඳහා උපරිම උත්සාහය ගෙන තිබුණද, අක්ෂර
-            දෝෂ හෝ වෙනත් අඩුපාඩු පැවතිය හැකිය. යම් දෝෂයක් හෝ සංශෝධනයක් දැනුම්
-            දීමට කැමති නම්, කරුණාකර අප හා සම්බන්ධ වන්න.
+            මෙම යෙදුමේ අන්තර්ගත පාඨ විවිධ ඩිජිටල් මූලාශ්‍ර ඇසුරින් සම්පාදනය
+            කර ඇත. නිරවද්‍යතාවය තහවුරු කිරීම සඳහා උපරිම උත්සාහය ගෙන තිබුණද,
+            අක්ෂර දෝෂ හෝ වෙනත් අඩුපාඩු පැවතිය හැකිය. යම් දෝෂයක් හෝ සංශෝධනයක්
+            දැනුම් දීමට කැමති නම්, කරුණාකර අප හා සම්බන්ධ වන්න.
             <button
               class="contact-link"
               type="button"
@@ -317,7 +317,22 @@
             </button>
             <br />
             <br />
+            <span>
+              මෙහි ප්‍රත්‍ය ශ්‍රවණාධාරකය සඳහා ශ්‍රී සද්ධර්මය යූටියුබ්
+              නාලිකාවේ අවසරය පරිදි&nbsp;
 
+              <a
+                :href="youtubeUrlSS_"
+                class="ss-utube-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Samantha Patthana Dharma Wandanawa video on YouTube"
+              >
+                සමන්ත පට්ඨාන ධර්ම දේශනාව
+              </a>&nbsp;වීඩියෝවේ ශ්‍රව්‍ය පථය (Audio Track) යොදා ගන්නා ලදී.
+            </span>
+            <br />
+            <br />
             ඔබගේ පෞද්ගලික තොරතුරු හෝ දත්ත කිසිවක් මෙම වෙබ් ඇප් එක තුළ රැස්
             කිරීමක් හෝ ගබඩා කිරීමක් සිදු නොවේ.
             <br />
@@ -363,7 +378,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { deco, miniDeco } from "./utils/util";
+import { deco, miniDeco, youtubeUrlSS } from "./utils/util";
 
 // Components
 import Sidebar from "./components/Sidebar.vue";
@@ -508,6 +523,8 @@ const selectedVerseAudioSections = computed(() => {
 const goContactUs = () => {
   router.push({ name: "ContactUs" });
 };
+
+const youtubeUrlSS_ = youtubeUrlSS;
 
 // Initialize composables
 const { resetAudio, playCurrent } = useAudio();
@@ -975,6 +992,10 @@ function pauseForLandscapeOrientation() {
 }
 
 const rotateDeviceIcon = getAssetUrl("icons/rotate.gif");
+
+const getUtubeIcon = () => {
+  return getAssetUrl(`icons/youtube.png`);
+};
 
 const getDisclaimerIcon = (img) => {
   return getAssetUrl(`icons/${img}`);
@@ -1460,6 +1481,7 @@ button:active {
 }
 
 .disclaimer-popup {
+  max-height: calc(100dvh - 24px);
   max-width: 520px;
   border-radius: 18px;
   padding: 22px 22px 18px;
@@ -1478,7 +1500,7 @@ button:active {
 .disclaimer-popup-message {
   margin-bottom: 20px;
   font-family: "Abhaya Libre", serif;
-  font-size: 19px;
+  font-size: clamp(16px, 2.4vw, 19px);
   line-height: 1.65;
   color: #4b1e1e;
   text-align: justify;
@@ -1504,6 +1526,10 @@ button:active {
 .disclaimer-close-btn:hover {
   background: #a43b23;
   transform: translateY(-1px);
+}
+
+.ss-utube-link {
+  color: #3b0906;
 }
 
 .font-size-value {
@@ -1612,6 +1638,10 @@ button:active {
   display: inline;
 }
 
+.utube-icon {
+  width: 34px;
+  height: 34px;
+}
 .contact-link {
   width: 34px;
   height: 34px;
