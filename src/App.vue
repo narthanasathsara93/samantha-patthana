@@ -269,7 +269,7 @@
     />
 
     <button
-      v-if="isHomeRoute"
+      v-if="isHomeRoute && !isDisclaimerOpen"
       title="පාඨ සටහන"
       class="disclaimer-trigger"
       type="button"

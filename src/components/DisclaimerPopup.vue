@@ -12,10 +12,10 @@
       <section class="disclaimer-popup">
         <h2 id="disclaimer-title">පාඨ සටහන</h2>
         <div class="disclaimer-popup-message">
-          මෙම යෙදුමේ අන්තර්ගත පාඨ විවිධ ඩිජිටල් මූලාශ්‍ර ඇසුරින් සම්පාදනය
-          කර ඇත. නිරවද්‍යතාවය තහවුරු කිරීම සඳහා උපරිම උත්සාහය ගෙන තිබුණද,
-          අක්ෂර දෝෂ හෝ වෙනත් අඩුපාඩු පැවතිය හැකිය. යම් දෝෂයක් හෝ සංශෝධනයක්
-          දැනුම් දීමට කැමති නම්, කරුණාකර අප හා සම්බන්ධ වන්න.
+          මෙම යෙදුමේ අන්තර්ගත පාඨ විවිධ ඩිජිටල් මූලාශ්‍ර ඇසුරින් සම්පාදනය කර ඇත.
+          නිරවද්‍යතාවය තහවුරු කිරීම සඳහා උපරිම උත්සාහය ගෙන තිබුණද, අක්ෂර දෝෂ හෝ
+          වෙනත් අඩුපාඩු පැවතිය හැකිය. යම් දෝෂයක් හෝ සංශෝධනයක් දැනුම් දීමට කැමති
+          නම්, කරුණාකර අප හා සම්බන්ධ වන්න.
           <button
             class="contact-link"
             type="button"
@@ -38,9 +38,8 @@
           <br />
           <br />
           <span>
-            මෙහි ප්‍රත්‍ය ශ්‍රවණාධාරකය සඳහා ශ්‍රී සද්ධර්මය යූටියුබ්
-            නාලිකාවේ අවසරය පරිදි&nbsp;
-
+            මෙහි ප්‍රත්‍ය ශ්‍රවණාධාරකය සඳහා ශ්‍රී සද්ධර්මය යූටියුබ් නාලිකාවේ
+            අවසරය පරිදි&nbsp;
             <a
               :href="youtubeUrl"
               class="ss-utube-link"
@@ -48,18 +47,18 @@
               rel="noopener noreferrer"
               aria-label="Open Samantha Patthana Dharma Wandanawa video on YouTube"
             >
-              සමන්ත පට්ඨාන ධර්ම දේශනාව&nbsp;
-            </a>වීඩියෝවේ ශ්‍රව්‍ය පථය (Audio Track) යොදා ගන්නා ලදී.
+              සමන්ත පට්ඨාන ධර්ම දේශනාව&nbsp; </a
+            >වීඩියෝවේ ශ්‍රව්‍ය පථය (Audio Track) යොදා ගන්නා ලදී.
           </span>
           <br />
           <br />
-          ඔබගේ පෞද්ගලික තොරතුරු හෝ දත්ත කිසිවක් මෙම වෙබ් ඇප් එක තුළ රැස්
-          කිරීමක් හෝ ගබඩා කිරීමක් සිදු නොවේ.
+          ඔබගේ පෞද්ගලික තොරතුරු හෝ දත්ත කිසිවක් මෙම වෙබ් ඇප් එක තුළ රැස් කිරීමක්
+          හෝ ගබඩා කිරීමක් සිදු නොවේ.
           <br />
           <br />
 
-          මෙම යෙදුම ධර්ම දානයක් ලෙස පිරිනමනු ලබන අතර, මුල් මූලාශ්‍රයන්ට ගෞරවය
-          සහ ස්තූතිපූර්වක පුණ්‍යානුමෝදනාව පුදකරන්නෙමු.
+          මෙම යෙදුම ධර්ම දානයක් ලෙස පිරිනමනු ලබන අතර, මුල් මූලාශ්‍රයන්ට ගෞරවය සහ
+          ස්තූතිපූර්වක පුණ්‍යානුමෝදනාව පුදකරන්නෙමු.
           <br />
           <br />
 
@@ -125,12 +124,14 @@ function handleContactClick() {
 .disclaimer-popup {
   max-height: calc(100dvh - 24px);
   max-width: 520px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   border-radius: 18px;
   padding: 22px 22px 18px;
   background: #fff7e3;
   box-shadow: 0 22px 56px rgba(35, 9, 5, 0.26);
   color: #3b0906;
-  text-align: left;
 }
 
 .disclaimer-popup h2 {
@@ -140,12 +141,19 @@ function handleContactClick() {
 }
 
 .disclaimer-popup-message {
+  border-radius: 18px;
+  background: rgb(233 221 195 / 54%);
+  padding: 14px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin-bottom: 20px;
   font-family: "Abhaya Libre", serif;
   font-size: clamp(16px, 2.4vw, 19px);
   line-height: 1.65;
   color: #4b1e1e;
-  text-align: justify;
+  text-align: left;
 }
 
 .disclaimer-close-btn {
@@ -172,6 +180,10 @@ function handleContactClick() {
 
 .ss-utube-link {
   color: #3b0906;
+}
+
+.ss-utube-link:hover {
+  color: #c63100;
 }
 
 .contact-link {
@@ -202,5 +214,16 @@ function handleContactClick() {
   width: 18px;
   height: 18px;
   fill: currentColor;
+}
+@media (max-height: 700px) {
+  .disclaimer-popup {
+    max-height: calc(100dvh - 100px);
+    padding: 18px;
+  }
+
+  .disclaimer-popup h2 {
+    margin-bottom: 8px;
+    font-size: 22px;
+  }
 }
 </style>
