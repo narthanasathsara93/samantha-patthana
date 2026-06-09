@@ -124,7 +124,7 @@ function emitDismiss() {
 
 <style scoped>
 .box-container {
-  background: rgb(233 221 195);
+  background: #e9ddc38a;
   border-radius: 10px;
   padding: 14px 16px;
   margin-top: 11px;
@@ -230,6 +230,7 @@ function emitDismiss() {
 .confirm-dialog-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 22px rgba(111, 31, 14, 0.16);
+  border: 1px solid #7a2410c2;
 }
 
 .confirm-dialog-btn:active {

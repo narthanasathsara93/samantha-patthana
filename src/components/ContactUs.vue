@@ -270,6 +270,7 @@ function goBack() {
   background: #ffeccf;
   font-weight: 600;
   transform: translateY(-3px);
+  border: 1px solid #7a2410c2;
 }
 
 .back-btn:active {

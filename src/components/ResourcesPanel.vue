@@ -4,7 +4,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="youtubeUrlSS"
+        :href="youtubeUrlSS_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Samantha Patthana Dharma Wandanawa video on YouTube"
@@ -18,7 +18,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="youtubeUrlND"
+        :href="youtubeUrlND_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Pattana Sajjayana video on YouTube"
@@ -32,7 +32,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="patthanaLipiGonu"
+        :href="patthanaLipiGonu_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana audio resources in Google Drive"
@@ -48,7 +48,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="pattanaAnuhasUrl"
+        :href="pattanaAnuhasUrl_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana PDF resource"
@@ -59,7 +59,7 @@
     </div>
     <div class="resources-panel-body">
       <a
-        :href="pattanaNayaTipitakaLk"
+        :href="pattanaNayaTipitakaLk_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana Naya resource on pitaka.lk"
@@ -72,7 +72,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="pattanaWandanawaTipitakaLk"
+        :href="pattanaWandanawaTipitakaLk_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana Wandanawa resource on tipitaka.lk"
@@ -84,7 +84,7 @@
 
     <div class="resources-panel-body">
       <a
-        href="https://pitaka.lk/books/pattana-pakarana-sannaya/3.html"
+        href="pattahanaPakaranaSannayaUrl_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana Pakarana resource on pitaka.lk"
@@ -96,7 +96,7 @@
 
     <div class="resources-panel-body">
       <a
-        :href="pindeemaUrl"
+        :href="pindeemaUrl_"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open Patthana Pindeema video on YouTube"
@@ -112,18 +112,29 @@
 </template>
 
 <script setup>
-import { getAssetUrl } from "../utils/assets";
+import {
+  getAssetUrl
+} from "../utils/assets";
 
-const youtubeUrlND = "https://youtu.be/foa2bgzz7G8?si=-_smELECz6Z5YF4X";
-const youtubeUrlSS = "https://www.youtube.com/watch?v=rkj6qsGDips";
-const pindeemaUrl = "https://youtu.be/bPM8dwdJ174?si=7EjVVPRNOX3X71oS&t=5582";
-const patthanaLipiGonu =
-  "https://drive.google.com/drive/folders/1ngWOjMZ6_XPSxTGe6-SBToF2Lsq_Rkri?usp=sharing";
-const pattanaAnuhasUrl =
-  "https://drive.google.com/file/d/1tt_6y15NeAvrwosEWbu1f4BSJrhQ9lEU/view?usp=sharing";
-const pattanaWandanawaTipitakaLk = "https://tipitaka.lk/library/1012";
-const pattanaNayaTipitakaLk =
-  "https://pitaka.lk/books/abhidharma-chandrikava/9-11.html";
+import {
+  youtubeUrlSS,
+  youtubeUrlND,
+  pindeemaUrl,
+  patthanaLipiGonu,
+  pattanaAnuhasUrl,
+  pattanaWandanawaTipitakaLk,
+  pattanaNayaTipitakaLk,
+pattahanaPakaranaSannayaUrl
+} from "../utils/util";
+
+const youtubeUrlSS_ = youtubeUrlSS;
+const youtubeUrlND_ = youtubeUrlND;
+const pindeemaUrl_ = pindeemaUrl;
+const patthanaLipiGonu_ = patthanaLipiGonu;
+const pattanaAnuhasUrl_ = pattanaAnuhasUrl;
+const pattanaWandanawaTipitakaLk_ = pattanaWandanawaTipitakaLk;
+const pattanaNayaTipitakaLk_ = pattanaNayaTipitakaLk;
+const pattahanaPakaranaSannayaUrl_ = pattahanaPakaranaSannayaUrl;
 
 const getIcon = (icon) => {
   return getAssetUrl(icon);
@@ -150,27 +161,6 @@ const getIcon = (icon) => {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-}
-
-.resources-back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.92);
-  color: #3b0906;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.resources-back-btn:hover {
-  background: #fff;
-  transform: translateX(-1px);
 }
 
 .resources-panel-body {

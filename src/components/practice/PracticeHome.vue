@@ -38,7 +38,7 @@
       message="පහත සකසනයන් භාවිතයෙන් වඩාත් සාර්ථක ලෙස පුහුණුවෙහි යෙදිය හැක."
       confirm-label="ආරම්භ කරන්න"
       cancel-label="අවලංගු කරන්න"
-      is-large-height="true"
+      :is-large-height="true"
       :dismiss-emits-cancel="false"
       @confirm="startPendingLevel"
       @cancel="closePracticeOrderConfirm"

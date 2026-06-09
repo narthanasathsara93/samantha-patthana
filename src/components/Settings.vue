@@ -2,67 +2,67 @@
   <div class="settings-page">
     <section class="settings-card">
       <h1 class="settings-title">සැකසුම්</h1>
+      <div class="settings-content">
+        <div class="settings-block" v-if="showPwaGuide">
+          <h2 class="block-title">දුරකථනයට ඉන්ස්ටෝල් කිරීම</h2>
 
-      <div class="settings-block" v-if="showPwaGuide">
-        <h2 class="block-title">දුරකථනයට ඉන්ස්ටෝල් කිරීම</h2>
-
-        <p class="block-description">
-          PWA (Progressive Web App) එකක් ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ
-          සාමාන්‍ය වෙනත් ඇප් එකක් මෙන් ඉන්ස්ටෝල් කර භාවිතා කළ හැක.
-          <br />
-          එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් සෘජුවම පිවිසිය හැක.
-        </p>
-
-        <button
-          v-if="!showIOSInstructions && canPromptInstall"
-          class="install-btn"
-          type="button"
-          aria-label="Install app"
-          :disabled="isInstalling"
-          @click="handleInstall"
-        >
-          {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "ඉන්ස්ටෝල් කරන්න" }}
-        </button>
-
-        <span
-          v-if="!showIOSInstructions && !canPromptInstall"
-          class="installed-txt"
-        >
-          දැනටමත් ඉන්ස්ටෝල් කර ඇත.
-        </span>
-
-        <div v-if="showIOSInstructions" class="ios-instructions">
-          <p class="status-message">
-            iPhone / iPad හි Safari මගින් ස්ථාපනය කිරීමට:
+          <p class="block-description">
+            PWA (Progressive Web App) එකක් ලෙස මෙම වෙබ් අඩවිය ඔබගේ දුරකථනයේ
+            සාමාන්‍ය වෙනත් ඇප් එකක් මෙන් ඉන්ස්ටෝල් කර භාවිතා කළ හැක.
+            <br />
+            එවිට බ්‍රවුසරය විවෘත නොකර, ඉතා පහසුවෙන් සෘජුවම පිවිසිය හැක.
           </p>
 
-          <ol>
-            <li>පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.</li>
+          <button
+            v-if="!showIOSInstructions && canPromptInstall"
+            class="setting-btn"
+            type="button"
+            aria-label="Install app"
+            :disabled="isInstalling"
+            @click="handleInstall"
+          >
+            {{ isInstalling ? "ඉන්ස්ටෝල් කරමින්..." : "ඉන්ස්ටෝල් කරන්න" }}
+          </button>
 
-            <li><strong>(Add to Home Screen)</strong> තෝරන්න.</li>
+          <span
+            v-if="!showIOSInstructions && !canPromptInstall"
+            class="installed-txt"
+          >
+            දැනටමත් ඉන්ස්ටෝල් කර ඇත.
+          </span>
 
-            <li>එක් කිරීම තහවුරු කරන්න.</li>
-          </ol>
+          <div v-if="showIOSInstructions" class="ios-instructions">
+            <p class="status-message">
+              iPhone / iPad හි Safari මගින් ස්ථාපනය කිරීමට:
+            </p>
+
+            <ol>
+              <li>පහළ තිරයේ <strong>(Sharing)</strong> බොත්තම ටච් කරන්න.</li>
+
+              <li><strong>(Add to Home Screen)</strong> තෝරන්න.</li>
+
+              <li>එක් කිරීම තහවුරු කරන්න.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="settings-block">
+          <h2 class="block-title">භාවිතයට උපදෙස්</h2>
+
+          <p class="block-description">
+            සජ්ඣායනය සහ පුහුණුව භාවිත කරන ආකාරය මගපෙන්වීම් පිරික්සීමට අවශ්‍යනම්,
+          </p>
+
+          <button
+            class="setting-btn"
+            type="button"
+            aria-label="Open application guidance"
+            @click="openGuidanceSection"
+          >
+            පිවිසෙන්න
+          </button>
         </div>
       </div>
-
-      <div class="settings-block">
-        <h2 class="block-title">භාවිතයට උපදෙස්</h2>
-
-        <p class="block-description">
-          සජ්ඣායනය සහ පුහුණුව භාවිත කරන ආකාරය මගපෙන්වීම් පිරික්සීමට අවශ්‍යනම්,
-        </p>
-
-        <button
-          class="install-btn"
-          type="button"
-          aria-label="Open application guidance"
-          @click="openGuidanceSection"
-        >
-          පිවිසෙන්න
-        </button>
-      </div>
-
       <button
         class="back-btn"
         type="button"
@@ -134,12 +134,11 @@ function goHome() {
   min-height: 100dvh;
   height: 100dvh;
   overflow-x: hidden;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   padding: clamp(12px, 3vh, 48px) clamp(14px, 4vw, 24px);
   background-image: url("../assets/images/bg-480.webp");
   background-size: cover;
@@ -149,9 +148,9 @@ function goHome() {
 
 .settings-card {
   width: min(760px, 92vw);
-  box-sizing: border-box;
-  flex-shrink: 0;
-  margin-block: auto;
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
   border-radius: 18px;
   padding: 32px 28px;
   background: linear-gradient(148deg, #fdf1da 0%, #f8e7c7 100%);
@@ -159,6 +158,15 @@ function goHome() {
   text-align: center;
   font-family: "Abhaya Libre", serif;
   animation: fadeIn 0.5s ease;
+}
+
+.settings-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-bottom: 20px;
+  padding-right: 4px;
 }
 
 .settings-title {
@@ -218,13 +226,13 @@ function goHome() {
     opacity 0.2s ease;
 }
 
-.install-btn {
+.setting-btn {
   display: block;
-  width: min(100%, 320px);
+  width: min(74%, 320px);
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 8px 14px;
   border: none;
-  border-radius: 999px;
+  border-radius: 11px;
   background: linear-gradient(180deg, #8f2d14 0%, #6f1f0e 100%);
   color: #ffeaca;
   font-family: inherit;
@@ -237,15 +245,15 @@ function goHome() {
     opacity 0.2s ease;
 }
 
-.install-btn:hover:not(:disabled) {
+.setting-btn:hover:not(:disabled) {
   transform: translateY(-4px);
 }
 
-.install-btn:active:not(:disabled) {
+.setting-btn:active:not(:disabled) {
   transform: scale(0.985);
 }
 
-.install-btn:disabled {
+.setting-btn:disabled {
   opacity: 0.7;
   cursor: default;
 }
@@ -263,8 +271,9 @@ function goHome() {
 }
 
 .back-btn {
+  flex-shrink: 0;
   border: 1px solid rgba(122, 36, 16, 0.28);
-  background: rgba(255, 247, 233, 0.9);
+  background: #af938926;
   color: #6f1f0e;
   border-radius: 999px;
   padding: 10px 22px;
@@ -280,7 +289,8 @@ function goHome() {
 .back-btn:hover {
   background: #ffeccf;
   font-weight: 600;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+  border: 1px solid #7a2410c2;
 }
 
 @keyframes fadeIn {
