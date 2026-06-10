@@ -290,7 +290,7 @@ const guidanceSections = [
       },
       {
         title: "ස්වයං වාදනය",
-        text: `දකුණු පස ඉහළ ${iconHtml("autoplay")} ස්වයං වාදනය ඇරඹීම හෝ නැවතීම කළ හැක.`,
+        text: `දකුණු පස ඉහළ ${iconHtml("autoplay")} මගින් ස්වයං වාදනය ඇරඹීම හෝ නැවතීම කළ හැක.`,
       },
       {
         title: "සිංහල/පාලි පෙළ",

@@ -1056,14 +1056,14 @@ resetActiveAudioRange();
 /* ===== Global ===== */
 @font-face {
   font-family: "UN Arundathee";
-  src: url("./assets/fonts/un_arundathee.ttf") format("truetype");
+  src: url("./assets/fonts/un_arundathee.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "UN Ganganee";
-  src: url("./assets/fonts/un_ganganee.ttf") format("truetype");
+  src: url("./assets/fonts/un_ganganee.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
