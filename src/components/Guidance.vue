@@ -272,7 +272,7 @@ const guidanceSections = [
     titleIcon: "reading2",
     eyebrow: "මගපෙන්වීම",
     title: "සජ්ඣායනය කොටස",
-    description: "මෙම කොටස දෛනික සජ්ඣායනය සහ කටපාඩම් කිරීම සඳහා යෝග්‍යවේ.",
+    description: "මෙම කොටස දෛනික සජ්ඣායනය සහ වනපොත් කිරීම සඳහා යෝග්‍යවේ.",
     steps: [
       {
         title: "කැමති ප්‍රත්‍යයන් තේරීමට",
