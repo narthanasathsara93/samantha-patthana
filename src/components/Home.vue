@@ -153,7 +153,7 @@ const getIcon = (img) => {
   font-size: clamp(19px, 2.5vw, 37px);
   line-height: 1.1;
   color: #4d3124;
-  font-weight: 600;
+  font-weight: 0;
   letter-spacing: 0.4px;
   margin-bottom: 12px;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
